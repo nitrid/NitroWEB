@@ -51,9 +51,6 @@ function dbengine(config,io)
                 {
                     LicKullanici = data.result[0].KULLANICISAYISI;
                     LicMenu = data.result[0].MENUDATA;
-                    
-                    io.close();
-                    io.listen(config.socket);
                 }
                 else
                 {
