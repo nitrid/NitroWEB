@@ -8,14 +8,13 @@
         <script src="js/lib/dx.all.js"></script>
 
         <script src="js/ctrl/index.js"></script>
+        <script src="js/ctrl/login.js"></script>
         
         <script src="js/app.js"></script>
         <script src="js/controller.js"></script>    
         <title>NitroWEB</title>    
     </head>
-    <body ng-controller="Index">
-        <a ui-sref="hello" ui-sref-active="active">Hello</a>
-    
+    <body ng-controller="Index" ng-init="Init()">
         <ui-view></ui-view>
     </body>
 </html>
