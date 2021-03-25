@@ -3,17 +3,24 @@ function Index ($scope,$state,srv)
     $scope.Init = async function()
     {
         let ConStatus = await srv.Connection()
-        srv.Execute('FIRMA')
+        
         if(ConStatus)
         {
-            if(localStorage.getItem("login") == null)
+            let m = 
             {
-                $state.go('login')
+                db: '{M}.TEST',
+                query : "SELECT * FROM STOKLAR"
             }
-            else
-            {
-                $state.go('main')
-            }
+            let x = await srv.Execute()
+            console.log(x)
+            // if(localStorage.getItem("login") == null)
+            // {
+            //     $state.go('login')
+            // }
+            // else
+            // {
+            //     $state.go('main')
+            // }
         }
     }    
 }

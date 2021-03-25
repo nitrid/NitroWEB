@@ -2,12 +2,50 @@ angular.module('app.srv', []).service('srv',function($rootScope)
 {
     let _Socket = null;
     let _MenuData = {};
-
+    
     this.SocketConnected = false;
     this.Connection = _Connection;
     this.Execute = _Execute;
     
-
+    this.SafeApply = function(pScope,pFn) 
+    {
+        var phase = pScope.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') 
+        {
+          if(pFn && (typeof(pFn) === 'function')) 
+          {
+            pFn();
+          }
+        } else 
+        {
+            pScope.$apply(pFn);
+        }
+    };     
+    this.On = function(eventName,callback)
+    {   
+        _Socket.on(eventName, function(data) 
+        {   
+            var args = arguments;
+            $rootScope.$apply(function()
+            {   
+                callback.apply(_Socket, args);
+            });
+        });
+    }
+    this.Emit = function(eventName,data,callback)
+    {        
+        _Socket.emit(eventName, data, function () 
+        {
+            var args = arguments;
+            $rootScope.$apply(function () 
+            {
+                if (callback) 
+                {
+                  callback.apply(_Socket, args);
+                }
+            });
+        });
+    }
     function _Connection()
     {
         return new Promise(resolve => 
@@ -61,12 +99,64 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             }
         });
     }
-    function _Execute(pFirma)
+    function _Execute()
     {
-        console.log(pFirma)
-    }
-    function _Execute(pQuery,pParam)
-    {
-        console.log(pQuery + pParam)
+        return new Promise(resolve => 
+        {
+            let TmpQuery;
+
+            if(_Socket.connected)
+            {
+                if(arguments.length == 1)
+                {
+                    
+                    TmpQuery = arguments[0];
+                }
+                else if(arguments.length > 1)
+                {
+                    TmpQuery = window["Query"][arguments[1]];
+                    TmpQuery.value = arguments[2];
+                    TmpQuery.db = '{M}.' + arguments[0];
+                }
+                else
+                {
+                    resolve();
+                }    
+
+                //PARAMETRE UNDEFINED KONTROLÜ (17.07.2020 - ALI KEMAL KARACA)
+                if(typeof(TmpQuery.value) != 'undefined')
+                {
+                    for (let i = 0; i < TmpQuery.value.length; i++) 
+                    {
+                        if(typeof TmpQuery.value[i] == 'undefined')
+                        {
+                            //$rootScope.MessageBox("Parametre değerlerinde problem oluştu ! "); 
+                            resolve();
+                        }
+                    }
+                }
+                /********************************************************** */
+                //$rootScope.LoadingShow();                
+                _Socket.emit('QMikroDb', TmpQuery, function (data) 
+                {
+                    //$rootScope.LoadingHide();
+                    if(typeof(data.result.err) == 'undefined')
+                    {
+                        resolve(data.result.recordset)
+                    }
+                    else
+                    {     
+                        //$rootScope.MessageBox(data.result.err);                 
+                        console.log("Mikro Sql Query Çalıştırma Hatası : " + data.result.err);
+                        resolve()
+                    }
+                });
+            }
+            else
+            {
+                console.log("Server Erişiminiz Yok.");
+            }
+            
+        });
     }
 });
