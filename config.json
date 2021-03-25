@@ -4,5 +4,5 @@
     "uid":"nitrogen",
     "pwd":"lp8462+",
     "trustedConnection" : false,
-    "socket" : "80"
+    "port" : "80"
 }
