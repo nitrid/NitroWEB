@@ -1,7 +1,31 @@
-function Login($scope,$state)
+function Login($scope,$state,srv)
 {
+    
     $scope.Init = function()
     {
-        
+        $scope.Kullanici = "Admin"
+        $scope.Sifre = "1"
+
+        if($scope.Login())
+        {
+            localStorage.setItem("login",btoa($scope.Kullanici))
+        }
+        else
+        {
+            console.log("geçersiz kullanıcı")
+        }
+    }
+
+    $scope.Login = function()
+    {
+        let TmpStatus = false;
+        for (let i = 0; i < Param.length; i++) 
+        {
+            if(Param[i].Kullanici == $scope.Kullanici && Param[i].Sifre == $scope.Sifre)
+            {
+                TmpStatus = true;
+            }
+        }
+        return TmpStatus;
     }
 }

@@ -1,4 +1,4 @@
-function Main($scope,$state)
+function Main($scope,$state,srv)
 {
     $scope.Init = function()
     {

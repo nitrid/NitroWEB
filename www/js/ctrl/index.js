@@ -1,7 +1,19 @@
-function Index ($scope,$state)
+function Index ($scope,$state,srv)
 {
-    $scope.Init = function()
+    $scope.Init = async function()
     {
-        $state.go('main')
-    }
+        let ConStatus = await srv.Connection()
+        srv.Execute('FIRMA')
+        if(ConStatus)
+        {
+            if(localStorage.getItem("login") == null)
+            {
+                $state.go('login')
+            }
+            else
+            {
+                $state.go('main')
+            }
+        }
+    }    
 }

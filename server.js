@@ -5,7 +5,7 @@ var express = require('express');
 var app = express();
 
 app.use('/',express.static(__dirname + "/www/"));
-console.log(__dirname)
+
 let http = app.listen(config.port);
 let io = require('socket.io')(http);
 var dbengine = require('./sql/dbengine')(config,io);
