@@ -9,9 +9,13 @@ function Index ($scope,$state,srv)
             let m = 
             {
                 db: '{M}.TEST',
-                query : "SELECT * FROM STOKLAR"
+                query : //"DECLARE @UIDTABLE table([RECID] [int]) " + 
+                        "INSERT INTO TERP_SOFOR (TC,ADI) " + 
+                        //"OUTPUT INSERTED.[RECID] INTO @UIDTABLE " +
+                        "VALUES ('112233','AA') "  
+                        //"SELECT [RECID] FROM @UIDTABLE "
             }
-            let x = await srv.Execute()
+            let x = await srv.Execute(m)
             console.log(x)
             // if(localStorage.getItem("login") == null)
             // {
@@ -23,4 +27,8 @@ function Index ($scope,$state,srv)
             // }
         }
     }    
+    $scope.Show = function()
+    {
+        $("#alo").modal("show");
+    }
 }
