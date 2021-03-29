@@ -2,8 +2,7 @@ angular.module("app",
 [
     'app.controller',
     'ui.router',
-    'app.srv',
-    'dx'
+    'app.srv'
 ])
 .config(function($stateProvider)
 {       

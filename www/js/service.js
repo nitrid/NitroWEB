@@ -109,7 +109,6 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             {
                 if(arguments.length == 1)
                 {
-                    
                     TmpQuery = arguments[0];
                 }
                 else if(arguments.length > 1)

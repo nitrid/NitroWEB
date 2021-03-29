@@ -25,10 +25,11 @@
         
         <title>NitroWEB</title>    
     </head>
-    <body ng-controller="Index" ng-init="Init()">    
+    <body ng-controller="Index as ctrl" ng-init="Init()">    
         <div class="row dx-viewport">
             <div class="col-6">
-                <button-edit id="test"></button-edit>
+                <button-edit id="1" option="BteTest"></button-edit>
+                <button-edit id="2" option="{title : 'MODAL 2'}"></button-edit>
             </div>
         </div>    
         
