@@ -1,9 +1,8 @@
 <html ng-app="app">
     <head>
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/custom.css">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-            integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/20.2.6/css/dx.common.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/20.2.6/css/dx.light.css" />
 
         <script src="js/lib/jquery-3.5.1.slim.min.js"></script>
         <script src="js/lib/bootstrap.bundle.min.js"></script>
@@ -22,10 +21,18 @@
         <script src="js/query.js"></script>  
 
         <script src="js/service.js"></script>
+        <script src="js/component/button-edit.js"></script>
         
         <title>NitroWEB</title>    
     </head>
-    <body ng-controller="Index" ng-init="Init()">
+    <body ng-controller="Index as ctrl" ng-init="Init()">    
+        <div class="row dx-viewport">
+            <div class="col-6">
+                <button-edit id="1" option="BteTest"></button-edit>
+                <button-edit id="2" option="{title : 'MODAL 2'}"></button-edit>
+            </div>
+        </div>    
+        
         <ui-view></ui-view>
     </body>
 </html>
