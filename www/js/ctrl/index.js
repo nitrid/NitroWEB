@@ -6,21 +6,21 @@ function Index ($scope,$state,srv)
         
         if(ConStatus)
         {
-            let m = 
+            // let m = 
+            // {
+            //     db: '{M}.TEST',
+            //     query : "SELECT * FROM STOKLAR"
+            // }
+            // let x = await srv.Execute()
+            // console.log(x)
+            if(localStorage.getItem("login") == null)
             {
-                db: '{M}.TEST',
-                query : "SELECT * FROM STOKLAR"
+                $state.go('login')
             }
-            let x = await srv.Execute()
-            console.log(x)
-            // if(localStorage.getItem("login") == null)
-            // {
-            //     $state.go('login')
-            // }
-            // else
-            // {
-            //     $state.go('main')
-            // }
+            else
+            {
+                $state.go('main')
+            }
         }
     }    
 }
