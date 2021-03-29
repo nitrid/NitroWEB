@@ -22,6 +22,7 @@
 
         <script src="js/service.js"></script>
         <script src="js/component/button-edit.js"></script>
+        <script src="js/component/combobox.js"></script>
         
         <title>NitroWEB</title>    
     </head>
@@ -30,9 +31,10 @@
             <div class="col-6">
                 <button-edit id="1" option="BteTest"></button-edit>
                 <button-edit id="2" option="{title : 'MODAL 2'}"></button-edit>
+                <combobox option="CmbTest"></combobox>
             </div>
         </div>    
-        
+        <div>{{CmbTest.return}}</div>
         <ui-view></ui-view>
     </body>
 </html>

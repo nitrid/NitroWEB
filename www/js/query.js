@@ -2,7 +2,7 @@ var Query =
 {
     Firma : 
     {
-        query : 'SELECT DB_kod AS FIRM FROM VERI_TABANLARI'
+        query : 'SELECT DB_kod AS FIRM FROM MikroDB_V16.dbo.VERI_TABANLARI'
     },
     Stok : 
     {

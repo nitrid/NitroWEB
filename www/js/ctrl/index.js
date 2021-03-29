@@ -7,9 +7,10 @@ function Index ($scope,$state,srv)
         
         if(ConStatus)
         {
+            $scope.CmpSelect = "001"
             $scope.BteTest = 
             {
-                title : "MODAL 1",
+                title : "STOK GETRİ",
                 datasource : 
                 {
                     //data : [{sto_kod : '001',sto_isim: 'KALEM'}]
@@ -42,6 +43,24 @@ function Index ($scope,$state,srv)
                 onSelected : function(pData)
                 {
                     console.log(pData)
+                }
+            }
+            $scope.CmbTest =
+            {
+                datasource : 
+                {
+                    //data : [{KODU : '001',ADI: 'KALEM'},{KODU : '002',ADI: 'SİLGİ'}]
+                    db: "{M}.TEST",
+                    query:"SELECT sto_kod AS KODU,sto_isim AS ADI,* FROM STOKLAR"
+                },
+                key : "KODU",
+                value : "ADI",
+                defaultVal : "3",
+                selectionMode : "row",
+                return : "",
+                onSelected : function(pSelected)
+                {
+                    $scope.CmbTest.return = pSelected
                 }
             }
             // let m = 

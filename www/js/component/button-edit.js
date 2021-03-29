@@ -8,7 +8,7 @@ angular.module('app').component('buttonEdit',
         ctrl.Txt = ""
         ctrl.Id = $attrs.id
         
-        function GrdInit()
+        function Init()
         {
             return new Promise(async resolve => 
             {
@@ -20,7 +20,7 @@ angular.module('app').component('buttonEdit',
 
                     if(typeof TmpDataSource == 'undefined')
                     {
-                        resolve()
+                        resolve(false)
                         return 
                     }
                     // DATASOURCE İÇERSİNDEKİ DURUMA GÖRE QUERY VEYA TAG VEYA DATA UYGULANIYOR.
@@ -105,7 +105,7 @@ angular.module('app').component('buttonEdit',
         ctrl.Show = async function()
         {
             ctrl.SelectedRow = {};
-            let GrdResult = await GrdInit()
+            let GrdResult = await Init()
 
             if(GrdResult)
             {

@@ -5,6 +5,16 @@ function Login($scope,$state,srv)
     {
         $scope.Kullanici = "Admin"
         $scope.Sifre = "1"
+        $scope.CmbFirma = 
+        {
+            datasource : 
+            {
+                db: "TEST",
+                tag: "Firma"
+            },
+            key : "FIRM",
+            value : "FIRM"
+        }
 
         if($scope.Login())
         {

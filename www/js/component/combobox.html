@@ -1,0 +1,3 @@
+<select class="form-control" ng-model="$ctrl.Return" ng-change="OnSelected()">
+    <option ng-repeat="TmpData in $ctrl.Data" value="{{$eval($ctrl.SelectColumn)}}">{{TmpData[$ctrl.Value]}}</option>
+</select>
