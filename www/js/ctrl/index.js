@@ -80,8 +80,19 @@ function Index ($scope,$state,srv)
             // }
             // else
             // {
-            //     $state.go('main')
+            //     db: '{M}.TEST',
+            //     query : "SELECT * FROM STOKLAR"
             // }
+            // let x = await srv.Execute()
+            // console.log(x)
+            if(localStorage.getItem("login") == null)
+            {
+                $state.go('login')
+            }
+            else
+            {
+                $state.go('main')
+            }
         }
     }    
 }
