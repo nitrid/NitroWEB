@@ -12,7 +12,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                         </div>
-                                        <input name="" class="form-control" placeholder="Kullanıcı Adı" type="email">
+                                        <input name="" class="form-control" ng-model="Kullanici" placeholder="Kullanıcı Adı">
                                     </div> 
                                 </div> 
                                 <div class="form-group">
@@ -20,23 +20,16 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                         </div>
-                                        <input class="form-control" placeholder="******" type="password">
+                                        <input class="form-control" ng-model="Sifre" placeholder="******" type="password">
                                     </div> 
                                 </div> 
                                 <div>
-                                <combobox option="CmbFirma"></combobox>
-                                    <!-- <select class="browser-default custom-select">
-                                        <option selected="">Lütfen Şirket Seçiniz</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select> -->
+                                    <combobox option="CmbFirma"></combobox>
                                 </div>
                                     <hr>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block"> Giriş </button>
+                                    <button type="submit" class="btn btn-primary btn-block" ng-click="BtnLogin()"> Giriş </button>
                                 </div> 
-                            
                         </form>
                     </div>
                 </div>
@@ -44,4 +37,3 @@
         </div>
     </div>
 </div>
-

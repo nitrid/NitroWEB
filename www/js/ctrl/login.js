@@ -3,30 +3,21 @@ function Login($scope,$state,srv)
     
     $scope.Init = function()
     {
-        $scope.Kullanici = "Admin"
-        $scope.Sifre = "1"
+        $scope.Kullanici = ""
+        $scope.Sifre = ""
         $scope.CmbFirma = 
         {
             datasource : 
             {
-                db: "TEST",
-                tag: "Firma"
+                db: "MikroDB_V16",
+                query: "SELECT DB_kod AS FIRM FROM VERI_TABANLARI"
             },
             key : "FIRM",
             value : "FIRM"
         }
-
-        if($scope.Login())
-        {
-            localStorage.setItem("login",btoa($scope.Kullanici))
-        }
-        else
-        {
-            console.log("geçersiz kullanıcı")
-        }
+        
     }
-
-    $scope.Login = function()
+    function Login()
     {
         let TmpStatus = false;
         for (let i = 0; i < Param.length; i++) 
@@ -37,5 +28,34 @@ function Login($scope,$state,srv)
             }
         }
         return TmpStatus;
+    }
+    $scope.BtnLogin = function()
+    {
+        if($scope.Kullanici == '')
+        {
+            console.log("Lütfen Kullanıcı Adınızı Giriniz !")
+            return;
+        }
+        if($scope.Sifre == '')
+        {
+            console.log("Lütfen Şifrenizi Giriniz !")
+            return;
+        }
+        if(typeof $scope.CmbFirma.return == 'undefined')
+        {
+            console.log("Lütfen Firma Seçiniz !")
+            return;
+        }
+
+        if(Login())
+        {
+            localStorage.setItem("login",btoa($scope.Kullanici))
+            localStorage.setItem("firm",$scope.CmbFirma.return)
+            $state.go('main');
+        }
+        else
+        {
+            console.log("geçersiz kullanıcı")
+        }
     }
 }

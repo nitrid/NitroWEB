@@ -121,7 +121,7 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                 {
                     resolve();
                 }    
-
+                console.log(TmpQuery)
                 //PARAMETRE UNDEFINED KONTROLÜ (17.07.2020 - ALI KEMAL KARACA)
                 if(typeof(TmpQuery.value) != 'undefined')
                 {
