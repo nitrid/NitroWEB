@@ -7,24 +7,24 @@
                         <h2 class="text-center">NitroWeb</h2>
                             <hr>
                             <form>
-                                <div class="form-group">
+                                <div class="form-group" onsubmit="return validateForm()">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                         </div>
-                                        <input name="" class="form-control" ng-model="Kullanici" placeholder="Kullanıcı Adı">
+                                        <input name="" class="form-control" ng-model="Kullanici" placeholder="Kullanıcı Adı" >
                                     </div> 
                                 </div> 
-                                <div class="form-group">
+                                <div class="form-group" onsubmit="return validateForm()">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                         </div>
-                                        <input class="form-control" ng-model="Sifre" placeholder="******" type="password">
+                                        <input class="form-control" ng-model="Sifre" placeholder="******" type="password" >
                                     </div> 
                                 </div> 
                                 <div>
-                                    <combobox option="CmbFirma"></combobox>
+                                    <combobox option="CmbFirma" onsubmit="return validateForm()"></combobox>
                                 </div>
                                     <hr>
                                 <div class="form-group">

@@ -33,17 +33,18 @@ function Login($scope,$state,srv)
     {
         if($scope.Kullanici == '')
         {
-            console.log("Lütfen Kullanıcı Adınızı Giriniz !")
+    
+           alert("Kullanıcı Adı Boş Bırakılamaz");
             return;
         }
         if($scope.Sifre == '')
         {
-            console.log("Lütfen Şifrenizi Giriniz !")
+            alert("Şifre Boş Bırakılamaz");
             return;
         }
         if(typeof $scope.CmbFirma.return == 'undefined')
         {
-            console.log("Lütfen Firma Seçiniz !")
+           alert("Lütfen Firma Seçiniz");
             return;
         }
 
