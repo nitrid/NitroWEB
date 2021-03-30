@@ -2,6 +2,7 @@ function Index ($scope,$state,srv)
 {
     $scope.Init = async function()
     {
+<<<<<<< Updated upstream
 
         let ConStatus = await srv.Connection()
         
@@ -17,4 +18,8 @@ function Index ($scope,$state,srv)
             }
         }
     }    
+=======
+        $state.go('login')
+    }
+>>>>>>> Stashed changes
 }
