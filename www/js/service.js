@@ -1,7 +1,6 @@
 angular.module('app.srv', []).service('srv',function($rootScope)
 {
     let _Socket = null;
-    let _MenuData = {};
     
     this.SocketConnected = false;
     this.Connection = _Connection;
@@ -57,20 +56,10 @@ angular.module('app.srv', []).service('srv',function($rootScope)
 
                 _Socket.on('MaxUserCounted',function(MenuData)
                 {               
-                    if (typeof(MenuData) !== "undefined")
-                    {
-                        _MenuData = MenuData;
-                    }
-                    else
+                    if (typeof(MenuData) == "undefined")
                     {
                         _Socket.disconnect();
-                    
-                        $('#alert-box').html('<div class="alert alert-icon alert-danger alert-dismissible" role="alert" id="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button>' +
-                            '<i class="icon wb-bell" aria-hidden="true"></i> Maksimum kullanıcı sayısına eriştiniz... Diğer kullanıcılardan çıkınız ya da ek lisans satın alınız.' +
-                            '</div>');
+                        console.log('Giremezsin !');
                     }
                 });
 

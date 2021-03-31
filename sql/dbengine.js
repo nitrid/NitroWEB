@@ -14,7 +14,6 @@ function dbengine(config,io)
     //BELİRLİ ZAMANLARDA LİSANS DURUMU KONTROL EDİLİYOR. 
     setInterval(function()
     {
-        
         lic.LicenseCheck(function(data)
         {
             if(data != "")
@@ -72,6 +71,15 @@ function dbengine(config,io)
     });
     io.on('connection', function(socket) 
     {
+        if(Object.keys(io.sockets.connected).length > LicKullanici)
+        {
+            socket.emit('MaxUserCounted');
+        }
+        else
+        {
+            socket.emit('MaxUserCounted',LicMenu);
+        }
+
         socket.on('GetMenu',function(pParam,pFn)
         {
             if(Object.keys(io.sockets.connected).length > LicKullanici)

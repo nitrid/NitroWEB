@@ -1,96 +1,77 @@
 <div ng-controller="Main" ng-init="Init()">
-<!-- A grey horizontal navbar that becomes vertical on small screens -->
-
-
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary ">
-    <a class="navbar-brand" href="#"><b>NitroPC</b></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="main_nav">
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle yaziayari" href="#" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> MENÜ </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#"> Mono Aydınlatma &raquo </a>
-                    <ul class="submenu dropdown-menu">
-                        <li><a class="dropdown-item" href=""> Basar Sayar Barkod Oluştur</a></li>
-                        <li><a class="dropdown-item" href=""> Yarı Mamül Mal Kabul</a></li>
-                        <li><a class="dropdown-item" href=""> Yarı Mamül Barkod İptal</a></li>
-                        <li><a class="dropdown-item" href=""> Kasa Barkodu Oluştur</a></li>
-                        <li><a class="dropdown-item" href=""> Mamül Mal Kabul</a></li>
-                        <li><a class="dropdown-item" href=""> Sipariş Toplama Listesi</a></li>
-                        <li><a class="dropdown-item" href=""> Raf Etiket Basımı</a></li>
-                        <li><a class="dropdown-item" href=""> Barkod Etiket Basımı</a></li>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary ">
+        <a class="navbar-brand" href="#"><b>NitroPC</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main_nav">
+            <ul class="navbar-nav" id="Menu">
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle yaziayari" href="#" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> MENÜ </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"> Mono Aydınlatma &raquo </a>
+                        <ul class="submenu dropdown-menu">
+                            <li><a class="dropdown-item" href=""> Basar Sayar Barkod Oluştur</a></li>
+                            <li><a class="dropdown-item" href=""> Yarı Mamül Mal Kabul</a></li>
+                            <li><a class="dropdown-item" href=""> Yarı Mamül Barkod İptal</a></li>
+                            <li><a class="dropdown-item" href=""> Kasa Barkodu Oluştur</a></li>
+                            <li><a class="dropdown-item" href=""> Mamül Mal Kabul</a></li>
+                            <li><a class="dropdown-item" href=""> Sipariş Toplama Listesi</a></li>
+                            <li><a class="dropdown-item" href=""> Raf Etiket Basımı</a></li>
+                            <li><a class="dropdown-item" href=""> Barkod Etiket Basımı</a></li>
+                        </ul>
+                        </li>
+                        <li><a class="dropdown-item" href="#"> 22222 &raquo </a>
+                            <ul class="submenu dropdown-menu">
+                                <li><a class="dropdown-item" href=""> Third level 1</a></li>
+                                <li><a class="dropdown-item" href=""> Third level 2</a></li>
+                                <li><a class="dropdown-item" href=""> Third level 3 &raquo </a>
+                                    <ul class="submenu dropdown-menu">
+                                        <li><a class="dropdown-item" href=""> Fourth level 1</a></li>
+                                        <li><a class="dropdown-item" href=""> Fourth level 2</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="dropdown-item" href=""> Second level 4</a></li>
+                                <li><a class="dropdown-item" href=""> Second level 5</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
+                        <li><a class="dropdown-item" href="#"> Dropdown item 4 </a>
                     </ul>
-                    </li>
-                    <li><a class="dropdown-item" href="#"> 22222 &raquo </a>
-                        <ul class="submenu dropdown-menu">
-                            <li><a class="dropdown-item" href=""> Third level 1</a></li>
-                            <li><a class="dropdown-item" href=""> Third level 2</a></li>
-                            <li><a class="dropdown-item" href=""> Third level 3 &raquo </a>
-                                <ul class="submenu dropdown-menu">
-                                    <li><a class="dropdown-item" href=""> Fourth level 1</a></li>
-                                    <li><a class="dropdown-item" href=""> Fourth level 2</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="dropdown-item" href=""> Second level 4</a></li>
-                            <li><a class="dropdown-item" href=""> Second level 5</a></li>
-                        </ul>
-                    </li>
-                    <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
-                    <li><a class="dropdown-item" href="#"> Dropdown item 4 </a>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle yaziayari" href="#" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> MENÜ </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#"> Second level 1 </a></li>
-                    <li><a class="dropdown-item" href="#"> Second level 2 &raquo </a>
-                        <ul class="submenu dropdown-menu">
-                            <li><a class="dropdown-item" href=""> Third level 1</a></li>
-                            <li><a class="dropdown-item" href=""> Third level 2</a></li>
-                            <li><a class="dropdown-item" href=""> Third level 3 &raquo </a>
-                                <ul class="submenu dropdown-menu">
-                                    <li><a class="dropdown-item" href=""> Fourth level 1</a></li>
-                                    <li><a class="dropdown-item" href=""> Fourth level 2</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="dropdown-item" href=""> Second level 4</a></li>
-                            <li><a class="dropdown-item" href=""> Second level 5</a></li>
-                        </ul>
-                    </li>
-                    <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
-                    <li><a class="dropdown-item" href="#"> Dropdown item 4 </a>
-                </ul>
-            </li>
-        </ul> 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link yaziayari" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Çıkış </a></li>
-        </ul>
-
-
-
-    </div> <!-- navbar-collapse.// -->
-</nav>
-<br>
-<br>
-<br>
-
-
-<div class="container-fluid">
-    
-    <div class="row">
-        <div class="col">
-            
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle yaziayari" href="#" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> MENÜ </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"> Second level 1 </a></li>
+                        <li><a class="dropdown-item" href="#"> Second level 2 &raquo </a>
+                            <ul class="submenu dropdown-menu">
+                                <li><a class="dropdown-item" href=""> Third level 1</a></li>
+                                <li><a class="dropdown-item" href=""> Third level 2</a></li>
+                                <li><a class="dropdown-item" href=""> Third level 3 &raquo </a>
+                                    <ul class="submenu dropdown-menu">
+                                        <li><a class="dropdown-item" href=""> Fourth level 1</a></li>
+                                        <li><a class="dropdown-item" href=""> Fourth level 2</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="dropdown-item" href=""> Second level 4</a></li>
+                                <li><a class="dropdown-item" href=""> Second level 5</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="dropdown-item" href="#"> Dropdown item 3 </a></li>
+                        <li><a class="dropdown-item" href="#"> Dropdown item 4 </a>
+                    </ul>
+                </li> -->
+            </ul> 
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link yaziayari" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Çıkış </a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                
+            </div>
         </div>
     </div>
-</div>
-<br>
-<br>
-<br>
-
-
-
-</div>
 </div>
