@@ -21,6 +21,7 @@ function Main($scope,$state,srv)
                 $(this).find('.submenu').hide();
                 })
             });
-        } 
+        }
+        
     }
 }
