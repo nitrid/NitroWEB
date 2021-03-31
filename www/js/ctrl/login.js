@@ -34,17 +34,18 @@ function Login($scope,$state,srv)
         if($scope.Kullanici == '')
         {
     
-           alert("Kullanıcı Adı Boş Bırakılamaz");
+            swal("Hatalı Giriş!", "Lütfen Kullanıcı Adı Giriniz",icon="error");
             return;
+            
         }
         if($scope.Sifre == '')
         {
-            alert("Şifre Boş Bırakılamaz");
+            swal("Hatalı Giriş!", "Lütfen Şifre Giriniz",icon="error");
             return;
         }
         if(typeof $scope.CmbFirma.return == 'undefined')
         {
-           alert("Lütfen Firma Seçiniz");
+            swal("Hatalı Giriş!", "Lütfen Firma Seçiniz",icon="error");
             return;
         }
 
@@ -56,7 +57,8 @@ function Login($scope,$state,srv)
         }
         else
         {
-            console.log("geçersiz kullanıcı")
+            swal("Hatalı Giriş!", "Kullanıcı Adı veya Şifre Yanlış!",icon="error");
+            // console.log("geçersiz kullanıcı")
         }
     }
 }
