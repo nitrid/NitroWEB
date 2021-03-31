@@ -96,7 +96,6 @@ function dbengine(config,io)
         });
         socket.on('QMikroDb',function(pQuery,fn) 
         {   
-            console.log(pQuery)
             try
             {
                 let TmpDb = config.database;
@@ -108,7 +107,6 @@ function dbengine(config,io)
                     else
                         TmpDb = pQuery.db;            
                 }
-                console.log(TmpDb)
                 msql = new _sql(config.server,TmpDb,config.uid,config.pwd,config.trustedConnection);
                 msql.QueryPromise(pQuery,function(data)
                 {
