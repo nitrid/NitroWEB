@@ -121,7 +121,7 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                 {
                     resolve();
                 }    
-                console.log(TmpQuery)
+                
                 //PARAMETRE UNDEFINED KONTROLÜ (17.07.2020 - ALI KEMAL KARACA)
                 if(typeof(TmpQuery.value) != 'undefined')
                 {
@@ -129,24 +129,23 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                     {
                         if(typeof TmpQuery.value[i] == 'undefined')
                         {
-                            //$rootScope.MessageBox("Parametre değerlerinde problem oluştu ! "); 
+                            swal("Hata !","Parametre değerlerinde problem oluştu ! ",icon="error");    
                             resolve();
                         }
                     }
                 }
                 /********************************************************** */
-                //$rootScope.LoadingShow();                
+                $('#loading').show()              
                 _Socket.emit('QMikroDb', TmpQuery, function (data) 
                 {
-                    //$rootScope.LoadingHide();
+                    $('#loading').hide()  
                     if(typeof(data.result.err) == 'undefined')
                     {
                         resolve(data.result.recordset)
                     }
                     else
                     {     
-                        //$rootScope.MessageBox(data.result.err);                 
-                        console.log("Mikro Sql Query Çalıştırma Hatası : " + data.result.err);
+                        swal("Hata !","Mikro Sql Query Çalıştırma Hatası : " + data.result.err,icon="error");                 
                         resolve()
                     }
                 });
