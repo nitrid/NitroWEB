@@ -1,0 +1,4 @@
+function MonoMamulMalKabul($scope,srv)
+{
+
+}

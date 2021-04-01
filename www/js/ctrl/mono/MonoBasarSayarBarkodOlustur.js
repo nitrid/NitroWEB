@@ -1,0 +1,4 @@
+function MonoBasarSayarBarkodOlustur($scope,srv)
+{
+
+}

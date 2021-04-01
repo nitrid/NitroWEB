@@ -30,8 +30,17 @@ angular.module("app",
         {
             name: 'main.MonoBasarSayarBarkodOlustur',
             url: '/mono_basar_sayar_barkod_olustur',
-            templateUrl : "view/mono/BasarSayarBarkodOlustur.html",
-            controller:"BasarSayarBarkodOlustur"
+            templateUrl : "view/mono/MonoBasarSayarBarkodOlustur.html",
+            controller:"MonoBasarSayarBarkodOlustur"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoMamulMalKabul',
+            url: '/mono_mamul_mal_kabul',
+            templateUrl : "view/mono/MonoMamulMalKabul.html",
+            controller:"MonoMamulMalKabul"
         }
     )
 });
