@@ -2,6 +2,17 @@ function Main($scope,$state,srv)
 {
     $scope.Init = function()
     {
+        $scope.Firm = localStorage.getItem('firm');
+        $scope.User = atob(localStorage.getItem('login'))
+        
+        setInterval(() => 
+        {
+            srv.SafeApply($scope,function()
+            {
+                $scope.DateTime = moment().format('DD.MM.YYYY - h:mm:ss')
+            })
+        }, 1000);
+
         Menu();
         if(srv.SocketConnected)
         {
@@ -17,7 +28,7 @@ function Main($scope,$state,srv)
                     TmpHtml += '<ul class="dropdown-menu">'
                     for (let m = 0; m < TmpMenu[i].Item.length; m++) 
                     {
-                        TmpHtml += '<li><a class="dropdown-item" ui-sref="' + TmpMenu[i].Item[m].Link +'">' + TmpMenu[i].Item[m].Name +'</a>'
+                        TmpHtml += '<li><a class="dropdown-item" ui-sref="' + TmpMenu[i].Item[m].Link +'" href="">' + TmpMenu[i].Item[m].Name +'</a>'
                     }
                     TmpHtml += '</ul></li></li>'
                 }
@@ -26,7 +37,12 @@ function Main($scope,$state,srv)
             })
         }
     }
-    
+    $scope.BtnExit = function()
+    {
+        localStorage.removeItem('firm')
+        localStorage.removeItem('login')
+        $state.go('login')
+    }
     function Menu()
     {
         $(document).on('click', '.dropdown-menu', function (e) {

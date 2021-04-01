@@ -1,5 +1,6 @@
 angular.module('app.srv', []).service('srv',function($rootScope)
 {
+    moment.locale('tr')
     let _Socket = null;
     
     this.SocketConnected = false;
