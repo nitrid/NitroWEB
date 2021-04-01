@@ -2,7 +2,8 @@ angular.module("app",
 [
     'app.controller',
     'ui.router',
-    'app.srv'
+    'app.srv',
+    'app.compile'
 ])
 .config(function($stateProvider)
 {       
@@ -22,6 +23,15 @@ angular.module("app",
             url: '/main',
             templateUrl : "view/main.html",
             controller:"Main"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoBasarSayarBarkodOlustur',
+            url: '/mono_basar_sayar_barkod_olustur',
+            templateUrl : "view/mono/BasarSayarBarkodOlustur.html",
+            controller:"BasarSayarBarkodOlustur"
         }
     )
 });

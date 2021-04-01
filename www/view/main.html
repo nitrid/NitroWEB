@@ -5,13 +5,13 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="main_nav">
-            <ul class="navbar-nav" id="Menu">
+            <ul class="navbar-nav" compile="Html.Menu">
                 <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle yaziayari" href="#" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> MENÜ </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#"> Mono Aydınlatma &raquo </a>
                         <ul class="submenu dropdown-menu">
-                            <li><a class="dropdown-item" href=""> Basar Sayar Barkod Oluştur</a></li>
+                            <li><a class="dropdown-item" ui-sref="main.MonoBasarSayarBarkodOlustur"> Basar Sayar Barkod Oluştur</a></li>
                             <li><a class="dropdown-item" href=""> Yarı Mamül Mal Kabul</a></li>
                             <li><a class="dropdown-item" href=""> Yarı Mamül Barkod İptal</a></li>
                             <li><a class="dropdown-item" href=""> Kasa Barkodu Oluştur</a></li>
@@ -69,9 +69,7 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col">
-                
-            </div>
+            <ui-view></ui-view>
         </div>
     </div>
     <nav class="navbar fixed-bottom navbar-dark bg-dark footer">
