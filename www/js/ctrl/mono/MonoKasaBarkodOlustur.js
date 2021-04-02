@@ -1,0 +1,4 @@
+function MonoKasaBarkodOlustur($scope,srv)
+{
+
+}
