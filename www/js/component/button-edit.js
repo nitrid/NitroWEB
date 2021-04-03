@@ -1,13 +1,21 @@
 angular.module('app').component('buttonEdit', 
 {
     templateUrl: 'js/component/button-edit.html',
-    controller: function ButtonEdit($attrs,srv) 
+    controller: function ButtonEdit($scope,$attrs,srv) 
     {
         let SelectionRow;
         var ctrl = this
         ctrl.Txt = ""
         ctrl.Id = $attrs.id
-        
+
+        $scope.$watch("$ctrl.Txt", function () 
+        {
+            if(typeof ctrl.option != 'undefined')
+            {
+                ctrl.option.txt = ctrl.Txt
+            }
+        });
+
         function Init()
         {
             return new Promise(async resolve => 
@@ -17,7 +25,7 @@ angular.module('app').component('buttonEdit',
                     let TmpDataSource = ctrl.option.datasource;
                     let TmpData = [];
                     let TmpColumns = [];
-
+                    
                     if(typeof TmpDataSource == 'undefined')
                     {
                         resolve(false)
@@ -104,13 +112,28 @@ angular.module('app').component('buttonEdit',
         }
         ctrl.Show = async function()
         {
-            ctrl.SelectedRow = {};
-            let GrdResult = await Init()
-
-            if(GrdResult)
+            if(typeof ctrl.option.onClick != 'undefined')
             {
-                $('#Mdl' + ctrl.Id).modal("show");
-            }      
+                let x = 
+                {
+                    m : 10
+                }
+                ctrl.option.onClick().prototype.test = 10;
+
+                
+            }
+
+            if(ctrl.option.IsShow)
+            {
+                ctrl.SelectedRow = {};
+                let GrdResult = await Init()
+    
+                if(GrdResult)
+                {
+                    $('#Mdl' + ctrl.Id).modal("show");
+                }      
+            }
+            
         }
         ctrl.Select = function()
         {

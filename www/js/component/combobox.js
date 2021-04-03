@@ -55,10 +55,15 @@ angular.module('app').component('combobox',
         }
         ctrl.$onInit = async function() 
         {
+            if(typeof ctrl.option == 'undefined')
+            {
+                return
+            }  
+
             ctrl.Key = ctrl.option.key
             ctrl.Value = ctrl.option.value   
             ctrl.Return = ctrl.option.defaultVal
-
+            
             if(typeof ctrl.Return == 'undefined')
             {
                 ctrl.Return = ""
