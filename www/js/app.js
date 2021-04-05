@@ -78,5 +78,23 @@ angular.module("app",
             templateUrl : "view/mono/MonoSiparisToplamaListesi.html",
             controller:"MonoSiparisToplamaListesi"
         }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoYariMamulMalKabul',
+            url: '/mono_yari_mamul_mal_kabul',
+            templateUrl : "view/mono/MonoYariMamulMalKabul.html",
+            controller:"MonoYariMamulMalKabul"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoBarkodEtiketBasimi',
+            url: '/mono_barkod_etiket_basimi',
+            templateUrl : "view/mono/MonoBarkodEtiketBasimi.html",
+            controller:"MonoBarkodEtiketBasimi"
+        }
     )
 });
