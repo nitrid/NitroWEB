@@ -112,27 +112,13 @@ angular.module('app').component('buttonEdit',
         }
         ctrl.Show = async function()
         {
-            if(typeof ctrl.option.onClick != 'undefined')
-            {
-                let x = 
-                {
-                    m : 10
-                }
-                ctrl.option.onClick().prototype.test = 10;
+            ctrl.SelectedRow = {};
+            let GrdResult = await Init()
 
-                
-            }
-
-            if(ctrl.option.IsShow)
+            if(GrdResult)
             {
-                ctrl.SelectedRow = {};
-                let GrdResult = await Init()
-    
-                if(GrdResult)
-                {
-                    $('#Mdl' + ctrl.Id).modal("show");
-                }      
-            }
+                $('#Mdl' + ctrl.Id).modal("show");
+            }      
             
         }
         ctrl.Select = function()

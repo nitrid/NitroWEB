@@ -126,20 +126,20 @@ function MonoMamulMalKabul($scope,srv)
                     }
                 }
             },
-            onClick : function()
-            {
-                console.log(this.onClick)
-                if($scope.BteIsEmri.txt == "")
-                {
-                    pCallback(false)
-                }
-                else
-                {
-                    pCallback(true)
-                }
+            // onClick : function()
+            // {
+            //     console.log(this.onClick)
+            //     if($scope.BteIsEmri.txt == "")
+            //     {
+            //         pCallback(false)
+            //     }
+            //     else
+            //     {
+            //         pCallback(true)
+            //     }
                 
-                console.log(11)
-            }
+            //     console.log(11)
+            // }
         }
         $("#GrdList").dxDataGrid
         (
