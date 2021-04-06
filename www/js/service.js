@@ -9,8 +9,8 @@ angular.module('app.srv', []).service('srv',function($rootScope)
     
     this.SafeApply = function(pScope,pFn) 
     {
-        if(pScope.$root.$$phase != null)
-        {
+        // if(pScope.$root.$$phase != null)
+        // {
             var phase = pScope.$root.$$phase;
             if(phase == '$apply' || phase == '$digest') 
             {
@@ -22,7 +22,7 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             {
                 pScope.$apply(pFn);
             }
-        }
+        // }
     };     
     this.On = function(eventName,callback)
     {   
@@ -149,5 +149,25 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             }
             
         });
+    }
+    this.SumColumn = function(pData,pColumn,pFilter)    
+    {
+        let Sum = 0;
+        for(i=0;i<pData.length;i++)
+        {
+            if (typeof(pFilter) != "undefined")
+            {
+                if(pData[i][pFilter.toString().split('=')[0].trim()] == pFilter.toString().split('=')[1].trim())
+                {
+                    Sum += pData[i][pColumn];
+                }
+            }
+            else
+            {
+                Sum += pData[i][pColumn];
+            }
+        }
+        
+        return Sum;
     }
 });
