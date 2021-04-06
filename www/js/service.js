@@ -170,4 +170,16 @@ angular.module('app.srv', []).service('srv',function($rootScope)
         
         return Sum;
     }
+    this.GetParam = function(pUser)
+    {
+        for (let i = 0; i < Param.length; i++) 
+        {
+            if(Param[i].Kullanici == pUser)
+            {
+                return Param[i];
+            }
+        }
+        
+        return
+    }
 });
