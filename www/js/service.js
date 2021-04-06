@@ -134,7 +134,14 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                     $('#loading').hide()  
                     if(typeof(data.result.err) == 'undefined')
                     {
-                        resolve(data.result.recordset)
+                        if(data.result.recordsets.length == 0)
+                        {
+                            resolve([])
+                        }
+                        else
+                        {
+                            resolve(data.result.recordset)
+                        }
                     }
                     else
                     {     
