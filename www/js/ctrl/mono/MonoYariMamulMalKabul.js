@@ -7,7 +7,7 @@ $scope.Init = function()
             {
                 dataSource: [],
                 allowColumnResizing: true,
-                height: 490,
+                height: 450,
                 width: "auto",
                 columnWidth: 100,
                 selection: 

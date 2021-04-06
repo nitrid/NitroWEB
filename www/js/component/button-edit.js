@@ -8,6 +8,16 @@ angular.module('app').component('buttonEdit',
         ctrl.Txt = ""
         ctrl.Id = $attrs.id
 
+        async function ModalShow()
+        {
+            ctrl.SelectedRow = {};
+            let GrdResult = await Init()
+
+            if(GrdResult)
+            {
+                $('#Mdl' + ctrl.Id).modal("show");
+            }      
+        }
         $scope.$watch("$ctrl.Txt", function () 
         {
             if(typeof ctrl.option != 'undefined')
@@ -110,16 +120,22 @@ angular.module('app').component('buttonEdit',
         {
 
         }
-        ctrl.Show = async function()
+        ctrl.Show = function()
         {
-            ctrl.SelectedRow = {};
-            let GrdResult = await Init()
-
-            if(GrdResult)
+            if(typeof ctrl.option.onClick != 'undefined')
             {
-                $('#Mdl' + ctrl.Id).modal("show");
-            }      
-            
+                ctrl.option.onClick(function(pStatus)
+                {
+                    if(pStatus)
+                    {
+                        ModalShow();        
+                    }
+                });
+            }
+            else
+            {
+                ModalShow();
+            }                        
         }
         ctrl.Select = function()
         {

@@ -112,7 +112,7 @@ function MonoMamulMalKabul($scope,srv)
             onSelected : async function(pData)
             {
                 if(typeof pData != 'undefined')
-                {
+                {                    
                     $scope.Data.UMP = await UretimMalzemePlanGetir(pData.KODU);
                     $scope.Data.URP = await UretimRotaPlanGetir(pData.KODU);
                     
@@ -122,24 +122,45 @@ function MonoMamulMalKabul($scope,srv)
                         if(TmpDr.length > 0)
                         {
                             $scope.LblUrun = TmpDr[0].KODU
+                            $scope.BteParti.datasource.value.push($scope.LblUrun)
                         }
                     }
                 }
+            }
+        }
+        $scope.BteParti = 
+        {
+            title : "Parti Seçim",
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT pl_partikodu AS PARTI, pl_lotno AS LOT FROM PARTILOT WHERE pl_stokkodu = @pl_stokkodu",
+                param : ['pl_stokkodu:string|25'],
+                value : []
             },
-            // onClick : function()
-            // {
-            //     console.log(this.onClick)
-            //     if($scope.BteIsEmri.txt == "")
-            //     {
-            //         pCallback(false)
-            //     }
-            //     else
-            //     {
-            //         pCallback(true)
-            //     }
-                
-            //     console.log(11)
-            // }
+            selection : "PARTI",
+            columns :
+            [
+                {
+                    dataField: "PARTI",
+                    width: 200
+                }, 
+                {
+                    dataField: "LOT",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                if($scope.BteIsEmri.txt == "")
+                {
+                    pCallback(false)
+                }
+                else
+                {
+                    pCallback(true)
+                }
+            }
         }
         $("#GrdList").dxDataGrid
         (
