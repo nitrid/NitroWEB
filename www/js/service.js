@@ -9,16 +9,19 @@ angular.module('app.srv', []).service('srv',function($rootScope)
     
     this.SafeApply = function(pScope,pFn) 
     {
-        var phase = pScope.$root.$$phase;
-        if(phase == '$apply' || phase == '$digest') 
+        if(pScope.$root.$$phase != null)
         {
-          if(pFn && (typeof(pFn) === 'function')) 
-          {
-            pFn();
-          }
-        } else 
-        {
-            pScope.$apply(pFn);
+            var phase = pScope.$root.$$phase;
+            if(phase == '$apply' || phase == '$digest') 
+            {
+              if(pFn && (typeof(pFn) === 'function')) 
+              {
+                pFn();
+              }
+            } else 
+            {
+                pScope.$apply(pFn);
+            }
         }
     };     
     this.On = function(eventName,callback)
