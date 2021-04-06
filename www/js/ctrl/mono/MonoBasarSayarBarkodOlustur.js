@@ -47,33 +47,14 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
                 }
             }
         }
-
-        if($scope.LblSipSeri != '' && $scope.LblSipSira != '')
-        {
-            TmpQuery =  "SELECT " +
-                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sip_stok_kod AND bar_birimpntr = sip_birim_pntr),'') AS [BARKOD] , " +
-                        "ISNULL(sip_stok_kod,'') AS [KODU] , " +
-                        "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = sip_stok_kod),'') AS [ADI] , " +
-                        "(SELECT dbo.fn_StokBirimi(sip_stok_kod,sip_birim_pntr)) AS [BIRIM] " +
-                        "FROM SIPARISLER WHERE sip_evrakno_seri = '" + $scope.LblSipSeri + "' AND sip_evrakno_sira = " + $scope.LblSipSira + " AND sip_tip = 0 ORDER BY sip_satirno ASC "           
-        }
-        else
-        {
-            TmpQuery = "SELECT " +
-                        "bar_kodu AS [BARKOD], " +
-                        "bar_stokkodu AS [KODU], " +
-                        "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = bar_stokkodu),'') AS [ADI], " +
-                        "(SELECT dbo.fn_StokBirimi(bar_stokkodu,bar_birimpntr)) AS [BIRIM] " +
-                        "FROM BARKOD_TANIMLARI "
-        }
-
+     
         $scope.BtnStokList = 
         {
             title : "Stok Seçimi",
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : TmpQuery
+                query : ""
             },
             columns :
             [
@@ -94,6 +75,30 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
                     width: 100
                 }, 
             ],
+            onClick : async function(pStatus)
+            {
+                if($scope.LblSipSeri != '' && $scope.LblSipSira != '')
+                {
+                    TmpQuery =  "SELECT " +
+                                "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sip_stok_kod AND bar_birimpntr = sip_birim_pntr),'') AS [BARKOD] , " +
+                                "ISNULL(sip_stok_kod,'') AS [KODU] , " +
+                                "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = sip_stok_kod),'') AS [ADI] , " +
+                                "(SELECT dbo.fn_StokBirimi(sip_stok_kod,sip_birim_pntr)) AS [BIRIM] " +
+                                "FROM SIPARISLER WHERE sip_evrakno_seri = '" + $scope.LblSipSeri + "' AND sip_evrakno_sira = " + $scope.LblSipSira + " AND sip_tip = 0 ORDER BY sip_satirno ASC "           
+                }
+                else
+                {
+                    TmpQuery = "SELECT " +
+                                "bar_kodu AS [BARKOD], " +
+                                "bar_stokkodu AS [KODU], " +
+                                "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = bar_stokkodu),'') AS [ADI], " +
+                                "(SELECT dbo.fn_StokBirimi(bar_stokkodu,bar_birimpntr)) AS [BIRIM] " +
+                                "FROM BARKOD_TANIMLARI "
+                }
+
+                $scope.BtnStokList.datasource.query = TmpQuery;
+                pStatus(true)
+            },
             onSelected : async function(pData)
             {
                 if(typeof pData != 'undefined')
@@ -111,6 +116,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.LblSipSira = "";
         $scope.LblBarkod = "";
         $scope.LblAdi = "";
+        
 
         InitObj();
     }
