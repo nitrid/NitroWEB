@@ -1,6 +1,6 @@
 function MonoYariMamulMalKabul($scope,srv)
 {
-$scope.Init = function()
+    $scope.Init = function()
     {
         $("#GrdList").dxDataGrid
         (
