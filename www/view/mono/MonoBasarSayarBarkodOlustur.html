@@ -9,7 +9,7 @@
                             <p class="text-md-right my-0 py-1">Ağırlık (Gram) :</p>
                         </div>    
                         <div class="col-8 px-2">
-                            <p class="text-md-left my-0 py-1">0</p>
+                            <p class="text-md-left my-0 py-1">{{LblHassasGram}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -17,13 +17,13 @@
                             <p class="text-md-right my-0 py-1">Üretilecek Ürün :</p>
                         </div>    
                         <div class="col-8 px-2">
-                            <input type="number" class="form-control form-control-sm">
+                            <input type="number" class="form-control form-control-sm" ng-model = "SpRefMiktar">
                         </div>
                     </div>
                 </div>
                 <div class="row pb-2 px-2">
                     <div class="col-6 offset-6">
-                        <button type="button" class="btn btn-block btn-secondary">Tartımı Onayla</button>
+                        <button type="button" class="btn btn-block btn-secondary" ng-click = "BtnTartimOnayla()">Tartımı Onayla</button>
                     </div>
                 </div>
             </div>
@@ -34,18 +34,18 @@
                 <div class="card-body text-dark py-2">
                 <div class="row py-1">
                     <div class="col-4 px-2">
-                        <p class="text-md-right my-0 py-1">Ağırlık</p>
+                        <p class="text-md-right my-0 py-1">Ağırlık :</p>
                     </div>    
                     <div class="col-8 px-2">
-                        <p class="text-md-left my-0 py-1">00.0000</p>
+                        <p class="text-md-left my-0 py-1">{{LblKantarKilo}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4 px-2">
-                        <p class="text-md-right my-0 py-1">Miktar</p>
+                        <p class="text-md-right my-0 py-1">Miktar :</p>
                     </div>    
                     <div class="col-8 px-2">
-                        <p class="text-md-left my-0 py-1">00.0000</p>
+                        <p class="text-md-left my-0 py-1">{{LblKantarMiktar}}</p>
                     </div>
                 </div>
                 </div>

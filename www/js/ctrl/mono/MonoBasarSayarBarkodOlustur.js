@@ -2,8 +2,6 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
 {
     function InitObj()
     {
-        let TmpQuery = "";
-
         $scope.BtnSipList = 
         {
             title : "Sipariş Seçimi",
@@ -47,7 +45,6 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
                 }
             }
         }
-     
         $scope.BtnStokList = 
         {
             title : "Stok Seçimi",
@@ -109,15 +106,29 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
             }
         }
     }
+    function numberWithCommas(x) 
+    {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     $scope.Init = function()
     {
         $scope.Firma = localStorage.getItem('firm');
+
+        $scope.LblHassasGram = 1000;
+        $scope.SpRefMiktar = 0;
+        $scope.LblKantarKilo = 10000;
+        $scope.LblKantarMiktar = 0
+
         $scope.LblSipSeri = "";
         $scope.LblSipSira = "";
         $scope.LblBarkod = "";
         $scope.LblAdi = "";
-        
 
         InitObj();
+    }
+    $scope.BtnTartimOnayla = function()
+    {
+        $scope.LblKantarMiktar = numberWithCommas(($scope.SpRefMiktar / ($scope.LblHassasGram / 1000)) * $scope.LblKantarKilo);
+        $scope.LblKantarKilo = numberWithCommas($scope.LblKantarKilo);
     }
 }
