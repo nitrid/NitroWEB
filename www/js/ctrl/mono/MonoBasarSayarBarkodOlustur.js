@@ -101,6 +101,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
                 if(typeof pData != 'undefined')
                 {
                     $scope.LblBarkod = pData.BARKOD;
+                    $scope.LblStokKodu = pData.KODU;
                     $scope.LblAdi = pData.ADI;
                 }
             }
@@ -110,10 +111,50 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
     {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    $scope.Init = function()
+    async function EtiketInsert()
+    {
+        let InsertData = 
+        [
+            1,                      //CREATE_USER
+            1,                      //LASTUP_USER
+            $scope.EtiketValue,     //SPECIAL1
+            $scope.EtkSeri,         //SERI
+            $scope.EtkSira,         //SIRA
+            '',                     //AÇIKLAMA
+            '',                     //BELGENO
+            0,                      //ETİKETTİP
+            0,                      //BASİMTİPİ
+            $scope.LblKantarMiktar, //BASİMADET
+            1,                      //DEPONO
+            $scope.LblStokKodu,     //STOKKODU
+            1,                      //RENKKODU
+            1,                      //BEDENKODU
+            $scope.LblBarkod,       //BARKOD
+            $scope.TxtEtiketMiktar  //BASILACAKMIKTAR
+        ]
+
+        let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
+
+        if(InsertControl == "")
+        {
+            swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+        }
+        else
+        {
+            swal("İşlem Başarısız!", "Etiket Yazdırma İşleminde Hata Oluştu.",icon="error");
+        }
+    }
+    async function MaxEtiketSira()
+    {
+        $scope.EtkSira = (await srv.Execute($scope.Firma,'MaxEtiketSira',[$scope.EtkSeri]))[0].MAXEVRSIRA
+    }
+    $scope.Init = async function()
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+
+        $scope.EtkSeri = "ETK";
+        $scope.EtkSira = 1;
 
         $scope.LblHassasGram = 1000;
         $scope.TxtSpRefMiktar = 0;
@@ -123,20 +164,29 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.LblSipSeri = "";
         $scope.LblSipSira = "";
         $scope.LblBarkod = "";
+        $scope.LblStokKodu = "";
         $scope.LblAdi = "";
         
-        $scope.CmbEtiket = "1";
+        $scope.EtiketValue = "1";
         $scope.TxtEtiketMiktar = 1;
 
         InitObj();
+        MaxEtiketSira();
     }
     $scope.BtnTartimOnayla = function()
     {
         $scope.LblKantarMiktar = NumberWithCommas(($scope.TxtSpRefMiktar / ($scope.LblHassasGram / 1000)) * $scope.LblKantarKilo);
         $scope.LblKantarKilo = NumberWithCommas($scope.LblKantarKilo);
     }
-    $scope.BtnBarkodBas = function()
+    $scope.BtnBarkodBas = async function()
     {
-        
+        if($scope.LblStokKodu != '')
+        {
+            await EtiketInsert();
+        }
+        else
+        {
+            swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        }
     }
 }
