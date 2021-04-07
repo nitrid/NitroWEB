@@ -17,7 +17,7 @@
                             <p class="text-md-right my-0 py-1">Üretilecek Ürün :</p>
                         </div>    
                         <div class="col-8 px-2">
-                            <input type="number" class="form-control form-control-sm" ng-model = "TxtSpRefMiktar">
+                            <input type="number" min="0" class="form-control form-control-sm" ng-model = "TxtSpRefMiktar">
                         </div>
                     </div>
                 </div>
@@ -107,16 +107,16 @@
                             <p class="text-md-left my-0 py-1">Basılacak Miktar :</p>
                         </div>    
                         <div class="col-4 px-2">
-                            <input type="number" class="form-control form-control-sm" ng-model = "TxtEtiketMiktar">
+                            <input type="number" min="1" class="form-control form-control-sm" ng-model = "TxtEtiketMiktar">
                         </div>
                     </div>
                 </div>
                 <div class="row pb-2 px-2">
                     <div class="col-3 offset-6">
-                        <button type="button" class="btn btn-block btn-secondary">Temizle</button>
+                        <button type="button" class="btn btn-block btn-secondary" ng-click = "Init()">Temizle</button>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-block btn-secondary">Barkod Bas</button>
+                        <button type="button" class="btn btn-block btn-secondary" ng-click = "BtnBarkodBas()">Barkod Bas</button>
                     </div>
                 </div>
             </div>
