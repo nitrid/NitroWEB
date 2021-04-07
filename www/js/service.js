@@ -177,6 +177,22 @@ angular.module('app.srv', []).service('srv',function($rootScope)
         
         return Sum;
     }
+    this.Max = function(pData,pColumn)
+    {
+        if(typeof pData == 'undefined' || pData.length == 0)
+        {
+            return 0;
+        }
+
+        let Tmp = Math.max.apply(Math,pData.map(x => {return x[pColumn]}));
+
+        if(isNaN(Tmp))
+        {
+            return 0;
+        }
+
+        return Tmp;
+    }
     this.GetParam = function(pUser)
     {
         for (let i = 0; i < Param.length; i++) 

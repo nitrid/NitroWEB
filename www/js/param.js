@@ -34,6 +34,7 @@ var Param =
 		},
 		"Mono" : 
 		{
+			"MamulMalKabulDepo" : "",
 			"BasarSayarEtiket" : 
 			[ 
 				{
