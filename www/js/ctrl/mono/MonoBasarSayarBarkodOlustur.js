@@ -106,6 +106,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
             }
         }
     }
+
     function numberWithCommas(x) 
     {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -113,9 +114,10 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
     $scope.Init = function()
     {
         $scope.Firma = localStorage.getItem('firm');
+        $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
 
         $scope.LblHassasGram = 1000;
-        $scope.SpRefMiktar = 0;
+        $scope.TxtSpRefMiktar = 0;
         $scope.LblKantarKilo = 10000;
         $scope.LblKantarMiktar = 0
 
@@ -123,12 +125,15 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.LblSipSira = "";
         $scope.LblBarkod = "";
         $scope.LblAdi = "";
+        
+        $scope.CmbEtiket = "1";
+        $scope.TxtEtiketMiktar = 1;
 
         InitObj();
     }
     $scope.BtnTartimOnayla = function()
     {
-        $scope.LblKantarMiktar = numberWithCommas(($scope.SpRefMiktar / ($scope.LblHassasGram / 1000)) * $scope.LblKantarKilo);
+        $scope.LblKantarMiktar = numberWithCommas(($scope.TxtSpRefMiktar / ($scope.LblHassasGram / 1000)) * $scope.LblKantarKilo);
         $scope.LblKantarKilo = numberWithCommas($scope.LblKantarKilo);
     }
 }
