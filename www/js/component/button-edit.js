@@ -118,7 +118,7 @@ angular.module('app').component('buttonEdit',
         }
         ctrl.$onInit = function() 
         {
-
+            ctrl.Txt = ctrl.option.txt
         }
         ctrl.Show = function()
         {

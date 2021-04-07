@@ -170,40 +170,41 @@ var Query =
                 ",[bar_renkpntr] " +
                 ",[bar_baglantitipi] " +
                 ",[bar_har_uid] " +
-                ",[bar_asortitanimkodu]) " +
-                " VALUES " +
-                "(NEWID()       --<bar_Guid, uniqueidentifier,> \n" +
-                ",0         --<bar_DBCno, smallint,> \n" +
-                ",0         --<bar_SpecRECno, int,> \n" +
-                ",0         --<bar_iptal, bit,> \n" +
-                ",0         --<bar_fileid, smallint,> \n" +
-                ",0         --<bar_hidden, bit,> \n" +
-                ",0         --<bar_kilitli, bit,> \n" +
-                ",0         --<bar_degisti, bit,> \n" +
-                ",0         --<bar_checksum, int,> \n" +
+                ",[bar_asortitanimkodu] " +
+                ") VALUES ( " +
+                "NEWID()            --<bar_Guid, uniqueidentifier,> \n" +
+                ",0                 --<bar_DBCno, smallint,> \n" +
+                ",0                 --<bar_SpecRECno, int,> \n" +
+                ",0                 --<bar_iptal, bit,> \n" +
+                ",0                 --<bar_fileid, smallint,> \n" +
+                ",0                 --<bar_hidden, bit,> \n" +
+                ",0                 --<bar_kilitli, bit,> \n" +
+                ",0                 --<bar_degisti, bit,> \n" +
+                ",0                 --<bar_checksum, int,> \n" +
                 ",@bar_create_user          --<bar_create_user, smallint,> \n" +
-                ",GETDATE()        --<bar_create_date, datetime,> \n" +
-                ",@bar_lastup_user         --<bar_lastup_user, smallint,> \n" +
-                ",GETDATE()     --<bar_lastup_date, datetime,> \n" +
-                ",''            --<bar_special1, nvarchar(4),> \n" +
-                ",''        --<bar_special2, nvarchar(4),> \n" +
-                ",''            --<bar_special3, nvarchar(4),> \n" +
+                ",GETDATE()         --<bar_create_date, datetime,> \n" +
+                ",@bar_lastup_user  --<bar_lastup_user, smallint,> \n" +
+                ",GETDATE()         --<bar_lastup_date, datetime,> \n" +
+                ",''                --<bar_special1, nvarchar(4),> \n" +
+                ",''                --<bar_special2, nvarchar(4),> \n" +
+                ",''                --<bar_special3, nvarchar(4),> \n" +
                 ",@bar_kodu         --<bar_kodu, [dbo].[barkod_str],> \n" +
                 ",@bar_stokkodu     --<bar_stokkodu, nvarchar(25),> \n" +
-                ",''            --<bar_partikodu, nvarchar(25),> \n" +
-                ",0         --<bar_lotno, int,> \n" +
-                ",''            --<bar_serino_veya_bagkodu, nvarchar(25),> \n" +
-                ",0         --<bar_barkodtipi, tinyint,> \n" +
-                ",0         --<bar_icerigi, tinyint,> \n" + 
-                ",@bar_birimpntr        --<bar_birimpntr, tinyint,> \n" +
-                ",0         --<bar_master, bit,> \n" +
-                ",0         --<bar_bedenpntr, tinyint,> \n" +
-                ",0         --<bar_renkpntr, tinyint,> \n" +
-                ",0         --,<bar_baglantitipi, tinyint,> \n" +
+                ",@bar_partikodu    --<bar_partikodu, nvarchar(25),> \n" +
+                ",@bar_lotno         --<bar_lotno, int,> \n" +
+                ",''                --<bar_serino_veya_bagkodu, nvarchar(25),> \n" +
+                ",@bar_barkodtipi   --<bar_barkodtipi, tinyint,> \n" +
+                ",0                 --<bar_icerigi, tinyint,> \n" + 
+                ",@bar_birimpntr    --<bar_birimpntr, tinyint,> \n" +
+                ",@bar_master       --<bar_master, bit,> \n" +
+                ",0                 --<bar_bedenpntr, tinyint,> \n" +
+                ",0                 --<bar_renkpntr, tinyint,> \n" +
+                ",@bar_baglantitipi --,<bar_baglantitipi, tinyint,> \n" +
                 ",'00000000-0000-0000-0000-000000000000'        --<bar_har_uid, uniqueidentifier,> \n" +
-                ",0         --<bar_asortitanimkodu, nvarchar(25),> \n" +
+                ",0                 --<bar_asortitanimkodu, nvarchar(25),> \n" +
                 ") ",
-        param : ['bar_kodu:string|25','bar_stokkodu:string|25','bar_birimpntr:int']
+        param : ['bar_create_user:int','bar_lastup_user:int','bar_kodu:string|25','bar_stokkodu:string|25','bar_partikodu:string|25',
+                 'bar_lotno:int','bar_barkodtipi:int','bar_birimpntr:int','bar_master:bit','bar_baglantitipi:int']
     },  
     //Sipariş
     SiparisInsert : 
