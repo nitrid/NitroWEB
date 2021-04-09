@@ -35,6 +35,21 @@ var Param =
 		"Mono" : 
 		{
 			"MamulMalKabulDepo" : "",
+			"MamulMalKabulEtiket" : 
+			[ 
+				{
+					"name" : "Mamul Mal Kabul Etiket - 1" ,
+					"special" : "1",
+				},
+				{
+					"name" : "Mamul Mal Kabul Etiket - 2" ,
+					"special" : "2",
+				},
+				{
+					"name" : "Mamul Mal Kabul Etiket - 3" ,
+					"special" : "3"
+				}
+			],
 			"BasarSayarEtiket" : 
 			[ 
 				{

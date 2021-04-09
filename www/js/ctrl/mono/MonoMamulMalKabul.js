@@ -34,7 +34,8 @@ function MonoMamulMalKabul($scope,srv)
                         width: 100
                     }, 
                     {
-                        dataField: "BARKOD",
+                        title : "BARKOD",
+                        dataField: "PARTIBARKOD",
                         width: 150
                     }, 
                     {
@@ -168,7 +169,23 @@ function MonoMamulMalKabul($scope,srv)
                     pCallback(true)
                 }
             }
-        }        
+        }     
+        $scope.CmbEtiketTasarim = 
+        {
+            datasource : 
+            {
+                data : $scope.Param.Mono.MamulMalKabulEtiket
+            },
+            key : "special",
+            value : "name",
+            defaultVal : "1",
+            selectionMode : "row",
+            return : "",
+            onSelected : function(pSelected)
+            {
+                $scope.CmbEtiketTasarim.return = pSelected
+            }
+        } 
     }
     function UretimMalzemePlanGetir(pIsEmri)
     {
