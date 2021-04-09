@@ -32,7 +32,6 @@ angular.module('app').component('buttonEdit',
                 ctrl.$onInit();
             }
         });
-
         function Init()
         {
             return new Promise(async resolve => 
