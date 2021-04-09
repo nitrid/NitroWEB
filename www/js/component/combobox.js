@@ -10,6 +10,14 @@ angular.module('app').component('combobox',
         ctrl.Return = "";
         ctrl.SelectColumn = "";
 
+        $scope.$watch("$ctrl.option", function () 
+        {
+            if(typeof ctrl.option != 'undefined')
+            {
+                ctrl.$onInit();
+            }
+        });
+        
         ctrl.Init = function()
         {
             return new Promise(async resolve => 
@@ -44,7 +52,7 @@ angular.module('app').component('combobox',
                         return;
                     }
 
-                    ctrl.Data = TmpData
+                    ctrl.Data = TmpData                                     
                     resolve(true)
                 }
                 else
@@ -54,16 +62,16 @@ angular.module('app').component('combobox',
             });
         }
         ctrl.$onInit = async function() 
-        {
+        {            
             if(typeof ctrl.option == 'undefined')
             {
                 return
             }  
-
-            ctrl.Key = ctrl.option.key
-            ctrl.Value = ctrl.option.value   
-            ctrl.Return = ctrl.option.defaultVal
             
+            ctrl.Key = ctrl.option.key
+            ctrl.Value = ctrl.option.value               
+            ctrl.Return = ctrl.option.defaultVal
+
             if(typeof ctrl.Return == 'undefined')
             {
                 ctrl.Return = ""
@@ -82,8 +90,8 @@ angular.module('app').component('combobox',
                  ctrl.SelectColumn = 'TmpData'
             }
 
-            await ctrl.Init()
-            $scope.$apply()            
+            await ctrl.Init()            
+            $scope.$apply()         
         }
         $scope.OnSelected = function()
         {

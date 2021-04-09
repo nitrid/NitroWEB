@@ -35,6 +35,9 @@ var Param =
 		"Mono" : 
 		{
 			"MamulMalKabulDepo" : "",
+			"UrunGirisSeri" : "UGF",
+			"UrunCikisSeri" : "UCF",
+			"OperasyonSeri" : "OS",
 			"MamulMalKabulEtiket" : 
 			[ 
 				{

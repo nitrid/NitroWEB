@@ -17,7 +17,7 @@ function MonoMamulMalKabul($scope,srv)
                 columns :
                 [
                     {
-                        title : "TİP",
+                        caption : "TİP",
                         dataField: "TIP",
                         width: 100
                     }, 
@@ -34,7 +34,7 @@ function MonoMamulMalKabul($scope,srv)
                         width: 100
                     }, 
                     {
-                        title : "BARKOD",
+                        caption : "BARKOD",
                         dataField: "PARTIBARKOD",
                         width: 150
                     }, 
@@ -179,7 +179,7 @@ function MonoMamulMalKabul($scope,srv)
             key : "special",
             value : "name",
             defaultVal : "1",
-            selectionMode : "row",
+            selectionMode : "key",
             return : "",
             onSelected : function(pSelected)
             {
@@ -290,10 +290,11 @@ function MonoMamulMalKabul($scope,srv)
             let TmpData = await srv.Execute($scope.Firma,'MaxPartiLot',[$scope.BteParti.txt])
             if(TmpData.length > 0)
             {
-                resolve(TmpData[0].LOT)
+                resolve(TmpData[0].LOT);
+                return;
             }
-            resolve(1)
-            return
+            resolve(1);
+            return;
         });
     }
     function PartiLotOlustur(pParti,pLot,pStok)
@@ -487,7 +488,254 @@ function MonoMamulMalKabul($scope,srv)
             InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
         }
     }
-    $scope.Init = function()
+    function MaxSthSira(pSeri,pEvrakTip)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
+            if(TmpData.length > 0)
+            {
+                resolve(TmpData[0].MAXEVRSIRA);
+                return;
+            }
+            resolve(1);
+            return;
+        })
+    }
+    function MaxOpSira(pSeri)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpData = await srv.Execute($scope.Firma,'MaxOperasyonSira',[pSeri])
+            if(TmpData.length > 0)
+            {
+                resolve(TmpData[0].MAXEVRSIRA);
+                return;
+            }
+            resolve(1);
+            return;
+        })
+    }
+    function InsertUrunGirisCikis(pGirisCikis,pDr,pSeri,pSira)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpEvrTip = 12;
+            let TmpTip = 0;
+
+            if(pGirisCikis == 1)
+            {
+                TmpEvrTip = 0
+                TmpTip = 1
+            }
+
+            let TmpInsertData = 
+            [
+                $scope.Param.MikroId,
+                $scope.Param.MikroId,
+                0, //FİRMA NO
+                0, //ŞUBE NO
+                moment(new Date()).format("DD.MM.YYYY"),
+                TmpTip,
+                7,
+                0,
+                TmpEvrTip,
+                pSeri,
+                pSira,
+                "", //BELGE NO
+                moment(new Date()).format("DD.MM.YYYY"),
+                pDr.KODU,
+                0, //ISKONTO 1
+                1, //ISKONTO 2
+                1, //ISKONTO 3
+                1, //ISKONTO 4
+                1, //ISKONTO 5
+                1, //ISKONTO 6
+                1, //ISKONTO 7
+                1, //ISKONTO 8
+                1, //ISKONTO 9
+                1, //ISKONTO 10
+                0, //SATIR ISKONTO TİP 1
+                0, //SATIR ISKONTO TİP 2
+                0, //SATIR ISKONTO TİP 3
+                0, //SATIR ISKONTO TİP 4
+                0, //SATIR ISKONTO TİP 5
+                0, //SATIR ISKONTO TİP 6
+                0, //SATIR ISKONTO TİP 7
+                0, //SATIR ISKONTO TİP 8
+                0, //SATIR ISKONTO TİP 9
+                0, //SATIR ISKONTO TİP 10
+                0, //CARİCİNSİ
+                '', //CARI KODU,
+                pDr.ISEMRI, //İŞEMRİKODU
+                "", //PERSONEL KODU
+                0, //HARDOVİZCİNSİ
+                1, //HARDOVİZKURU
+                1, //ALTDOVİZKURU
+                0, //STOKDOVİZCİNSİ
+                1, //STOKDOVİZKURU
+                pDr.MIKTAR,
+                pDr.MIKTAR,
+                1, //BIRIM PNTR
+                0, //TUTAR
+                0, // İSKONTO TUTAR 1
+                0, // İSKONTO TUTAR 2
+                0, // İSKONTO TUTAR 3
+                0, // İSKONTO TUTAR 4
+                0, // İSKONTO TUTAR 5
+                0, // İSKONTO TUTAR 6
+                0, // MASRAF TUTAR 1
+                0, // MASRAF TUTAR 2
+                0, // MASRAF TUTAR 3
+                0, // MASRAF TUTAR 4
+                0, // VERİPNTR
+                0, // VERGİ
+                0, // MASRAFVERGİPNTR,
+                0, // MASRAFVERGİ
+                0, // ODEME NO                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                '',// AÇIKLAMA
+                '00000000-0000-0000-0000-000000000000', //sth_sip_uid
+                '00000000-0000-0000-0000-000000000000', //sth_fat_uid,
+                pDr.DEPO, //GİRİSDEPONO
+                pDr.DEPO, //CİKİSDEPONO
+                moment(new Date()).format("DD.MM.YYYY"), //MALKABULSEVKTARİHİ
+                '', // CARİSORUMLULUKMERKEZİ
+                '', // STOKSORUMLULUKMERKEZİ
+                0,  // VERGİSİZFL
+                1,  // ADRESNO
+                pDr.PARTI, 
+                pDr.LOT,
+                '', // PROJE KODU
+                '', // EXİMKODU
+                0, // DİSTİCARETTURU
+                0, // OTVVERGİSİZFL
+                0, // OİVVERGİSİZ
+                0, //FIYAT LISTE NO
+                0, //NAKLİYEDEPO
+                0, // NAKLİYEDURUMU
+                pDr.ISMERKEZI
+            ];
+
+            let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        })
+    }
+    function InsertOperasyonKapama(pDr,pSeri,pSira)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY")
+            let TmpBasTarih = moment(new Date()).format("DD.MM.YYYY")
+
+            let TmpInsertData =
+            [
+                $scope.Param.MikroId,
+                $scope.Param.MikroId,
+                0,
+                0,
+                pSeri,
+                pSira,
+                pDr.ROTAREC,
+                TmpBasTarih,
+                TmpBitTarih,
+                pDr.ISEMRI,
+                pDr.KODU,
+                pDr.SAFHANO,
+                pDr.OPERASYONKODU,
+                pDr.ISMERKEZI,
+                pDr.MIKTAR,
+                pDr.MIKTAR,
+                pDr.MIKTAR,
+                pDr.MIKTAR,
+                pDr.SURE
+            ]
+
+            let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        });
+    }
+    function UpdateRotaPlani(pRec,pMiktar,pSure)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "UPDATE URETIM_ROTA_PLANLARI SET RtP_TamamlananMiktar = RtP_TamamlananMiktar + @RtP_TamamlananMiktar,RtP_TamamlananSure = RtP_TamamlananSure + @RtP_TamamlananSure WHERE RtP_Guid = @RtP_Guid",
+                param : ['RtP_TamamlananMiktar:float','RtP_TamamlananSure:int','RtP_Guid:string|50'],
+                value : [pMiktar,pSure,pRec]
+            }
+            let TmpResult = await srv.Execute(TmpQuery)
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        });
+    }
+    function UpdateMalzemePlani(pIsEmri,pStokKodu,pMiktar,pUret)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpUpdateQuery = "";
+
+            if(pUret)
+            {
+                TmpUpdateQuery = "UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_uret_miktar = ish_uret_miktar + @miktar WHERE ish_isemri = @ish_isemri AND ish_stokhizm_gid_kod = @ish_stokhizm_gid_kod"
+            }
+            else
+            {
+                TmpUpdateQuery = "UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_sevk_miktar = ish_sevk_miktar + @miktar WHERE ish_isemri = @ish_isemri AND ish_stokhizm_gid_kod = @ish_stokhizm_gid_kod"
+            }
+
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : TmpUpdateQuery,
+                param : ['miktar:float','ish_isemri:string|25','ish_stokhizm_gid_kod:string|25'],
+                value : [pMiktar,pIsEmri,pStokKodu]
+            }
+            let TmpResult = await srv.Execute(TmpQuery)
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        });
+    }
+    $scope.Init = async function()
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
@@ -499,6 +747,14 @@ function MonoMamulMalKabul($scope,srv)
         $scope.TxtBarkod = "";
         $scope.TxtMiktar = 0;
         
+        $scope.SthGSeri = $scope.Param.Mono.UrunGirisSeri;
+        $scope.SthCSeri = $scope.Param.Mono.UrunCikisSeri;
+        $scope.OpSeri = $scope.Param.Mono.OperasyonSeri;
+
+        $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
+        $scope.SthCSira = await MaxSthSira($scope.SthGSeri,0)
+        $scope.OpSira = await MaxOpSira($scope.OpSeri)
+
         InitObj();
         InitGrd([]);
     }
@@ -526,6 +782,39 @@ function MonoMamulMalKabul($scope,srv)
             {
                 Ekle(TmpBarkod,$scope.BteParti.txt,TmpLot);
             }
+        }
+    }
+    $scope.BtnKaydet = async function()
+    {
+        let TmpDrTuket = $scope.Data.DATA.filter(x => x.URETTUKET == 0)
+        let TmpDrUret = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
+
+        if($scope.Data.DATA.length == 0)
+        {
+            swal("Dikkat", "Kayıt Girilmeden Bu İşlemi Yapamazsınız !",icon="warning");
+            return;
+        }
+        //* DEPO MİKTAR KONTROL */        
+        for(let i = 0;i < TmpDrTuket.length;i++)
+        {
+            if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
+            {
+                swal("Dikkat", "Depo miktarı eksiye düşemez ! (" + TmpDrTuket[i].KODU + " - " + TmpDrTuket[i].DEPOMIKTAR + " - " + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + ")",icon="warning");
+                return;
+            }
+        }
+        //************************/
+        for (let i = 0; i < TmpDrUret.length; i++) 
+        {
+            await InsertUrunGirisCikis(0,TmpDrUret[i],$scope.SthGSeri,$scope.SthGSira)
+            await InsertOperasyonKapama(TmpDrUret[i],$scope.OpSeri,$scope.OpSira)
+            await UpdateRotaPlani(TmpDrUret[i].ROTAREC, TmpDrUret[i].MIKTAR, TmpDrUret[i].SURE)
+            await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true)
+        }
+        for (let i = 0; i < TmpDrTuket.length; i++) 
+        {
+            await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
+            await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
         }
     }
 }
