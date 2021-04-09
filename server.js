@@ -3,6 +3,9 @@ var fs = require('fs');
 var config = require('./config.json');
 var express = require('express');
 var app = express();
+var WebTCP = require('./www/js/lib/webtcp/server/webtcp.js').WebTCP
+var server = new WebTCP();
+server.listen(9999, "127.0.0.1");
 
 app.use('/',express.static(__dirname + "/www/"));
 
