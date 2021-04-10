@@ -124,7 +124,10 @@ angular.module('app').component('buttonEdit',
         }
         ctrl.$onInit = function() 
         {
-            ctrl.Txt = ctrl.option.txt
+            if(typeof ctrl.option != 'undefined')
+            {
+                ctrl.Txt = ctrl.option.txt
+            }
         }
         ctrl.Show = function()
         {

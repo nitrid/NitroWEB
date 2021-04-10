@@ -894,7 +894,7 @@ var Query =
                 ",cast(cast(0 as binary) as uniqueidentifier)					--<sth_yetkili_uid, int,> \n" +
                 ",0					--<sth_taxfree_fl, bit,>  \n" +
                 ",0					--<sth_ilave_edilecek_kdv,float,> \n" +
-                ",''					--<sth_ismerkezi_kodu> \n" +
+                ",@sth_ismerkezi_kodu	--<sth_ismerkezi_kodu> \n" +
                 ",''					--<sth_HareketGrupKodu1, varchar(25),> \n" + 
                 ",''					--<sth_HareketGrupKodu2, varchar(25),>  \n" +
                 ",''					--<sth_HareketGrupKodu3, varchar(25),>  \n" +
@@ -912,16 +912,19 @@ var Query =
                 ") " +
                 "SELECT [sth_Guid] FROM @UIDTABLE ",
         param : ['sth_create_user:int','sth_lastup_user:int','sth_firmano:int','sth_subeno:int','sth_tarih:date','sth_tip:int','sth_cins:int',
-            'sth_normal_iade:int','sth_evraktip:int','sth_evrakno_seri:string|25','sth_evrakno_sira:int','sth_belge_no:string|25','sth_belge_tarih:date',
-            'sth_stok_kod:string|25','sth_isk_mas1:int','sth_isk_mas2:int','sth_isk_mas3:int','sth_isk_mas4:int','sth_isk_mas5:int','sth_isk_mas6:int','sth_isk_mas7:int',
-            'sth_isk_mas8:int','sth_isk_mas9:int','sth_isk_mas10:int','sth_sat_iskmas1:bit','sth_sat_iskmas2:bit','sth_sat_iskmas3:bit','sth_sat_iskmas4:bit','sth_sat_iskmas5:bit',
-            'sth_sat_iskmas6:bit','sth_sat_iskmas7:bit','sth_sat_iskmas8:bit','sth_sat_iskmas9:bit','sth_sat_iskmas10:bit','sth_cari_cinsi:int','sth_cari_kodu:string|50','sth_isemri_gider_kodu:string|50',
-            'sth_plasiyer_kodu:string|50','sth_har_doviz_cinsi:int','sth_har_doviz_kuru:float','sth_alt_doviz_kuru:float','sth_stok_doviz_cinsi:int','sth_stok_doviz_kuru:float',
-            'sth_miktar:float','sth_miktar2:float','sth_birim_pntr:int','sth_tutar:float','sth_iskonto1:float','sth_iskonto2:float','sth_iskonto3:float','sth_iskonto4:float',
-            'sth_iskonto5:float','sth_iskonto6:float','sth_masraf1:float','sth_masraf2:float','sth_masraf3:float','sth_masraf4:float','sth_vergi_pntr:int','sth_vergi:float','sth_masraf_vergi_pntr:int',
-            'sth_masraf_vergi:float','sth_odeme_op:int','sth_aciklama:string|25','sth_sip_uid:string|50','sth_fat_uid:string|50','sth_giris_depo_no:int','sth_cikis_depo_no:int','sth_malkbl_sevk_tarihi:date',
-            'sth_cari_srm_merkezi:string|25','sth_stok_srm_merkezi:string|25','sth_vergisiz_fl:bit','sth_adres_no:int','sth_parti_kodu:string|25','sth_lot_no:int','sth_proje_kodu:string|25',
-            'sth_exim_kodu:string|25','sth_disticaret_turu:int','sth_otvvergisiz_fl:bit','sth_oivvergisiz_fl:bit','sth_fiyat_liste_no:int','sth_nakliyedeposu:int','sth_nakliyedurumu:int']
+                 'sth_normal_iade:int','sth_evraktip:int','sth_evrakno_seri:string|25','sth_evrakno_sira:int','sth_belge_no:string|25','sth_belge_tarih:date',
+                 'sth_stok_kod:string|25','sth_isk_mas1:int','sth_isk_mas2:int','sth_isk_mas3:int','sth_isk_mas4:int','sth_isk_mas5:int','sth_isk_mas6:int',
+                 'sth_isk_mas7:int','sth_isk_mas8:int','sth_isk_mas9:int','sth_isk_mas10:int','sth_sat_iskmas1:bit','sth_sat_iskmas2:bit','sth_sat_iskmas3:bit',
+                 'sth_sat_iskmas4:bit','sth_sat_iskmas5:bit','sth_sat_iskmas6:bit','sth_sat_iskmas7:bit','sth_sat_iskmas8:bit','sth_sat_iskmas9:bit',
+                 'sth_sat_iskmas10:bit','sth_cari_cinsi:int','sth_cari_kodu:string|50','sth_isemri_gider_kodu:string|50','sth_plasiyer_kodu:string|50',
+                 'sth_har_doviz_cinsi:int','sth_har_doviz_kuru:float','sth_alt_doviz_kuru:float','sth_stok_doviz_cinsi:int','sth_stok_doviz_kuru:float',
+                 'sth_miktar:float','sth_miktar2:float','sth_birim_pntr:int','sth_tutar:float','sth_iskonto1:float','sth_iskonto2:float','sth_iskonto3:float',
+                 'sth_iskonto4:float','sth_iskonto5:float','sth_iskonto6:float','sth_masraf1:float','sth_masraf2:float','sth_masraf3:float','sth_masraf4:float',
+                 'sth_vergi_pntr:int','sth_vergi:float','sth_masraf_vergi_pntr:int','sth_masraf_vergi:float','sth_odeme_op:int','sth_aciklama:string|25',
+                 'sth_sip_uid:string|50','sth_fat_uid:string|50','sth_giris_depo_no:int','sth_cikis_depo_no:int','sth_malkbl_sevk_tarihi:date','sth_cari_srm_merkezi:string|25',
+                 'sth_stok_srm_merkezi:string|25','sth_vergisiz_fl:bit','sth_adres_no:int','sth_parti_kodu:string|25','sth_lot_no:int','sth_proje_kodu:string|25',
+                 'sth_exim_kodu:string|25','sth_disticaret_turu:int','sth_otvvergisiz_fl:bit','sth_oivvergisiz_fl:bit','sth_fiyat_liste_no:int','sth_nakliyedeposu:int',
+                 'sth_nakliyedurumu:int','sth_ismerkezi_kodu:string|25']
     },
     StokHarEkInsert : 
     {
@@ -1739,5 +1742,152 @@ var Query =
                 "WHERE Etkb_evrakno_seri=@Etkb_evrakno_seri",
         param : ['Etkb_evrakno_seri'],
         type : ['string|50']
+    },
+    //Üretim Hareketleri
+    MaxOperasyonSira : 
+    {
+        query : "SELECT ISNULL(MAX(OpT_EvrakNoSira),0) + 1 AS MAXEVRSIRA FROM URETIM_OPERASYON_HAREKETLERI WHERE OpT_EvrakNoSeri = @OpT_EvrakNoSeri",
+        param : ['OpT_EvrakNoSeri'],
+        type : ['string|25']
+    },
+    OperasyonHareketInsert :
+    {  
+        query : "INSERT INTO [dbo].[URETIM_OPERASYON_HAREKETLERI]  " +
+                "([OpT_DBCno] " +
+                ",[OpT_SpecRECNo] " +
+                ",[OpT_iptal] " +
+                ",[OpT_fileid] " +
+                ",[OpT_hidden] " +
+                ",[OpT_kilitli] " +
+                ",[OpT_degisti] " +
+                ",[OpT_CheckSum] " +
+                ",[OpT_create_user] " +
+                ",[OpT_create_date] " +
+                ",[OpT_lastup_user] " +
+                ",[OpT_lastup_date] " +
+                ",[OpT_special1] " +
+                ",[OpT_special2] " +
+                ",[OpT_special3] " +
+                ",[OpT_firmano] " +
+                ",[OpT_subeno] " +
+                ",[OpT_EvrakNoSeri] " +
+                ",[OpT_EvrakNoSira] " +
+                ",[OpT_EvrakSatirNo] " +
+                ",[OpT_RotaPlan_uid] " +
+                ",[OpT_baslamatarihi] " +
+                ",[OpT_bitis_tarihi] " +
+                ",[OpT_IsEmriKodu] " +
+                ",[OpT_UrunKodu] " +
+                ",[OpT_OperasyonSafhaNo] " +
+                ",[OpT_OperasyonKodu] " +
+                ",[Opt_SonrakiSafhaNo] " +
+                ",[OpT_ismerkezi] " +
+                ",[OpT_ismerkezi_hizi] " +
+                ",[OpT_PersonelKodu] " +
+                ",[OpT_TamamlananMiktar] " +
+                ",[Opt_TamamlananMiktar2] " +
+                ",[Opt_TamamlananMiktar3] " +
+                ",[Opt_TamamlananMiktar4] " +
+                ",[Opt_BozukMiktar] " +
+                ",[Opt_BozukMiktar2] " +
+                ",[Opt_BozukMiktar3] " +
+                ",[Opt_BozukMiktar4] " +
+                ",[Opt_SetupSuresi] " +
+                ",[OpT_TamamlananSure] " +
+                ",[Opt_Gecikme_suresi] " +
+                ",[Opt_iscilik_Maliyet_ana] " +
+                ",[Opt_iscilik_Maliyet_Alt] " +
+                ",[Opt_iscilik_Maliyet_Orj] " +
+                ",[Opt_Genel_uretim_Maliyet_ana] " +
+                ",[Opt_Genel_uretim_Maliyet_Alt] " +
+                ",[Opt_Genel_uretim_Maliyet_Orj] " +
+                ",[Opt_Kapat_fl] " +
+                ",[Opt_calisan_adam] " +
+                ",[Opt_islenen_alan] " +
+                ",[Opt_islenen_hacim] " +
+                ",[Opt_islenen_agirlik] " +
+                ",[Opt_tuketilen_enerji1] " +
+                ",[Opt_tuketilen_enerji2] " +
+                ",[Opt_aciklama] " +
+                ",[Opt_ufrs_iscilik_maliyet_ana] " +
+                ",[Opt_ufrs_iscilik_maliyet_alt] " +
+                ",[Opt_ufrs_iscilik_maliyet_orj] " +
+                ",[Opt_ufrs_genel_uretim_maliyet_ana] " +
+                ",[Opt_ufrs_genel_uretim_maliyet_alt] " +
+                ",[Opt_ufrs_genel_uretim_maliyet_orj] " +
+                ",[Opt_kalipkodu] " +
+                ",[Opt_HazirlikElemanSayisi] " +
+                ",[Opt_OperasyonElemanSayisi] " +
+                ") VALUES ( " +
+                " 0					        --<OpT_DBCno, smallint,> \n" +
+                ",0					        --<OpT_SpecRECNo, int,> \n" +
+                ",0					        --<OpT_iptal, bit,> \n" +
+                ",141					    --<OpT_fileid, smallint,> \n" +
+                ",0					        --<OpT_hidden, bit,> \n" +
+                ",0					        --<OpT_kilitli, bit,> \n" +
+                ",0					        --<OpT_degisti, bit,> \n" +
+                ",0					        --<OpT_CheckSum, int,> \n" +
+                ",@OpT_create_user	        --<OpT_create_user, smallint,> \n" +
+                ",GETDATE()			        --<OpT_create_date, datetime,> \n" +
+                ",@OpT_lastup_user	        --<OpT_lastup_user, smallint,> \n" +
+                ",GETDATE()			        --<OpT_lastup_date, datetime,> \n" +
+                ",''					    --<OpT_special1, nvarchar(4),> \n" +
+                ",''					    --<OpT_special2, nvarchar(4),> \n" +
+                ",''					    --<OpT_special3, nvarchar(4),> \n" +
+                ",@OpT_firmano		        --<OpT_firmano, int,> \n" +
+                ",@OpT_subeno			    --<OpT_subeno, int,> \n" +
+                ",@OpT_EvrakNoSeri	        --<OpT_EvrakNoSeri, [dbo].[evrakseri_str],> \n" +
+                ",@OpT_EvrakNoSira	        --<OpT_EvrakNoSira, int,> \n" +
+                ",(SELECT ISNULL(MAX(OpT_EvrakSatirNo),-1) + 1 AS SATIRNO FROM URETIM_OPERASYON_HAREKETLERI WHERE OpT_EvrakNoSeri = @OpT_EvrakNoSeri AND OpT_EvrakNoSira = @OpT_EvrakNoSira)	--<OpT_EvrakSatirNo, int,> \n" +
+                ",@OpT_RotaPlan_uid	        --<OpT_RotaPlan_uid, uniqueidentifier,> \n" +
+                ",@OpT_baslamatarihi	    --<OpT_baslamatarihi, datetime,> \n" +
+                ",@OpT_bitis_tarihi	        --<OpT_bitis_tarihi, datetime,> \n" +
+                ",@OpT_IsEmriKodu		    --<OpT_IsEmriKodu, nvarchar(25),> \n" +
+                ",@OpT_UrunKodu		        --<OpT_UrunKodu, nvarchar(25),> \n" +
+                ",@OpT_OperasyonSafhaNo	    --<OpT_OperasyonSafhaNo, smallint,> \n" +
+                ",@OpT_OperasyonKodu		--<OpT_OperasyonKodu, nvarchar(25),> \n" +
+                ",0						    --<Opt_SonrakiSafhaNo, smallint,> \n" +
+                ",@OpT_ismerkezi			--<OpT_ismerkezi, nvarchar(25),> \n" +
+                ",0						    --<OpT_ismerkezi_hizi, float,> \n" +
+                ",''						--<OpT_PersonelKodu, nvarchar(25),> \n" +
+                ",@OpT_TamamlananMiktar	    --<OpT_TamamlananMiktar, float,> \n" +
+                ",@Opt_TamamlananMiktar2	--<Opt_TamamlananMiktar2, float,> \n" +
+                ",@Opt_TamamlananMiktar3	--<Opt_TamamlananMiktar3, float,> \n" +
+                ",@Opt_TamamlananMiktar4	--<Opt_TamamlananMiktar4, float,> \n" +
+                ",0						    --<Opt_BozukMiktar, float,> \n" +
+                ",0						    --<Opt_BozukMiktar2, float,> \n" +
+                ",0						    --<Opt_BozukMiktar3, float,> \n" +
+                ",0						    --<Opt_BozukMiktar4, float,> \n" +
+                ",0						    --<Opt_SetupSuresi, int,> \n" +
+                ",@OpT_TamamlananSure		--<OpT_TamamlananSure, int,> \n" +
+                ",0						    --<Opt_Gecikme_suresi, int,> \n" +
+                ",0						    --<Opt_iscilik_Maliyet_ana, float,> \n" +
+                ",0						    --<Opt_iscilik_Maliyet_Alt, float,> \n" +
+                ",0						    --<Opt_iscilik_Maliyet_Orj, float,> \n" +
+                ",0						    --<Opt_Genel_uretim_Maliyet_ana, float,> \n" +
+                ",0						    --<Opt_Genel_uretim_Maliyet_Alt, float,> \n" +
+                ",0						    --<Opt_Genel_uretim_Maliyet_Orj, float,> \n" +
+                ",0						    --<Opt_Kapat_fl, bit,> \n" +
+                ",0						    --<Opt_calisan_adam, float,> \n" +
+                ",0						    --<Opt_islenen_alan, float,> \n" +
+                ",0						    --<Opt_islenen_hacim, float,> \n" +
+                ",0						    --<Opt_islenen_agirlik, float,> \n" +
+                ",0						    --<Opt_tuketilen_enerji1, float,> \n" +
+                ",0						    --<Opt_tuketilen_enerji2, float,> \n" +
+                ",''						--<Opt_aciklama, nvarchar(80),> \n" +
+                ",0						    --<Opt_ufrs_iscilik_maliyet_ana, float,> \n" +
+                ",0						    --<Opt_ufrs_iscilik_maliyet_alt, float,> \n" +
+                ",0						    --<Opt_ufrs_iscilik_maliyet_orj, float,> \n" +
+                ",0						    --<Opt_ufrs_genel_uretim_maliyet_ana, float,> \n" +
+                ",0						    --<Opt_ufrs_genel_uretim_maliyet_alt, float,> \n" +
+                ",0						    --<Opt_ufrs_genel_uretim_maliyet_orj, float,> \n" +
+                ",''						--<Opt_kalipkodu, nvarchar(25),> \n" +
+                ",0						    --<Opt_HazirlikElemanSayisi, float,> \n" +
+                ",0						    --<Opt_OperasyonElemanSayisi, float,> \n" +
+                ")",               
+            param :['OpT_create_user:int','OpT_lastup_user:int','OpT_firmano:int','OpT_subeno:int','OpT_EvrakNoSeri:string|25','OpT_EvrakNoSira:int',
+                    'OpT_RotaPlan_uid:string|50','OpT_baslamatarihi:date','OpT_bitis_tarihi:date','OpT_IsEmriKodu:string|25','OpT_UrunKodu:string|25',
+                    'OpT_OperasyonSafhaNo:int','OpT_OperasyonKodu:string|25','OpT_ismerkezi:string|25','OpT_TamamlananMiktar:float','Opt_TamamlananMiktar2:float',
+                    'Opt_TamamlananMiktar3:float','Opt_TamamlananMiktar4:float','OpT_TamamlananSure:int']
     },
 };
