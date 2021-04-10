@@ -134,6 +134,14 @@ sqllib.prototype.QueryPromise = function(pQuery,pResult)
 
                             request.input(pQuery.param[i].split(":")[0],sql.Date,date);    
                         }
+                        else if(pType[0] == "datetime")
+                        {
+                            var from = pQuery.value[i]; 
+                            var numbers = from.match(/\d+/g); 
+                            var date = new Date(numbers[2] + "-" +numbers[1] + "-" + numbers[0] + 'T' + numbers[3] + ':' + numbers[4] + ':' + numbers[5] + '.000Z');
+                            
+                            request.input(pQuery.param[i].split(":")[0],sql.DateTime,date);    
+                        }
                         else if(pType[0] == "bit")
                         {
                             request.input(pQuery.param[i].split(":")[0],sql.Bit,pQuery.value[i]);    

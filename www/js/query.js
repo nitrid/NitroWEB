@@ -1886,7 +1886,7 @@ var Query =
                 ",0						    --<Opt_OperasyonElemanSayisi, float,> \n" +
                 ")",               
             param :['OpT_create_user:int','OpT_lastup_user:int','OpT_firmano:int','OpT_subeno:int','OpT_EvrakNoSeri:string|25','OpT_EvrakNoSira:int',
-                    'OpT_RotaPlan_uid:string|50','OpT_baslamatarihi:date','OpT_bitis_tarihi:date','OpT_IsEmriKodu:string|25','OpT_UrunKodu:string|25',
+                    'OpT_RotaPlan_uid:string|50','OpT_baslamatarihi:datetime','OpT_bitis_tarihi:datetime','OpT_IsEmriKodu:string|25','OpT_UrunKodu:string|25',
                     'OpT_OperasyonSafhaNo:int','OpT_OperasyonKodu:string|25','OpT_ismerkezi:string|25','OpT_TamamlananMiktar:float','Opt_TamamlananMiktar2:float',
                     'Opt_TamamlananMiktar3:float','Opt_TamamlananMiktar4:float','OpT_TamamlananSure:int']
     },

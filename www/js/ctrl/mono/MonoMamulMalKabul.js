@@ -1,5 +1,6 @@
 function MonoMamulMalKabul($scope,srv)
 {
+    let SelectionRow;
     function InitGrd(pData)
     {
         $("#GrdList").dxDataGrid
@@ -263,7 +264,6 @@ function MonoMamulMalKabul($scope,srv)
             {
                 TmpData = []
             }
-
             resolve(TmpData);
             return;
         });
@@ -405,9 +405,12 @@ function MonoMamulMalKabul($scope,srv)
             let TmpData = await srv.Execute(TmpQuery)
             if(TmpData.length > 0)
             {
+                $scope.Data.BARKODLIST = TmpData;
                 resolve(true);
                 return;
             }
+
+            $scope.Data.BARKODLIST = [];
             resolve(false)
             return;
         });
@@ -427,7 +430,7 @@ function MonoMamulMalKabul($scope,srv)
         
         if(TmpDrUret.length > 0)
         {
-            TmpDrRota = $scope.Data.UMP.filter(x => x.URUNKODU == TmpDrUret[0].KODU);
+            TmpDrRota = $scope.Data.URP.filter(x => x.URUNKODU == TmpDrUret[0].KODU);
         }
 
         for(let i = 0;i < $scope.Data.UMP.length;i++)
@@ -613,9 +616,9 @@ function MonoMamulMalKabul($scope,srv)
                 0, //FIYAT LISTE NO
                 0, //NAKLİYEDEPO
                 0, // NAKLİYEDURUMU
-                pDr.ISMERKEZI
+                (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-
+            
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -634,8 +637,8 @@ function MonoMamulMalKabul($scope,srv)
     {
         return new Promise(async resolve => 
         {
-            let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY")
-            let TmpBasTarih = moment(new Date()).format("DD.MM.YYYY")
+            let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
+            let TmpBasTarih = moment(moment(new Date()).format("DD.MM.YYYY HH:mm:ss")).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
 
             let TmpInsertData =
             [
@@ -735,14 +738,42 @@ function MonoMamulMalKabul($scope,srv)
             }
         });
     }
-    $scope.Init = async function()
+    function DeletePartiLotVeBarkod(pParti,pLot,pBarkod,pStokKodu)
     {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "DELETE FROM PARTILOT WHERE pl_partikodu = @pl_partikodu AND pl_lotno = @pl_lotno AND pl_stokkodu = @stokkodu " + 
+                        "DELETE FROM BARKOD_TANIMLARI WHERE bar_kodu = @bar_kodu AND bar_stokkodu = @stokkodu",
+                param : ['pl_partikodu:string|50','pl_lotno:int','bar_kodu:string|50','stokkodu:string|50'],
+                value : [pParti,pLot,pBarkod,pStokKodu]
+            }
+            let TmpResult = await srv.Execute(TmpQuery)
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        });
+    }
+    $scope.Init = async function()
+    {        
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];
         $scope.Data.DATA = [];
+        $scope.Data.BARKODLIST = [];
+
         $scope.LblUrun = "";
         $scope.TxtBarkod = "";
         $scope.TxtMiktar = 0;
@@ -815,6 +846,50 @@ function MonoMamulMalKabul($scope,srv)
         {
             await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
             await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
+        }
+    }
+    $scope.BtnSatirSil = async function()
+    {
+        let TmpDr = $scope.Data.DATA.filter(x => x.PARTIBARKOD == SelectionRow.PARTIBARKOD)
+        for(let i = 0;i < TmpDr.length;i++)
+        {
+            if(await DeletePartiLotVeBarkod(TmpDr[i].PARTI,TmpDr[i].LOT,TmpDr[i].PARTIBARKOD,TmpDr[i].KODU))
+            {
+                $scope.Data.DATA = $scope.Data.DATA.filter(x => x.REC !== TmpDr[i].REC)
+            }
+        }
+
+        if($scope.Data.DATA.length > 0)
+        {
+            InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        }
+        else
+        {
+            InitGrd([]);
+        }
+    }
+    $scope.TxtBarkodPress = function(keyEvent)
+    {    
+        if($scope.TxtBarkod != "")
+        {
+            if(keyEvent.which === 13)
+            {   
+                if(await GetBarkod($scope.TxtBarkod))
+                {
+                    if($scope.Data.BARKODLIST[0].bar_stokkodu == $scope.LblUrun)
+                    {
+                        $scope.BtnBarkodBas();
+                    }
+                    else
+                    {
+                        swal("Dikkat", "Geçersiz stok",icon="warning");
+                    }
+                }
+                else
+                {
+                    swal("Dikkat", "Geçersiz stok",icon="warning");
+                }
+            }
         }
     }
 }
