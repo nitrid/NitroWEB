@@ -34,6 +34,10 @@ var Param =
 		},
 		"Mono" : 
 		{
+			"BasarSayarHasasTeraziIP" : "192.168.2.214",
+			"BasarSayarHasasTeraziPORT" : "1001",
+			"BasarSayarKantarIP" : "192.168.2.215",
+			"BasarSayarKantarPORT" : "1001",
 			"MamulMalKabulDepo" : "",
 			"UrunGirisSeri" : "UGF",
 			"UrunCikisSeri" : "UCF",
@@ -67,7 +71,22 @@ var Param =
 					"name" : "Basar Sayar Etiket - 3" ,
 					"special" : "3"
 				}
-			]
+			],
+			"KasaBarkodOlusturEtiket" : 
+			[ 
+				{
+					"name" : "Kasa Barkod Etiket - 1" ,
+					"special" : "1",
+				},
+				{
+					"name" : "Kasa Barkod Etiket - 2" ,
+					"special" : "2",
+				},
+				{
+					"name" : "Kasa Barkod Etiket - 3" ,
+					"special" : "3"
+				}
+			],
 		}
     }
 ]

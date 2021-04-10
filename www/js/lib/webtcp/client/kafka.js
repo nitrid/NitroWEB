@@ -4326,27 +4326,27 @@ module.exports = std.Class(Connection, function(supr) {
 				
 				case states.RESPONSE_MSG_0:
 				    this._msgLen = buf[index] << 24
-            console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
+            //console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
   					this._requests[0].offset++
 				    this._payloadLen = 0
 				    break
 
 				case states.RESPONSE_MSG_1:				
 			    	this._msgLen += buf[index] << 16
-            console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
+            //console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
   					this._requests[0].offset++
 				    break
 
 				case states.RESPONSE_MSG_2:				
 			    	this._msgLen += buf[index] << 8
-            console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
+            //console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
 
   					this._requests[0].offset++
 				    break
 
 				case states.RESPONSE_MSG_3:				
 			    	this._msgLen += buf[index]
-            console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
+            //console.log("msgLen at LEN0:" + this._msgLen + " index:" + index + " buf[index]:" + buf[index])
   					this._requests[0].offset++
 				    break
 				
