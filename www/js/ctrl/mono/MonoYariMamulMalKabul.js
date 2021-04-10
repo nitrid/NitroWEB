@@ -1,13 +1,13 @@
 function MonoYariMamulMalKabul($scope,srv)
 {
-$scope.Init = function()
+    $scope.Init = function()
     {
         $("#GrdList").dxDataGrid
         (
             {
                 dataSource: [],
                 allowColumnResizing: true,
-                height: 490,
+                height: 450,
                 width: "auto",
                 columnWidth: 100,
                 selection: 

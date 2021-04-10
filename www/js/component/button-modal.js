@@ -1,7 +1,7 @@
-angular.module('app').component('buttonEdit', 
+angular.module('app').component('buttonModal', 
 {
-    templateUrl: 'js/component/button-edit.html',
-    controller: function ButtonEdit($scope,$attrs,srv) 
+    templateUrl: 'js/component/button-modal.html',
+    controller: function ButtonModal($scope,$attrs,srv) 
     {
         let SelectionRow;
         var ctrl = this
@@ -25,13 +25,7 @@ angular.module('app').component('buttonEdit',
                 ctrl.option.txt = ctrl.Txt
             }
         });
-        $scope.$watch("$ctrl.option", function () 
-        {
-            if(typeof ctrl.option != 'undefined')
-            {
-                ctrl.$onInit();
-            }
-        });
+
         function Init()
         {
             return new Promise(async resolve => 
@@ -124,10 +118,7 @@ angular.module('app').component('buttonEdit',
         }
         ctrl.$onInit = function() 
         {
-            if(typeof ctrl.option != 'undefined')
-            {
-                ctrl.Txt = ctrl.option.txt
-            }
+
         }
         ctrl.Show = function()
         {
@@ -166,7 +157,7 @@ angular.module('app').component('buttonEdit',
 });
 
 /* ÖRNEK KULLANIM ŞEKLİ 
-<button-edit id="1" option="BteTest"></button-edit>
+<button-modal id="1" option="BteTest"></button-modal>
 $scope.BteTest = 
 {
     title : "MODAL 1",

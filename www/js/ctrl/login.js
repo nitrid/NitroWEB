@@ -33,10 +33,8 @@ function Login($scope,$state,srv)
     {
         if($scope.Kullanici == '')
         {
-    
             swal("Hatalı Giriş!", "Lütfen Kullanıcı Adı Giriniz",icon="error");
             return;
-            
         }
         if($scope.Sifre == '')
         {

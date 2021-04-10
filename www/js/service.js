@@ -9,17 +9,20 @@ angular.module('app.srv', []).service('srv',function($rootScope)
     
     this.SafeApply = function(pScope,pFn) 
     {
-        var phase = pScope.$root.$$phase;
-        if(phase == '$apply' || phase == '$digest') 
-        {
-          if(pFn && (typeof(pFn) === 'function')) 
-          {
-            pFn();
-          }
-        } else 
-        {
-            pScope.$apply(pFn);
-        }
+        // if(pScope.$root.$$phase != null)
+        // {
+            var phase = pScope.$root.$$phase;
+            if(phase == '$apply' || phase == '$digest') 
+            {
+              if(pFn && (typeof(pFn) === 'function')) 
+              {
+                pFn();
+              }
+            } else 
+            {
+                pScope.$apply(pFn);
+            }
+        // }
     };     
     this.On = function(eventName,callback)
     {   
@@ -131,7 +134,14 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                     $('#loading').hide()  
                     if(typeof(data.result.err) == 'undefined')
                     {
-                        resolve(data.result.recordset)
+                        if(data.result.recordsets.length == 0)
+                        {
+                            resolve([])
+                        }
+                        else
+                        {
+                            resolve(data.result.recordset)
+                        }
                     }
                     else
                     {     
@@ -146,5 +156,53 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             }
             
         });
+    }
+    this.SumColumn = function(pData,pColumn,pFilter)    
+    {
+        let Sum = 0;
+        for(i=0;i<pData.length;i++)
+        {
+            if (typeof(pFilter) != "undefined")
+            {
+                if(pData[i][pFilter.toString().split('=')[0].trim()] == pFilter.toString().split('=')[1].trim())
+                {
+                    Sum += pData[i][pColumn];
+                }
+            }
+            else
+            {
+                Sum += pData[i][pColumn];
+            }
+        }
+        
+        return Sum;
+    }
+    this.Max = function(pData,pColumn)
+    {
+        if(typeof pData == 'undefined' || pData.length == 0)
+        {
+            return 0;
+        }
+
+        let Tmp = Math.max.apply(Math,pData.map(x => {return x[pColumn]}));
+
+        if(isNaN(Tmp))
+        {
+            return 0;
+        }
+
+        return Tmp;
+    }
+    this.GetParam = function(pUser)
+    {
+        for (let i = 0; i < Param.length; i++) 
+        {
+            if(Param[i].Kullanici == pUser)
+            {
+                return Param[i];
+            }
+        }
+        
+        return
     }
 });

@@ -31,6 +31,43 @@ var Param =
 			"RiskParam": "0",
 			"RiskLimitOran": "70",
 			"FisDizayn": "0"
+		},
+		"Mono" : 
+		{
+			"MamulMalKabulDepo" : "",
+			"UrunGirisSeri" : "UGF",
+			"UrunCikisSeri" : "UCF",
+			"OperasyonSeri" : "OS",
+			"MamulMalKabulEtiket" : 
+			[ 
+				{
+					"name" : "Mamul Mal Kabul Etiket - 1" ,
+					"special" : "1",
+				},
+				{
+					"name" : "Mamul Mal Kabul Etiket - 2" ,
+					"special" : "2",
+				},
+				{
+					"name" : "Mamul Mal Kabul Etiket - 3" ,
+					"special" : "3"
+				}
+			],
+			"BasarSayarEtiket" : 
+			[ 
+				{
+					"name" : "Basar Sayar Etiket - 1" ,
+					"special" : "1",
+				},
+				{
+					"name" : "Basar Sayar Etiket - 2" ,
+					"special" : "2",
+				},
+				{
+					"name" : "Basar Sayar Etiket - 3" ,
+					"special" : "3"
+				}
+			]
 		}
     }
 ]

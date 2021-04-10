@@ -1,11 +1,8 @@
-<div class="input-group">  
-  <input type="text" class="form-control form-control-sm" ng-model="$ctrl.Txt">
-  <div class="input-group-append">
-    <button type="submit" class="btn btn-primary py-0" ng-click="$ctrl.Show()">...</button>
-  </div>
-</div>
+
+<button type="button" class="btn btn-block btn-secondary" ng-click="$ctrl.Show()">{{$ctrl.option.title}}</button>
+
 <div class="modal fade" id="Mdl{{$ctrl.Id}}" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-fullscreen" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{$ctrl.option.title}}</h5>
