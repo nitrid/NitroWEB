@@ -123,37 +123,51 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
             }
         }
     }
-    function Tcp()
+    function KantarVeriGetir()
     {
         var net = new WebTCP('localhost', 9999);
 
-        options = {
-        encoding: "utf-8",
-        timeout: 0,
-        noDelay: true, // disable/enable Nagle algorithm
-        keepAlive: false, //default is false
-        initialDelay: 0 // for keepAlive. default is 0
-        }
+        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        socket.on('connect', function(){console.log('connected');});
 
-        var socket = net.createSocket("192.168.2.214", 1001, options);
-
-        socket.on('connect', function(){
-        console.log('connected');
-        })
-
-        socket.on('data', function(data) {
-        console.log("received: " + data);
+        socket.on('data', function(data) 
+        {
+            if(data.includes("�,") && data.includes("kg"))
+            {
+                data = data.substring(
+                    data.lastIndexOf("�,") + 1, 
+                    data.lastIndexOf("k")
+                );
+                $scope.LblKantarKilo = data.split(",   ").join("");
+            }
         });
 
-        socket.on('end', function(data) {
-        console.log("socket is closed ");
-        });
-
+        socket.on('end', function(data){console.log("socket is closed ");});
         socket.write("hello world"); 
     }
-    function NumberWithCommas(x) 
+    function HassasTeraziVeriGetir()
     {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        var net = new WebTCP('localhost', 9999);
+
+        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        socket.on('connect', function(){console.log('connected');});
+
+        socket.on('data', function(data) 
+        {
+            if(data.includes("�,") && data.includes("kg"))
+            {
+                data = data.substring(
+                    data.lastIndexOf("�,") + 1, 
+                    data.lastIndexOf("k")
+                );
+                $scope.LblHassasGram = data.split(",   ").join("");
+            }
+        });
+
+        socket.on('end', function(data) {console.log("socket is closed ");});
+        socket.write("hello world"); 
     }
     async function EtiketInsert()
     {
@@ -200,10 +214,12 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.EtkSeri = "ETK";
         $scope.EtkSira = 1;
 
-        $scope.LblHassasGram = 1000;
         $scope.TxtSpRefMiktar = 0;
-        $scope.LblKantarKilo = 10000;
+        $scope.LblHassasGram = 1;
+        $scope.LblKantarKilo = 0;
         $scope.LblKantarMiktar = 0;
+        $scope.DataKantarKilo = 0;
+        $scope.DataHassasTeraziGram = 0;
 
         $scope.LblSipSeri = "";
         $scope.LblSipSira = "";
@@ -215,12 +231,14 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
 
         InitObj();
         MaxEtiketSira();
-        //Tcp();
+        KantarVeriGetir();
     }
     $scope.BtnTartimOnayla = function()
     {
-        $scope.LblKantarMiktar = NumberWithCommas(($scope.TxtSpRefMiktar / ($scope.LblHassasGram / 1000)) * $scope.LblKantarKilo);
-        $scope.LblKantarKilo = NumberWithCommas($scope.LblKantarKilo);
+        $scope.DataHassasTeraziGram = $scope.LblHassasGram;
+        $scope.DataKantarKilo = $scope.LblKantarKilo;
+
+        $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
     }
     $scope.BtnBarkodBas = async function()
     {

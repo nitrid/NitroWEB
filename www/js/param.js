@@ -34,6 +34,10 @@ var Param =
 		},
 		"Mono" : 
 		{
+			"BasarSayarHasasTeraziIP" : "192.168.2.214",
+			"BasarSayarHasasTeraziPORT" : "1001",
+			"BasarSayarKantarIP" : "192.168.2.215",
+			"BasarSayarKantarPORT" : "1001",
 			"MamulMalKabulDepo" : "",
 			"MamulMalKabulEtiket" : 
 			[ 
