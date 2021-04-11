@@ -102,7 +102,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
                 {
                     $scope.LblBarkod = pData.BARKOD;
                     $scope.LblStokKodu = pData.KODU;
-                    $scope.LblAdi = pData.ADI;
+                    $scope.LblStokAdi = pData.ADI;
                 }
             }
         }
@@ -211,7 +211,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
 
-        $scope.EtkSeri = "ETK";
+        $scope.EtkSeri = "ETK-1";
         $scope.EtkSira = 1;
 
         $scope.TxtSpRefMiktar = 0;
@@ -225,7 +225,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.LblSipSira = "";
         $scope.LblBarkod = "";
         $scope.LblStokKodu = "";
-        $scope.LblAdi = "";
+        $scope.LblStokAdi = "";
         
         $scope.TxtEtiketMiktar = 1;
 
