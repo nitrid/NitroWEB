@@ -72,7 +72,15 @@ function MonoKasaBarkodOlustur($scope, srv)
             $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
             InitObj()
             
-        }
+    }
+    $scope.BtnBarkodBas = function ()
+    {
+        console.log($scope.LblBarkod)
+        console.log($scope.LblStokKodu)
+        console.log($scope.LblAdi)
+        console.log()
+
+    }
 }
 
 
