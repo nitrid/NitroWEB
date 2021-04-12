@@ -96,5 +96,14 @@ angular.module("app",
             templateUrl : "view/mono/MonoBarkodEtiketBasimi.html",
             controller:"MonoBarkodEtiketBasimi"
         }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoFasonGiris',
+            url: '/mono_fason_giris',
+            templateUrl : "view/mono/MonoFasonGiris.html",
+            controller:"MonoFasonGiris"
+        }
     )
 });

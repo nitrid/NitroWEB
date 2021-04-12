@@ -57,6 +57,21 @@ var Param =
 					"special" : "3"
 				}
 			],
+			"FasonGirisEtiket" : 
+			[ 
+				{
+					"name" : "Fason Giris Etiket - 1" ,
+					"special" : "1",
+				},
+				{
+					"name" : "Fason Giris Etiket - 2" ,
+					"special" : "2",
+				},
+				{
+					"name" : "Fason Giris Etiket - 3" ,
+					"special" : "3"
+				}
+			],
 			"BasarSayarEtiket" : 
 			[ 
 				{
