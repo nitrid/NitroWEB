@@ -72,18 +72,18 @@ var Param =
 					"special" : "3"
 				}
 			],
-			"KasaBarkodOlusturEtiket" : 
+			"KasaEtiket" : 
 			[ 
 				{
-					"name" : "Kasa Barkod Etiket - 1" ,
+					"name" : "Kasa Etiket - 1" ,
 					"special" : "1",
 				},
 				{
-					"name" : "Kasa Barkod Etiket - 2" ,
+					"name" : "Kasa Etiket - 2" ,
 					"special" : "2",
 				},
 				{
-					"name" : "Kasa Barkod Etiket - 3" ,
+					"name" : "Kasa Etiket - 3" ,
 					"special" : "3"
 				}
 			],

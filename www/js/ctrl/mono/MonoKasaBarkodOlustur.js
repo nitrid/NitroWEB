@@ -45,42 +45,117 @@ function MonoKasaBarkodOlustur($scope, srv)
                 if (typeof pData != 'undefined') {
                     $scope.LblBarkod = pData.BARKOD;
                     $scope.LblStokKodu = pData.KODU;
-                    $scope.LblAdi = pData.ADI;
+                    $scope.LblStokAdi = pData.ADI;
                 }
             }
         }
-        $scope.CmbEtiketTasarim = 
+        $scope.CmbEtiketList = 
         {
             datasource : 
             {
-                data : $scope.Param.Mono.KasaBarkodOlusturEtiket
+                data : $scope.Param.Mono.KasaEtiket
             },
             key : "special",
             value : "name",
             defaultVal : "1",
             selectionMode : "key",
-            return : "",
+            return : "1",
             onSelected : function(pSelected)
             {
-                $scope.CmbEtiketTasarim.return = pSelected
+                $scope.CmbEtiketList.return = pSelected
             }
         } 
     }
-        $scope.Init = function ()
-        {
-            $scope.Firma = localStorage.getItem('firm');
-            $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-            InitObj()
-            
-    }
-    $scope.BtnBarkodBas = function ()
+    function KantarVeriGetir()
     {
-        console.log($scope.LblBarkod)
-        console.log($scope.LblStokKodu)
-        console.log($scope.LblAdi)
-        console.log()
+        var net = new WebTCP('localhost', 9999);
 
+        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        socket.on('connect', function(){console.log('connected');});
+
+        socket.on('data', function(data) 
+        {
+            if(data.includes("�,") && data.includes("kg"))
+            {
+                data = data.substring(
+                    data.lastIndexOf("�,") + 1, 
+                    data.lastIndexOf("k")
+                );
+                $scope.LblKantarKilo = data.split(",   ").join("");
+            }
+        });
+
+        socket.on('end', function(data){console.log("socket is closed ");});
+        socket.write("hello world"); 
+    }
+    async function MaxEtiketSira()
+    {
+        $scope.EtkSira = (await srv.Execute($scope.Firma,'MaxEtiketSira',[$scope.EtkSeri]))[0].MAXEVRSIRA
+    }
+    async function EtiketInsert()
+    {
+        let InsertData = 
+        [
+            1,                               //CREATE_USER
+            1,                               //LASTUP_USER
+            $scope.CmbEtiketList.return,     //SPECIAL1
+            $scope.EtkSeri,                  //SERI
+            $scope.EtkSira,                  //SIRA
+            '',                              //AÇIKLAMA
+            '',                              //BELGENO
+            0,                               //ETİKETTİP
+            0,                               //BASİMTİPİ
+            $scope.DataKantarKilo,           //BASİMADET
+            1,                               //DEPONO
+            $scope.LblStokKodu,              //STOKKODU
+            1,                               //RENKKODU
+            1,                               //BEDENKODU
+            $scope.LblBarkod,                //BARKOD
+            $scope.TxtEtiketMiktar           //BASILACAKMIKTAR
+        ]
+
+        let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
+
+        if(InsertControl == "")
+        {
+            swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+        }
+        else
+        {
+            swal("İşlem Başarısız!", "Etiket Yazdırma İşleminde Hata Oluştu.",icon="error");
+        }
+    }
+    $scope.Init = function ()
+    {
+        $scope.Firma = localStorage.getItem('firm');
+        $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+
+        $scope.EtkSeri = "ETK-2";
+        $scope.EtkSira = 1;
+
+        $scope.LblKantarKilo = 0;
+        $scope.DataKantarKilo = 0;
+        $scope.LblBarkod = "";
+        $scope.LblStokKodu = "";
+        $scope.LblStokAdi = "";
+
+        $scope.TxtEtiketMiktar = 1;
+
+        InitObj();
+        MaxEtiketSira();
+        KantarVeriGetir();
+    }
+    $scope.BtnBarkodBas = async function()
+    {
+        if($scope.LblStokKodu != '')
+        {
+            $scope.DataKantarKilo = $scope.LblKantarKilo;
+            await EtiketInsert();
+        }
+        else
+        {
+            swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        }
     }
 }
-
-

@@ -868,7 +868,7 @@ function MonoMamulMalKabul($scope,srv)
             InitGrd([]);
         }
     }
-    $scope.TxtBarkodPress = function(keyEvent)
+    $scope.TxtBarkodPress = async function(keyEvent)
     {    
         if($scope.TxtBarkod != "")
         {
