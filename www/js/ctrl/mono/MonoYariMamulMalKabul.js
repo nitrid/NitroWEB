@@ -101,6 +101,8 @@ function MonoYariMamulMalKabul($scope,srv)
         $scope.DataKantarKilo = 0;
         $scope.DataHassasTeraziGram = 0;
 
+        $scope.TxtEtiketMiktar = 1;
+
         InitObj();
         HassasTeraziVeriGetir();
         KantarVeriGetir();
