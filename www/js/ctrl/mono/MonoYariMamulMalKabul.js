@@ -79,8 +79,10 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.BtnKasaDaraAl =
         {
             title: "Kasa Darası Al",
-            onSelected: async function (pData) {
-                if (typeof pData != 'undefined') {
+            onSelected: async function (pData) 
+            {
+                if (typeof pData != 'undefined') 
+                {
                     $scope.LblKasaDara = (pData.substring(7, 12) / 1000).toFixed(3);
                 }
             }
@@ -88,9 +90,22 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.BtnManuelKasaDaraAl =
         {
             title: "Kasa Darası Elle Giriş",
-            onSelected: async function (pData) {
-                if (typeof pData != 'undefined') {
+            onSelected: async function (pData) 
+            {
+                if (typeof pData != 'undefined') 
+                {
                     $scope.LblKasaDara = (pData.substring(7, 12) / 1000).toFixed(3);
+                }
+            }
+        }
+        $scope.BtnManuelMiktarGiris =
+        {
+            title: "Manuel Miktar Giriş",
+            onSelected: async function (pData) 
+            {
+                if(typeof pData != 'undefined') 
+                {
+                    $scope.LblKantarMiktar = pData;
                 }
             }
         }
@@ -147,13 +162,12 @@ function MonoYariMamulMalKabul($scope, srv)
                         if(TmpDr.length > 0)
                         {
                             $scope.LblUrun = TmpDr[0].KODU
-                            //$scope.BteParti.datasource.value.push($scope.LblUrun)     
                         }
                     }
                 }
             }
         }
-        $scope.CmbEtiketTasarim1 =
+        $scope.CmbEtiketTasarim =
         {
             datasource:
             {
@@ -164,80 +178,11 @@ function MonoYariMamulMalKabul($scope, srv)
             defaultVal: "1",
             selectionMode: "key",
             return: "1",
-            onSelected: function (pSelected) {
+            onSelected: function (pSelected) 
+            {
                 $scope.CmbEtiketTasarim.return = pSelected
             }
         }
-    }
-    function KantarVeriGetir() 
-    {
-        var net = new WebTCP('localhost', 9999);
-
-        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
-        socket.on('connect', function () { console.log('connected'); });
-
-        socket.on('data', function (data) {
-            if (data.includes("�,") && data.includes("kg")) {
-                data = data.substring(
-                    data.lastIndexOf("�,") + 1,
-                    data.lastIndexOf("k")
-                );
-                $scope.LblKantarKilo = data.split(",   ").join("");
-            }
-        });
-
-        socket.on('end', function (data) { console.log("socket is closed "); });
-        socket.write("hello world");
-    }
-    function HassasTeraziVeriGetir() 
-    {
-        var net = new WebTCP('localhost', 9999);
-
-        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
-        socket.on('connect', function () { console.log('connected'); });
-
-        socket.on('data', function (data) {
-            if (data.includes("�,") && data.includes("kg")) {
-                data = data.substring(
-                    data.lastIndexOf("�,") + 1,
-                    data.lastIndexOf("k")
-                );
-                $scope.LblHassasGram = data.split(",   ").join("");
-            }
-        });
-
-        socket.on('end', function (data) { console.log("socket is closed "); });
-        socket.write("hello world");
-    }
-    function MaxSthSira(pSeri,pEvrakTip)
-    {
-        return new Promise(async resolve => 
-        {
-            let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
-            if(TmpData.length > 0)
-            {
-                resolve(TmpData[0].MAXEVRSIRA);
-                return;
-            }
-            resolve(1);
-            return;
-        })
-    }
-    function MaxOpSira(pSeri)
-    {
-        return new Promise(async resolve => 
-        {
-            let TmpData = await srv.Execute($scope.Firma,'MaxOperasyonSira',[pSeri])
-            if(TmpData.length > 0)
-            {
-                resolve(TmpData[0].MAXEVRSIRA);
-                return;
-            }
-            resolve(1);
-            return;
-        })
     }
     function UretimMalzemePlanGetir(pIsEmri)
     {
@@ -319,6 +264,91 @@ function MonoYariMamulMalKabul($scope, srv)
             return;
         });
     }
+    function MiktarKontrol()
+    {
+        if($scope.Data.UMP.length > 0)
+        {
+            let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
+            if(TmpDr.length > 0)
+            {
+                if(TmpDr[0].PMIKTAR <= srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    function KantarVeriGetir() 
+    {
+        var net = new WebTCP('localhost', 9999);
+
+        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        socket.on('connect', function () { console.log('connected'); });
+
+        socket.on('data', function (data) {
+            if (data.includes("�,") && data.includes("kg")) {
+                data = data.substring(
+                    data.lastIndexOf("�,") + 1,
+                    data.lastIndexOf("k")
+                );
+                $scope.LblKantarKilo = data.split(",   ").join("");
+            }
+        });
+
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
+    }
+    function HassasTeraziVeriGetir() 
+    {
+        var net = new WebTCP('localhost', 9999);
+
+        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        socket.on('connect', function () { console.log('connected'); });
+
+        socket.on('data', function (data) {
+            if (data.includes("�,") && data.includes("kg")) {
+                data = data.substring(
+                    data.lastIndexOf("�,") + 1,
+                    data.lastIndexOf("k")
+                );
+                $scope.LblHassasGram = data.split(",   ").join("");
+            }
+        });
+
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
+    }
+    function MaxSthSira(pSeri,pEvrakTip)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
+            if(TmpData.length > 0)
+            {
+                resolve(TmpData[0].MAXEVRSIRA);
+                return;
+            }
+            resolve(1);
+            return;
+        })
+    }
+    function MaxOpSira(pSeri)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpData = await srv.Execute($scope.Firma,'MaxOperasyonSira',[pSeri])
+            if(TmpData.length > 0)
+            {
+                resolve(TmpData[0].MAXEVRSIRA);
+                return;
+            }
+            resolve(1);
+            return;
+        })
+    }
     $scope.Init = async function () 
     {
         $scope.Firma = localStorage.getItem('firm');
@@ -363,5 +393,15 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
         $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
+    }
+    $scope.BtnEkle = function()
+    {
+        if($scope.BteIsEmri.txt == "")
+        {
+            swal("Dikkat", "Lütfen İş emri seçmeden geçmeyin.",icon="warning");
+            return;
+        }
+
+        
     }
 }

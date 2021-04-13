@@ -109,7 +109,7 @@
                             <p class="text-md-right my-0 py-0">Etiket Tasarımı :</p>
                         </div>
                         <div class="col-8 px-2">
-                            <combobox option="CmbEtiketTasarim1"></combobox>
+                            <combobox option="CmbEtiketTasarim"></combobox>
                         </div>
                     </div>
                     <div class="row">
@@ -126,15 +126,13 @@
     </div>
     <div class="row py-0 pb-2">
         <div class="col-2">
-            <button type="button" class="btn-block btn-secondary btn-lg">Ekle</button>
+            <button type="button" class="btn-block btn-secondary btn-lg" ng-click = "BtnEkle()">Ekle</button>
         </div>
         <div class="col-2">
             <button type="button" class="btn btn-block btn-secondary btn-lg">Satır Sil</button>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-block btn-secondary btn-lg" style="height: 3rem;">
-                <p style="font-size: 0.8rem; line-height: 0.8rem; margin-bottom: 0;">Manuel Miktar Giriş</p>
-            </button>
+            <button-input id="4" option="BtnManuelMiktarGiris"></button-input>
         </div>
     </div>
     <div class="row pt-2">
