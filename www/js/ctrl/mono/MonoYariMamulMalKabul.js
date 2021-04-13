@@ -396,12 +396,6 @@ function MonoYariMamulMalKabul($scope, srv)
     }
     $scope.BtnEkle = function()
     {
-        if($scope.BteIsEmri.txt == "")
-        {
-            swal("Dikkat", "Lütfen İş emri seçmeden geçmeyin.",icon="warning");
-            return;
-        }
-
         
     }
 }
