@@ -18,47 +18,6 @@ function MonoYariMamulMalKabul($scope, srv) {
                 }
             }
         }
-        $scope.BteIsEmri1 =
-        {
-            title: "İş Emri Seçim",
-            txt: "",
-            datasource:
-            {
-                db: "{M}." + $scope.Firma,
-                query: "SELECT " +
-                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
-                    "is_Kod AS KODU,is_Ismi AS ADI, " +
-                    "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
-                    "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                    "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%AYD-%'"
-            },
-            selection: "KODU",
-            columns:
-                [
-                    {
-                        dataField: "BARKOD",
-                        width: 200
-                    },
-                    {
-                        dataField: "KODU",
-                        width: 200
-                    },
-                    {
-                        dataField: "ADI",
-                        width: 500
-                    },
-                    {
-                        title: "STOK KODU",
-                        dataField: "STOKKODU",
-                        width: 100
-                    },
-                    {
-                        title: "STOK ADI",
-                        dataField: "STOKADI",
-                        width: 500
-                    },
-                ],
-        }
         $scope.CmbEtiketTasarim1 =
         {
             datasource:
