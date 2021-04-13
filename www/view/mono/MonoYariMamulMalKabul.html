@@ -1,7 +1,6 @@
 <div ng-controller="MonoYariMamulMalKabul" ng-init="Init()">
-
     <div class="row pt-3">
-        <div class="col-3">
+        <div class="col-4">
             <div class="card border-dark mb-3" style="height: 170px;">
                 <div class="card-header bg-transparent border-dark py-1">Dara</div>
                 <div class="card-body text-dark py-2">
@@ -10,13 +9,22 @@
                             <p class="text-md-right my-0 py-1">Kasa Dara :</p>
                         </div>
                         <div class="col-5 px-2">
-                            <p class="text-md-left my-0 py-1">0</p>
+                            <p class="text-md-left my-0 py-1">{{LblKasaDara}}</p>
                         </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-6">
+                        <button-input id="1" option="BtnKasaDaraAl"></button-input>
+                    </div>
+                    <div class="col-6">
+                        <button-input id="1" option="BtnManuelKasaDaraAl"></button-input>
+                        <!-- <button type="button" class="btn btn-block btn-secondary" style="height: 2.5rem;" ng-click = "BtnKasaDaraAl()"><p style="font-size: 0.8rem; line-height: 0.8rem; margin-bottom: 0;">Kasa Darası Elle Giriş</p></button> -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-5">
+        <div class="col-4">
             <div class="card border-dark mb-3" style="height: 170px;">
                 <div class="card-header bg-transparent border-dark py-1">Referans</div>
                 <div class="card-body text-dark py-2">
@@ -25,7 +33,7 @@
                             <p class="text-md-right my-0 py-1">Ağırlık (Gram) :</p>
                         </div>
                         <div class="col-6 px-2">
-                            <p class="text-md-left my-0 py-1">0</p>
+                            <p class="text-md-left my-0 py-1">{{LblHassasGram}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -33,8 +41,13 @@
                             <p class="text-md-right my-0 py-1">Miktar :</p>
                         </div>
                         <div class="col-6 px-2">
-                            <input type="number" class="form-control form-control-sm">
+                            <input type="number" min="0" class="form-control form-control-sm" ng-model = "TxtSpRefMiktar">
                         </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-block btn-secondary" ng-click = "BtnTartimOnayla()">Tartımı Onayla</button>
                     </div>
                 </div>
             </div>
@@ -44,35 +57,24 @@
                 <div class="card-header bg-transparent border-dark py-1">Kantar</div>
                 <div class="card-body text-dark py-2">
                     <div class="row py-1">
-                        <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-1">Ağırlık</p>
+                        <div class="col-6 px-2">
+                            <p class="text-md-right my-0 py-1">Ağırlık :</p>
                         </div>
-                        <div class="col-8 px-2">
-                            <p class="text-md-left my-0 py-1">00.0000</p>
+                        <div class="col-6 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblKantarKilo}}</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-1">Miktar</p>
+                        <div class="col-6 px-2">
+                            <p class="text-md-right my-0 py-1">Miktar :</p>
                         </div>
-                        <div class="col-8 px-2">
-                            <p class="text-md-left my-0 py-1">00.0000</p>
+                        <div class="col-6 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblKantarMiktar}}</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row py-0">
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg">Kasa Darası Al</button>
-        </div>
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg">Kasa Darası Elle Giriş</button>
-        </div>
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg">Tartımı Onayla</button>
-        </div>
+        </div>  
     </div>
     <div class="row pt-3 pb-2">
         <div class="col-6">
@@ -107,7 +109,7 @@
                             <p class="text-md-right my-0 py-0">Etiket Tasarımı :</p>
                         </div>
                         <div class="col-8 px-2">
-                            <combobox option="CmbEtiketTasarim1"></combobox>
+                            <button-edit id="1" option="BteIsEmri"></button-edit>
                         </div>
                     </div>
                     <div class="row">
@@ -123,14 +125,14 @@
         </div>
     </div>
     <div class="row py-0 pb-2">
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg">Ekle</button>
+        <div class="col-2">
+                <button type="button" class="btn-block btn-secondary btn-lg">Ekle</button>
         </div>
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg">Satır Sil</button>
+        <div class="col-2">
+            <button type="button" class="btn btn-block btn-secondary btn-lg">Satır Sil</button>
         </div>
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg">Manuel Miktar Giriş</button>
+        <div class="col-2">
+            <button type="button" class="btn btn-block btn-secondary btn-lg" style="height: 3rem;"><p style="font-size: 0.8rem; line-height: 0.8rem; margin-bottom: 0;">Manuel Miktar Giriş</p></button>
         </div>
     </div>
     <div class="row pt-2">
