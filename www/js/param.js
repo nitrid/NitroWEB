@@ -46,6 +46,8 @@ var Param =
 				"YariMamulDepo": "1",
 				"FasonGirisSeri": "FGF",
 				"FasonCikisSeri": "FCF",
+				"FasonEtiketSeri" : "FTK",
+				"MamulEtiketSeri" : "MTK",
 				"YariMamulMalKabulEtiket":
 				[
 					{
