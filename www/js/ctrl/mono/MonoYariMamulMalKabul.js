@@ -1,94 +1,121 @@
-function MonoYariMamulMalKabul($scope,srv)
-{
-    function InitObj()
-    {
-        $scope.BtnKasaDaraAl = 
+function MonoYariMamulMalKabul($scope, srv) {
+    function InitObj() {
+        $scope.BtnKasaDaraAl =
         {
-            title : "Kasa Darası Al",
-            onSelected : async function(pData)
-            {
-                if(typeof pData != 'undefined')
-                {   
-                    $scope.LblKasaDara = (pData.substring(7,12) / 1000).toFixed(3);
+            title: "Kasa Darası Al",
+            onSelected: async function (pData) {
+                if (typeof pData != 'undefined') {
+                    $scope.LblKasaDara = (pData.substring(7, 12) / 1000).toFixed(3);
                 }
             }
         }
-        $scope.BtnManuelKasaDaraAl = 
+        $scope.BtnManuelKasaDaraAl =
         {
-            title : "Kasa Darası Elle Giriş",
-            onSelected : async function(pData)
-            {
-                if(typeof pData != 'undefined')
-                {   
-                    $scope.LblKasaDara = (pData.substring(7,12) / 1000).toFixed(3);
+            title: "Kasa Darası Elle Giriş",
+            onSelected: async function (pData) {
+                if (typeof pData != 'undefined') {
+                    $scope.LblKasaDara = (pData.substring(7, 12) / 1000).toFixed(3);
                 }
             }
         }
-        $scope.CmbEtiketTasarim = 
+        $scope.BteIsEmri1 =
         {
-            datasource : 
+            title: "İş Emri Seçim",
+            txt: "",
+            datasource:
             {
-                data : $scope.Param.Mono.MamulMalKabulEtiket
+                db: "{M}." + $scope.Firma,
+                query: "SELECT " +
+                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
+                    "is_Kod AS KODU,is_Ismi AS ADI, " +
+                    "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
+                    "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
+                    "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%AYD-%'"
             },
-            key : "special",
-            value : "name",
-            defaultVal : "1",
-            selectionMode : "key",
-            return : "",
-            onSelected : function(pSelected)
+            selection: "KODU",
+            columns:
+                [
+                    {
+                        dataField: "BARKOD",
+                        width: 200
+                    },
+                    {
+                        dataField: "KODU",
+                        width: 200
+                    },
+                    {
+                        dataField: "ADI",
+                        width: 500
+                    },
+                    {
+                        title: "STOK KODU",
+                        dataField: "STOKKODU",
+                        width: 100
+                    },
+                    {
+                        title: "STOK ADI",
+                        dataField: "STOKADI",
+                        width: 500
+                    },
+                ],
+        }
+        $scope.CmbEtiketTasarim1 =
+        {
+            datasource:
             {
+                data: $scope.Param.Mono.YariMamulMalKabulEtiket
+            },
+            key: "special",
+            value: "name",
+            defaultVal: "1",
+            selectionMode: "key",
+            return: "",
+            onSelected: function (pSelected) {
                 $scope.CmbEtiketTasarim.return = pSelected
             }
-        } 
+        }
     }
-    function KantarVeriGetir()
-    {
+    function KantarVeriGetir() {
         var net = new WebTCP('localhost', 9999);
 
-        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
+        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
         var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
-        socket.on('connect', function(){console.log('connected');});
+        socket.on('connect', function () { console.log('connected'); });
 
-        socket.on('data', function(data) 
-        {
-            if(data.includes("�,") && data.includes("kg"))
-            {
+        socket.on('data', function (data) {
+            if (data.includes("�,") && data.includes("kg")) {
                 data = data.substring(
-                    data.lastIndexOf("�,") + 1, 
+                    data.lastIndexOf("�,") + 1,
                     data.lastIndexOf("k")
                 );
                 $scope.LblKantarKilo = data.split(",   ").join("");
             }
         });
 
-        socket.on('end', function(data){console.log("socket is closed ");});
-        socket.write("hello world"); 
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
     }
-    function HassasTeraziVeriGetir()
-    {
+    function HassasTeraziVeriGetir() {
         var net = new WebTCP('localhost', 9999);
 
-        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
+        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
         var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
-        socket.on('connect', function(){console.log('connected');});
+        socket.on('connect', function () { console.log('connected'); });
 
-        socket.on('data', function(data) 
-        {
-            if(data.includes("�,") && data.includes("kg"))
-            {
+        socket.on('data', function (data) {
+            if (data.includes("�,") && data.includes("kg")) {
                 data = data.substring(
-                    data.lastIndexOf("�,") + 1, 
+                    data.lastIndexOf("�,") + 1,
                     data.lastIndexOf("k")
                 );
                 $scope.LblHassasGram = data.split(",   ").join("");
             }
         });
 
-        socket.on('end', function(data) {console.log("socket is closed ");});
-        socket.write("hello world"); 
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
     }
-    $scope.Init = function()
-    {
+    $scope.Init = function () {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
 
@@ -105,8 +132,7 @@ function MonoYariMamulMalKabul($scope,srv)
         HassasTeraziVeriGetir();
         KantarVeriGetir();
     }
-    $scope.BtnTartimOnayla = function()
-    {
+    $scope.BtnTartimOnayla = function () {
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
