@@ -18,7 +18,7 @@
                         <button-input id="1" option="BtnKasaDaraAl"></button-input>
                     </div>
                     <div class="col-6">
-                        <button-input id="1" option="BtnManuelKasaDaraAl"></button-input>
+                        <button-input id="2" option="BtnManuelKasaDaraAl"></button-input>
                         <!-- <button type="button" class="btn btn-block btn-secondary" style="height: 2.5rem;" ng-click = "BtnKasaDaraAl()"><p style="font-size: 0.8rem; line-height: 0.8rem; margin-bottom: 0;">Kasa Darası Elle Giriş</p></button> -->
                     </div>
                 </div>
@@ -47,8 +47,7 @@
                 </div>
                 <div class="row pb-2 px-2">
                     <div class="col-12">
-                        <button type="button" class="btn btn-block btn-secondary" ng-click="BtnTartimOnayla()">Tartımı
-                            Onayla</button>
+                        <button type="button" class="btn btn-block btn-secondary" ng-click="BtnTartimOnayla()">Tartımı Onayla</button>
                     </div>
                 </div>
             </div>
@@ -87,7 +86,7 @@
                             <p class="text-md-right my-0 py-1">İş Emri :</p>
                         </div>
                         <div class="col-8 px-2">
-                            <button-edit id="1" option="BteIsEmri1"></button-edit>
+                            <button-edit id="3" option="BteIsEmri"></button-edit>
                         </div>
                     </div>
                     <div class="row">
@@ -95,7 +94,7 @@
                             <p class="text-md-right my-0 py-1">Üretilecek Ürün :</p>
                         </div>
                         <div class="col-8 px-2">
-                            <p class="text-md-left my-0 py-1"></p>
+                            <p class="text-md-left my-0 py-1">{{LblUrun}}</p>
                         </div>
                     </div>
                 </div>
@@ -118,7 +117,7 @@
                             <p class="text-md-right my-0 py-2">Basım Adedi :</p>
                         </div>
                         <div class="col-8 px-2 pt-2">
-                            <input type="number" class="form-control form-control-sm" type="text">
+                            <input type="number" min="1" class="form-control form-control-sm" type="text" ng-model = "TxtEtiketMiktar">
                         </div>
                     </div>
                 </div>
