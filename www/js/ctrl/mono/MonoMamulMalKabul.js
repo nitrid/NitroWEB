@@ -487,9 +487,9 @@ function MonoMamulMalKabul($scope,srv)
                 TmpData.SURE = TmpDrRota[0].SURE * TmpDrUret[0].KATSAYI;
             }
 
-            $scope.Data.DATA.push(TmpData);
-            InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+            $scope.Data.DATA.push(TmpData);            
         }
+        InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
     }
     function MaxSthSira(pSeri,pEvrakTip)
     {

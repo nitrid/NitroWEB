@@ -38,100 +38,103 @@ var Param =
 				"BasarSayarHasasTeraziPORT": "1001",
 				"BasarSayarKantarIP": "192.168.2.215",
 				"BasarSayarKantarPORT": "1001",
-				"MamulMalKabulDepo": "",
+				"MamulMalKabulDepo": "1",
 				"UrunGirisSeri": "UGF",
 				"UrunCikisSeri": "UCF",
 				"OperasyonSeri": "OS",
+				"FasonDepo": "1",
+				"FasonGirisSeri": "FGF",
+				"FasonCikisSeri": "FCF",
 				"YariMamulMalKabulEtiket":
-					[
-						{
-							"name": "Yari Mamul Mal Kabul Etiket - 1",
-							"special": "1",
-						},
-						{
-							"name": "Yari Mamul Mal Kabul Etiket - 2",
-							"special": "2",
-						},
-						{
-							"name": "Yari Mamul Mal Kabul Etiket - 3",
-							"special": "3"
-						}
-					],
+				[
+					{
+						"name": "Yari Mamul Mal Kabul Etiket - 1",
+						"special": "1",
+					},
+					{
+						"name": "Yari Mamul Mal Kabul Etiket - 2",
+						"special": "2",
+					},
+					{
+						"name": "Yari Mamul Mal Kabul Etiket - 3",
+						"special": "3"
+					}
+				],
 				"BarkodBasimiEtiket":
-					[
-						{
-							"name": "Barkod Basimi Etiket - 1",
-							"special": "1",
-						},
-						{
-							"name": "Barkod Basimi Etiket - 2",
-							"special": "2",
-						},
-						{
-							"name": "Barkod Basimi Etiket - 3",
-							"special": "3"
-						}
-					],
+				[
+					{
+						"name": "Barkod Basimi Etiket - 1",
+						"special": "1",
+					},
+					{
+						"name": "Barkod Basimi Etiket - 2",
+						"special": "2",
+					},
+					{
+						"name": "Barkod Basimi Etiket - 3",
+						"special": "3"
+					}
+				],
 				"MamulMalKabulEtiket":
-					[
-						{
-							"name": "Mamul Mal Kabul Etiket - 1",
-							"special": "1",
-						},
-						{
-							"name": "Mamul Mal Kabul Etiket - 2",
-							"special": "2",
-						},
-						{
-							"name": "Mamul Mal Kabul Etiket - 3",
-							"special": "3"
-						}
-					],
+				[
+					{
+						"name": "Mamul Mal Kabul Etiket - 1",
+						"special": "1",
+					},
+					{
+						"name": "Mamul Mal Kabul Etiket - 2",
+						"special": "2",
+					},
+					{
+						"name": "Mamul Mal Kabul Etiket - 3",
+						"special": "3"
+					}
+				],
 				"FasonGirisEtiket":
-					[
-						{
-							"name": "Fason Giris Etiket - 1",
-							"special": "1",
-						},
-						{
-							"name": "Fason Giris Etiket - 2",
-							"special": "2",
-						},
-						{
-							"name": "Fason Giris Etiket - 3",
-							"special": "3"
-						}
-					],
+				[
+					{
+						"name": "Fason Giris Etiket - 1",
+						"special": "1",
+					},
+					{
+						"name": "Fason Giris Etiket - 2",
+						"special": "2",
+					},
+					{
+						"name": "Fason Giris Etiket - 3",
+						"special": "3"
+					}
+				],
 				"BasarSayarEtiket":
-					[
-						{
-							"name": "Basar Sayar Etiket - 1",
-							"special": "1",
-						},
-						{
-							"name": "Basar Sayar Etiket - 2",
-							"special": "2",
-						},
-						{
-							"name": "Basar Sayar Etiket - 3",
-							"special": "3"
-						}
-					],
+				[
+					{
+						"name": "Basar Sayar Etiket - 1",
+						"special": "1",
+					},
+					{
+						"name": "Basar Sayar Etiket - 2",
+						"special": "2",
+					},
+					{
+						"name": "Basar Sayar Etiket - 3",
+						"special": "3"
+					}
+				],
 				"KasaEtiket":
-					[
-						{
-							"name": "Kasa Etiket - 1",
-							"special": "1",
-						},
-						{
-							"name": "Kasa Etiket - 2",
-							"special": "2",
-						},
-						{
-							"name": "Kasa Etiket - 3",
-							"special": "3"
-						}
-					],
+				[
+					{
+						"name": "Kasa Etiket - 1",
+						"special": "1",
+					},
+					{
+						"name": "Kasa Etiket - 2",
+						"special": "2",
+					},
+					{
+						"name": "Kasa Etiket - 3",
+						"special": "3"
+					}
+				],
 			}
 		}
 	]
