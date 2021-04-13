@@ -36,20 +36,12 @@ function MonoYariMamulMalKabul($scope, srv)
                     }, 
                     {
                         caption : "BARKOD",
-                        dataField: "PARTIBARKOD",
+                        dataField: "URNBARKOD",
                         width: 150
                     }, 
                     {
                         dataField: "URETREC",
                         width: 100
-                    }, 
-                    {
-                        dataField: "PARTI",
-                        width: 100
-                    }, 
-                    {
-                        dataField: "LOT",
-                        width: 75
                     }, 
                 ],
                 hoverStateEnabled: true,
@@ -155,7 +147,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 {                    
                     $scope.Data.UMP = await UretimMalzemePlanGetir(pData.KODU);
                     $scope.Data.URP = await UretimRotaPlanGetir(pData.KODU);
-                    
+
                     if($scope.Data.UMP.length > 0)
                     {
                         let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
@@ -357,7 +349,6 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.Data.UMP = [];
         $scope.Data.URP = [];
         $scope.Data.DATA = [];
-        $scope.Data.BARKODLIST = [];
 
         $scope.LblKasaDara = 0;
 
@@ -396,6 +387,124 @@ function MonoYariMamulMalKabul($scope, srv)
     }
     $scope.BtnEkle = function()
     {
-        
+        let TmpDrUret = $scope.Data.UMP.filter(x => x.URETTUKET == 1)
+        let TmpDrTuket = $scope.Data.UMP.filter(x => x.URETTUKET == 0)
+        let TmpDrRota = [];
+
+        if(TmpDrUret.length > 0)
+        {
+            TmpDrRota = $scope.Data.URP.filter(x => x.URUNKODU == $scope.LblUrun)
+        }
+
+        let TmpUretRec = 0;
+
+        for (let i = 0; i < TmpDrUret.length; i++) 
+        {
+            let TmpRec = 0;
+            if(TmpDrUret.length > 0)
+            {
+                TmpRec = srv.Max($scope.Data.DATA.filter(x => x.URETTUKET == 1),'REC');
+            }
+
+            let TmpData = {};
+            TmpData.REC = TmpRec + 1;
+            TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
+            TmpData.TIP = TmpDrUret[i].TIP;
+            TmpData.URETTUKET = TmpDrUret[i].URETTUKET;
+            TmpData.URNBARKOD = TmpDrUret[i].BARKOD;
+            TmpData.ADITR = TmpDrUret[i].ADITR;
+            TmpData.ADIENG = TmpDrUret[i].ADIENG;
+            TmpData.ADIRU = TmpDrUret[i].ADIRU;
+            TmpData.ADIRO = TmpDrUret[i].ADIRO;
+            TmpData.DESI = TmpDrUret[i].DESI;
+            TmpData.AGIRLIK = TmpDrUret[i].AGIRLIK;
+            TmpData.ISEMRI = TmpDrUret[i].ISEMRI;
+            TmpData.KODU = TmpDrUret[i].KODU;
+            TmpData.ADI = TmpDrUret[i].ADI;
+            TmpData.MIKTAR = TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar;
+            TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
+
+            if($scope.Param.Mono.YariMamulDepo != "")
+            TmpData.DEPO = $scope.Param.Mono.YariMamulDepo;
+            else
+            TmpData.DEPO = TmpDrUret[i].DEPO;
+
+            if(TmpDrUret[i].URETTUKET == 1)
+            {
+                TmpUretRec = TmpData.REC
+                TmpData.URETREC = TmpUretRec 
+            }
+            else
+            {
+                TmpData.URETREC = TmpUretRec
+            }
+            if(TmpDrRota.length > 0)
+            {
+                TmpData.ROTAREC = TmpDrRota[0].REC;
+                TmpData.SAFHANO = TmpDrRota[0].SAFHANO;
+                TmpData.OPERASYONKODU = TmpDrRota[0].OPERASYONKODU;
+                TmpData.ISMERKEZI = TmpDrRota[0].ISMERKEZI;
+                TmpData.SURE = TmpDrRota[0].SURE * TmpDrUret[0].KATSAYI;
+            }
+
+            $scope.Data.DATA.push(TmpData);
+        }
+        for (let i = 0; i < TmpDrTuket.length; i++) 
+        {
+            let TmpRec = 0;
+            if(TmpDrTuket.length > 0)
+            {
+                TmpRec = srv.Max($scope.Data.DATA.filter(x => x.URETTUKET == 0),'REC');
+            }
+
+            let TmpData = {};
+            TmpData.REC = TmpRec + 1;
+            TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
+            TmpData.TIP = TmpDrTuket[i].TIP;
+            TmpData.URETTUKET = TmpDrTuket[i].URETTUKET;
+            TmpData.URNBARKOD = TmpDrTuket[i].BARKOD;
+            TmpData.ADITR = TmpDrTuket[i].ADITR;
+            TmpData.ADIENG = TmpDrTuket[i].ADIENG;
+            TmpData.ADIRU = TmpDrTuket[i].ADIRU;
+            TmpData.ADIRO = TmpDrTuket[i].ADIRO;
+            TmpData.DESI = TmpDrTuket[i].DESI;
+            TmpData.AGIRLIK = TmpDrTuket[i].AGIRLIK;
+            TmpData.ISEMRI = TmpDrTuket[i].ISEMRI;
+            TmpData.KODU = TmpDrTuket[i].KODU;
+            TmpData.ADI = TmpDrTuket[i].ADI;
+            TmpData.MIKTAR = TmpDrTuket[i].BMIKTAR * $scope.LblKantarMiktar;
+            TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
+
+            if($scope.Param.Mono.YariMamulDepo != "")
+            TmpData.DEPO = $scope.Param.Mono.YariMamulDepo;
+            else
+            TmpData.DEPO = TmpDrTuket[i].DEPO;
+
+            if(TmpDrRota.length > 0)
+            {
+                TmpData.ROTAREC = TmpDrRota[0].REC;
+                TmpData.SAFHANO = TmpDrRota[0].SAFHANO;
+                TmpData.OPERASYONKODU = TmpDrRota[0].OPERASYONKODU;
+                TmpData.ISMERKEZI = TmpDrRota[0].ISMERKEZI;
+                TmpData.SURE = TmpDrRota[0].SURE * TmpDrTuket[0].KATSAYI;
+            }
+
+            $scope.Data.DATA.push(TmpData);
+        }
+
+        InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+    }
+    $scope.BtnKaydet = function()
+    {
+        if($scope.BteIsEmri.txt == "")
+        {
+            swal("Dikkat", "Lütfen İş emri seçmeden geçmeyin.",icon="warning");
+            return;
+        }
+        if(MiktarKontrol())
+        {
+            swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
+            return;
+        }
     }
 }

@@ -43,6 +43,7 @@ var Param =
 				"UrunCikisSeri": "UCF",
 				"OperasyonSeri": "OS",
 				"FasonDepo": "1",
+				"YariMamulDepo": "1",
 				"FasonGirisSeri": "FGF",
 				"FasonCikisSeri": "FCF",
 				"YariMamulMalKabulEtiket":
