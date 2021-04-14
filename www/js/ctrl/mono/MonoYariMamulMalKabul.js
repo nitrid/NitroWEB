@@ -277,7 +277,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
                 TmpTip,
-                8,
+                7,
                 0,
                 TmpEvrTip,
                 pSeri,
@@ -306,7 +306,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 0, //SATIR ISKONTO TİP 9
                 0, //SATIR ISKONTO TİP 10
                 0, //CARİCİNSİ
-                $scope.BteFasoncu.txt, //CARI KODU,
+                '', //CARI KODU,
                 pDr.ISEMRI, //İŞEMRİKODU
                 "", //PERSONEL KODU
                 0, //HARDOVİZCİNSİ
@@ -369,6 +369,75 @@ function MonoYariMamulMalKabul($scope, srv)
                 return
             }
         })
+    }
+    function InsertOperasyonKapama(pDr,pSeri,pSira)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
+            let TmpBasTarih = moment(moment(new Date()).format("DD.MM.YYYY HH:mm:ss")).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
+
+            let TmpInsertData =
+            [
+                $scope.Param.MikroId,
+                $scope.Param.MikroId,
+                0,
+                0,
+                pSeri,
+                pSira,
+                pDr.ROTAREC,
+                TmpBasTarih,
+                TmpBitTarih,
+                pDr.ISEMRI,
+                pDr.KODU,
+                pDr.SAFHANO,
+                pDr.OPERASYONKODU,
+                pDr.ISMERKEZI,
+                pDr.MIKTAR,
+                pDr.MIKTAR,
+                pDr.MIKTAR,
+                pDr.MIKTAR,
+                pDr.SURE
+            ]
+
+            let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        });
+    }
+    function UpdateRotaPlani(pRec,pMiktar,pSure)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "UPDATE URETIM_ROTA_PLANLARI SET RtP_TamamlananMiktar = RtP_TamamlananMiktar + @RtP_TamamlananMiktar,RtP_TamamlananSure = RtP_TamamlananSure + @RtP_TamamlananSure WHERE RtP_Guid = @RtP_Guid",
+                param : ['RtP_TamamlananMiktar:float','RtP_TamamlananSure:int','RtP_Guid:string|50'],
+                value : [pMiktar,pSure,pRec]
+            }
+            let TmpResult = await srv.Execute(TmpQuery)
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        });
     }
     function UpdateMalzemePlani(pIsEmri,pStokKodu,pMiktar,pUret)
     {
@@ -644,7 +713,7 @@ function MonoYariMamulMalKabul($scope, srv)
 
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
     }
-    $scope.BtnKaydet = function()
+    $scope.BtnKaydet = async function()
     {
         let TmpDrTuket = $scope.Data.DATA.filter(x => x.URETTUKET == 0)
         let TmpDrUret = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
@@ -660,9 +729,11 @@ function MonoYariMamulMalKabul($scope, srv)
             return;
         }
 
-        for (let i = 0; i < TmpDrUret.length; i++)
+        for (let i = 0; i < TmpDrUret.length; i++) 
         {
             await InsertUrunGirisCikis(0,TmpDrUret[i],$scope.SthGSeri,$scope.SthGSira)
+            await InsertOperasyonKapama(TmpDrUret[i],$scope.OpSeri,$scope.OpSira)
+            await UpdateRotaPlani(TmpDrUret[i].ROTAREC, TmpDrUret[i].MIKTAR, TmpDrUret[i].SURE)
             await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true)
         }
         for (let i = 0; i < TmpDrTuket.length; i++) 
