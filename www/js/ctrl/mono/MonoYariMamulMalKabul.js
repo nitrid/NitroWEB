@@ -355,7 +355,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 0, // NAKLİYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-            
+
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -414,6 +414,39 @@ function MonoYariMamulMalKabul($scope, srv)
             }
         });
     }
+    async function EtiketInsert(pSira,pBarkod)
+    {
+        let InsertData = 
+        [
+            1,                               //CREATE_USER
+            1,                               //LASTUP_USER
+            $scope.CmbEtiketTasarim.return,     //SPECIAL1
+            $scope.Param.Mono.YariMamulEtiketSeri,//SERI
+            pSira,                          //SIRA
+            '',                              //AÇIKLAMA
+            '',                              //BELGENO
+            0,                               //ETİKETTİP
+            0,                               //BASİMTİPİ
+            1,                               //BASİMADET
+            1,                               //DEPONO
+            $scope.LblUrun,                  //STOKKODU
+            1,                               //RENKKODU
+            1,                               //BEDENKODU
+            pBarkod,                         //BARKOD
+            1                                //BASILACAKMIKTAR
+        ]
+
+        let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
+
+        if(InsertControl == "")
+        {
+            swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+        }
+        else
+        {
+            swal("İşlem Başarısız!", "Etiket Yazdırma İşleminde Hata Oluştu.",icon="error");
+        }
+    }
     function UpdateRotaPlani(pRec,pMiktar,pSure)
     {
         return new Promise(async resolve => 
@@ -425,6 +458,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 param : ['RtP_TamamlananMiktar:float','RtP_TamamlananSure:int','RtP_Guid:string|50'],
                 value : [pMiktar,pSure,pRec]
             }
+
             let TmpResult = await srv.Execute(TmpQuery)
 
             if(typeof TmpResult != 'undefined')
@@ -560,6 +594,13 @@ function MonoYariMamulMalKabul($scope, srv)
             return;
         })
     }
+    async function MaxEtiketSira(pSeri)
+    {
+        return new Promise(async resolve => 
+        {
+            resolve((await srv.Execute($scope.Firma,'MaxEtiketSira',[pSeri]))[0].MAXEVRSIRA)
+        })
+    }
     $scope.Init = async function () 
     {
         $scope.Firma = localStorage.getItem('firm');
@@ -597,12 +638,53 @@ function MonoYariMamulMalKabul($scope, srv)
         HassasTeraziVeriGetir();
         KantarVeriGetir();
     }
-    $scope.BtnTartimOnayla = function () 
+    $scope.BtnTartimOnayla = function()
     {
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
         $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
+    }
+    $scope.BtnSatirSil = async function()
+    {
+        let TmpDr = $scope.Data.DATA.filter(x => x.URNBARKOD == SelectionRow.URNBARKOD)
+
+        for (let i = 0; i < TmpDr.length; i++) 
+        {
+            $scope.Data.DATA = $scope.Data.DATA.filter(x => x.REC !== TmpDr[i].REC)
+        }
+
+        if($scope.Data.DATA.length > 0)
+        {
+            InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        }
+        else
+        {
+            InitGrd([]);
+        }
+    }
+    $scope.BtnBarkodBas = async function()
+    {
+        if($scope.BteIsEmri.txt == "")
+        {
+            swal("Dikkat", "Lütfen İş emri ve parti kodu seçmeden geçmeyin.",icon="warning");
+            return;
+        }
+        if(MiktarKontrol())
+        {
+            swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
+            return;
+        }
+
+        if($scope.LblUrun != '')
+        {
+            let TmpSira = await MaxEtiketSira($scope.Param.Mono.YariMamulEtiketSeri)
+            await EtiketInsert(TmpSira,$scope.Data.DATA[0].URNBARKOD);
+        }
+        else
+        {
+            swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        }
     }
     $scope.BtnEkle = function()
     {
