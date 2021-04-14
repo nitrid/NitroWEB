@@ -86,7 +86,7 @@ function MonoFasonGiris($scope,srv)
                 query : "SELECT " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
                         "is_Kod AS KODU,is_Ismi AS ADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE 'F%'"
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1"
             },
             selection : "KODU",
             columns :
