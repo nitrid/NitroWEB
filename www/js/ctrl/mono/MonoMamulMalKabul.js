@@ -793,7 +793,7 @@ function MonoMamulMalKabul($scope,srv)
         $scope.OpSeri = $scope.Param.Mono.OperasyonSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
-        $scope.SthCSira = await MaxSthSira($scope.SthGSeri,0)
+        $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
 
         InitObj();
