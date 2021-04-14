@@ -240,7 +240,7 @@ function MonoYariMamulMalKabul($scope, srv)
                         "RtP_OperasyonKodu AS OPERASYONKODU, " +
                         "RtP_PlanlananIsMerkezi AS ISMERKEZI, " +
                         "RtP_UrunKodu AS URUNKODU, " +
-                        "CAST((RtP_PlanlananSure / RtP_PlanlananMiktar) AS int) AS SURE " +
+                        "ROUND(CAST((RtP_PlanlananSure / RtP_PlanlananMiktar) AS float),2) AS SURE " +
                         "FROM URETIM_ROTA_PLANLARI WHERE RtP_IsEmriKodu = @RtP_IsEmriKodu",
                 param : ['RtP_IsEmriKodu:string|50'],
                 value : [pIsEmri]
@@ -374,8 +374,9 @@ function MonoYariMamulMalKabul($scope, srv)
     {
         return new Promise(async resolve => 
         {
+            let TmpSure = parseInt(pDr.SURE);
             let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
-            let TmpBasTarih = moment(new Date()).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
+            let TmpBasTarih = moment(new Date()).add(TmpSure * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
 
             let TmpInsertData =
             [
@@ -397,7 +398,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 pDr.MIKTAR,
                 pDr.MIKTAR,
                 pDr.MIKTAR,
-                pDr.SURE
+                TmpSure
             ]
 
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
@@ -451,12 +452,13 @@ function MonoYariMamulMalKabul($scope, srv)
     {
         return new Promise(async resolve => 
         {
+            let TmpSure = parseInt(pSure);
             let TmpQuery = 
             {
                 db: "{M}." + $scope.Firma,
                 query : "UPDATE URETIM_ROTA_PLANLARI SET RtP_TamamlananMiktar = RtP_TamamlananMiktar + @RtP_TamamlananMiktar,RtP_TamamlananSure = RtP_TamamlananSure + @RtP_TamamlananSure WHERE RtP_Guid = @RtP_Guid",
                 param : ['RtP_TamamlananMiktar:float','RtP_TamamlananSure:int','RtP_Guid:string|50'],
-                value : [pMiktar,pSure,pRec]
+                value : [pMiktar,TmpSure,pRec]
             }
 
             let TmpResult = await srv.Execute(TmpQuery)
@@ -630,7 +632,7 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.OpSeri = $scope.Param.Mono.YariMamulOperasyonSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
-        $scope.SthCSira = await MaxSthSira($scope.SthGSeri,0)
+        $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
 
         InitObj();
@@ -745,7 +747,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 TmpData.SAFHANO = TmpDrRota[0].SAFHANO;
                 TmpData.OPERASYONKODU = TmpDrRota[0].OPERASYONKODU;
                 TmpData.ISMERKEZI = TmpDrRota[0].ISMERKEZI;
-                TmpData.SURE = TmpDrRota[0].SURE * TmpDrUret[0].KATSAYI;
+                TmpData.SURE = TmpDrRota[0].SURE * TmpData.MIKTAR;
             }
 
             $scope.Data.DATA.push(TmpData);
@@ -787,7 +789,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 TmpData.SAFHANO = TmpDrRota[0].SAFHANO;
                 TmpData.OPERASYONKODU = TmpDrRota[0].OPERASYONKODU;
                 TmpData.ISMERKEZI = TmpDrRota[0].ISMERKEZI;
-                TmpData.SURE = TmpDrRota[0].SURE * TmpDrTuket[0].KATSAYI;
+                TmpData.SURE = TmpDrRota[0].SURE * TmpData.MIKTAR;
             }
 
             $scope.Data.DATA.push(TmpData);
