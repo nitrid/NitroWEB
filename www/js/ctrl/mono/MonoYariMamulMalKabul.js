@@ -375,7 +375,7 @@ function MonoYariMamulMalKabul($scope, srv)
         return new Promise(async resolve => 
         {
             let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
-            let TmpBasTarih = moment(moment(new Date()).format("DD.MM.YYYY HH:mm:ss")).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
+            let TmpBasTarih = moment(new Date()).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
 
             let TmpInsertData =
             [
@@ -625,9 +625,9 @@ function MonoYariMamulMalKabul($scope, srv)
 
         $scope.TxtEtiketMiktar = 1;
 
-        $scope.SthGSeri = $scope.Param.Mono.UrunGirisSeri;
-        $scope.SthCSeri = $scope.Param.Mono.UrunCikisSeri;
-        $scope.OpSeri = $scope.Param.Mono.OperasyonSeri;
+        $scope.SthGSeri = $scope.Param.Mono.YariMamulUrunGirisSeri;
+        $scope.SthCSeri = $scope.Param.Mono.YariMamulUrunCikisSeri;
+        $scope.OpSeri = $scope.Param.Mono.YariMamulOperasyonSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthGSeri,0)
@@ -823,5 +823,7 @@ function MonoYariMamulMalKabul($scope, srv)
             await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
             await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
         }
+
+        swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
     }
 }
