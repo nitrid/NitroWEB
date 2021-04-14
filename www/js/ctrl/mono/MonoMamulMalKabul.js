@@ -252,7 +252,7 @@ function MonoMamulMalKabul($scope,srv)
                         "RtP_OperasyonKodu AS OPERASYONKODU, " +
                         "RtP_PlanlananIsMerkezi AS ISMERKEZI, " +
                         "RtP_UrunKodu AS URUNKODU, " +
-                        "CAST((RtP_PlanlananSure / RtP_PlanlananMiktar) AS int) AS SURE " +
+                        "ROUND(CAST((RtP_PlanlananSure / RtP_PlanlananMiktar) AS float),2) AS SURE " +
                         "FROM URETIM_ROTA_PLANLARI WHERE RtP_IsEmriKodu = @RtP_IsEmriKodu",
                 param : ['RtP_IsEmriKodu:string|50'],
                 value : [pIsEmri]
@@ -849,6 +849,8 @@ function MonoMamulMalKabul($scope,srv)
             await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
             await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
         }
+
+        swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
     }
     $scope.BtnSatirSil = async function()
     {
