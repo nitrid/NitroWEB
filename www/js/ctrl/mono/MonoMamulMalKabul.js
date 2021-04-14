@@ -638,8 +638,9 @@ function MonoMamulMalKabul($scope,srv)
         return new Promise(async resolve => 
         {
             let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
-            let TmpBasTarih = moment(moment(new Date()).format("DD.MM.YYYY HH:mm:ss")).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
-
+            let TmpBasTarih = moment(new Date()).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
+            
+            console.log(TmpBasTarih)
             let TmpInsertData =
             [
                 $scope.Param.MikroId,
@@ -662,7 +663,7 @@ function MonoMamulMalKabul($scope,srv)
                 pDr.MIKTAR,
                 pDr.SURE
             ]
-
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
