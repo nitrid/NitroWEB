@@ -637,8 +637,9 @@ function MonoMamulMalKabul($scope,srv)
     {
         return new Promise(async resolve => 
         {
+            let TmpSure = parseInt(pDr.SURE);
             let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
-            let TmpBasTarih = moment(new Date()).add(pDr.SURE * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
+            let TmpBasTarih = moment(new Date()).add(TmpSure * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
             
             let TmpInsertData =
             [
@@ -660,7 +661,7 @@ function MonoMamulMalKabul($scope,srv)
                 pDr.MIKTAR,
                 pDr.MIKTAR,
                 pDr.MIKTAR,
-                pDr.SURE
+                TmpSure
             ]
             
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
@@ -681,12 +682,13 @@ function MonoMamulMalKabul($scope,srv)
     {
         return new Promise(async resolve => 
         {
+            let TmpSure = parseInt(pSure);
             let TmpQuery = 
             {
                 db: "{M}." + $scope.Firma,
                 query : "UPDATE URETIM_ROTA_PLANLARI SET RtP_TamamlananMiktar = RtP_TamamlananMiktar + @RtP_TamamlananMiktar,RtP_TamamlananSure = RtP_TamamlananSure + @RtP_TamamlananSure WHERE RtP_Guid = @RtP_Guid",
                 param : ['RtP_TamamlananMiktar:float','RtP_TamamlananSure:int','RtP_Guid:string|50'],
-                value : [pMiktar,pSure,pRec]
+                value : [pMiktar,TmpSure,pRec]
             }
             let TmpResult = await srv.Execute(TmpQuery)
 
