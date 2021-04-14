@@ -86,7 +86,7 @@ function MonoFasonGiris($scope,srv)
                 query : "SELECT " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
                         "is_Kod AS KODU,is_Ismi AS ADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1"
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE 'AYD%'"
             },
             selection : "KODU",
             columns :
@@ -795,6 +795,8 @@ function MonoFasonGiris($scope,srv)
             await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
             await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
         }
+
+        swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
     }
     $scope.BtnBarkodBas = async function()
     {
