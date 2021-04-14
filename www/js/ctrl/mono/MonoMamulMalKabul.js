@@ -463,7 +463,15 @@ function MonoMamulMalKabul($scope,srv)
             else
                 TmpData.DEPO = $scope.Data.UMP[i].DEPO;
 
-            TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * $scope.Data.UMP[i].KATSAYI;
+            if(TmpData.URETTUKET == 1)
+            {
+                TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * $scope.Data.UMP[i].KATSAYI;
+            }
+            else
+            {
+                TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * (TmpDrUret[0].BMIKTAR * TmpDrUret[0].KATSAYI)
+            }
+            
             TmpData.DEPOMIKTAR = $scope.Data.UMP[i].DEPOMIKTAR;
             TmpData.PARTI = pParti;
             TmpData.LOT = pLot;
