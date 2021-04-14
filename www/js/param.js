@@ -48,6 +48,7 @@ var Param =
 				"FasonCikisSeri": "FCF",
 				"FasonEtiketSeri" : "FTK",
 				"MamulEtiketSeri" : "MTK",
+				"YariMamulEtiketSeri": "YTK",
 				"YariMamulMalKabulEtiket":
 				[
 					{
