@@ -447,10 +447,11 @@ function MonoFasonGiris($scope,srv)
             swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
             return;
         }
-        if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD)
+        if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD.substring(0,2) == "27")
         {
-            
+            TmpBarkod = $scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD + pMiktar;
         }
+        console.log(TmpBarkod)
    
         //Ekle(TmpBarkod,'',0,pMiktar);
     }

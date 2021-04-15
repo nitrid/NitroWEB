@@ -88,7 +88,7 @@ function MonoBarkodEtiketBasimi($scope, srv)
                     $scope.TxtBMiktar = "";
                 } 
             },
-            onKeyPress : function(pKey)
+            onKeyPress : async function(pKey)
             {
                 if(pKey.which == 13)
                 {
