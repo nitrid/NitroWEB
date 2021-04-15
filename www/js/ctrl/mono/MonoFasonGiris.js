@@ -88,7 +88,7 @@ function MonoFasonGiris($scope,srv)
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
                         "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE 'F%'"
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE 'AYD%' "
             },
             selection : "KODU",
             columns :
@@ -237,146 +237,8 @@ function MonoFasonGiris($scope,srv)
         }
         return false;
     }
-    function MaxLot()
-    {
-        return new Promise(async resolve => 
-        {
-            let TmpData = await srv.Execute($scope.Firma,'MaxPartiLot',[$scope.BteParti.txt])
-            if(TmpData.length > 0)
-            {
-                resolve(TmpData[0].LOT);
-                return;
-            }
-            resolve(1);
-            return;
-        });
-    }
-    function PartiLotOlustur(pParti,pLot,pStok)
-    {
-        return new Promise(async resolve => 
-        {
-            if(await GetPartiLot(pStok,pParti,pLot))
-            {
-                resolve(true)
-                return
-            }
-            
-            let TmpParam =
-            [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
-                pParti,
-                pLot,
-                pStok,
-                moment(new Date()).format("DD.MM.YYYY")
-            ]
-            let TmpResult = await srv.Execute($scope.Firma,'PartiLotInsert',TmpParam);
-            if(typeof TmpResult != 'undefined')
-            {
-                resolve(true);
-                return
-            }
-            else
-            {
-                resolve(false);
-                return
-            }
-            
-        });
-    }
-    function GetPartiLot(pStokKodu,pParti,pLot)
-    {
-        return new Promise(async resolve => 
-        {
-            let TmpQuery = 
-            {
-                db: "{M}." + $scope.Firma,
-                query : "SELECT * FROM PARTILOT WHERE pl_stokkodu = @pl_stokkodu AND pl_partikodu = @pl_partikodu AND pl_lotno = @pl_lotno",
-                param : ['pl_stokkodu:string|25','pl_partikodu:string|25','pl_lotno:int'],
-                value : [pStokKodu,pParti,pLot]
-            }
-            let TmpData = await srv.Execute(TmpQuery)
-            if(TmpData.length > 0)
-            {
-                resolve(true);
-                return;
-            }
-
-            resolve(false)
-            return;
-        });
-    }
-    function BarkodOlustur(pBarkod,pStokKodu,pParti,pLot)
-    {
-        return new Promise(async resolve => 
-        {
-            if(await GetBarkod(pBarkod))
-            {
-                resolve(true);
-                return;
-            }
-
-            let TmpParam =
-            [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
-                pBarkod,
-                pStokKodu,
-                pParti,
-                pLot,
-                5,
-                1,
-                0,
-                3
-            ]
-
-            let TmpResult = await srv.Execute($scope.Firma,'BarkodInsert',TmpParam);
-
-            if(typeof TmpResult != 'undefined')
-            {
-                resolve(true);
-                return
-            }
-            else
-            {
-                resolve(false);
-                return
-            }
-        });
-    }
-    function GetBarkod(pBarkod)
-    {
-        return new Promise(async resolve => 
-        {
-            let TmpQuery = 
-            {
-                db: "{M}." + $scope.Firma,
-                query : "SELECT * FROM BARKOD_TANIMLARI WHERE bar_kodu = @bar_kodu",
-                param : ['bar_kodu:string|50'],
-                value : [pBarkod]
-            }
-            let TmpData = await srv.Execute(TmpQuery)
-            if(TmpData.length > 0)
-            {
-                $scope.Data.BARKODLIST = TmpData;
-                resolve(true);
-                return;
-            }
-
-            $scope.Data.BARKODLIST = [];
-            resolve(false)
-            return;
-        });
-    }
     function Ekle(pBarkod,pParti,pLot,pMiktar)
     {
-        let TmpDr = $scope.Data.DATA.filter(x => x.PARTIBARKOD == pBarkod);
-        if(TmpDr.length > 0)
-        {
-            swal("Dikkat", "Barkod daha önce eklenmiş !",icon="warning");
-            return;
-        }
-
         let TmpUretRec = 0;
 
         for(let i = 0;i < $scope.Data.UMP.length;i++)
@@ -449,11 +311,16 @@ function MonoFasonGiris($scope,srv)
         }
         if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD.substring(0,2) == "27")
         {
-            TmpBarkod = $scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD + pMiktar;
+            $scope.EtiketMiktar = pMiktar.padStart(5, '0');
+            TmpBarkod = $scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD + $scope.EtiketMiktar;
         }
-        console.log(TmpBarkod)
+        else
+        {
+            swal("Dikkat", "Lütfen tartım barkodu giriniz.",icon="warning");
+            return;
+        }
    
-        //Ekle(TmpBarkod,'',0,pMiktar);
+        Ekle(TmpBarkod,'',0,$scope.EtiketMiktar);
     }
     function MaxSthSira(pSeri,pEvrakTip)
     {
@@ -530,7 +397,7 @@ function MonoFasonGiris($scope,srv)
                 $scope.Param.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
-                document.getElementById("Tarih").value,
+                moment(document.getElementById("Tarih").value).format("DD.MM.YYYY"),
                 TmpTip,
                 8,
                 0,
@@ -647,9 +514,7 @@ function MonoFasonGiris($scope,srv)
                 param : ['miktar:float','ish_isemri:string|25','ish_stokhizm_gid_kod:string|25'],
                 value : [pMiktar,pIsEmri,pStokKodu]
             }
-            console.log(1)
             let TmpResult = await srv.Execute(TmpQuery)
-            console.log(TmpResult)
             if(typeof TmpResult != 'undefined')
             {
                 resolve(true);
@@ -701,7 +566,7 @@ function MonoFasonGiris($scope,srv)
             '',                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            1,                               //BASİMADET
+            $scope.EtiketMiktar,             //BASİMADET
             1,                               //DEPONO
             $scope.LblUrun,                  //STOKKODU
             1,                               //RENKKODU
@@ -741,6 +606,7 @@ function MonoFasonGiris($scope,srv)
         $scope.LblDepo = "";
         $scope.LblUrun = "";
         $scope.TxtBasimAdet = 1;
+        $scope.EtiketMiktar = 0;
         $scope.TxtEvrakno = "";
 
         $scope.SthGSeri = $scope.Param.Mono.FasonGirisSeri;
@@ -810,7 +676,7 @@ function MonoFasonGiris($scope,srv)
         if($scope.LblUrun != '')
         {
             let TmpSira = await MaxEtiketSira($scope.Param.Mono.FasonEtiketSeri)
-            await EtiketInsert(TmpSira,$scope.Data.DATA[0].URNBARKOD);
+            await EtiketInsert(TmpSira,$scope.Data.DATA[0].PARTIBARKOD);
         }
         else
         {
