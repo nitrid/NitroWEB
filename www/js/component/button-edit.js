@@ -25,6 +25,13 @@ angular.module('app').component('buttonEdit',
                 ctrl.option.txt = ctrl.Txt
             }
         });
+        $scope.$watch("$ctrl.option.txt", function () 
+        {
+            if(typeof ctrl.option != 'undefined')
+            {
+                ctrl.Txt = ctrl.option.txt
+            }
+        });
         $scope.$watch("$ctrl.option", function () 
         {
             if(typeof ctrl.option != 'undefined')
