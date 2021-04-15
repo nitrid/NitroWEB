@@ -88,7 +88,7 @@ function MonoBarkodEtiketBasimi($scope, srv)
                     $scope.TxtBMiktar = "";
                 } 
             },
-            onKeyPress : function(pKey)
+            onKeyPress : async function(pKey)
             {
                 if(pKey.which == 13)
                 {
@@ -277,10 +277,8 @@ function MonoBarkodEtiketBasimi($scope, srv)
         let TmpData = await srv.Execute(TmpQuery)
         if(TmpData.length > 0)
         {
-            $scope.BteBarkod.txt = TmpData[0].BARKOD
-            $scope.BteStok.txt = TmpData[0].STOKKODU
-            $scope.BteParti.txt = TmpData[0].PARTI
-            $scope.TxtLot = TmpData[0].LOT
+
+
             resolve(true)
             return;
         }
@@ -292,6 +290,7 @@ function MonoBarkodEtiketBasimi($scope, srv)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $scope.TxtLot = "";
+        $scope.Skt = "";
         $scope.TxtMiktar = "";
         $scope.TxtBMiktar = "";
         InitGrid();
