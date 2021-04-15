@@ -1,47 +1,42 @@
 function MonoBarkodEtiketBasimi($scope, srv) 
 {
-    $scope.Init = function () 
+    function InitGrid() 
     {
-        $scope.Firma = localStorage.getItem('firm');
-        $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        InitGrid();
-        InitObj();
-    }
-    function InitGrid() {
         $("#GrdList").dxDataGrid
-            (
+        (
+            {
+                dataSource: [],
+                allowColumnResizing: true,
+                height: 490,
+                width: "auto",
+                columnWidth: 100,
+                selection:
                 {
-                    dataSource: [],
-                    allowColumnResizing: true,
-                    height: 490,
-                    width: "auto",
-                    columnWidth: 100,
-                    selection:
-                    {
-                        mode: "single"
-                    },
-                    hoverStateEnabled: true,
-                    showBorders: true,
-                    paging:
-                    {
-                        pageSize: 10
-                    },
-                    filterRow:
-                    {
-                        visible: true,
-                        applyFilter: "auto"
-                    },
-                    headerFilter:
-                    {
-                        visible: true
-                    },
-                    onSelectionChanged: function (selectedItems) {
-                        SelectionRow = selectedItems.selectedRowsData[0];
-                    }
+                    mode: "single"
+                },
+                hoverStateEnabled: true,
+                showBorders: true,
+                paging:
+                {
+                    pageSize: 10
+                },
+                filterRow:
+                {
+                    visible: true,
+                    applyFilter: "auto"
+                },
+                headerFilter:
+                {
+                    visible: true
+                },
+                onSelectionChanged: function (selectedItems) {
+                    SelectionRow = selectedItems.selectedRowsData[0];
                 }
-            )
+            }
+        )
     }
-    function InitObj() {
+    function InitObj() 
+    {
         $scope.BteParti =
         {
             title: "Parti Seçim",
@@ -55,16 +50,16 @@ function MonoBarkodEtiketBasimi($scope, srv)
             },
             selection: "PARTI",
             columns:
-                [
-                    {
-                        dataField: "PARTI",
-                        width: 200
-                    },
-                    {
-                        dataField: "LOT",
-                        width: 200
-                    },
-                ],
+            [
+                {
+                    dataField: "PARTI",
+                    width: 200
+                },
+                {
+                    dataField: "LOT",
+                    width: 200
+                },
+            ],
         }
         $scope.BteBarkod =
         {
@@ -73,38 +68,46 @@ function MonoBarkodEtiketBasimi($scope, srv)
             datasource:
             {
                 db: "{M}." + $scope.Firma,
-                query: "SELECT " +
-                    "bar_kodu As BARKOD, " +
-                    "bar_stokkodu AS KODU, " +
-                    "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = bar_stokkodu),'') AS ADI," +
-                    "bar_partikodu AS PARTI, " +
-                    "bar_lotno As LOT " +
-                    "FROM BARKOD_TANIMLARI"
+                query:  "SELECT " +
+                        "bar_kodu As BARKOD, " +
+                        "bar_stokkodu AS KODU, " +
+                        "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = bar_stokkodu),'') AS ADI," +
+                        "bar_partikodu AS PARTI, " +
+                        "bar_lotno As LOT " +
+                        "FROM BARKOD_TANIMLARI"
             },
-            selection: "KODU",
+            selection: "BARKOD",
             columns:
-                [
-                    {
-                        dataField: "BARKOD",
-                        width: 200
-                    },
-                    {
-                        dataField: "KODU",
-                        width: 200
-                    },
-                    {
-                        dataField: "ADI",
-                        width: 500
-                    },
-                    {
-                        dataField: "PARTI",
-                        width: 100
-                    },
-                    {
-                        dataField: "LOT",
-                        width: 500
-                    },
-                ],
+            [
+                {
+                    dataField: "BARKOD",
+                    width: 200
+                },
+                {
+                    dataField: "KODU",
+                    width: 200
+                },
+                {
+                    dataField: "ADI",
+                    width: 500
+                },
+                {
+                    dataField: "PARTI",
+                    width: 100
+                },
+                {
+                    dataField: "LOT",
+                    width: 500
+                },
+            ],
+            onSelected : async function(pData)
+            {
+                
+            },
+            onKeyPress : function(pKey)
+            {
+                console.log(pKey)
+            }
         }
         $scope.BteParti =
         {
@@ -171,4 +174,11 @@ function MonoBarkodEtiketBasimi($scope, srv)
             }
         }
     }
+    $scope.Init = function () 
+    {
+        $scope.Firma = localStorage.getItem('firm');
+        $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        InitGrid();
+        InitObj();
+    }    
 }
