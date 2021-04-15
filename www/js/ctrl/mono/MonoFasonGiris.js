@@ -397,7 +397,7 @@ function MonoFasonGiris($scope,srv)
                 $scope.Param.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
-                document.getElementById("Tarih").value,
+                moment(document.getElementById("Tarih").value).format("DD.MM.YYYY"),
                 TmpTip,
                 8,
                 0,
@@ -514,9 +514,7 @@ function MonoFasonGiris($scope,srv)
                 param : ['miktar:float','ish_isemri:string|25','ish_stokhizm_gid_kod:string|25'],
                 value : [pMiktar,pIsEmri,pStokKodu]
             }
-            console.log(1)
             let TmpResult = await srv.Execute(TmpQuery)
-            console.log(TmpResult)
             if(typeof TmpResult != 'undefined')
             {
                 resolve(true);
