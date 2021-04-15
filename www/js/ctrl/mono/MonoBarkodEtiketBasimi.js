@@ -1,6 +1,7 @@
 function MonoBarkodEtiketBasimi($scope, srv) 
 {
-    $scope.Init = function () {
+    $scope.Init = function () 
+    {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         InitGrid();

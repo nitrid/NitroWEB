@@ -138,7 +138,7 @@ function MonoMamulMalKabul($scope,srv)
         $scope.BteParti = 
         {
             title : "Parti Seçim",
-            txt : moment(new Date()).format("YYYYMMGG"),
+            txt : moment(new Date()).format("YYYYMMDD"),
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
