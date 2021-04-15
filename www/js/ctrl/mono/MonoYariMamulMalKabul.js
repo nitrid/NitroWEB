@@ -86,7 +86,7 @@ function MonoYariMamulMalKabul($scope, srv)
             {
                 if (typeof pData != 'undefined') 
                 {
-                    $scope.LblKasaDara = (pData.substring(7, 12) / 1000).toFixed(3);
+                    $scope.LblKasaDara = pData;
                 }
             }
         }
@@ -528,45 +528,73 @@ function MonoYariMamulMalKabul($scope, srv)
     }
     function KantarVeriGetir() 
     {
-        var net = new WebTCP('localhost', 9999);
+        var net = new WebTCP('192.168.2.240', 9999);
 
-        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
+        options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
-        socket.on('data', function (data) {
-            if (data.includes("�,") && data.includes("kg")) {
-                data = data.substring(
-                    data.lastIndexOf("�,") + 1,
-                    data.lastIndexOf("k")
-                );
-                $scope.LblKantarKilo = data.split(",   ").join("");
+        let TmpData = "";
+        socket.on('data', function (data) 
+        {
+            TmpData += data;
+
+            if(data.includes("kg"))
+            {
+                KantarData(TmpData)
+                TmpData = "";
             }
         });
 
         socket.on('end', function (data) { console.log("socket is closed "); });
         socket.write("hello world");
     }
+    function KantarData(pData)
+    {
+        if (pData.includes("�,") && pData.includes("kg")) 
+        {
+            pData = pData.substring(
+                pData.lastIndexOf("�,") + 1,
+                pData.lastIndexOf("k")
+            );
+            $scope.LblKantarKilo = pData.split(",   ").join("");
+        }
+    }
     function HassasTeraziVeriGetir() 
     {
-        var net = new WebTCP('localhost', 9999);
+        var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
         var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
-        socket.on('data', function (data) {
-            if (data.includes("�,") && data.includes("kg")) {
-                data = data.substring(
-                    data.lastIndexOf("�,") + 1,
-                    data.lastIndexOf("k")
-                );
-                $scope.LblHassasGram = data.split(",   ").join("");
+        let TmpData = "";
+        socket.on('data', function (data) 
+        {
+            TmpData += data;
+           
+            if(data.includes("g"))
+            {
+                HassasData(TmpData)
+                TmpData = "";
             }
         });
 
         socket.on('end', function (data) { console.log("socket is closed "); });
         socket.write("hello world");
+    }
+    function HassasData(pData)
+    {
+        if(pData.includes("ST,GS,+") && pData.includes("g")) 
+        {
+            pData = pData.substring(
+                pData.lastIndexOf("ST,GS,+") + 1,
+                pData.lastIndexOf("g")
+            );
+            pData = pData.split("ST,GS,+").join("");
+            pData = pData.split("T,GS,+").join("");
+            $scope.LblHassasGram = pData.split(",   ").join("");
+        }
     }
     function MaxSthSira(pSeri,pEvrakTip)
     {

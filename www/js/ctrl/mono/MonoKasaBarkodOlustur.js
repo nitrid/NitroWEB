@@ -66,28 +66,39 @@ function MonoKasaBarkodOlustur($scope, srv)
             }
         } 
     }
-    function KantarVeriGetir()
+    function KantarVeriGetir() 
     {
-        var net = new WebTCP('localhost', 9999);
+        var net = new WebTCP('192.168.2.240', 9999);
 
-        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
+        options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
-        socket.on('connect', function(){console.log('connected');});
+        socket.on('connect', function () { console.log('connected'); });
 
-        socket.on('data', function(data) 
+        let TmpData = "";
+        socket.on('data', function (data) 
         {
-            if(data.includes("�,") && data.includes("kg"))
+            TmpData += data;
+
+            if(data.includes("kg"))
             {
-                data = data.substring(
-                    data.lastIndexOf("�,") + 1, 
-                    data.lastIndexOf("k")
-                );
-                $scope.LblKantarKilo = data.split(",   ").join("");
+                KantarData(TmpData)
+                TmpData = "";
             }
         });
 
-        socket.on('end', function(data){console.log("socket is closed ");});
-        socket.write("hello world"); 
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
+    }
+    function KantarData(pData)
+    {
+        if (pData.includes("�,") && pData.includes("kg")) 
+        {
+            pData = pData.substring(
+                pData.lastIndexOf("�,") + 1,
+                pData.lastIndexOf("k")
+            );
+            $scope.LblKantarKilo = pData.split(",   ").join("");
+        }
     }
     async function MaxEtiketSira()
     {

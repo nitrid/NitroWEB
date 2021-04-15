@@ -123,51 +123,75 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
             }
         }
     }
-    function KantarVeriGetir()
+    function KantarVeriGetir() 
     {
-        var net = new WebTCP('localhost', 9999);
+        var net = new WebTCP('192.168.2.240', 9999);
 
-        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
+        options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
-        socket.on('connect', function(){console.log('connected');});
+        socket.on('connect', function () { console.log('connected'); });
 
-        socket.on('data', function(data) 
+        let TmpData = "";
+        socket.on('data', function (data) 
         {
-            if(data.includes("�,") && data.includes("kg"))
+            TmpData += data;
+
+            if(data.includes("kg"))
             {
-                data = data.substring(
-                    data.lastIndexOf("�,") + 1, 
-                    data.lastIndexOf("k")
-                );
-                $scope.LblKantarKilo = data.split(",   ").join("");
+                KantarData(TmpData)
+                TmpData = "";
             }
         });
 
-        socket.on('end', function(data){console.log("socket is closed ");});
-        socket.write("hello world"); 
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
     }
-    function HassasTeraziVeriGetir()
+    function KantarData(pData)
     {
-        var net = new WebTCP('localhost', 9999);
-
-        options = {encoding: "utf-8",timeout: 0,noDelay: true,keepAlive: false,initialDelay: 0}
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
-        socket.on('connect', function(){console.log('connected');});
-
-        socket.on('data', function(data) 
+        if (pData.includes("�,") && pData.includes("kg")) 
         {
-            if(data.includes("�,") && data.includes("kg"))
+            pData = pData.substring(
+                pData.lastIndexOf("�,") + 1,
+                pData.lastIndexOf("k")
+            );
+            $scope.LblKantarKilo = pData.split(",   ").join("");
+        }
+    }
+    function HassasTeraziVeriGetir() 
+    {
+        var net = new WebTCP('192.168.2.240', 9999);
+
+        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        socket.on('connect', function () { console.log('connected'); });
+
+        let TmpData = "";
+        socket.on('data', function (data) 
+        {
+            TmpData += data;
+           
+            if(data.includes("g"))
             {
-                data = data.substring(
-                    data.lastIndexOf("�,") + 1, 
-                    data.lastIndexOf("k")
-                );
-                $scope.LblHassasGram = data.split(",   ").join("");
+                HassasData(TmpData)
+                TmpData = "";
             }
         });
 
-        socket.on('end', function(data) {console.log("socket is closed ");});
-        socket.write("hello world"); 
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
+    }
+    function HassasData(pData)
+    {
+        if(pData.includes("ST,GS,+") && pData.includes("g")) 
+        {
+            pData = pData.substring(
+                pData.lastIndexOf("ST,GS,+") + 1,
+                pData.lastIndexOf("g")
+            );
+            pData = pData.split("ST,GS,+").join("");
+            pData = pData.split("T,GS,+").join("");
+            $scope.LblHassasGram = pData.split(",   ").join("");
+        }
     }
     async function EtiketInsert()
     {
@@ -215,7 +239,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.EtkSira = 1;
 
         $scope.TxtSpRefMiktar = 0;
-        $scope.LblHassasGram = 1;
+        $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
         $scope.LblKantarMiktar = 0;
         $scope.DataKantarKilo = 0;
@@ -232,6 +256,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         InitObj();
         MaxEtiketSira();
         KantarVeriGetir();
+        HassasTeraziVeriGetir();
     }
     $scope.BtnTartimOnayla = function()
     {
