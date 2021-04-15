@@ -265,7 +265,7 @@ function MonoBarkodEtiketBasimi($scope, srv)
         });
 
     }
-    function PartiLotSktGetir(pStok, pParti, pLot)
+    async function PartiLotSktGetir(pStok, pParti, pLot)
     {
         let TmpQuery = 
         {
