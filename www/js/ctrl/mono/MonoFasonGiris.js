@@ -447,17 +447,12 @@ function MonoFasonGiris($scope,srv)
             swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
             return;
         }
-
-        let TmpLot = await MaxLot();
-
-        // if(await PartiLotOlustur($scope.BteParti.txt,TmpLot,$scope.LblUrun))
-        // {
-            // TmpBarkod = $scope.BteParti.txt.padStart(8, "0") + TmpLot.toString().padStart(4, "0")
-            // if(await BarkodOlustur(TmpBarkod,$scope.LblUrun,'',0))
-            // {
-                Ekle(TmpBarkod,'',0,pMiktar);
-            // }
-        // }
+        if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD)
+        {
+            
+        }
+   
+        //Ekle(TmpBarkod,'',0,pMiktar);
     }
     function MaxSthSira(pSeri,pEvrakTip)
     {
