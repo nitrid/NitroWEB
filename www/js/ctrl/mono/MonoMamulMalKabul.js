@@ -8,7 +8,7 @@ function MonoMamulMalKabul($scope,srv)
             {
                 dataSource: pData,
                 allowColumnResizing: true,
-                height: 490,
+                height: 400,
                 width: "100%",
                 columnWidth: 100,
                 selection: 
@@ -94,26 +94,27 @@ function MonoMamulMalKabul($scope,srv)
             columns :
             [
                 {
-                    dataField: "BARKOD",
+                    dataField: "ADI",
                     width: 200
                 }, 
                 {
+                    title : "İŞ EMRİ KODU",
                     dataField: "KODU",
                     width: 200
-                }, 
-                {
-                    dataField: "ADI",
-                    width: 500
-                }, 
-                {
-                    title: "STOK KODU",
-                    dataField: "STOKKODU",
-                    width: 100
                 }, 
                 {
                     title: "STOK ADI",
                     dataField: "STOKADI",
                     width: 500
+                },
+                {
+                    title: "STOK KODU",
+                    dataField: "STOKKODU",
+                    width: 200
+                },
+                {
+                    dataField: "BARKOD",
+                    width: 200
                 }, 
             ],
             onSelected : async function(pData)

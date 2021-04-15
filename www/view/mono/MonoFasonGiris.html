@@ -1,7 +1,7 @@
 <div ng-controller="MonoFasonGiris" ng-init="Init()">
     <div class="row pt-3">
         <div class="col-6">
-            <div class="card border-dark mb-3 h-80">
+            <div class="card border-dark mb-3" style="height: 240px;">
                 <div class="card-header bg-transparent border-dark py-1">İş Emri</div>
                 <div class="card-body text-dark py-2">
                     <div class="row py-1">
@@ -40,23 +40,39 @@
             </div>
         </div>
         <div class="col-6">
-            <div class="card border-dark mb-3 h-80">
-                <div class="card-header bg-transparent border-dark py-1">Barkod Basımı</div>
+            <div class="card border-dark mb-3" style="height: 240px;">
+                <div class="card-header bg-transparent border-dark py-1">Barkod Basım - Evrak Bilgi</div>
                     <div class="card-body text-dark py-2">
                     <div class="row py-1">
                         <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-1">Parti :</p>
+                            <p class="text-md-right my-0 py-1">Tarih :</p>
                         </div>    
                         <div class="col-8 px-2">
-                            <button-edit id="2" option="BteParti"></button-edit>
+                            <input class="form-control form-control-sm" id = "Tarih" type="date">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row py-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Evrak No :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <input type="text" class="form-control form-control-sm" ng-model = "TxtEvrakno">
+                        </div>
+                    </div>
+                    <div class="row py-1">
                         <div class="col-4 px-2">
                             <p class="text-md-right my-0 py-1">Etiket Tasarımı :</p>
                         </div>    
                         <div class="col-8 px-2">
                             <combobox option="CmbEtiketTasarim"></combobox>
+                        </div>
+                    </div>
+                    <div class="row pt-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Basım Adet :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <input type="number" class="form-control form-control-sm" ng-model = "TxtBasimAdet">
                         </div>
                     </div>
                 </div>
@@ -70,7 +86,7 @@
         <div class="col-2">
             <button type="button" class="btn btn-block btn-secondary" ng-click="BtnSatirSil()">Satır Sil</button>
         </div>
-        <div class="col-2">
+        <div class="col-2 offset-6">
             <button type="button" class="btn btn-block btn-secondary" ng-click="BtnBarkodBas()">Barkod Bas</button>
         </div>
     </div>
