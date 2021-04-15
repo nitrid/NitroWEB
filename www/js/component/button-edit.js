@@ -158,6 +158,10 @@ angular.module('app').component('buttonEdit',
                 }
             }
         }
+        $scope.KeyPress = function(pKey)
+        {
+            ctrl.option.onKeyPress(pKey);
+        }
     },
     bindings : 
     {
