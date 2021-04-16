@@ -39,19 +39,19 @@ var Param =
 			"BasarSayarKantarIP": "192.168.2.215",
 			"BasarSayarKantarPORT": "1001",
 			"MamulMalKabulDepo": "1",
+			"MamulEtiketSeri" : "METK",
 			"UrunGirisSeri": "UGF",
 			"UrunCikisSeri": "UCF",
 			"OperasyonSeri": "OS",
 			"YariMamulUrunGirisSeri": "YGF",
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
+			"YariMamulEtiketSeri": "YETK",
 			"FasonDepo": "1",
 			"YariMamulDepo": "1",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
-			"FasonEtiketSeri" : "FTK",
-			"MamulEtiketSeri" : "MTK",
-			"YariMamulEtiketSeri": "YTK",
+			"FasonEtiketSeri" : "FETK",
 			"YariMamulMalKabulEtiket":
 			[
 				{

@@ -3,7 +3,7 @@ const path = require('path');
 
 var svc = new Service
 ({
-    name:'NitroWEB',
+    name:'NitrogenWEB',
     description: 'Nitrogen WEB',
     script: path.join(process.cwd(), '..\\server.js'),
     env: 

@@ -182,7 +182,7 @@ function MonoMamulMalKabul($scope,srv)
             value : "name",
             defaultVal : "1",
             selectionMode : "key",
-            return : "",
+            return : "1",
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -775,6 +775,39 @@ function MonoMamulMalKabul($scope,srv)
             }
         });
     }
+    async function EtiketInsert(pBarkod)
+    {
+        let InsertData = 
+        [
+            1,                               //CREATE_USER
+            1,                               //LASTUP_USER
+            $scope.CmbEtiketTasarim.return,  //SPECIAL1
+            $scope.EtkSeri,                  //SERI
+            $scope.EtkSira,                  //SIRA
+            '',                              //AÇIKLAMA
+            '',                              //BELGENO
+            0,                               //ETİKETTİP
+            0,                               //BASİMTİPİ
+            $scope.Data.DATA[0].MIKTAR,      //BASİMADET
+            1,                               //DEPONO
+            $scope.Data.DATA[0].KODU,        //STOKKODU
+            1,                               //RENKKODU
+            1,                               //BEDENKODU
+            pBarkod,                         //BARKOD
+            1                                //BASILACAKMIKTAR
+        ]
+
+        let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
+
+        if(InsertControl == "")
+        {
+            swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+        }
+        else
+        {
+            swal("İşlem Başarısız!", "Etiket Yazdırma İşleminde Hata Oluştu.",icon="error");
+        }
+    }
     $scope.Init = async function()
     {        
         $scope.Firma = localStorage.getItem('firm');
@@ -792,10 +825,12 @@ function MonoMamulMalKabul($scope,srv)
         $scope.SthGSeri = $scope.Param.Mono.UrunGirisSeri;
         $scope.SthCSeri = $scope.Param.Mono.UrunCikisSeri;
         $scope.OpSeri = $scope.Param.Mono.OperasyonSeri;
+        $scope.EtkSeri = $scope.Param.Mono.MamulEtiketSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
+        $scope.EtkSira = (await srv.Execute($scope.Firma,'MaxEtiketSira',[$scope.EtkSeri]))[0].MAXEVRSIRA
 
         InitObj();
         InitGrd([]);
@@ -823,6 +858,7 @@ function MonoMamulMalKabul($scope,srv)
             if(await BarkodOlustur(TmpBarkod,$scope.LblUrun,$scope.BteParti.txt,TmpLot))
             {
                 Ekle(TmpBarkod,$scope.BteParti.txt,TmpLot);
+                await EtiketInsert(TmpBarkod);
             }
         }
     }
