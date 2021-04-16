@@ -50,7 +50,7 @@
                             <p class="text-md-right my-0 py-0">Skt :</p>
                         </div>
                         <div class="col-8 px-2">
-                            <input class="form-control form-control-sm" ng-model="Skt" type="date">
+                            <input class="form-control form-control-sm" id="Skt" type="date">
                         </div>
                     </div>
                     <div class="row py-1">
@@ -74,17 +74,17 @@
         </div>
     </div>
     <div class="row pb-2 px-2">
-        <div class="col-3">
+        <!-- <div class="col-3">
             <button type="button" class="btn btn-block btn-secondary">İade İrsaliyesi Getir</button>
+        </div> -->
+        <div class="col-3">
+            <button type="button" class="btn btn-block btn-secondary" ng-click="BtnEkle()">Ekle</button>
         </div>
         <div class="col-3">
-            <button type="button" class="btn btn-block btn-secondary">Ekle</button>
+            <button type="button" class="btn btn-block btn-secondary" ng-click="BtnBarkodBas()">Barkod Bas</button>
         </div>
         <div class="col-3">
-            <button type="button" class="btn btn-block btn-secondary">Barkod Bas</button>
-        </div>
-        <div class="col-3">
-            <button type="button" class="btn btn-block btn-secondary">Temizle</button>
+            <button type="button" class="btn btn-block btn-secondary" ng-click="Init()">Temizle</button>
         </div>
     </div>
     <div class="row pt-2">
