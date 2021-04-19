@@ -236,7 +236,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
 
-        $scope.EtkSeri = "ETK-1";
+        $scope.EtkSeri = $scope.Param.Mono.BasarSayarSeri;
         $scope.EtkSira = 1;
 
         $scope.TxtSpRefMiktar = 0;

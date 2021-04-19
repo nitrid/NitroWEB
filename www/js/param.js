@@ -39,6 +39,8 @@ var Param =
 			"BasarSayarKantarIP": "192.168.2.215",
 			"BasarSayarKantarPORT": "1001",
 			"MamulMalKabulDepo": "1",
+			"FasonDepo": "1",
+			"YariMamulDepo": "1",
 			"MamulEtiketSeri" : "METK",
 			"UrunGirisSeri": "UGF",
 			"UrunCikisSeri": "UCF",
@@ -47,12 +49,12 @@ var Param =
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
 			"YariMamulEtiketSeri": "YETK",
-			"FasonDepo": "1",
-			"YariMamulDepo": "1",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "BETK",
+			"KasaBarkodSeri" : "KETK",
+			"BasarSayarSeri" : "BETK",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -136,6 +138,8 @@ var Param =
 			"BasarSayarKantarIP": "192.168.2.215",
 			"BasarSayarKantarPORT": "1001",
 			"MamulMalKabulDepo": "1",
+			"FasonDepo": "1",
+			"YariMamulDepo": "1",
 			"MamulEtiketSeri" : "METK",
 			"UrunGirisSeri": "UGF",
 			"UrunCikisSeri": "UCF",
@@ -144,12 +148,12 @@ var Param =
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
 			"YariMamulEtiketSeri": "YETK",
-			"FasonDepo": "1",
-			"YariMamulDepo": "1",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "BETK",
+			"KasaBarkodSeri" : "KETK",
+			"BasarSayarSeri" : "BETK",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -233,6 +237,8 @@ var Param =
 			"BasarSayarKantarIP": "192.168.2.215",
 			"BasarSayarKantarPORT": "1001",
 			"MamulMalKabulDepo": "1",
+			"FasonDepo": "1",
+			"YariMamulDepo": "1",
 			"MamulEtiketSeri" : "METK",
 			"UrunGirisSeri": "UGF",
 			"UrunCikisSeri": "UCF",
@@ -241,12 +247,12 @@ var Param =
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
 			"YariMamulEtiketSeri": "YETK",
-			"FasonDepo": "1",
-			"YariMamulDepo": "1",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "BETK",
+			"KasaBarkodSeri" : "KETK",
+			"BasarSayarSeri" : "BETK",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -330,6 +336,8 @@ var Param =
 			"BasarSayarKantarIP": "192.168.2.215",
 			"BasarSayarKantarPORT": "1001",
 			"MamulMalKabulDepo": "1",
+			"FasonDepo": "1",
+			"YariMamulDepo": "1",
 			"MamulEtiketSeri" : "METK",
 			"UrunGirisSeri": "UGF",
 			"UrunCikisSeri": "UCF",
@@ -338,12 +346,12 @@ var Param =
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
 			"YariMamulEtiketSeri": "YETK",
-			"FasonDepo": "1",
-			"YariMamulDepo": "1",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "BETK",
+			"KasaBarkodSeri" : "KETK",
+			"BasarSayarSeri" : "BETK",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -371,7 +379,6 @@ var Param =
 					"name": "Fason Giris Etiket - 1",
 					"special": "1",
 				},
-
 			],
 			"BasarSayarEtiket":
 			[
