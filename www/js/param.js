@@ -59,14 +59,6 @@ var Param =
 					"name": "Yari Mamul Mal Kabul Etiket - 1",
 					"special": "1",
 				},
-				{
-					"name": "Yari Mamul Mal Kabul Etiket - 2",
-					"special": "2",
-				},
-				{
-					"name": "Yari Mamul Mal Kabul Etiket - 3",
-					"special": "3"
-				}
 			],
 			"BarkodBasimiEtiket":
 			[
@@ -74,14 +66,6 @@ var Param =
 					"name": "Barkod Basimi Etiket - 1",
 					"special": "1",
 				},
-				{
-					"name": "Barkod Basimi Etiket - 2",
-					"special": "2",
-				},
-				{
-					"name": "Barkod Basimi Etiket - 3",
-					"special": "3"
-				}
 			],
 			"MamulMalKabulEtiket":
 			[
@@ -89,14 +73,6 @@ var Param =
 					"name": "Mamul Mal Kabul Etiket - 1",
 					"special": "1",
 				},
-				{
-					"name": "Mamul Mal Kabul Etiket - 2",
-					"special": "2",
-				},
-				{
-					"name": "Mamul Mal Kabul Etiket - 3",
-					"special": "3"
-				}
 			],
 			"FasonGirisEtiket":
 			[
@@ -104,14 +80,6 @@ var Param =
 					"name": "Fason Giris Etiket - 1",
 					"special": "1",
 				},
-				{
-					"name": "Fason Giris Etiket - 2",
-					"special": "2",
-				},
-				{
-					"name": "Fason Giris Etiket - 3",
-					"special": "3"
-				}
 			],
 			"BasarSayarEtiket":
 			[
@@ -119,14 +87,6 @@ var Param =
 					"name": "Basar Sayar Etiket - 1",
 					"special": "1",
 				},
-				{
-					"name": "Basar Sayar Etiket - 2",
-					"special": "2",
-				},
-				{
-					"name": "Basar Sayar Etiket - 3",
-					"special": "3"
-				}
 			],
 			"KasaEtiket":
 			[
@@ -134,14 +94,6 @@ var Param =
 					"name": "Kasa Etiket - 1",
 					"special": "1",
 				},
-				{
-					"name": "Kasa Etiket - 2",
-					"special": "2",
-				},
-				{
-					"name": "Kasa Etiket - 3",
-					"special": "3"
-				}
 			],
 		}
 	},
