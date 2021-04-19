@@ -777,6 +777,8 @@ function MonoMamulMalKabul($scope,srv)
     }
     async function EtiketInsert(pBarkod)
     {
+        let TmpDr = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
+
         let InsertData = 
         [
             1,                               //CREATE_USER
@@ -788,9 +790,9 @@ function MonoMamulMalKabul($scope,srv)
             '',                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            $scope.Data.DATA[0].MIKTAR,      //BASİMADET
+            TmpDr[0].MIKTAR,      //BASİMADET
             1,                               //DEPONO
-            $scope.Data.DATA[0].KODU,        //STOKKODU
+            TmpDr[0].KODU,        //STOKKODU
             1,                               //RENKKODU
             1,                               //BEDENKODU
             pBarkod,                         //BARKOD

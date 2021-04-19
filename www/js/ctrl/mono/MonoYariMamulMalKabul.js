@@ -419,6 +419,9 @@ function MonoYariMamulMalKabul($scope, srv)
     }
     async function EtiketInsert(pSira,pBarkod)
     {
+        let TmpDr = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
+        
+
         let InsertData = 
         [
             1,                               //CREATE_USER
@@ -426,19 +429,18 @@ function MonoYariMamulMalKabul($scope, srv)
             $scope.CmbEtiketTasarim.return,     //SPECIAL1
             $scope.Param.Mono.YariMamulEtiketSeri,//SERI
             pSira,                          //SIRA
-            '',                              //AÇIKLAMA
-            '',                              //BELGENO
+            TmpDr[0].ISEMRI,                              //AÇIKLAMA
+            parseInt($scope.DataKantarKilo),                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            1,                               //BASİMADET
+            TmpDr[0].MIKTAR,                               //BASİMADET
             1,                               //DEPONO
             $scope.LblUrun,                  //STOKKODU
             1,                               //RENKKODU
             1,                               //BEDENKODU
-            pBarkod,                         //BARKOD
+            TmpDr[0].URNBARKOD,                         //BARKOD
             1                                //BASILACAKMIKTAR
         ]
-
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
 
         if(InsertControl == "")
@@ -677,7 +679,7 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
-        $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
+       $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2));
     }
     $scope.BtnSatirSil = async function()
     {
@@ -713,7 +715,7 @@ function MonoYariMamulMalKabul($scope, srv)
         if($scope.LblUrun != '')
         {
             let TmpSira = await MaxEtiketSira($scope.Param.Mono.YariMamulEtiketSeri)
-            await EtiketInsert(TmpSira,$scope.Data.DATA[0].URNBARKOD);
+            await EtiketInsert(TmpSira,parseInt($scope.Data.DATA[0].URNBARKOD));
         }
         else
         {
@@ -746,7 +748,7 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = TmpDrUret[i].TIP;
             TmpData.URETTUKET = TmpDrUret[i].URETTUKET;
-            TmpData.URNBARKOD = TmpDrUret[i].BARKOD;
+            TmpData.URNBARKOD = TmpDrUret[i].BARKOD + parseInt((TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar).toString().padStart(5, '0'));
             TmpData.ADITR = TmpDrUret[i].ADITR;
             TmpData.ADIENG = TmpDrUret[i].ADIENG;
             TmpData.ADIRU = TmpDrUret[i].ADIRU;
@@ -756,7 +758,7 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.ISEMRI = TmpDrUret[i].ISEMRI;
             TmpData.KODU = TmpDrUret[i].KODU;
             TmpData.ADI = TmpDrUret[i].ADI;
-            TmpData.MIKTAR = TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar;
+            TmpData.MIKTAR = parseInt(TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar);
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
 
             if($scope.Param.Mono.YariMamulDepo != "")
@@ -807,7 +809,7 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.ISEMRI = TmpDrTuket[i].ISEMRI;
             TmpData.KODU = TmpDrTuket[i].KODU;
             TmpData.ADI = TmpDrTuket[i].ADI;
-            TmpData.MIKTAR = TmpDrTuket[i].BMIKTAR * $scope.LblKantarMiktar;
+            TmpData.MIKTAR = parseInt(TmpDrTuket[i].BMIKTAR * $scope.LblKantarMiktar);
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
 
             if($scope.Param.Mono.YariMamulDepo != "")
