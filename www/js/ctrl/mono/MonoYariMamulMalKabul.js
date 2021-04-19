@@ -560,6 +560,8 @@ function MonoYariMamulMalKabul($scope, srv)
                 pData.lastIndexOf("k")
             );
             $scope.LblKantarKilo = pData.split(",   ").join("");
+            $scope.LblKantarKilo = pData.split(",").join("");
+            $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
         }
     }
     function HassasTeraziVeriGetir() 

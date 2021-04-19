@@ -98,6 +98,7 @@ function MonoKasaBarkodOlustur($scope, srv)
                 pData.lastIndexOf("k")
             );
             $scope.LblKantarKilo = pData.split(",   ").join("");
+            $scope.LblKantarKilo = pData.split(",").join("");
         }
     }
     async function MaxEtiketSira()

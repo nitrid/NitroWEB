@@ -155,6 +155,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
                 pData.lastIndexOf("k")
             );
             $scope.LblKantarKilo = pData.split(",   ").join("");
+            $scope.LblKantarKilo = pData.split(",").join("");
         }
     }
     function HassasTeraziVeriGetir() 

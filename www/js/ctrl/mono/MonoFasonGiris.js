@@ -602,6 +602,7 @@ function MonoFasonGiris($scope,srv)
         $scope.Data.URP = [];
         $scope.Data.DATA = [];
         $scope.Data.BARKODLIST = [];
+        document.getElementById("Tarih").value = "";
 
         $scope.LblDepo = "";
         $scope.LblUrun = "";

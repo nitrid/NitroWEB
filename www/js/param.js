@@ -52,6 +52,7 @@ var Param =
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
+			"BarkodEtiketSeri" : "BETK",
 			"YariMamulMalKabulEtiket":
 			[
 				{
