@@ -417,29 +417,28 @@ function MonoYariMamulMalKabul($scope, srv)
             }
         });
     }
-    async function EtiketInsert(pSira,pBarkod)
+    async function EtiketInsert(pData)
     {
-        let TmpDr = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
-        
         let InsertData = 
         [
-            1,                               //CREATE_USER
-            1,                               //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,     //SPECIAL1
-            $scope.Param.Mono.YariMamulEtiketSeri,//SERI
-            pSira,                          //SIRA
-            TmpDr[0].ISEMRI,                              //AÇIKLAMA
-            $scope.DataKantarKilo,                              //BELGENO
-            0,                               //ETİKETTİP
-            0,                               //BASİMTİPİ
-            TmpDr[0].MIKTAR,                               //BASİMADET
-            1,                               //DEPONO
-            $scope.LblUrun,                  //STOKKODU
-            1,                               //RENKKODU
-            1,                               //BEDENKODU
-            TmpDr[0].URNBARKOD,                         //BARKOD
-            1                                //BASILACAKMIKTAR
+            1,                                              //CREATE_USER
+            1,                                              //LASTUP_USER
+            $scope.CmbEtiketTasarim.return,                 //SPECIAL1
+            $scope.Param.Mono.YariMamulEtiketSeri,          //SERI
+            $scope.EtkSira,                                 //SIRA
+            pData.ISEMRI,                                   //AÇIKLAMA
+            parseFloat($scope.LblKantarKilo),                 //BELGENO
+            0,                                              //ETİKETTİP
+            0,                                              //BASİMTİPİ
+            pData.MIKTAR,                                   //BASİMADET
+            1,                                              //DEPONO
+            pData.KODU,                                     //STOKKODU
+            1,                                              //RENKKODU
+            1,                                              //BEDENKODU
+            pData.URNBARKOD,                                //BARKOD
+            1                                               //BASILACAKMIKTAR
         ]
+
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
 
         if(InsertControl == "")
@@ -667,6 +666,7 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
+        $scope.EtkSira = await MaxEtiketSira($scope.Param.Mono.YariMamulEtiketSeri)
 
         InitObj();
         InitGrd([]);
@@ -700,6 +700,8 @@ function MonoYariMamulMalKabul($scope, srv)
     }
     $scope.BtnBarkodBas = async function()
     {
+        let TmpDr = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
+
         if($scope.BteIsEmri.txt == "")
         {
             swal("Dikkat", "Lütfen İş emri ve parti kodu seçmeden geçmeyin.",icon="warning");
@@ -711,10 +713,12 @@ function MonoYariMamulMalKabul($scope, srv)
             return;
         }
 
-        if($scope.LblUrun != '')
+        if(TmpDr.length > 0)
         {
-            let TmpSira = await MaxEtiketSira($scope.Param.Mono.YariMamulEtiketSeri)
-            await EtiketInsert(TmpSira,parseInt($scope.Data.DATA[0].URNBARKOD));
+            for (let i = 0; i < TmpDr.length; i++) 
+            {
+                await EtiketInsert(TmpDr[i]);
+            }
         }
         else
         {
