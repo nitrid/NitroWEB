@@ -421,7 +421,6 @@ function MonoYariMamulMalKabul($scope, srv)
     {
         let TmpDr = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
         
-
         let InsertData = 
         [
             1,                               //CREATE_USER
@@ -430,7 +429,7 @@ function MonoYariMamulMalKabul($scope, srv)
             $scope.Param.Mono.YariMamulEtiketSeri,//SERI
             pSira,                          //SIRA
             TmpDr[0].ISEMRI,                              //AÇIKLAMA
-            parseInt($scope.DataKantarKilo),                              //BELGENO
+            $scope.DataKantarKilo,                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
             TmpDr[0].MIKTAR,                               //BASİMADET
@@ -677,7 +676,7 @@ function MonoYariMamulMalKabul($scope, srv)
     $scope.BtnTartimOnayla = function()
     {
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
-        $scope.DataKantarKilo = $scope.LblKantarKilo;
+        $scope.DataKantarKilo = parseInt($scope.LblKantarKilo);
 
        $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2));
     }
