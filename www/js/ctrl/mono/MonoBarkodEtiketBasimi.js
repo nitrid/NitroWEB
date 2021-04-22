@@ -205,7 +205,7 @@ function MonoBarkodEtiketBasimi($scope, srv)
                 $scope.StokAdi = pData.ADI;
             }
         }
-        $scope.CmbEtiketTasarim1 =
+        $scope.CmbEtiketTasarim =
         {
             datasource:
             {
@@ -216,8 +216,9 @@ function MonoBarkodEtiketBasimi($scope, srv)
             defaultVal: "1",
             selectionMode: "key",
             return: "1",
-            onSelected: function (pSelected) {
-                $scope.CmbEtiketList.return = pSelected
+            onSelected: function (pSelected) 
+            {
+                $scope.CmbEtiketTasarim.return = pSelected
             }
         }
     }
@@ -494,7 +495,47 @@ function MonoBarkodEtiketBasimi($scope, srv)
             return;
         });
     }
-    $scope.Init = function () 
+    async function EtiketInsert(pMiktar,pStokkodu,pBarkod)
+    {
+        let InsertData = 
+        [
+            1,                               //CREATE_USER
+            1,                               //LASTUP_USER
+            $scope.CmbEtiketTasarim.return,     //SPECIAL1
+            $scope.Param.Mono.BarkodEtiketSeri ,//SERI
+            $scope.EtkSira,                          //SIRA
+            '',                              //AÇIKLAMA
+            '',                              //BELGENO
+            0,                               //ETİKETTİP
+            0,                               //BASİMTİPİ
+            pMiktar,                         //BASİMADET
+            1,                               //DEPONO
+            pStokkodu,                       //STOKKODU
+            1,                               //RENKKODU
+            1,                               //BEDENKODU
+            pBarkod,                         //BARKOD
+            $scope.TxtBMiktar                //BASILACAKMIKTAR
+        ]
+
+        let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
+
+        if(InsertControl == "")
+        {
+            swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+        }
+        else
+        {
+            swal("İşlem Başarısız!", "Etiket Yazdırma İşleminde Hata Oluştu.",icon="error");
+        }
+    }
+    async function MaxEtiketSira(pSeri)
+    {
+        return new Promise(async resolve => 
+        {
+            resolve((await srv.Execute($scope.Firma,'MaxEtiketSira',[pSeri]))[0].MAXEVRSIRA)
+        })
+    }
+    $scope.Init = async function () 
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
@@ -507,6 +548,8 @@ function MonoBarkodEtiketBasimi($scope, srv)
         $scope.Data = {};
         $scope.Data.DATA = [];
         $scope.Data.BARKODLIST = [];
+
+        $scope.EtkSira = await MaxEtiketSira($scope.Param.Mono.BarkodEtiketSeri)
 
         InitGrid([]);
         InitObj();
@@ -572,8 +615,18 @@ function MonoBarkodEtiketBasimi($scope, srv)
 
         InitGrid($scope.Data.DATA)
     } 
-    $scope.BtnBarkodBas = function()
+    $scope.BtnBarkodBas = async function()
     {
-
+        if($scope.Data.DATA.length > 0)
+        {
+            for (let i = 0; i < $scope.Data.DATA.length; i++) 
+            {
+                await EtiketInsert($scope.Data.DATA[i].MIKTAR,$scope.Data.DATA[i].KODU,$scope.Data.DATA[i].PARTIBARKOD);  
+            }
+        }
+        else
+        {
+            swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        }
     }
 }

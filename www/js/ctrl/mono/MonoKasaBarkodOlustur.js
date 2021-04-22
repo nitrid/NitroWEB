@@ -98,6 +98,7 @@ function MonoKasaBarkodOlustur($scope, srv)
                 pData.lastIndexOf("k")
             );
             $scope.LblKantarKilo = pData.split(",   ").join("");
+            $scope.LblKantarKilo = pData.split(",").join("");
         }
     }
     async function MaxEtiketSira()
@@ -142,7 +143,7 @@ function MonoKasaBarkodOlustur($scope, srv)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
 
-        $scope.EtkSeri = "ETK-2";
+        $scope.EtkSeri = $scope.Param.Mono.KasaBarkodSeri;
         $scope.EtkSira = 1;
 
         $scope.LblKantarKilo = 0;
