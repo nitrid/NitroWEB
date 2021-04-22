@@ -23,7 +23,7 @@ function Main($scope,$state,srv)
                 for (let i = 0; i < TmpMenu.length; i++) 
                 {
                     TmpHtml += '<li class="nav-item dropdown">'
-                    TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> ' + TmpMenu[i].Name +  '</a>'
+                    TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-toggle="dropdown"> ' + TmpMenu[i].Name +  '</a>'
                     
                     TmpHtml += '<ul class="dropdown-menu">'
                     for (let m = 0; m < TmpMenu[i].Item.length; m++) 
