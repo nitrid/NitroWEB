@@ -109,6 +109,11 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                     TmpQuery = window["Query"][arguments[1]];
                     TmpQuery.value = arguments[2];
                     TmpQuery.db = '{M}.' + arguments[0];
+
+                    if(typeof arguments[3] != 'undefined')
+                    {
+                        TmpQuery.loading = arguments[3];
+                    }
                 }
                 else
                 {
@@ -128,10 +133,18 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                     }
                 }
                 /********************************************************** */
-                $('#loading').show()              
+                if(typeof TmpQuery.loading == 'undefined' || TmpQuery.loading)
+                {
+                    $('#loading').show()              
+                }
+
                 _Socket.emit('QMikroDb', TmpQuery, function (data) 
                 {
-                    $('#loading').hide()  
+                    if(typeof TmpQuery.loading == 'undefined' || TmpQuery.loading)
+                    {
+                        $('#loading').hide()  
+                    }
+
                     if(typeof(data.result.err) == 'undefined')
                     {
                         if(data.result.recordsets.length == 0)
