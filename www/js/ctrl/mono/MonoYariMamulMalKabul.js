@@ -520,7 +520,7 @@ function MonoYariMamulMalKabul($scope, srv)
             let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
             if(TmpDr.length > 0)
             {
-                if(TmpDr[0].PMIKTAR <= srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))
+                if(TmpDr[0].PMIKTAR < srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))
                 {
                     return true;
                 }
@@ -751,7 +751,7 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = TmpDrUret[i].TIP;
             TmpData.URETTUKET = TmpDrUret[i].URETTUKET;
-            TmpData.URNBARKOD = TmpDrUret[i].BARKOD + parseInt((TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar).toString().padStart(5, '0'));
+            TmpData.URNBARKOD = TmpDrUret[i].BARKOD + (TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar).toString().padStart(5, '0');
             TmpData.ADITR = TmpDrUret[i].ADITR;
             TmpData.ADIENG = TmpDrUret[i].ADIENG;
             TmpData.ADIRU = TmpDrUret[i].ADIRU;
