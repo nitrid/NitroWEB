@@ -76,7 +76,7 @@ function DianStokMaliyetOperasyonu($scope, srv)
                 db: "{M}." + $scope.Firma,
                 query : "SELECT sto_kod AS KODU FROM STOKLAR",
             }
-
+            
             let TmpData = await srv.Execute(TmpQuery)
 
             if(TmpData.length > 0)
@@ -85,7 +85,7 @@ function DianStokMaliyetOperasyonu($scope, srv)
                 resolve(true);
                 return;
             }
-
+            
             $scope.Data.STOK = [];
             resolve(false)
             return;
@@ -99,17 +99,17 @@ function DianStokMaliyetOperasyonu($scope, srv)
             {
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " + 
-                        "SUM(sth_tutar) / SUM(sth_miktar) AS MALIYET, " + 
+                        "(SUM(sth_tutar) - SUM(sth_iskonto1 + sth_iskonto2 + sth_iskonto3 + sth_iskonto4 + sth_iskonto5 + sth_iskonto6)) / SUM(sth_miktar) AS MALIYET, " + 
                         "dbo.fn_DepolardakiMiktar(@KODU,'',@SONTARIH) AS KALAN " + 
-                        "FROM STOK_HAREKETLERI WHERE sth_evraktip IN(0,1,2,11,12) AND sth_tip = 0 " + 
+                        "FROM STOK_HAREKETLERI WHERE sth_cins IN (0,1,2,11,12) AND sth_tip = 0 " + 
                         "AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_stok_kod = @KODU",
                 param : ['KODU:string|25','ILKTARIH:date','SONTARIH:date'],
                 value : [pKodu,pIlkTarih,pSonTarih],
                 loading : false
             }
-
+            
             let TmpData = await srv.Execute(TmpQuery)
-
+            
             if(TmpData.length > 0)
             {
                 resolve(TmpData);
@@ -175,7 +175,7 @@ function DianStokMaliyetOperasyonu($scope, srv)
             let TmpQuery = 
             {
                 db: "{M}." + $scope.Firma,
-                query : "UPDATE STOK_HAREKETLERI SET sth_tutar = @MALIYET WHERE sth_evraktip IN (0,2,6,12) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_stok_kod = @KODU",
+                query : "UPDATE STOK_HAREKETLERI SET sth_tutar = @MALIYET WHERE sth_cins IN (3,4,5,6,10) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_stok_kod = @KODU",
                 param : ['KODU:string|25','ILKTARIH:date','SONTARIH:date','MALIYET:float'],
                 value : [pKodu,pIlkTarih,pSonTarih,pMaliyet],
                 loading : false
@@ -239,25 +239,34 @@ function DianStokMaliyetOperasyonu($scope, srv)
             
             if(TmpDr.length > 0)
             {
-                if(await InsertStokMaliyet($scope.Data.PERIOD[0].MONTH,$scope.Data.PERIOD[0].YEAR,$scope.Data.STOK[i].KODU,TmpDr[0].MALIYET,TmpDr[0].KALAN))
+                if(TmpDr[0].MALIYET > 0)
                 {
-                    $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Maliyeti Hesaplanıp Tabloya Kayıt Ediliyor.";
-                    $scope.TxtLog += $scope.TxtStatus + '\n';
-                    if(await UpdateStokHar($scope.Data.STOK[i].KODU,moment($scope.Data.PERIOD[0].START_DATE).format("DD.MM.YYYY"),moment($scope.Data.PERIOD[0].END_DATE).format("DD.MM.YYYY"),TmpDr[0].MALIYET))
+                    if(await InsertStokMaliyet($scope.Data.PERIOD[0].MONTH,$scope.Data.PERIOD[0].YEAR,$scope.Data.STOK[i].KODU,TmpDr[0].MALIYET,TmpDr[0].KALAN))
                     {
-                        // $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Maliyeti Stok Hareket Evraklarına Güncelleniyor.";
-                        // $scope.TxtLog += $scope.TxtStatus;
+                        $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Maliyeti Hesaplanıp Tabloya Kayıt Ediliyor.";
+                        $scope.TxtLog += $scope.TxtStatus + '\n';
+    
+                        if(await UpdateStokHar($scope.Data.STOK[i].KODU,moment($scope.Data.PERIOD[0].START_DATE).format("DD.MM.YYYY"),moment($scope.Data.PERIOD[0].END_DATE).format("DD.MM.YYYY"),TmpDr[0].MALIYET))
+                        {
+                            // $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Maliyeti Stok Hareket Evraklarına Güncelleniyor.";
+                            // $scope.TxtLog += $scope.TxtStatus;
+                        }
+                        else
+                        {
+                            $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Hareket Evraklarına Güncelleme İşleminde Problem Oluştu.";
+                            $scope.TxtLog += $scope.TxtStatus + '\n';
+                        }
                     }
                     else
                     {
-                        $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Hareket Evraklarına Güncelleme İşleminde Problem Oluştu.";
-                        $scope.TxtLog += $scope.TxtStatus + '\n';
+                            $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Maliyet Hesaplamasında Problem Oluştu.";
+                            $scope.TxtLog += $scope.TxtStatus + '\n';
                     }
                 }
                 else
                 {
-                        $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Maliyet Hesaplamasında Problem Oluştu.";
-                        $scope.TxtLog += $scope.TxtStatus + '\n';
+                    $scope.TxtStatus = $scope.Data.STOK[i].KODU + " Kodlu Stoğun Maliyet Değeri Sıfır (0).";
+                    $scope.TxtLog += $scope.TxtStatus + '\n';
                 }
             }
         }
