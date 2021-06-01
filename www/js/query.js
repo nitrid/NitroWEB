@@ -1703,9 +1703,9 @@ var Query =
                 ",0                  --<Etkb_degisti, bit,> \n" +
                 ",0                  --<Etkb_checksum, int,> \n" +
                 ",@Etkb_create_user 			--<Etkb_create_user, smallint,> \n" +
-                ",CONVERT(VARCHAR(10),GETDATE(),112) 		--<Etkb_create_date, datetime,> \n" +
+                ",GETDATE() 		--<Etkb_create_date, datetime,> \n" +
                 ",@Etkb_lastup_user 				--<Etkb_lastup_user, smallint,> \n" +
-                ",CONVERT(VARCHAR(10),GETDATE(),112) 		--<Etkb_lastup_date, datetime,> \n" +
+                ",GETDATE() 		--<Etkb_lastup_date, datetime,> \n" +
                 ",@Etkb_special1		 			--<Etkb_special1, varchar(4),> \n" +
                 ",''		 			--<Etkb_special2, varchar(4),> \n" +
                 ",''		 			--<Etkb_special3, varchar(4),> \n" +

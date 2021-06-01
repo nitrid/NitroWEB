@@ -25,6 +25,7 @@ angular.module("app",
             controller:"Main"
         }
     ).
+    //MONO MENU
     state
     (
         {
@@ -104,6 +105,25 @@ angular.module("app",
             url: '/mono_fason_giris',
             templateUrl : "view/mono/MonoFasonGiris.html",
             controller:"MonoFasonGiris"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoElektrikMontajUretim',
+            url: '/mono_elektrik_montaj_uretim',
+            templateUrl : "view/mono/MonoElektrikMontajUretim.html",
+            controller:"MonoElektrikMontajUretim"
+        }
+    ).
+    //DIAN MENU
+    state
+    (
+        {
+            name: 'main.DianStokMaliyetOperasyonu',
+            url: '/dian_stok_maliyet_operasyon',
+            templateUrl : "view/dian/DianStokMaliyetOperasyonu.html",
+            controller:"DianStokMaliyetOperasyonu"
         }
     )
 });

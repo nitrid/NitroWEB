@@ -1,4 +1,4 @@
-function MonoYariMamulMalKabul($scope, srv) 
+function MonoElektrikMontajUretim($scope, srv) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -109,11 +109,11 @@ function MonoYariMamulMalKabul($scope, srv)
             {
                 db : "{M}." + $scope.Firma,
                 query : "SELECT " +
-                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
+                        "(ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') - ISNULL((SELECT ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0),0)) AS PLANMIKTAR, " +
                         "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%AYD-%'"
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE 'M-%' and (SELECT (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0) > 0"
             },
             selection : "KODU",
             columns :
@@ -149,6 +149,41 @@ function MonoYariMamulMalKabul($scope, srv)
                 {                    
                     $scope.Data.UMP = await UretimMalzemePlanGetir(pData.KODU);
                     $scope.Data.URP = await UretimRotaPlanGetir(pData.KODU);
+                    console.log($scope.Data.URP)
+                    if( $scope.Data.URP.length == 0  )
+                    {
+                        swal("Dikkat", "Rota Planı Eksik Veya Hatalı Lütfen Kontol Ediniz .",icon="warning");
+                        $scope.Init()
+                        return;
+                    }
+                    if($scope.Data.URP[0].URUNKODU != pData.STOKKODU)
+                    {
+                        swal("Dikkat", "Rota Planı Eksik Veya Hatalı Lütfen Kontol Ediniz .",icon="warning");
+                        $scope.Init()
+                        return;
+                    }
+                    let TmpQuery = 
+                    {
+                        db: "{M}." + $scope.Firma,
+                        query : "SELECT sto_kod, sto_birim1_ad AS BIRIM1AD,sto_birim1_katsayi AS BIRIM1KATSAYI,sto_birim2_ad AS BIRIM2AD, (sto_birim2_katsayi * -1) AS BIRIM2KATSAYI,sto_birim3_ad AS BIRIM3AD, (sto_birim3_katsayi * -1) AS BIRIM3KATSAYI, " +
+                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD1, " +
+                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 2 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD2, " +
+                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 3 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD3 " +
+                        "FROM STOKLAR WHERE sto_kod = @sto_kod ",
+                        param : ['sto_kod:string|50'],
+                        value : [pData.STOKKODU]
+                    } 
+                    let TmpData = await srv.Execute(TmpQuery)
+                    $scope.Barkod1 = TmpData[0].BARKOD1;
+                    $scope.Barkod2 = TmpData[0].BARKOD2;
+                    $scope.Barkod3 = TmpData[0].BARKOD3;
+                    if($scope.Barkod1 == '' || $scope.Barkod2 == '' || $scope.Barkod3 == '')
+                    {
+                        swal("Dikkat", "Ürün Barkodlarında Eksik Mevcut Lütfen Kontrol Ediniz .",icon="warning");
+                    }
+                    $scope.KontrolMiktar = TmpData[0].BIRIM2KATSAYI;
+                    $scope.Birim3 = TmpData[0].BIRIM3KATSAYI;
+                    $scope.ToplamPlanMiktar = pData.PLANMIKTAR;
 
                     if($scope.Data.UMP.length > 0)
                     {
@@ -165,13 +200,13 @@ function MonoYariMamulMalKabul($scope, srv)
         {
             datasource:
             {
-                data: $scope.Param.Mono.YariMamulMalKabulEtiket
+                data: $scope.Param.Mono.ElektrikMontajMalKabulEtiket
             },
             key: "special",
             value: "name",
-            defaultVal: "1",
+            defaultVal: "2",
             selectionMode: "key",
-            return: "1",
+            return: "2",
             onSelected: function (pSelected) 
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -223,7 +258,7 @@ function MonoYariMamulMalKabul($scope, srv)
             {
                 TmpData = []
             }
-
+            console.log(TmpData)
             resolve(TmpData);
             return;
         });
@@ -249,6 +284,7 @@ function MonoYariMamulMalKabul($scope, srv)
             }
 
             let TmpData = await srv.Execute(TmpQuery)
+            console.log(TmpData)
 
             if (typeof TmpData == 'undefined')
             {
@@ -357,7 +393,6 @@ function MonoYariMamulMalKabul($scope, srv)
                 0, // NAKLİYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -402,7 +437,7 @@ function MonoYariMamulMalKabul($scope, srv)
                 pDr.MIKTAR,
                 TmpSure
             ]
-
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -424,7 +459,7 @@ function MonoYariMamulMalKabul($scope, srv)
             1,                                              //CREATE_USER
             1,                                              //LASTUP_USER
             $scope.CmbEtiketTasarim.return,                 //SPECIAL1
-            $scope.Param.Mono.YariMamulEtiketSeri,          //SERI
+            $scope.Param.Mono.ElektrikMontajEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
             pData.ISEMRI,                                   //AÇIKLAMA
             parseFloat($scope.LblKantarKilo),                 //BELGENO
@@ -438,7 +473,7 @@ function MonoYariMamulMalKabul($scope, srv)
             pData.URNBARKOD,                                //BARKOD
             1                                               //BASILACAKMIKTAR
         ]
-
+        
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
 
         if(InsertControl == "")
@@ -652,16 +687,26 @@ function MonoYariMamulMalKabul($scope, srv)
         $scope.LblKantarMiktar = 0;
         $scope.DataKantarKilo = 0;
         $scope.DataHassasTeraziGram = 0;
+        $scope.TxtBarkodKontrol = ""
 
         $scope.LblUrun = "";
         $scope.TxtBarkod = "";
         $scope.TxtMiktar = 0;
+        $scope.KontrolMiktar = 0;
+        $scope.BarkodKontrolMiktar = 0;
+        $scope.ToplamBarkodKontrolMiktar = 0;
+        $scope.ToplamPlanMiktar  = 0;
+        $scope.KutuKontrolMiktar = 0;
 
+        $scope.BteParti = 
+        {
+            txt : moment(new Date()).format("YYYYMMDD"),
+        }     
         $scope.TxtEtiketMiktar = 1;
 
-        $scope.SthGSeri = $scope.Param.Mono.YariMamulUrunGirisSeri;
-        $scope.SthCSeri = $scope.Param.Mono.YariMamulUrunCikisSeri;
-        $scope.OpSeri = $scope.Param.Mono.YariMamulOperasyonSeri;
+        $scope.SthGSeri = $scope.Param.Mono.ElektrikMontajUrunGirisSeri;
+        $scope.SthCSeri = $scope.Param.Mono.ElektrikMontajUrunCikisSeri;
+        $scope.OpSeri = $scope.Param.Mono.ElektrikMontajOperasyonSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
@@ -725,25 +770,50 @@ function MonoYariMamulMalKabul($scope, srv)
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
     }
-    $scope.BtnEkle = function()
+    $scope.BtnEkle = async function()
     {
+        
         let TmpDrUret = $scope.Data.UMP.filter(x => x.URETTUKET == 1)
         let TmpDrTuket = $scope.Data.UMP.filter(x => x.URETTUKET == 0)
         let TmpDrRota = [];
 
         if(TmpDrUret.length > 0)
         {
+            console.log(1)
             TmpDrRota = $scope.Data.URP.filter(x => x.URUNKODU == $scope.LblUrun)
         }
-
         let TmpUretRec = 0;
 
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
             let TmpRec = 0;
+            $scope.PartiBarkod = $scope.Barkod3
             if(TmpDrUret.length > 0)
             {
                 TmpRec = srv.Max($scope.Data.DATA.filter(x => x.URETTUKET == 1),'REC');
+            }
+
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT sto_detay_takip AS TAKIP FROM STOKLAR WHERE sto_kod =@sto_kod",
+                param : ['sto_kod:string|25'],
+                value : [TmpDrUret[i].KODU]
+            }
+            let TmpDataTakip = await srv.Execute(TmpQuery)
+            if(TmpDataTakip[0].TAKIP == 2)
+            {
+                let TmpLot = await MaxLot();
+
+                if(await PartiLotOlustur($scope.BteParti.txt,TmpLot,$scope.LblUrun))
+                {
+                    TmpBarkod = $scope.BteParti.txt.padStart(8, "0") + TmpLot.toString().padStart(4, "0")
+                    $scope.PartiBarkod = TmpBarkod
+                    if(await BarkodOlustur(TmpBarkod,$scope.LblUrun,$scope.BteParti.txt,TmpLot))
+                    {
+                        
+                    }
+                }
             }
 
             let TmpData = {};
@@ -751,7 +821,7 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = TmpDrUret[i].TIP;
             TmpData.URETTUKET = TmpDrUret[i].URETTUKET;
-            TmpData.URNBARKOD = TmpDrUret[i].BARKOD + (TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar).toString().padStart(5, '0');
+            TmpData.URNBARKOD = $scope.PartiBarkod;
             TmpData.ADITR = TmpDrUret[i].ADITR;
             TmpData.ADIENG = TmpDrUret[i].ADIENG;
             TmpData.ADIRU = TmpDrUret[i].ADIRU;
@@ -761,11 +831,11 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.ISEMRI = TmpDrUret[i].ISEMRI;
             TmpData.KODU = TmpDrUret[i].KODU;
             TmpData.ADI = TmpDrUret[i].ADI;
-            TmpData.MIKTAR = parseInt(TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar);
+            TmpData.MIKTAR = $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.YariMamulDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.YariMamulDepo;
+            if($scope.Param.Mono.MontajDepo != "")
+            TmpData.DEPO = $scope.Param.Mono.MontajDepo;
             else
             TmpData.DEPO = TmpDrUret[i].DEPO;
 
@@ -812,11 +882,11 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.ISEMRI = TmpDrTuket[i].ISEMRI;
             TmpData.KODU = TmpDrTuket[i].KODU;
             TmpData.ADI = TmpDrTuket[i].ADI;
-            TmpData.MIKTAR = parseInt(TmpDrTuket[i].BMIKTAR * $scope.LblKantarMiktar);
+            TmpData.MIKTAR = TmpDrTuket[i].BMIKTAR * $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.YariMamulDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.YariMamulDepo;
+            if($scope.Param.Mono.MontajDepo != "")
+            TmpData.DEPO = $scope.Param.Mono.MontajDepo;
             else
             TmpData.DEPO = TmpDrTuket[i].DEPO;
 
@@ -828,16 +898,27 @@ function MonoYariMamulMalKabul($scope, srv)
                 TmpData.ISMERKEZI = TmpDrRota[0].ISMERKEZI;
                 TmpData.SURE = TmpDrRota[0].SURE * TmpData.MIKTAR;
             }
+          
 
             $scope.Data.DATA.push(TmpData);
         }
+        let EtiketData = 
+        {
+            "ISEMRI": $scope.BteIsEmri.txt,
+            "MIKTAR" : 1,
+            "KODU" : $scope.LblUrun,
+            "URNBARKOD" : $scope.PartiBarkod,
 
+        }
+        await EtiketInsert(EtiketData);
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        $scope.KutuKontrolMiktar = 0;
     }
     $scope.BtnKaydet = async function()
     {
         let TmpDrTuket = $scope.Data.DATA.filter(x => x.URETTUKET == 0)
         let TmpDrUret = $scope.Data.DATA.filter(x => x.URETTUKET == 1)
+
 
         if($scope.BteIsEmri.txt == "")
         {
@@ -862,7 +943,245 @@ function MonoYariMamulMalKabul($scope, srv)
             await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
             await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
         }
-
+        if($scope.ToplamPlanMiktar == $scope.ToplamBarkodKontrolMiktar)
+        {
+           $scope.IsemriKapat()
+        }
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+    }
+    $scope.BtnEtiketBas = async function()
+    {
+        if($scope.BteIsEmri.txt == "")
+        {
+            swal("Dikkat", "Lütfen İş emri seçmeden geçmeyin.",icon="warning");
+            return;
+        }
+        let EtiketData = 
+        {
+            "ISEMRI": $scope.BteIsEmri.txt,
+            "MIKTAR" : $scope.TxtEtiketMiktar,
+            "KODU" : $scope.LblUrun,
+            "URNBARKOD" : $scope.Barkod2
+
+        }
+        await EtiketInsert(EtiketData);
+    }
+    $scope.TxtBarkodKontrolEvent = function(keyEvent)
+    {
+        if($scope.BteIsEmri.txt == "")
+        {
+            swal("Dikkat", "Lütfen İş emri seçmeden geçmeyin.",icon="warning");
+            return;
+        }
+        if(keyEvent.which === 13)
+        {
+            if($scope.TxtBarkodKontrol == $scope.Barkod2)
+            {
+                if($scope.ToplamBarkodKontrolMiktar < $scope.ToplamPlanMiktar)
+                {
+                    if($scope.KutuKontrolMiktar < $scope.Birim3)
+                    {
+                            $scope.ToplamBarkodKontrolMiktar = $scope.ToplamBarkodKontrolMiktar + $scope.KontrolMiktar
+                            $scope.KutuKontrolMiktar = $scope.KutuKontrolMiktar + $scope.KontrolMiktar
+                            $scope.TxtBarkodKontrol =""
+                    }
+                    else
+                    {
+                        swal("Dikkat", "Toplam Koli İçi Miktarını Geçemezsiniz. Lütfen Ekleyip Devam Edin",icon="warning");
+                        return;
+                    }
+                }
+                else
+                {
+                    swal("Dikkat", "Toplam Plan Miktarını Geçemezsiniz.",icon="warning");
+                    return;
+                }
+               
+               
+            }
+            else
+            {
+                swal("Dikkat", "Lütfen İş Emrine Bağlı Stok Barkodu Okutunuz...",icon="warning");
+                return;
+            }
+           
+        }
+    }
+    $scope.BtnEkleVeYazdir = async function()
+    {
+        if($scope.KutuKontrolMiktar != $scope.Birim3)
+        {
+            swal("Dikkat", "Kutu Miktarını Tamamlamadan Ekleme Yapılamaz.",icon="warning");
+            return;
+        }
+        
+        $scope.BtnEkle()
+    }
+    $scope.IsemriKapat = async function()
+    {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "UPDATE ISEMIRLERI SET is_EmriDurumu = 2 WHERE is_kod = @is_kod",
+            param : ['is_kod:string|25'],
+            value : [$scope.BteIsEmri.txt]
+        }
+         await srv.Execute(TmpQuery)
+        swal("Dikkat", "Is Emri Kapatıldı.",icon="success");
+        $scope.Init()
+    }
+    function MaxLot()
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpData = await srv.Execute($scope.Firma,'MaxPartiLot',[$scope.BteParti.txt])
+            if(TmpData.length > 0)
+            {
+                resolve(TmpData[0].LOT);
+                return;
+            }
+            resolve(1);
+            return;
+        });
+    }
+    function PartiLotOlustur(pParti,pLot,pStok)
+    {
+        return new Promise(async resolve => 
+        {
+            if(await GetPartiLot(pStok,pParti,pLot))
+            {
+                resolve(true)
+                return
+            }
+            
+            let TmpParam =
+            [
+                $scope.Param.MikroId,
+                $scope.Param.MikroId,
+                pParti,
+                pLot,
+                pStok,
+                moment(new Date()).format("DD.MM.YYYY")
+            ]
+            let TmpResult = await srv.Execute($scope.Firma,'PartiLotInsert',TmpParam);
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+            
+        });
+        
+    }
+    function GetPartiLot(pStokKodu,pParti,pLot)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT * FROM PARTILOT WHERE pl_stokkodu = @pl_stokkodu AND pl_partikodu = @pl_partikodu AND pl_lotno = @pl_lotno",
+                param : ['pl_stokkodu:string|25','pl_partikodu:string|25','pl_lotno:int'],
+                value : [pStokKodu,pParti,pLot]
+            }
+            let TmpData = await srv.Execute(TmpQuery)
+            if(TmpData.length > 0)
+            {
+                resolve(true);
+                return;
+            }
+
+            resolve(false)
+            return;
+        });
+    }
+    function BarkodOlustur(pBarkod,pStokKodu,pParti,pLot)
+    {
+        return new Promise(async resolve => 
+        {
+            if(await GetBarkod(pBarkod))
+            {
+                resolve(true);
+                return;
+            }
+
+            let TmpParam =
+            [
+                $scope.Param.MikroId,
+                $scope.Param.MikroId,
+                pBarkod,
+                pStokKodu,
+                pParti,
+                pLot,
+                5,
+                1,
+                0,
+                3
+            ]
+
+            let TmpResult = await srv.Execute($scope.Firma,'BarkodInsert',TmpParam);
+
+            if(typeof TmpResult != 'undefined')
+            {
+                resolve(true);
+                return
+            }
+            else
+            {
+                resolve(false);
+                return
+            }
+        });
+    }
+    function GetBarkod(pBarkod)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT * FROM BARKOD_TANIMLARI WHERE bar_kodu = @bar_kodu",
+                param : ['bar_kodu:string|50'],
+                value : [pBarkod]
+            }
+            let TmpData = await srv.Execute(TmpQuery)
+            if(TmpData.length > 0)
+            {
+                $scope.Data.BARKODLIST = TmpData;
+                resolve(true);
+                return;
+            }
+
+            $scope.Data.BARKODLIST = [];
+            resolve(false)
+            return;
+        });
+    }
+    $scope.BtnSonKoKoli = async function()
+    {
+        let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT TOP 1 Etkb_Barkodu AS BARKOD FROM ETIKETBAS ORDER BY Etkb_create_date desc ",
+
+            }
+        let Sonkoli = await srv.Execute(TmpQuery)
+
+        let UpdateQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "UPDATE ETIKETBAS SET Etkb_special1 = 3 where Etkb_Barkodu = @bar_kodu ",
+            param : ['bar_kodu:string|50'],
+            value : [Sonkoli[0].BARKOD]
+
+        }
+       await srv.Execute(UpdateQuery)
+
+       swal("Dikkat", "Son Kolinin Etiketi Yazdırıldı.",icon="success");
     }
 }
