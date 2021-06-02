@@ -1,6 +1,5 @@
 function Login($scope,$state,srv)
 {
-    
     $scope.Init = function()
     {
         $scope.Kullanici = ""

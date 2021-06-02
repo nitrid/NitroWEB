@@ -125,5 +125,14 @@ angular.module("app",
             templateUrl : "view/dian/DianStokMaliyetOperasyonu.html",
             controller:"DianStokMaliyetOperasyonu"
         }
+    ).
+    state
+    (
+        {
+            name: 'main.DianSatilanMalinMaliyeti',
+            url: '/dian_satilan_malin_maliyeti',
+            templateUrl : "view/dian/DianSatilanMalinMaliyeti.html",
+            controller:"DianSatilanMalinMaliyeti"
+        }
     )
 });
