@@ -99,7 +99,11 @@ function DianSatilanMalinMaliyeti($scope, srv)
                     {
                         dataField: "SATILAN_TUTAR",
                         width: 200
-                    }, 
+                    },
+                    {
+                        dataField: "SATILAN_MIKTAR",
+                        width: 200
+                    },
                     {
                         dataField: "IADE_ALINAN_TUTAR",
                         width: 200
@@ -194,21 +198,22 @@ function DianSatilanMalinMaliyeti($scope, srv)
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
                         "*, " +
-                        "SATILAN_TUTAR - IADE_ALINAN_TUTAR AS NET_SATIS_TUTAR, " +
-                        "SATILAN_MALIYET - IADE_ALINAN_MALIYET AS NET_SATIS_MALIYET, " +
-                        "(SATILAN_TUTAR - IADE_ALINAN_TUTAR) - (SATILAN_MALIYET - IADE_ALINAN_MALIYET) AS NET_KAR, " +
-                        "CASE WHEN ((SATILAN_TUTAR - IADE_ALINAN_TUTAR) - (SATILAN_MALIYET - IADE_ALINAN_MALIYET)) <= 0 OR (SATILAN_MALIYET - IADE_ALINAN_MALIYET) <= 0 THEN 0 " +
-                        "ELSE (((SATILAN_TUTAR - IADE_ALINAN_TUTAR) - (SATILAN_MALIYET - IADE_ALINAN_MALIYET)) / (SATILAN_MALIYET - IADE_ALINAN_MALIYET)) * 100 END AS KAR_ORAN " +
+                        "ROUND(SATILAN_TUTAR - IADE_ALINAN_TUTAR,2) AS NET_SATIS_TUTAR, " +
+                        "ROUND(SATILAN_MALIYET - IADE_ALINAN_MALIYET,2) AS NET_SATIS_MALIYET, " +
+                        "ROUND((SATILAN_TUTAR - IADE_ALINAN_TUTAR) - (SATILAN_MALIYET - IADE_ALINAN_MALIYET),2) AS NET_KAR, " +
+                        "ROUND(CASE WHEN ((SATILAN_TUTAR - IADE_ALINAN_TUTAR) - (SATILAN_MALIYET - IADE_ALINAN_MALIYET)) <= 0 OR (SATILAN_MALIYET - IADE_ALINAN_MALIYET) <= 0 THEN 0 " +
+                        "ELSE (((SATILAN_TUTAR - IADE_ALINAN_TUTAR) - (SATILAN_MALIYET - IADE_ALINAN_MALIYET)) / (SATILAN_MALIYET - IADE_ALINAN_MALIYET)) * 100 END,4) AS KAR_ORAN " +
                         "FROM (SELECT " +
                         "sto_kod AS KODU, " +
                         "sto_isim AS ADI, " +
                         "sto_yabanci_isim AS YABANCI_ADI, " +
-                        "ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE sth_cikis_depo_no = @DEPO AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0) AS SATILAN_TUTAR, " +
-                        "ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE sth_cikis_depo_no = @DEPO AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0) AS IADE_ALINAN_TUTAR, " +
-                        "ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE sth_cikis_depo_no = @DEPO AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0) AS IADE_EDILEN_TUTAR, " +
-                        "ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE sth_cikis_depo_no = @DEPO AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0) AS SATILAN_MALIYET, " +
-                        "ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE sth_cikis_depo_no = @DEPO AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0) AS IADE_ALINAN_MALIYET, " +
-                        "ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE sth_cikis_depo_no = @DEPO AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0) AS IADE_EDILEN_MALIYET " +
+                        "ROUND(ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0),2) AS SATILAN_TUTAR, " +
+                        "ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = '') OR ('' = '')) AND sth_tarih >= '2020-03-19' AND sth_tarih <= '2020-04-19' AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0) AS SATILAN_MIKTAR, " +
+                        "ROUND(ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_ALINAN_TUTAR, " +
+                        "ROUND(ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_EDILEN_TUTAR, " +
+                        "ROUND(ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0),2) AS SATILAN_MALIYET, " +
+                        "ROUND(ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_ALINAN_MALIYET, " +
+                        "ROUND(ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_EDILEN_MALIYET " +
                         "FROM STOKLAR AS STOK " +
                         "INNER JOIN TERP_COST AS COST ON " +
                         "STOK.sto_kod = COST.CODE AND [MONTH] = 1 AND [YEAR] = 1399) AS MALIYET " ,
@@ -238,7 +243,7 @@ function DianSatilanMalinMaliyeti($scope, srv)
         $scope.Data.PERIOD = [];
 
         $scope.TxtStatus = "";
-        $scope.DepoKodu = "0";
+        $scope.DepoKodu = "";
 
         InitObj();
         InitGrd([]);
