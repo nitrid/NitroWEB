@@ -5,7 +5,7 @@ angular.module('app.srv', []).service('srv',function($rootScope)
     
     this.SocketConnected = false;
     this.Connection = _Connection;
-    this.Execute = _Execute;
+    this.Execute = _Execute; 
     
     this.SafeApply = function(pScope,pFn) 
     {

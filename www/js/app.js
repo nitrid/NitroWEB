@@ -107,6 +107,15 @@ angular.module("app",
             controller:"MonoFasonGiris"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoElektrikMontajUretim',
+            url: '/mono_elektrik_montaj_uretim',
+            templateUrl : "view/mono/MonoElektrikMontajUretim.html",
+            controller:"MonoElektrikMontajUretim"
+        }
+    ).
     //DIAN MENU
     state
     (

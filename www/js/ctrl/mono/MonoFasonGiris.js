@@ -229,7 +229,7 @@ function MonoFasonGiris($scope,srv)
             let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
             if(TmpDr.length > 0)
             {
-                if(TmpDr[0].PMIKTAR <= srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))
+                if(TmpDr[0].PMIKTAR < srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))
                 {
                     return true;
                 }
