@@ -219,19 +219,19 @@ function DianSatilanMalinMaliyeti($scope, srv)
                         "sto_isim AS ADI, " +
                         "sto_yabanci_isim AS YABANCI_ADI, " +
                         "ROUND(ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0),2) AS SATILAN_TUTAR, " +
-                        "ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = '') OR ('' = '')) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0) AS SATILAN_MIKTAR, " +
+                        "ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO OR @DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0) AS SATILAN_MIKTAR, " +
                         "ROUND(ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_ALINAN_TUTAR, " +
-                        "ROUND(ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = '') OR ('' = '')) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_ALINAN_MIKTAR, " +
+                        "ROUND(ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_ALINAN_MIKTAR, " +
                         "ROUND(ISNULL((SELECT SUM(sth_tutar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_EDILEN_TUTAR, " +
-                        "ROUND(ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = '') OR ('' = '')) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_EDILEN_MIKTAR, " +
+                        "ROUND(ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_EDILEN_MIKTAR, " +
                         "ROUND(ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 0 AND sth_stok_kod = STOK.sto_kod),0),2) AS SATILAN_MALIYET, " +
                         "ROUND(ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (1,4) AND sth_tip = 1 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_ALINAN_MALIYET, " +
                         "ROUND(ISNULL((SELECT SUM(sth_miktar) * COST.COST FROM STOK_HAREKETLERI WHERE ((sth_cikis_depo_no = @DEPO) OR (@DEPO = @DEPO)) AND sth_tarih >= @ILKTARIH AND sth_tarih <= @SONTARIH AND sth_evraktip IN (3,13) AND sth_tip = 0 AND sth_normal_iade = 1 AND sth_stok_kod = STOK.sto_kod),0),2) AS IADE_EDILEN_MALIYET " +
                         "FROM STOKLAR AS STOK " +
                         "INNER JOIN TERP_COST AS COST ON " +
-                        "STOK.sto_kod = COST.CODE AND [MONTH] = 1 AND [YEAR] = 1399) AS MALIYET " ,
-                param : ['DEPO:string|25','ILKTARIH:date','SONTARIH:date'],
-                value : [pDepo,pIlkTarih,pSonTarih],
+                        "STOK.sto_kod = COST.CODE AND [MONTH] = @MONTH AND [YEAR] = @YEAR) AS MALIYET " ,
+                param : ['DEPO:string|25','ILKTARIH:date','SONTARIH:date','MONTH:int','YEAR:int'],
+                value : [pDepo,pIlkTarih,pSonTarih,$scope.CmbDonemAy.return,$scope.CmbDonemYil.return],
                 loading : false
             }
             
@@ -254,6 +254,7 @@ function DianSatilanMalinMaliyeti($scope, srv)
 
         $scope.Data = {};
         $scope.Data.PERIOD = [];
+        $scope.GridData = [];
 
         $scope.TxtStatus = "";
         $scope.DepoKodu = "";
@@ -279,10 +280,66 @@ function DianSatilanMalinMaliyeti($scope, srv)
         $scope.TxtStatus = "Satılan Malın Maliyeti Raporu Başladı.";
         $scope.TxtLog += $scope.TxtStatus + '\n';
 
-        let TmpDr = await GetMaliyet($scope.BteDepo.txt,moment($scope.Data.PERIOD[0].START_DATE).format("DD.MM.YYYY"),moment($scope.Data.PERIOD[0].END_DATE).format("DD.MM.YYYY"));
-        InitGrd(TmpDr)
+        $scope.GridData = await GetMaliyet($scope.BteDepo.txt,moment($scope.Data.PERIOD[0].START_DATE).format("DD.MM.YYYY"),moment($scope.Data.PERIOD[0].END_DATE).format("DD.MM.YYYY"));
+        
+        InitGrd($scope.GridData)
 
         $scope.TxtStatus = "Satılan Malın Maliyeti Raporu Tamamlandı.";
         $scope.TxtLog += $scope.TxtStatus + '\n';
+    }
+    $scope.BtnExcelImport = function()
+    {
+        let ExcelDataListe = [];
+        let ExcelHeaderListe = [];
+
+        for(i = 0; i < Object.keys($scope.GridData[0]).length; i++)
+        {
+            let a = {};
+            
+            a.text = Object.keys($scope.GridData[0])[i];
+            ExcelHeaderListe.push(a)
+        }
+
+        ExcelDataListe.push(ExcelHeaderListe)
+
+        for(i = 0; i < $scope.GridData.length; i++)
+        {
+            let Dizi = [];
+
+            for(m = 0;m < Object.keys($scope.GridData[i]).length;m++)
+            {
+                let b = {};
+                b.text = $scope.GridData[i][Object.keys($scope.GridData[i])[m]]
+                Dizi.push(b);
+            }
+            
+            ExcelDataListe.push(Dizi)
+        }
+        var RaporListeData = 
+        [
+            {
+                "sheetName":"Sayfa",
+                "data":  ExcelDataListe
+            }
+        ];
+        var options = {
+            fileName:"SatilanMalinMaliyeti",
+            extension:".xlsx",
+            sheetName:"Sayfa",
+            fileFullName:"report.xlsx",
+            header:true,
+            maxCellWidth: 20
+        };
+
+        Jhxlsx.export(RaporListeData, options);
+
+        var url ='data.json';
+        $.get(url, {},function (data) 
+        {
+            Jhxlsx.export(data.RaporListeData, data.options);
+            db.Connection(function(data)
+            {
+            });
+        })
     }
 }
