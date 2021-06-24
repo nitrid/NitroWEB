@@ -108,12 +108,14 @@ function MonoElektrikMontajUretim($scope, srv)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT " +
-                        "is_Kod AS KODU,is_Ismi AS ADI, " +
-                        "(ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') - ISNULL((SELECT ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0),0)) AS PLANMIKTAR, " +
-                        "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
-                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE 'M-%' and (SELECT (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0) > 0"
+                query : " SELECT  " +
+                        " is_Kod AS KODU,is_Ismi AS ADI,  " +
+                        "  UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR,  " +
+                        " UPL.upl_kodu AS STOKKODU,  " +
+                        " ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI  " +
+                        " FROM ISEMIRLERI as ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri  " +
+                        " WHERE ISM.is_EmriDurumu = 1 AND ISM.is_Kod LIKE 'M-%' AND (SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_kod and ish_plan_sevkmiktar = 0) > 0 " +
+                        " AND UPL.upl_uretim_tuket = 1 " ,
             },
             selection : "KODU",
             columns :
@@ -437,7 +439,6 @@ function MonoElektrikMontajUretim($scope, srv)
                 pDr.MIKTAR,
                 TmpSure
             ]
-            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -679,6 +680,8 @@ function MonoElektrikMontajUretim($scope, srv)
         $scope.Data.URP = [];
         $scope.Data.DATA = [];
 
+       
+
         $scope.LblKasaDara = 0;
 
         $scope.TxtSpRefMiktar = 0;
@@ -717,6 +720,7 @@ function MonoElektrikMontajUretim($scope, srv)
         InitGrd([]);
         HassasTeraziVeriGetir();
         KantarVeriGetir();
+        
     }
     $scope.BtnTartimOnayla = function()
     {
@@ -779,7 +783,6 @@ function MonoElektrikMontajUretim($scope, srv)
 
         if(TmpDrUret.length > 0)
         {
-            console.log(1)
             TmpDrRota = $scope.Data.URP.filter(x => x.URUNKODU == $scope.LblUrun)
         }
         let TmpUretRec = 0;
@@ -787,41 +790,43 @@ function MonoElektrikMontajUretim($scope, srv)
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
             let TmpRec = 0;
-            $scope.PartiBarkod = $scope.Barkod3
             if(TmpDrUret.length > 0)
             {
                 TmpRec = srv.Max($scope.Data.DATA.filter(x => x.URETTUKET == 1),'REC');
             }
+            $scope.SeriBarkod = ''
 
-            let TmpQuery = 
+            let length = 7;
+            let chars = '0123456789'.split('');
+            let AutoStr = "";
+            
+            if (! length) 
             {
-                db: "{M}." + $scope.Firma,
-                query : "SELECT sto_detay_takip AS TAKIP FROM STOKLAR WHERE sto_kod =@sto_kod",
-                param : ['sto_kod:string|25'],
-                value : [TmpDrUret[i].KODU]
+                length = Math.floor(Math.random() * chars.length);
             }
-            let TmpDataTakip = await srv.Execute(TmpQuery)
-            if(TmpDataTakip[0].TAKIP == 2)
+            for (let i = 0; i < length; i++) 
             {
-                let TmpLot = await MaxLot();
+                AutoStr += chars[Math.floor(Math.random() * chars.length)];
+            }
+            $scope.SeriBarkod = $scope.BteParti.txt.padStart(8, "0")   + AutoStr
 
-                if(await PartiLotOlustur($scope.BteParti.txt,TmpLot,$scope.LblUrun))
-                {
-                    TmpBarkod = $scope.BteParti.txt.padStart(8, "0") + TmpLot.toString().padStart(4, "0")
-                    $scope.PartiBarkod = TmpBarkod
-                    if(await BarkodOlustur(TmpBarkod,$scope.LblUrun,$scope.BteParti.txt,TmpLot))
-                    {
-                        
-                    }
-                }
-            }
+            let TmpInsertData =
+            [
+                $scope.SeriBarkod,
+                TmpDrUret[i].KODU
+            ]
+            console.log(TmpInsertData)
+            let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
+            console.log(TmpResult)
+
+           
 
             let TmpData = {};
             TmpData.REC = TmpRec + 1;
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = TmpDrUret[i].TIP;
             TmpData.URETTUKET = TmpDrUret[i].URETTUKET;
-            TmpData.URNBARKOD = $scope.PartiBarkod;
+            TmpData.URNBARKOD = $scope.SeriBarkod;
             TmpData.ADITR = TmpDrUret[i].ADITR;
             TmpData.ADIENG = TmpDrUret[i].ADIENG;
             TmpData.ADIRU = TmpDrUret[i].ADIRU;
@@ -907,7 +912,7 @@ function MonoElektrikMontajUretim($scope, srv)
             "ISEMRI": $scope.BteIsEmri.txt,
             "MIKTAR" : 1,
             "KODU" : $scope.LblUrun,
-            "URNBARKOD" : $scope.PartiBarkod,
+            "URNBARKOD" : $scope.SeriBarkod,
 
         }
         await EtiketInsert(EtiketData);
