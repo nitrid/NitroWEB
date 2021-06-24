@@ -1,0 +1,51 @@
+<div ng-controller="DianSatilanMalinMaliyeti" ng-init="Init()">
+    <div class="row pt-2">
+        <div class="col-12">
+            <div class="card border-dark mb-3">
+                <div class="card-header bg-transparent border-dark py-1">Satılan Malin Maliyeti</div>
+                <div class="card-body text-dark py-2">
+                    <div class="row pt-2">
+                        <div class="col-12 px-2">
+                            <p class="text-md-center my-0 py-1">{{TxtStatus}}</p>
+                        </div>  
+                    </div>
+                    <div class="row pt-4">
+                        <div class="col-2 px-2">
+                            <p class="text-md-right my-0 py-1">Dönem Yıl :</p>
+                        </div>    
+                        <div class="col-2 px-2">
+                            <combobox option="CmbDonemYil"></combobox>
+                        </div>
+                        <div class="col-2 px-2">
+                            <p class="text-md-right my-0 py-1">Depo :</p>
+                        </div>    
+                        <div class="col-2 px-2">
+                            <button-edit id = "1" option="BteDepo"></button-edit>
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-2 px-2">
+                            <p class="text-md-right my-0 py-1">Dönem Ay :</p>
+                        </div>    
+                        <div class="col-2 px-2">
+                            <combobox option="CmbDonemAy"></combobox>
+                        </div>
+                    </div>  
+                    <div class="row pt-4">
+                        <div class="col-6">
+                            <button type="button" class="btn-block btn-secondary btn-lg" ng-click="BtnCalistir()">Raporu Çalıştır</button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn-block btn-secondary btn-lg" ng-click="BtnExcelImport()">Excel Aktar</button>
+                        </div>
+                    </div>                               
+                </div>
+            </div>            
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-12">
+            <div id="GrdList"></div>
+        </div>
+    </div>
+</div>

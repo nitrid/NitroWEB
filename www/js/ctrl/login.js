@@ -1,6 +1,5 @@
 function Login($scope,$state,srv)
 {
-    
     $scope.Init = function()
     {
         $scope.Kullanici = ""
@@ -9,7 +8,7 @@ function Login($scope,$state,srv)
         {
             datasource : 
             {
-                db: "MikroDB_V16",
+                db: "MikroDB_V15",
                 query: "SELECT DB_kod AS FIRM FROM VERI_TABANLARI"
             },
             key : "FIRM",
