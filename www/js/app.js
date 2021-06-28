@@ -116,6 +116,15 @@ angular.module("app",
             controller:"MonoElektrikMontajUretim"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoUretimDashboard',
+            url: '/mono_uretim_dashboard',
+            templateUrl : "view/mono/MonoUretimDashboard.html",
+            controller:"MonoUretimDashboard"
+        }
+    ).
     //DIAN MENU
     state
     (
