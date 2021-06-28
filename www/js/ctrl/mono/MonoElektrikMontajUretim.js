@@ -308,7 +308,7 @@ function MonoElektrikMontajUretim($scope, srv)
                 TmpEvrTip = 0
                 TmpTip = 1
             }
-
+            console.log(pDr)
             let TmpInsertData = 
             [
                 $scope.Param.MikroId,
