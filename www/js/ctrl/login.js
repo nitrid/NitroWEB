@@ -12,9 +12,10 @@ function Login($scope,$state,srv)
                 query: "SELECT DB_kod AS FIRM FROM VERI_TABANLARI"
             },
             key : "FIRM",
-            value : "FIRM"
+            value : "FIRM",
+            return : Param[0].Firma,
+            defaultVal : Param[0].Firma
         }
-        
     }
     function Login()
     {
@@ -23,6 +24,7 @@ function Login($scope,$state,srv)
         {
             if(Param[i].Kullanici == $scope.Kullanici && Param[i].Sifre == $scope.Sifre)
             {
+                localStorage.setItem("LoginNo",(i))
                 TmpStatus = true;
             }
         }

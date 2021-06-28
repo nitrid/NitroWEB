@@ -3,6 +3,7 @@ var Param =
 	{
 		"Kullanici": "Admin",
 		"Sifre": "1",
+		"Firma": "DEMO",
 		"MikroId": "99",
 		"Sistem":
 		{
@@ -31,6 +32,16 @@ var Param =
 			"RiskParam": "0",
 			"RiskLimitOran": "70",
 			"FisDizayn": "0"
+		},
+		"Menu":
+		{
+			"Basar Sayar Barkod Oluştur": "1",
+			"Yarı Mamül Mal Kabul": "1",
+			"Kasa Barkodu Oluştur": "1",
+			"Mamül Mal Kabul": "1",
+			"Barkod Etiket Basımı": "1",
+			"Fason Giriş": "1",
+			"Elektrik Montaj Uretim": "1"
 		},
 		"Mono":
 		{
@@ -143,6 +154,16 @@ var Param =
 			"RiskLimitOran": "70",
 			"FisDizayn": "0"
 		},
+		"Menu":
+		{
+			"Basar Sayar Barkod Oluştur": "1",
+			"Yarı Mamül Mal Kabul": "1",
+			"Kasa Barkodu Oluştur": "1",
+			"Mamül Mal Kabul": "1",
+			"Barkod Etiket Basımı": "1",
+			"Fason Giriş": "1",
+			"Elektrik Montaj Uretim": "1"
+		},
 		"Mono":
 		{
 			"BasarSayarHasasTeraziIP": "192.168.2.214",
@@ -247,6 +268,16 @@ var Param =
 			"RiskLimitOran": "70",
 			"FisDizayn": "0"
 		},
+		"Menu":
+		{
+			"Basar Sayar Barkod Oluştur": "1",
+			"Yarı Mamül Mal Kabul": "1",
+			"Kasa Barkodu Oluştur": "1",
+			"Mamül Mal Kabul": "1",
+			"Barkod Etiket Basımı": "1",
+			"Fason Giriş": "1",
+			"Elektrik Montaj Uretim": "1"
+		},
 		"Mono":
 		{
 			"BasarSayarHasasTeraziIP": "192.168.2.214",
@@ -350,6 +381,16 @@ var Param =
 			"RiskParam": "0",
 			"RiskLimitOran": "70",
 			"FisDizayn": "0"
+		},
+		"Menu":
+		{
+			"Basar Sayar Barkod Oluştur": "1",
+			"Yarı Mamül Mal Kabul": "1",
+			"Kasa Barkodu Oluştur": "1",
+			"Mamül Mal Kabul": "1",
+			"Barkod Etiket Basımı": "1",
+			"Fason Giriş": "1",
+			"Elektrik Montaj Uretim": "1"
 		},
 		"Mono":
 		{

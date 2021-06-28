@@ -4,6 +4,7 @@ function Main($scope,$state,srv)
     {
         $scope.Firm = localStorage.getItem('firm');
         $scope.User = atob(localStorage.getItem('login'))
+        $scope.LoginNo = localStorage.getItem('LoginNo')
         
         setInterval(() => 
         {
@@ -28,7 +29,10 @@ function Main($scope,$state,srv)
                     TmpHtml += '<ul class="dropdown-menu">'
                     for (let m = 0; m < TmpMenu[i].Item.length; m++) 
                     {
-                        TmpHtml += '<li><a class="dropdown-item" ui-sref="' + TmpMenu[i].Item[m].Link +'" href="">' + TmpMenu[i].Item[m].Name +'</a>'
+                        if(MasterMenuControl(TmpMenu[0].Item[m].Name))
+                        {
+                            TmpHtml += '<li><a class="dropdown-item" ui-sref="' + TmpMenu[i].Item[m].Link +'" href="">' + TmpMenu[i].Item[m].Name +'</a>'
+                        }
                     }
                     TmpHtml += '</ul></li></li>'
                 }
@@ -41,7 +45,16 @@ function Main($scope,$state,srv)
     {
         localStorage.removeItem('firm')
         localStorage.removeItem('login')
+        localStorage.removeItem('LoginNo')
         $state.go('login')
+    }
+    function MasterMenuControl(MenuName)
+    {        
+        if(Param[$scope.LoginNo].Menu[MenuName] == "1")
+        {
+            return true;
+        }
+        return false;
     }
     function Menu()
     {
