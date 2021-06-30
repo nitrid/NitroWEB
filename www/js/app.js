@@ -119,28 +119,10 @@ angular.module("app",
     state
     (
         {
-            name: 'main.MonoElektrikLazerBaski',
-            url: '/mono_elektrik_lazer_baski',
-            templateUrl : "view/mono/MonoElektrikLazerBaski.html",
-            controller:"MonoElektrikLazerBaski"
-        }
-    ).
-    state
-    (
-        {
-            name: 'main.MonoElektrikEnjeksiyonUretim',
-            url: '/mono_elektrik_enjeksiyon_uretim',
-            templateUrl : "view/mono/MonoElektrikEnjeksiyonUretim.html",
-            controller:"MonoElektrikEnjeksiyonUretim"
-        }
-    ).
-    state
-    (
-        {
-            name: 'main.MonoElektrikTamponBaski',
-            url: '/mono_elektrik_tampon_baski',
-            templateUrl : "view/mono/MonoElektrikTamponBaski.html",
-            controller:"MonoElektrikTamponBaski"
+            name: 'main.MonoUretimDashboard',
+            url: '/mono_uretim_dashboard',
+            templateUrl : "view/mono/MonoUretimDashboard.html",
+            controller:"MonoUretimDashboard"
         }
     ).
     //DIAN MENU
