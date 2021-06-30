@@ -21,6 +21,7 @@ function Main($scope,$state,srv)
             {
                 let TmpHtml = "";
                 let TmpMenu = JSON.parse(MenuData).Menu.Item;
+                console.log(TmpMenu)
                 for (let i = 0; i < TmpMenu.length; i++) 
                 {
                     TmpHtml += '<li class="nav-item dropdown">'

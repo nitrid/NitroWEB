@@ -8,7 +8,7 @@ function Login($scope,$state,srv)
         {
             datasource : 
             {
-                db: "MikroDB_V15",
+                db: "MikroDB_V16",
                 query: "SELECT DB_kod AS FIRM FROM VERI_TABANLARI"
             },
             key : "FIRM",

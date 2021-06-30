@@ -41,7 +41,8 @@ var Param =
 			"Mamül Mal Kabul": "1",
 			"Barkod Etiket Basımı": "1",
 			"Fason Giriş": "1",
-			"Elektrik Montaj Uretim": "1"
+			"Elektrik Montaj Uretim": "1",
+
 		},
 		"Mono":
 		{
@@ -60,17 +61,18 @@ var Param =
 			"YariMamulUrunGirisSeri": "YGF",
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
-			"ElektrikMontajUrunGirisSeri": "EYGF",
-			"ElektrikMontajUrunCikisSeri": "EYCF",
-			"ElektrikMontajOperasyonSeri": "EYOS",
+			"ElektrikUretimUrunGirisSeri": "EYGF",
+			"ElektrikUretimUrunCikisSeri": "EYCF",
+			"ElektrikUretimOperasyonSeri": "EYOS",
 			"YariMamulEtiketSeri": "YETK",
-			"ElektrikMontajEtiketSeri": "EETK",
+			"ElektrikUretimEtiketSeri": "EETK",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "BETK",
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
+			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -181,17 +183,18 @@ var Param =
 			"YariMamulUrunGirisSeri": "YGF",
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
-			"ElektrikMontajUrunGirisSeri": "EYGF",
-			"ElektrikMontajUrunCikisSeri": "EYCF",
-			"ElektrikMontajOperasyonSeri": "EYOS",
+			"ElektrikUretimUrunGirisSeri": "EYGF",
+			"ElektrikUretimUrunCikisSeri": "EYCF",
+			"ElektrikUretimOperasyonSeri": "EYOS",
 			"YariMamulEtiketSeri": "YETK",
-			"ElektrikMontajEtiketSeri": "EETK",
+			"ElektrikUretimEtiketSeri": "EETK",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "BETK",
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
+			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -295,17 +298,18 @@ var Param =
 			"YariMamulUrunGirisSeri": "YGF",
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
-			"ElektrikMontajUrunGirisSeri": "EYGF",
-			"ElektrikMontajUrunCikisSeri": "EYCF",
-			"ElektrikMontajOperasyonSeri": "EYOS",
+			"ElektrikUretimUrunGirisSeri": "EYGF",
+			"ElektrikUretimUrunCikisSeri": "EYCF",
+			"ElektrikUretimOperasyonSeri": "EYOS",
 			"YariMamulEtiketSeri": "YETK",
-			"ElektrikMontajEtiketSeri": "EETK",
+			"ElektrikUretimEtiketSeri": "EETK",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "METK",
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
+			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -409,17 +413,18 @@ var Param =
 			"YariMamulUrunGirisSeri": "YGF",
 			"YariMamulUrunCikisSeri": "YCF",
 			"YariMamulOperasyonSeri": "YOS",
-			"ElektrikMontajUrunGirisSeri": "EYGF",
-			"ElektrikMontajUrunCikisSeri": "EYCF",
-			"ElektrikMontajOperasyonSeri": "EYOS",
+			"ElektrikUretimUrunGirisSeri": "EYGF",
+			"ElektrikUretimUrunCikisSeri": "EYCF",
+			"ElektrikUretimOperasyonSeri": "EYOS",
 			"YariMamulEtiketSeri": "YETK",
-			"ElektrikMontajEtiketSeri": "EETK",
+			"ElektrikUretimEtiketSeri": "EETK",
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
 			"BarkodEtiketSeri" : "BETK",
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
+			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulMalKabulEtiket":
 			[
 				{
