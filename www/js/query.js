@@ -1997,8 +1997,8 @@ var Query =
         ",''          --<chz_aciklama2, nvarchar(80),>  \n " +
         ",''          --<chz_aciklama3, nvarchar(80),>  \n " +
         ",GETDATE()          --<chz_al_tarih, datetime,>  \n " +
-        ",GETDATE()          --<chz_al_evr_seri, [dbo].[evrakseri_str],>  \n " +
-        ",''          --<chz_al_evr_sira, int,>  \n " +
+        ",@SERI          --<chz_al_evr_seri, [dbo].[evrakseri_str],>  \n " +
+        ",@SIRA          --<chz_al_evr_sira, int,>  \n " +
         ",''          --<chz_al_cari_kodu, nvarchar(25),>  \n " +
         ",GETDATE()          --<chz_al_wd_tarih, datetime,>  \n " +
         ",''          --<chz_al_wd_evr_seri, [dbo].[evrakseri_str],>  \n " +
@@ -2048,6 +2048,13 @@ var Query =
         ",0          --<chz_devir_servis_sayac, float,>  \n " +
         ",0          --<chz_devir_servis_peryodu, float,>  \n " +
         " ) ",
-        param :['SERINO:string|50','STOKKODU:string|50']
-    }
+        param :['SERI:string|25','SIRA:int','SERINO:string|50','STOKKODU:string|50']
+    },
+    StokGramDegerGetir : 
+    {
+        query : "SELECT sto_special3 AS REFDEGER FROM STOKLAR WHERE sto_kod =@sto_kod " ,
+        param : ['sto_kod'],
+        type : ['string|50']
+    },
+
 };
