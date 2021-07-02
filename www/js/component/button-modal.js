@@ -78,8 +78,7 @@ angular.module('app').component('buttonModal',
                         {
                             dataSource: TmpData,
                             allowColumnResizing: true,
-                            height: 490,
-                            width: "auto",
+                            width: "100%",
                             columnWidth: 100,
                             selection: 
                             {

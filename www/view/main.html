@@ -4,12 +4,20 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="main_nav">
-            <ul class="navbar-nav" compile="Html.Menu">
-            </ul> 
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link yaziayari" ng-click="BtnExit()" href=""><i class="fa fa-sign-out" aria-hidden="true"></i> Çıkış </a></li>
-            </ul>
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="main_nav">
+            <div>
+                <ul class="navbar-nav" compile="Html.Menu">
+                </ul> 
+                <ul class="navbar-nav" compile="Html.Admin"></ul>
+            </div>
+            <div>
+                <a class="navbar-brand">{{PageName}}</a>
+            </div>
+            <div>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link yaziayari" ng-click="BtnExit()" href=""><i class="fa fa-sign-out" aria-hidden="true"></i> Çıkış </a></li>
+                </ul>
+            </div>
         </div>
     </nav>
     <div class="container-fluid">
@@ -17,13 +25,9 @@
     </div>
     <nav class="navbar fixed-bottom navbar-dark bg-dark footer">
         <div class="col-12">
-            <div class="row">
-                <div class="col-6"> 
-                    <p class="text-light text-md-left my-0">{{Firm}} - {{User}}</p>
-                </div>
-                <div class="col-6"> 
-                    <p class="text-light text-md-right my-0">{{DateTime}}</p>
-                </div>
+            <div class="d-flex justify-content-between">
+                <p class="text-light text-md-left my-0">{{Firm}} - {{User}}</p>
+                <p class="text-light text-md-right my-0">{{DateTime}}</p>
             </div>
         </div>
     </nav>

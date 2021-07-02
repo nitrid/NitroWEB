@@ -1,4 +1,4 @@
-function MonoFasonGiris($scope,srv)
+function MonoFasonGiris($scope,srv, $rootScope)
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -597,6 +597,8 @@ function MonoFasonGiris($scope,srv)
     {        
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "FASON GİRİŞ"
+
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];

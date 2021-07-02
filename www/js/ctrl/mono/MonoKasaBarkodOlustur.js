@@ -1,4 +1,4 @@
-function MonoKasaBarkodOlustur($scope, srv)
+function MonoKasaBarkodOlustur($scope, srv, $rootScope)
 {
     function InitObj()
     {
@@ -22,7 +22,7 @@ function MonoKasaBarkodOlustur($scope, srv)
                 },
                 {
                     dataField: "ADI",
-                    width: 200
+                    width: 500
                 },
                 {
                     dataField: "BIRIM",
@@ -142,6 +142,7 @@ function MonoKasaBarkodOlustur($scope, srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "KASA BARKOD OLUŞTUR"
 
         $scope.EtkSeri = $scope.Param.Mono.KasaBarkodSeri;
         $scope.EtkSira = 1;

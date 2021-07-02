@@ -15,10 +15,10 @@
                 </div>
                 <div class="row pb-2 px-2">
                     <div class="col-6">
-                        <button-input id="1" option="BtnKasaDaraAl"></button-input>
+                        <button-input id="1" class="d-grid" option="BtnKasaDaraAl"></button-input>
                     </div>
                     <div class="col-6">
-                        <button-input id="2" option="BtnManuelKasaDaraAl"></button-input>
+                        <button-input id="2" class="d-grid"option="BtnManuelKasaDaraAl"></button-input>
                         <!-- <button type="button" class="btn btn-block btn-secondary" style="height: 2.5rem;" ng-click = "BtnKasaDaraAl()"><p style="font-size: 0.8rem; line-height: 0.8rem; margin-bottom: 0;">Kasa Darası Elle Giriş</p></button> -->
                     </div>
                 </div>
@@ -46,8 +46,8 @@
                     </div>
                 </div>
                 <div class="row pb-2 px-2">
-                    <div class="col-12">
-                        <button type="button" class="btn btn-block btn-secondary" ng-click="BtnTartimOnayla()">Tartımı Onayla</button>
+                    <div class="col-12 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click="BtnTartimOnayla()">Tartımı Onayla</button>
                     </div>
                 </div>
             </div>
@@ -125,14 +125,14 @@
         </div>
     </div>
     <div class="row py-0 pb-2">
-        <div class="col-2">
-            <button type="button" class="btn-block btn-secondary btn-lg" ng-click = "BtnEkle()">Ekle</button>
+        <div class="col-2 d-grid">
+            <button type="button" class="btn btn-secondary" ng-click = "BtnEkle()">Ekle</button>
+        </div>
+        <div class="col-2 d-grid">
+            <button type="button" class="btn btn-secondary" ng-click = "BtnSatirSil()">Satır Sil</button>
         </div>
         <div class="col-2">
-            <button type="button" class="btn btn-block btn-secondary btn-lg" ng-click = "BtnSatirSil()">Satır Sil</button>
-        </div>
-        <div class="col-2">
-            <button-input id="4" option="BtnManuelMiktarGiris"></button-input>
+            <button-input id="4" class="d-grid" option="BtnManuelMiktarGiris"></button-input>
         </div>
     </div>
     <div class="row pt-2">
@@ -141,14 +141,14 @@
         </div>
     </div>
     <div class="row py-0 pt-2 pb-5">
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg" ng-click = "Init()">Yeni</button>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-secondary" ng-click = "Init()">Yeni</button>
         </div>
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg" ng-click = "BtnKaydet()">Kaydet</button>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-secondary" ng-click = "BtnKaydet()">Kaydet</button>
         </div>
-        <div class="col-4">
-            <button type="button" class="btn-block btn-secondary btn-lg" ng-click = "BtnBarkodBas()">Barkod Bas</button>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-secondary" ng-click = "BtnBarkodBas()">Barkod Bas</button>
         </div>
     </div>
 </div>

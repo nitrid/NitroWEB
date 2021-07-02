@@ -1,4 +1,4 @@
-function MonoElektrikMontajUretim($scope, srv,$filter) 
+function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -674,6 +674,8 @@ function MonoElektrikMontajUretim($scope, srv,$filter)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "ELEKTRİK MONTAJ ÜRETİM"
+
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];

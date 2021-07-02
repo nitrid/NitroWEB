@@ -1,4 +1,4 @@
-function MonoBarkodEtiketBasimi($scope, srv) 
+function MonoBarkodEtiketBasimi($scope, srv, $rootScope) 
 {
     function InitGrid(pData) 
     {
@@ -539,6 +539,7 @@ function MonoBarkodEtiketBasimi($scope, srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "BARKOD ETİKET BASIM"
         $scope.TxtLot = "";
         $scope.TxtMiktar = 0;
         $scope.TxtBMiktar = 1;

@@ -1,4 +1,4 @@
-function MonoUretimDashboard($scope,srv)
+function MonoUretimDashboard($scope,srv, $rootScope)
 {
     $(function(){
         $("#pie").dxPieChart({

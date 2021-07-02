@@ -91,8 +91,7 @@ angular.module('app').component('buttonEdit',
                         {
                             dataSource: TmpData,
                             allowColumnResizing: true,
-                            height: 490,
-                            width: "auto",
+                            width: "100%",
                             columnWidth: 100,
                             selection: 
                             {

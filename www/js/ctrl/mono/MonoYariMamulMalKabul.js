@@ -1,4 +1,4 @@
-function MonoYariMamulMalKabul($scope, srv) 
+function MonoYariMamulMalKabul($scope, srv, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -639,6 +639,7 @@ function MonoYariMamulMalKabul($scope, srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "YARI MAMÜL MAL KABUL"
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];

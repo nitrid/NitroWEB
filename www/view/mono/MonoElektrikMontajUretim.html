@@ -40,8 +40,8 @@
                         <div class="col-4 pt-1">
                             <input type="number" min="1" class="form-control form-control-sm h-10" type="text" ng-model = "TxtEtiketMiktar">
                         </div>
-                        <div class="col-4 pt-1">
-                            <button type="button" class="btn btn-block btn-success p-30" ng-click = "BtnEtiketBas()">Etiket Bas</button>
+                        <div class="col-4 pt-1 d-grid">
+                            <button type="button" class="btn btn-success p-30" ng-click = "BtnEtiketBas()">Etiket Bas</button>
                         </div>
                     </div>
                 </div>
@@ -83,15 +83,15 @@
                             <p class="text-md-left my-0 py-1">{{KutuKontrolMiktar}}</p>
                         </div>
                     </div>
-                    <div class="row py-0 mt-2 mb-1">
-                        <div class="col-4">
-                            <button type="button" class="btn btn-block btn-success btn-lg" ng-click = "BtnEkleVeYazdir()">Ekle B. Bas</button>
+                    <div class="row py-0 mt-3 mb-1">
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-success" ng-click = "BtnEkleVeYazdir()">Ekle B. Bas</button>
                         </div>
-                        <div class="col-4">
-                            <button type="button" class="btn btn-block btn-warning btn-lg" ng-click = "BtnSonKoKoli()">Son Koli</button>
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-warning" ng-click = "BtnSonKoKoli()">Son Koli</button>
                         </div>
-                        <div class="col-4">
-                            <button type="button" class="btn btn-block btn-primary btn-lg" ng-click = "BtnEkle()">Ekle</button>
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-primary" ng-click = "BtnEkle()">Ekle</button>
                         </div>
                     </div>
                 </div>
@@ -117,14 +117,14 @@
         </div>
     </div>
     <div class="row py-0 pt-2 pb-2">
-        <div class="col-4">
-            <button type="button" class="btn btn-block btn-info btn-lg" ng-click = "Init()">Yeni</button>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-info" ng-click = "Init()">Yeni</button>
         </div>
-        <div class="col-4">
-            <button type="button" class="btn btn-block btn-success btn-lg" ng-click = "BtnKaydet()">Kaydet</button>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-success" ng-click = "BtnKaydet()">Kaydet</button>
         </div>
-        <div class="col-4">
-            <button type="button" class="btn btn-block btn-warning btn-lg" ng-click = "IsemriKapat()">İş Emrini Kapat</button>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-warning" ng-click = "IsemriKapat()">İş Emrini Kapat</button>
         </div>
     </div>
 </div>

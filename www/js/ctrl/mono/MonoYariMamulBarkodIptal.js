@@ -1,7 +1,9 @@
-function MonoYariMamulBarkodIptal($scope, srv) {
+function MonoYariMamulBarkodIptal($scope, srv, $rootScope) {
     $scope.Init = function () {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "YARI MAMÜL BARKOD İPTAL"
+
         InitObj();
         InitGrd();
     }

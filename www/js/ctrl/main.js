@@ -1,10 +1,11 @@
-function Main($scope,$state,srv)
+function Main($scope,$state,srv,$rootScope)
 {
     $scope.Init = function()
     {
         $scope.Firm = localStorage.getItem('firm');
         $scope.User = atob(localStorage.getItem('login'))
         $scope.LoginNo = localStorage.getItem('LoginNo')
+        $rootScope.PageName = "ANA SAYFA"
         
         setInterval(() => 
         {
@@ -25,7 +26,7 @@ function Main($scope,$state,srv)
                 for (let i = 0; i < TmpMenu.length; i++) 
                 {
                     TmpHtml += '<li class="nav-item dropdown">'
-                    TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-toggle="dropdown"> ' + TmpMenu[i].Name +  '</a>'
+                    TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> ' + TmpMenu[i].Name +  '</a>'
                     
                     TmpHtml += '<ul class="dropdown-menu">'
                     for (let m = 0; m < TmpMenu[i].Item.length; m++) 
