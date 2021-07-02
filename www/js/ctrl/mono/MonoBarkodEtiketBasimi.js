@@ -503,21 +503,21 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
             1,                               //LASTUP_USER
             $scope.CmbEtiketTasarim.return,     //SPECIAL1
             $scope.Param.Mono.BarkodEtiketSeri ,//SERI
-            $scope.EtkSira,                          //SIRA
+            $scope.EtkSira,                    //SIRA
             '',                              //AÇIKLAMA
             '',                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            pMiktar,                         //BASİMADET
+            (pMiktar <= 32000 ? pMiktar : 32000),                         //BASİMADET
             1,                               //DEPONO
             pStokkodu,                       //STOKKODU
-            1,                               //RENKKODU
+            pMiktar,                               //RENKKODU
             1,                               //BEDENKODU
             pBarkod,                         //BARKOD
             $scope.TxtBMiktar                //BASILACAKMIKTAR
         ]
-
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
+
 
         if(InsertControl == "")
         {
@@ -562,6 +562,10 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         {
             swal("Dikkat", "Lütfen stok kodu seçmeden geçmeyin.",icon="warning");
             return;
+        }
+        if($scope.BteParti.txt == '')
+        {
+            $scope.BteBarkod.txt =  ($scope.BteBarkod.txt +$scope.TxtMiktar.toString().padStart(5, '0'));
         }
 
         if ($scope.TxtLot == "")

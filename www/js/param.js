@@ -31,7 +31,8 @@ var Param =
 			"FirmaListe": "",
 			"RiskParam": "0",
 			"RiskLimitOran": "70",
-			"FisDizayn": "0"
+			"FisDizayn": "0",
+			
 		},
 		"Menu":
 		{
@@ -73,6 +74,8 @@ var Param =
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
+			"YariMamulGramKontrol" : "1",
+			"YariMamulGramYuzde" : "10",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -154,7 +157,8 @@ var Param =
 			"FirmaListe": "",
 			"RiskParam": "0",
 			"RiskLimitOran": "70",
-			"FisDizayn": "0"
+			"FisDizayn": "0",
+			
 		},
 		"Menu":
 		{
@@ -195,6 +199,8 @@ var Param =
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
+			"YariMamulGramKontrol" : "1",
+			"YariMamulGramYuzde" : "10",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -269,7 +275,8 @@ var Param =
 			"FirmaListe": "",
 			"RiskParam": "0",
 			"RiskLimitOran": "70",
-			"FisDizayn": "0"
+			"FisDizayn": "0",
+			
 		},
 		"Menu":
 		{
@@ -310,6 +317,8 @@ var Param =
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
+			"YariMamulGramKontrol" : "1",
+			"YariMamulGramYuzde" : "10",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -421,10 +430,12 @@ var Param =
 			"FasonGirisSeri": "FGF",
 			"FasonCikisSeri": "FCF",
 			"FasonEtiketSeri" : "FETK",
-			"BarkodEtiketSeri" : "BETK",
+			"BarkodEtiketSeri" : "DPTK",
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
+			"YariMamulGramKontrol" : "1",
+			"YariMamulGramYuzde" : "10",
 			"YariMamulMalKabulEtiket":
 			[
 				{

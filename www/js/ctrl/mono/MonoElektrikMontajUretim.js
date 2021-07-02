@@ -813,10 +813,12 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
 
             let TmpInsertData =
             [
+                $scope.SthGSeri,
+                $scope.SthGSira,
                 $scope.SeriBarkod,
                 TmpDrUret[i].KODU
             ]
-            console.log(TmpInsertData)
+            
             let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
             console.log(TmpResult)
 
