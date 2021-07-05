@@ -76,6 +76,8 @@ var Param =
 			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulGramKontrol" : "1",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "0",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -201,6 +203,8 @@ var Param =
 			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulGramKontrol" : "1",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "0",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -319,6 +323,8 @@ var Param =
 			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulGramKontrol" : "1",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "0",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -436,6 +442,8 @@ var Param =
 			"ElektrikUretimİsEmriFlag" : "M-",
 			"YariMamulGramKontrol" : "1",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "0",
 			"YariMamulMalKabulEtiket":
 			[
 				{

@@ -1,4 +1,4 @@
-function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope) 
+function MonoElektrikMontajUretim($scope, srv, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -17,6 +17,11 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
                 },
                 columns :
                 [
+                    {
+                        dataField: "URETREC",
+                        name : "SATIR NO",
+                        width: 50
+                    }, 
                     {
                         caption : "TİP",
                         dataField: "TIP",
@@ -39,10 +44,7 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
                         dataField: "URNBARKOD",
                         width: 150
                     }, 
-                    {
-                        dataField: "URETREC",
-                        width: 100
-                    }, 
+                    
                 ],
                 hoverStateEnabled: true,
                 showBorders: true,
@@ -675,6 +677,7 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "ELEKTRİK MONTAJ ÜRETİM"
+       
 
         $scope.Data = {};
         $scope.Data.UMP = [];
@@ -920,6 +923,7 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
         }
         await EtiketInsert(EtiketData);
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        $scope.JsonSave()
         $scope.KutuKontrolMiktar = 0;
     }
     $scope.BtnKaydet = async function()
@@ -1221,5 +1225,27 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
             return rv;
         }, {});
     }
+    $scope.JsonSave = function()
+    { 
+        let File = "./www/JsonData/" + $scope.Param.Kullanici + ".js";
+        
+        srv.Emit('JsonSave',[$scope.Data.DATA,File,$scope.Param.Kullanici]);
+    }
+    $scope.SonEvrakGetir = function()
+    {
+        console.log($scope.Param)
+        $scope.Data.DATA =   window[$scope.Param.Kullanici]
+
+        if($scope.Data.DATA.length > 0)
+        {
+            InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        }
+        else
+        {
+            swal("Dikkat", "Kayıt Bulunamadı...",icon="warning");
+            return;
+        }
+    }
+    
 
 }
