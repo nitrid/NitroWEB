@@ -125,6 +125,15 @@ angular.module("app",
             controller:"MonoUretimDashboard"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoKullaniciMenuAyarlari',
+            url: '/mono_kullanici_menu_ayarlari',
+            templateUrl : "view/mono/MonoKullaniciMenuAyarlari.html",
+            controller:"MonoKullaniciMenuAyarlari"
+        }
+    ).
     //DIAN MENU
     state
     (

@@ -22,7 +22,6 @@ function Main($scope,$state,srv,$rootScope)
             {
                 let TmpHtml = "";
                 let TmpMenu = JSON.parse(MenuData).Menu.Item;
-                console.log(TmpMenu)
                 for (let i = 0; i < TmpMenu.length; i++) 
                 {
                     TmpHtml += '<li class="nav-item dropdown">'
@@ -33,13 +32,36 @@ function Main($scope,$state,srv,$rootScope)
                     {
                         if(MasterMenuControl(TmpMenu[0].Item[m].Name))
                         {
-                            TmpHtml += '<li><a class="dropdown-item" ui-sref="' + TmpMenu[i].Item[m].Link +'" href="">' + TmpMenu[i].Item[m].Name +'</a>'
+                            TmpHtml += '<li><a class="dropdown-item" ui-sref="' + TmpMenu[i].Item[m].Link +'" href="">' + TmpMenu[i].Item[m].Name +'</a></li>'
                         }
                     }
-                    TmpHtml += '</ul></li></li>'
+                    TmpHtml += '</ul></li>'
                 }
                 $scope.Html = {};
                 $scope.Html.Menu = TmpHtml
+
+                let TmpHtmlAdmin = ""
+                let Sayac = 0
+                if(Param[$scope.LoginNo].Yonetim.KullaniciAyarlari.length > 0)
+                {
+                    TmpHtmlAdmin += '<li class="nav-item dropdown">'
+                    TmpHtmlAdmin += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> Yönetim </a>'
+                    TmpHtmlAdmin += '<ul class="dropdown-menu">'
+                    for(let j = 0; j < Param[$scope.LoginNo].Yonetim.KullaniciAyarlari.length; j++)
+                    {
+                        if(Param[$scope.LoginNo].Yonetim.KullaniciAyarlari[j].status == 1)
+                        {
+                            TmpHtmlAdmin += '<li><a class="dropdown-item" ui-sref="' + Param[$scope.LoginNo].Yonetim.KullaniciAyarlari[j].link +'" href="">' + Param[$scope.LoginNo].Yonetim.KullaniciAyarlari[j].name +'</a></li>' 
+                            Sayac++;
+                        }
+                    }
+                    TmpHtmlAdmin += '</ul></li>'
+                    if(Sayac == 0)
+                    {
+                        TmpHtmlAdmin = ""
+                    }
+                    $scope.Html.Admin = TmpHtmlAdmin
+                }
             })
         }
     }

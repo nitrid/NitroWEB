@@ -43,6 +43,31 @@ var Param =
 			"Barkod Etiket Basımı": "1",
 			"Fason Giriş": "1",
 			"Elektrik Montaj Uretim": "1",
+		},
+		"Yonetim":
+		{
+			"KullaniciAyarlari":
+			[
+				{
+					"name": "Kullanici Menu Ayarları",
+					"link": "main.MonoKullaniciMenuAyarlari",
+					"status": "1"
+				},
+				{
+					"name": "Kullanici Parametre Ayarları",
+					"link": "main.MonoKullaniciParametreAyarlari",
+					"status": "0"
+				},
+				{
+					"name": "Üretim Temizleme",
+					"link": "main.MonoKullaniciParametreAyarlari",
+					"status": "1"
+				}
+			],
+			"Raporlar":
+			[
+
+			],
 
 		},
 		"Mono":
