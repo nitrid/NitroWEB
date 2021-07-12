@@ -48,6 +48,10 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 {
                     visible: true
                 },
+                onRowPrepared(e) 
+                {
+                    e.rowElement.addClass("font-weight-bold")
+                },
                 onSelectionChanged: function (selectedItems) 
                 {
                     SelectionRow = selectedItems.selectedRowsData[0];
@@ -376,6 +380,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             
         ]
+        console.log(Param)
         for (let i = 0; i < Param.length; i++) 
         {
             ParamUpdate(Object.values(Param[i]),Object.keys(Param[i]))
