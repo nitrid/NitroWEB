@@ -86,7 +86,14 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             {
                 if (typeof pData != 'undefined') 
                 {
-                    $scope.LblKasaDara = pData;
+                    if($scope.Param.Mono.YariMamulManuelGiris ==  1)
+                    {
+                        $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
+                    }
+                    else
+                    {
+                        $scope.LblKasaDara = pData
+                    }
                 }
             }
         }
@@ -646,7 +653,6 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         $scope.Data.DATA = [];
 
         $scope.LblKasaDara = 0;
-
         $scope.TxtSpRefMiktar = 0;
         $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
@@ -885,5 +891,16 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         }
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+    }
+    $scope.YeniEvrak = function()
+    {
+        if($scope.Data.DATA.length > 0)
+        {
+            swal("Dikkat", "Eklenmiş Ürünleri Kaydetmeden Yeni Evraka Geçilemez !",icon="warning");
+        }
+        else
+        {
+            $scope.Init()
+        }
     }
 }

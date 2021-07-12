@@ -42,6 +42,26 @@ function Main($scope,$state,srv,$rootScope)
 
                 let TmpHtmlAdmin = ""
                 let Sayac = 0
+                if(Param[$scope.LoginNo].Yonetim.Raporlar.length > 0)
+                {
+                    TmpHtmlAdmin += '<li class="nav-item dropdown">'
+                    TmpHtmlAdmin += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> Raporlar </a>'
+                    TmpHtmlAdmin += '<ul class="dropdown-menu">'
+                    for(let j = 0; j < Param[$scope.LoginNo].Yonetim.Raporlar.length; j++)
+                    {
+                        if(Param[$scope.LoginNo].Yonetim.Raporlar[j].status == 1)
+                        {
+                            TmpHtmlAdmin += '<li><a class="dropdown-item" ui-sref="' + Param[$scope.LoginNo].Yonetim.Raporlar[j].link +'" href="">' + Param[$scope.LoginNo].Yonetim.Raporlar[j].name +'</a></li>' 
+                            Sayac++;
+                        }
+                    }
+                    TmpHtmlAdmin += '</ul></li>'
+                    if(Sayac == 0)
+                    {
+                        TmpHtmlAdmin = ""
+                    }
+                    $scope.Html.Admin = TmpHtmlAdmin
+                }
                 if(Param[$scope.LoginNo].Yonetim.KullaniciAyarlari.length > 0)
                 {
                     TmpHtmlAdmin += '<li class="nav-item dropdown">'
