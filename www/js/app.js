@@ -128,10 +128,19 @@ angular.module("app",
     state
     (
         {
-            name: 'main.MonoKullaniciMenuAyarlari',
-            url: '/mono_kullanici_menu_ayarlari',
-            templateUrl : "view/mono/MonoKullaniciMenuAyarlari.html",
-            controller:"MonoKullaniciMenuAyarlari"
+            name: 'main.MonoKullaniciAyarlari',
+            url: '/mono_kullanici_ayarlari',
+            templateUrl : "view/mono/MonoKullaniciAyarlari.html",
+            controller:"MonoKullaniciAyarlari"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoKullaniciEkle',
+            url: '/mono_kullanici_ekle',
+            templateUrl : "view/mono/MonoKullaniciEkle.html",
+            controller:"MonoKullaniciAyarlari"
         }
     ).
     //DIAN MENU

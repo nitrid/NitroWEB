@@ -2056,5 +2056,48 @@ var Query =
         param : ['sto_kod'],
         type : ['string|50']
     },
+    /* Parametre
+       0 - KULLANICI
+       1 - MENU
+       2 - MENU YONETIM
+       3 - MENU RAPOR
+       4 - GENEL
+       5 - SISTEM */
+    GetParam :
+    {
+        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE TYPE = @TYPE",
+        param : ['TYPE'],
+        type : ['int'] 
+    },
+    GetKullanici : 
+    {
+        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE ACCOUNT = @ACCOUNT",
+        param : ['ACCOUNT'],
+        type : ['string|50'] 
+    },
+    UpdateParam : 
+    {
+        query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_PARAM SET VALUE = @VALUE WHERE TAG = @TAG",
+        param : ['VALUE','TAG'],
+        type : ['string|50','string|50']
+    },
+    InsertParam :
+    {
+        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_PARAM] " +
+                "([ACCOUNT] " +
+                ",[TAG] " +
+                ",[VALUE] " +
+                ",[TYPE] " +
+                ",[SPECIAL] " +
+                " ) VALUES ( " +
+                "@ACCOUNT           --<ACCOUNT, nvarchar(50),> \n " +
+                ",@TAG              --<TAG, nvarchar(50),> \n " +
+                ",@VALUE            --<VALUE, nvarchar(200),> \n " +
+                ",@TYPE             --<TYPE, tinyint,> \n " +
+                ",@SPECIAL          --<SPECIAL, nvarchar(200),> \n " +
+                " )",
+        param : ['ACCOUNT','TAG','VALUE','TYPE','SPECIAL'],
+        type  : ['string|50','string|50','string|200','int','string|200',]
+    }
 
 };

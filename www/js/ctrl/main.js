@@ -1,6 +1,6 @@
 function Main($scope,$state,srv,$rootScope)
 {
-    $scope.Init = function()
+    $scope.Init = async function()
     {
         $scope.Firm = localStorage.getItem('firm');
         $scope.User = atob(localStorage.getItem('login'))
@@ -18,51 +18,73 @@ function Main($scope,$state,srv,$rootScope)
         Menu();
         if(srv.SocketConnected)
         {
-            srv.Emit('GetMenu','',function(MenuData)
-            {
-                let TmpHtml = "";
-                let TmpMenu = JSON.parse(MenuData).Menu.Item;
-                for (let i = 0; i < TmpMenu.length; i++) 
-                {
-                    TmpHtml += '<li class="nav-item dropdown">'
-                    TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> ' + TmpMenu[i].Name +  '</a>'
-                    
-                    TmpHtml += '<ul class="dropdown-menu">'
-                    for (let m = 0; m < TmpMenu[i].Item.length; m++) 
-                    {
-                        if(MasterMenuControl(TmpMenu[0].Item[m].Name))
-                        {
-                            TmpHtml += '<li><a class="dropdown-item" ui-sref="' + TmpMenu[i].Item[m].Link +'" href="">' + TmpMenu[i].Item[m].Name +'</a></li>'
-                        }
-                    }
-                    TmpHtml += '</ul></li>'
-                }
-                $scope.Html = {};
-                $scope.Html.Menu = TmpHtml
+            $scope.Menu = await srv.Execute($scope.Firm,'GetParam','1')
+            $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam','2')
+            $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam','3')
+            
+            //*****  YÖNETİM  ******//
 
-                let TmpHtmlAdmin = ""
-                let Sayac = 0
-                if(Param[$scope.LoginNo].Yonetim.KullaniciAyarlari.length > 0)
+            let TmpHtmlYonetim = ""
+            let Sayac = 0
+
+            TmpHtmlYonetim += '<li><a class="dropdown-item" href="#"> Yönetim &raquo; </a><ul class="submenu dropdown-menu"> '
+            for(let j = 0; j < $scope.MenuYonetim.length; j++)
+            {
+                if($scope.MenuYonetim[j].VALUE == "true")
                 {
-                    TmpHtmlAdmin += '<li class="nav-item dropdown">'
-                    TmpHtmlAdmin += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> Yönetim </a>'
-                    TmpHtmlAdmin += '<ul class="dropdown-menu">'
-                    for(let j = 0; j < Param[$scope.LoginNo].Yonetim.KullaniciAyarlari.length; j++)
-                    {
-                        if(Param[$scope.LoginNo].Yonetim.KullaniciAyarlari[j].status == 1)
-                        {
-                            TmpHtmlAdmin += '<li><a class="dropdown-item" ui-sref="' + Param[$scope.LoginNo].Yonetim.KullaniciAyarlari[j].link +'" href="">' + Param[$scope.LoginNo].Yonetim.KullaniciAyarlari[j].name +'</a></li>' 
-                            Sayac++;
-                        }
-                    }
-                    TmpHtmlAdmin += '</ul></li>'
-                    if(Sayac == 0)
-                    {
-                        TmpHtmlAdmin = ""
-                    }
-                    $scope.Html.Admin = TmpHtmlAdmin
+                    TmpHtmlYonetim += '<li><a class="dropdown-item" ui-sref="' + 'main.' + $scope.MenuYonetim[j].TAG +'" href="">' + $scope.MenuYonetim[j].SPECIAL +'</a></li>' 
+                    Sayac++;
                 }
-            })
+            }
+            TmpHtmlYonetim += '</ul></li>'
+            if(Sayac == 0)
+            {
+                TmpHtmlYonetim = ""
+            }
+
+            //*****  RAPOR  ******//
+
+            let TmpHtmlRapor = ""
+            let Sayac2 = 0
+
+            TmpHtmlRapor += '<li><a class="dropdown-item" href="#"> Rapor &raquo; </a><ul class="submenu dropdown-menu"> '
+            for(let x = 0; x < $scope.MenuRapor.length; x++)
+            {
+                if($scope.MenuRapor[x].VALUE == "true")
+                {
+                    TmpHtmlRapor += '<li><a class="dropdown-item" ui-sref="' + $scope.MenuRapor[x].TAG +'" href="">' + $scope.MenuRapor[x].SPECIAL +'</a></li>' 
+                    Sayac2++;
+                }
+            }
+            TmpHtmlRapor += '</ul></li>'
+            if(Sayac2 == 0)
+            {
+                TmpHtmlRapor = ""
+            }
+
+            //*****  ANA MENÜ - SUBMENU  ******//
+
+            let TmpHtml = "";
+            TmpHtml += '<li class="nav-item dropdown">'
+            TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> Mono </a>'
+            
+            TmpHtml += '<ul class="dropdown-menu">'
+            for (let i = 0; i < $scope.Menu.length; i++) 
+            {
+                if($scope.Menu[i].VALUE == "true")
+                {
+                    TmpHtml += '<li><a class="dropdown-item" ui-sref="' + 'main.' + $scope.Menu[i].TAG +'" href="">' + $scope.Menu[i].SPECIAL +'</a></li>'
+                }
+            }
+            TmpHtml += TmpHtmlYonetim 
+            TmpHtml += TmpHtmlRapor
+            TmpHtml += '</ul></li>'
+            $scope.Html = {};
+            $scope.Html.Menu = TmpHtml
+
+            await GetParamList($scope.User)
+            
+            $state.go("main."+$rootScope.GeneralParamList.AcilisSayfasi)
         }
     }
     $scope.BtnExit = function()
@@ -71,14 +93,6 @@ function Main($scope,$state,srv,$rootScope)
         localStorage.removeItem('login')
         localStorage.removeItem('LoginNo')
         $state.go('login')
-    }
-    function MasterMenuControl(MenuName)
-    {        
-        if(Param[$scope.LoginNo].Menu[MenuName] == "1")
-        {
-            return true;
-        }
-        return false;
     }
     function Menu()
     {
@@ -98,6 +112,78 @@ function Main($scope,$state,srv,$rootScope)
             });
         }
         
+    }
+    async function GetParamList(pKullanici)
+    {
+        return new Promise(async resolve => 
+        {
+            $scope.Data = await srv.Execute($scope.Firm,'GetKullanici',[pKullanici])
+
+            $rootScope.GeneralParamList = 
+            {
+                // Kullanıcı
+                Password : srv.GetParamValue($scope.Data,"Password"),
+                // Menü
+                MonoMamulMalKabul : srv.GetParamValue($scope.Data,"MonoMamulMalKabul"),
+                MonoYariMamulMalKabul : srv.GetParamValue($scope.Data,"MonoYariMamulMalKabul"),
+                MonoBarkodEtiketBasimi : srv.GetParamValue($scope.Data,"MonoBarkodEtiketBasimi"),
+                MonoKasaBarkodOlustur : srv.GetParamValue($scope.Data,"MonoKasaBarkodOlustur"),
+                MonoFasonGiris : srv.GetParamValue($scope.Data,"MonoFasonGiris"),
+                MonoElektrikMontajUretim : srv.GetParamValue($scope.Data,"MonoElektrikMontajUretim"),
+                MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
+                // Menü Yönetim
+                // Menü Rapor
+                // Parametre
+                BarkodEtiketSeri : srv.GetParamValue($scope.Data,"BarkodEtiketSeri"),
+                BasarSayarHasasTeraziIP : srv.GetParamValue($scope.Data,"BasarSayarHasasTeraziIP"),
+                BasarSayarHasasTeraziPORT : srv.GetParamValue($scope.Data,"BasarSayarHasasTeraziPORT"),
+                BasarSayarKantarIP : srv.GetParamValue($scope.Data,"BasarSayarKantarIP"),
+                BasarSayarKantarPORT : srv.GetParamValue($scope.Data,"BasarSayarKantarPORT"),
+                BasarSayarSeri : srv.GetParamValue($scope.Data,"BasarSayarSeri"),
+                ElektrikUretimEtiketSeri : srv.GetParamValue($scope.Data,"ElektrikUretimEtiketSeri"),
+                ElektrikUretimIsEmriFlag : srv.GetParamValue($scope.Data,"ElektrikUretimIsEmriFlag"),
+                ElektrikUretimOperasyonSeri : srv.GetParamValue($scope.Data,"ElektrikUretimOperasyonSeri"),
+                ElektrikUretimUrunCikisSeri : srv.GetParamValue($scope.Data,"ElektrikUretimUrunCikisSeri"),
+                ElektrikUretimUrunGirisSeri : srv.GetParamValue($scope.Data,"ElektrikUretimUrunGirisSeri"),
+                FasonCikisSeri : srv.GetParamValue($scope.Data,"FasonCikisSeri"),
+                FasonDepo : srv.GetParamValue($scope.Data,"FasonDepo"),
+                FasonEtiketSeri : srv.GetParamValue($scope.Data,"FasonEtiketSeri"),
+                FasonGirisSeri : srv.GetParamValue($scope.Data,"FasonGirisSeri"),
+                KasaBarkodSeri : srv.GetParamValue($scope.Data,"KasaBarkodSeri"),
+                MamulEtiketSeri : srv.GetParamValue($scope.Data,"MamulEtiketSeri"),
+                MamulMalKabulDepo : srv.GetParamValue($scope.Data,"MamulMalKabulDepo"),
+                MontajDepo : srv.GetParamValue($scope.Data,"MontajDepo"),
+                OperasyonSeri : srv.GetParamValue($scope.Data,"OperasyonSeri"),
+                UrunCikisSeri : srv.GetParamValue($scope.Data,"UrunCikisSeri"),
+                UrunGirisSeri : srv.GetParamValue($scope.Data,"UrunGirisSeri"),
+                YariMamulDepo : srv.GetParamValue($scope.Data,"YariMamulDepo"),
+                YariMamulEtiketSeri : srv.GetParamValue($scope.Data,"YariMamulEtiketSeri"),
+                YariMamulGramKontrol : srv.GetParamValue($scope.Data,"YariMamulGramKontrol"),
+                YariMamulGramYuzde : srv.GetParamValue($scope.Data,"YariMamulGramYuzde"),
+                YariMamulOperasyonSeri : srv.GetParamValue($scope.Data,"YariMamulOperasyonSeri"),
+                YariMamulUrunCikisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunCikisSeri"),
+                YariMamulUrunGirisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunGirisSeri"),
+                YariMamulMalKabulEtiket : srv.GetParamValue($scope.Data,"YariMamulMalKabulEtiket"),
+                ElektrikMontajMalKabulEtiket : srv.GetParamValue($scope.Data,"ElektrikMontajMalKabulEtiket"),
+                BarkodBasimiEtiket : srv.GetParamValue($scope.Data,"BarkodBasimiEtiket"),
+                MamulMalKabulEtiket : srv.GetParamValue($scope.Data,"MamulMalKabulEtiket"),
+                FasonGirisEtiket : srv.GetParamValue($scope.Data,"FasonGirisEtiket"),
+                BasarSayarEtiket : srv.GetParamValue($scope.Data,"BasarSayarEtiket"),
+                KasaEtiket : srv.GetParamValue($scope.Data,"KasaEtiket"),
+                // Sistem
+                AcilisSayfasi : srv.GetParamValue($scope.Data,"AcilisSayfasi"),
+                Firma : srv.GetParamValue($scope.Data,"Firma"),
+                FirmaListe : srv.GetParamValue($scope.Data,"FirmaListe"),
+                KiloBaslangic : srv.GetParamValue($scope.Data,"KiloBaslangic"),
+                KiloCarpan : srv.GetParamValue($scope.Data,"KiloCarpan"),
+                KiloFlag : srv.GetParamValue($scope.Data,"KiloFlag"),
+                KiloUzunluk : srv.GetParamValue($scope.Data,"KiloUzunluk"),
+                MikroId : srv.GetParamValue($scope.Data,"MikroId"),
+                PlasiyerKodu : srv.GetParamValue($scope.Data,"PlasiyerKodu"),
+                SatirBirlestir : srv.GetParamValue($scope.Data,"SatirBirlestir"),
+            }
+            resolve()
+        });
     }
 
 }

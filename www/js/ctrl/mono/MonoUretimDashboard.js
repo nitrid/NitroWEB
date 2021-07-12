@@ -1,8 +1,14 @@
 function MonoUretimDashboard($scope,srv, $rootScope)
 {
+    $scope.Init = async function () 
+    {
+        $scope.Firma = localStorage.getItem('firm');
+        $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "ÜRETİM"
+    }
     $(function(){
         $("#pie").dxPieChart({
-            palette: ['#007bff', '#4cae4c', '#dc3545'],
+            palette: ['#0dcaf0', '#4cae4c', '#007bff'],
             dataSource: dataSource,
             //title: "Olympic Medals in 2008",
             legend: {
@@ -36,8 +42,8 @@ function MonoUretimDashboard($scope,srv, $rootScope)
         });
     }); 
     var dataSource = [{
-        uretim: "HEDEFLENEN",
-        medals: 300,
+        uretim: "KALAN",
+        medals: 200,
     }, {
         uretim: "ÜRETİM",
         medals: 100

@@ -170,6 +170,10 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             
         });
     }
+    function Bool(pData)
+    { 
+        return pData==="false" || pData==="null" || pData==="NaN" || pData==="undefined" || pData==="0" ? false : !!pData; 
+    } 
     this.SumColumn = function(pData,pColumn,pFilter)    
     {
         let Sum = 0;
@@ -217,5 +221,29 @@ angular.module('app.srv', []).service('srv',function($rootScope)
         }
         
         return
+    }
+    this.GetParamValue = function(pList,pTag)
+    {   
+        for (let i = 0; i < pList.length; i++) 
+        {
+            if(pList[i].TAG === pTag)
+            {
+                if(pList[i].VALUE == "true" || pList[i].VALUE == "false")
+                {
+                    if(window.location.hash == "#!/main/mono_kullanici_ayarlari")
+                    {
+                        return Bool(pList[i].VALUE);
+                    }
+                    else
+                    {
+                        return pList[i].VALUE;
+                    }
+                }
+                else
+                {
+                    return pList[i].VALUE;
+                }
+            }
+        }
     }
 });
