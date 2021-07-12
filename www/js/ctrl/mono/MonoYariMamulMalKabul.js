@@ -86,7 +86,14 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             {
                 if (typeof pData != 'undefined') 
                 {
-                    $scope.LblKasaDara = pData;
+                    if($scope.Param.Mono.YariMamulManuelGiris ==  1)
+                    {
+                        $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
+                    }
+                    else
+                    {
+                        $scope.LblKasaDara = pData
+                    }
                 }
             }
         }
@@ -113,7 +120,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
                         "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1  AND is_Kod LIKE '%F-%'"
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1  AND is_Kod LIKE '" +$scope.Param.Mono.YariMamulİsEmriFlag+ "%' "
             },
             selection : "KODU",
             columns :
@@ -589,16 +596,16 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     }
     function HassasData(pData)
     {
-        // if(pData.includes("ST,GS,+") && pData.includes("g")) 
-        // {
-        //     pData = pData.substring(
-        //         pData.lastIndexOf("ST,GS,+") + 1,
-        //         pData.lastIndexOf("g")
-        //     );
-        //     pData = pData.split("ST,GS,+").join("");
-        //     pData = pData.split("T,GS,+").join("");
-        //     $scope.LblHassasGram = pData.split(",   ").join("");
-        // }
+        if(pData.includes("ST,GS,+") && pData.includes("g")) 
+        {
+            pData = pData.substring(
+                pData.lastIndexOf("ST,GS,+") + 1,
+                pData.lastIndexOf("g")
+            );
+            pData = pData.split("ST,GS,+").join("");
+            pData = pData.split("T,GS,+").join("");
+            $scope.LblHassasGram = pData.split(",   ").join("");
+        }
     }
     function MaxSthSira(pSeri,pEvrakTip)
     {
@@ -646,13 +653,17 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         $scope.Data.DATA = [];
 
         $scope.LblKasaDara = 0;
-
         $scope.TxtSpRefMiktar = 0;
-        $scope.LblHassasGram = 100;
+        $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
         $scope.LblKantarMiktar = 0;
         $scope.DataKantarKilo = 50;
         $scope.DataHassasTeraziGram = 0;
+        $scope.ManuelGirisHide = false;
+        if($scope.Param.Mono.YariMamulManuelGiris ==  1)
+        {
+            $scope.ManuelGirisHide = true;
+        }
 
         $scope.LblUrun = "";
         $scope.TxtBarkod = "";
@@ -677,17 +688,13 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     $scope.BtnTartimOnayla = async function()
     {
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
-        //$scope.DataKantarKilo = parseInt($scope.LblKantarKilo);
+        $scope.DataKantarKilo = parseInt($scope.LblKantarKilo);
         if($scope.Param.Mono.YariMamulGramKontrol == 1)
         {
             console.log($scope.LblUrun)
             let TmpData = await srv.Execute($scope.Firma,'StokGramDegerGetir',[$scope.LblUrun])
-            console.log(TmpData[0].REFDEGER)
             let ReferansDeger = (TmpData[0].REFDEGER) * ($scope.Param.Mono.YariMamulGramYuzde / 100)
-            console.log(ReferansDeger)
-            console.log($scope.LblHassasGram / $scope.TxtSpRefMiktar)
-            console.log((TmpData[0].REFDEGER + ReferansDeger))
-            if(($scope.LblHassasGram / $scope.TxtSpRefMiktar) < (TmpData[0].REFDEGER - ReferansDeger) ||  ($scope.LblHassasGram / $scope.TxtSpRefMiktar) > (TmpData[0].REFDEGER + ReferansDeger))
+            if(($scope.LblHassasGram / $scope.TxtSpRefMiktar) < (TmpData[0].REFDEGER - ReferansDeger) ||  ($scope.LblHassasGram / $scope.TxtSpRefMiktar) > (parseInt(TmpData[0].REFDEGER) + ReferansDeger))
             {
                 swal("Dikkat", "Verilen Değerler Ürün İçin Belirlenen Sapma Oranından Fazla İşlem Durduruldu..",icon="warning");
                 return;
@@ -745,7 +752,6 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     $scope.BtnEkle =  function()
     {
 
-        console.log(123)
        
         let TmpDrUret = $scope.Data.UMP.filter(x => x.URETTUKET == 1)
         let TmpDrTuket = $scope.Data.UMP.filter(x => x.URETTUKET == 0)
@@ -885,5 +891,16 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         }
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+    }
+    $scope.YeniEvrak = function()
+    {
+        if($scope.Data.DATA.length > 0)
+        {
+            swal("Dikkat", "Eklenmiş Ürünleri Kaydetmeden Yeni Evraka Geçilemez !",icon="warning");
+        }
+        else
+        {
+            $scope.Init()
+        }
     }
 }

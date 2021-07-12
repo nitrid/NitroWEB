@@ -21,7 +21,7 @@ function Main($scope,$state,srv,$rootScope)
             $scope.Menu = await srv.Execute($scope.Firm,'GetParam','1')
             $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam','2')
             $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam','3')
-            
+
             //*****  YÖNETİM  ******//
 
             let TmpHtmlYonetim = ""

@@ -3,7 +3,7 @@ var Param =
 	{
 		"Kullanici": "Admin",
 		"Sifre": "1",
-		"Firma": "DEMO",
+		"Firma": "MONO2020",
 		"MikroId": "99",
 		"Sistem":
 		{
@@ -55,18 +55,33 @@ var Param =
 				},
 				{
 					"name": "Kullanici Parametre Ayarları",
-					"link": "main.MonoKullaniciParametreAyarlari",
-					"status": "0"
+					"link": "main.",
+					"status": "1"
 				},
 				{
 					"name": "Üretim Temizleme",
-					"link": "main.MonoKullaniciParametreAyarlari",
+					"link": "main.",
 					"status": "1"
 				}
 			],
 			"Raporlar":
 			[
-
+				{
+					"name": "Stok Miktar Seviyeleri",
+					"link": "main.",
+					"status": "1"
+				},
+				{
+					"name": "Depo Bazlı Transfer ve Sevkler",
+					"link": "main.",
+					"status": "1"
+				},
+				{
+					"name": "Stok Bazlı Giriş Ve Çıkışlar",
+					"link": "main.",
+					"status": "1"
+				},
+				
 			],
 
 		},
@@ -99,8 +114,10 @@ var Param =
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
-			"YariMamulGramKontrol" : "1",
+			"YariMamulGramKontrol" : "0",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "1",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -224,8 +241,10 @@ var Param =
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
-			"YariMamulGramKontrol" : "1",
+			"YariMamulGramKontrol" : "0",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "1",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -342,8 +361,10 @@ var Param =
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
-			"YariMamulGramKontrol" : "1",
+			"YariMamulGramKontrol" : "0",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "1",
 			"YariMamulMalKabulEtiket":
 			[
 				{
@@ -459,8 +480,10 @@ var Param =
 			"KasaBarkodSeri" : "KETK",
 			"BasarSayarSeri" : "BETK",
 			"ElektrikUretimİsEmriFlag" : "M-",
-			"YariMamulGramKontrol" : "1",
+			"YariMamulGramKontrol" : "0",
 			"YariMamulGramYuzde" : "10",
+			"YariMamulİsEmriFlag" : "F-",
+			"YariMamulManuelGiris" : "1",
 			"YariMamulMalKabulEtiket":
 			[
 				{

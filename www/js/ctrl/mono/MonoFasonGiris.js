@@ -129,6 +129,36 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 }
             }
         }
+        $scope.BtnManuelKasaDaraAl =
+        {
+            title: "Kasa Darası Elle Giriş",
+            onSelected: async function (pData) 
+            {
+                if (typeof pData != 'undefined') 
+                {
+                    if($scope.Param.Mono.YariMamulManuelGiris ==  1)
+                    {
+                        $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
+                    }
+                    else
+                    {
+                        $scope.LblKasaDara = pData
+                    }
+                    
+                }
+            }
+        }
+        $scope.BtnKasaDaraAl =
+        {
+            title: "Kasa Darası Al",
+            onSelected: async function (pData) 
+            {
+                if (typeof pData != 'undefined') 
+                {
+                    $scope.LblKasaDara = (pData.substring(7, 12) / 1000).toFixed(3);
+                }
+            }
+        }
         $scope.BteFasoncu = 
         {
             title : "Fasoncu Seçim",
@@ -217,7 +247,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             {
                 if (typeof pData != 'undefined') 
                 {
-                    BtnEkle(pData);
+                    $scope.Ekle(pData);
                 }
             }
         }
@@ -236,6 +266,78 @@ function MonoFasonGiris($scope,srv, $rootScope)
             }
         }
         return false;
+    }
+    function KantarVeriGetir() 
+    {
+        var net = new WebTCP('192.168.2.240', 9999);
+
+        options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        socket.on('connect', function () { console.log('connected'); });
+
+        let TmpData = "";
+        socket.on('data', function (data) 
+        {
+            TmpData += data;
+
+            if(data.includes("kg"))
+            {
+                KantarData(TmpData)
+                TmpData = "";
+            }
+        });
+
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
+    }
+    function KantarData(pData)
+    {
+        if (pData.includes("�,") && pData.includes("kg")) 
+        {
+            pData = pData.substring(
+                pData.lastIndexOf("�,") + 1,
+                pData.lastIndexOf("k")
+            );
+            $scope.LblKantarKilo = pData.split(",   ").join("");
+            $scope.LblKantarKilo = pData.split(",").join("");
+            $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
+        }
+    }
+    function HassasTeraziVeriGetir() 
+    {
+        var net = new WebTCP('192.168.2.240', 9999);
+
+        options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
+        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        socket.on('connect', function () { console.log('connected'); });
+
+        let TmpData = "";
+        socket.on('data', function (data) 
+        {
+            TmpData += data;
+           
+            if(data.includes("g"))
+            {
+                HassasData(TmpData)
+                TmpData = "";
+            }
+        });
+
+        socket.on('end', function (data) { console.log("socket is closed "); });
+        socket.write("hello world");
+    }
+    function HassasData(pData)
+    {
+        if(pData.includes("ST,GS,+") && pData.includes("g")) 
+        {
+            pData = pData.substring(
+                pData.lastIndexOf("ST,GS,+") + 1,
+                pData.lastIndexOf("g")
+            );
+            pData = pData.split("ST,GS,+").join("");
+            pData = pData.split("T,GS,+").join("");
+            $scope.LblHassasGram = pData.split(",   ").join("");
+        }
     }
     function Ekle(pBarkod,pParti,pLot,pMiktar)
     {
@@ -295,10 +397,14 @@ function MonoFasonGiris($scope,srv, $rootScope)
         
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
     }
-    async function BtnEkle(pMiktar)
+     $scope.Ekle = async function(pMiktar)
     {
-        let TmpBarkod = "";
 
+        if(typeof pMiktar == 'undefined')
+        {
+            pMiktar = $scope.LblKantarMiktar
+        }
+        let TmpBarkod = "";
         if($scope.BteIsEmri.txt == "" || document.getElementById("Tarih").value == "" || $scope.BteFasoncu.txt == "")
         {
             swal("Dikkat", "Lütfen İş emri,fasoncu ve tarih seçmeden geçmeyin.",icon="warning");
@@ -368,7 +474,6 @@ function MonoFasonGiris($scope,srv, $rootScope)
             }
 
             let TmpData = await srv.Execute(TmpQuery)
-
             if (typeof TmpData == 'undefined')
             {
                 TmpData = []
@@ -612,6 +717,19 @@ function MonoFasonGiris($scope,srv, $rootScope)
         $scope.EtiketMiktar = 0;
         $scope.TxtEvrakno = "";
 
+        $scope.LblKasaDara = 0;
+        $scope.TxtSpRefMiktar = 0;
+        $scope.LblHassasGram = 0;
+        $scope.LblKantarKilo = 0;
+        $scope.LblKantarMiktar = 0;
+        $scope.DataKantarKilo = 50;
+        $scope.DataHassasTeraziGram = 0;
+        $scope.ManuelGirisHide = false;
+        if($scope.Param.Mono.YariMamulManuelGiris ==  1)
+        {
+            $scope.ManuelGirisHide = true;
+        }
+
         $scope.SthGSeri = $scope.Param.Mono.FasonGirisSeri;
         $scope.SthCSeri = $scope.Param.Mono.FasonCikisSeri;
 
@@ -620,6 +738,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
 
         InitObj();
         InitGrd([]);
+        HassasTeraziVeriGetir();
+        KantarVeriGetir();
     }
     $scope.BtnSatirSil = async function()
     {
@@ -640,6 +760,25 @@ function MonoFasonGiris($scope,srv, $rootScope)
         {
             InitGrd([]);
         }
+    }
+    $scope.BtnTartimOnayla = async function()
+    {
+        $scope.DataHassasTeraziGram = $scope.LblHassasGram;
+        $scope.DataKantarKilo = parseInt($scope.LblKantarKilo);
+        if($scope.Param.Mono.YariMamulGramKontrol == 1)
+        {
+            console.log($scope.LblUrun)
+            let TmpData = await srv.Execute($scope.Firma,'StokGramDegerGetir',[$scope.LblUrun])
+            let ReferansDeger = (TmpData[0].REFDEGER) * ($scope.Param.Mono.YariMamulGramYuzde / 100)
+            if(($scope.LblHassasGram / $scope.TxtSpRefMiktar) < (TmpData[0].REFDEGER - ReferansDeger) ||  ($scope.LblHassasGram / $scope.TxtSpRefMiktar) > (parseInt(TmpData[0].REFDEGER) + ReferansDeger))
+            {
+                swal("Dikkat", "Verilen Değerler Ürün İçin Belirlenen Sapma Oranından Fazla İşlem Durduruldu..",icon="warning");
+                return;
+            }
+            
+        }
+       $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2));
+      
     }
     $scope.BtnKaydet = async function()
     {
@@ -684,6 +823,17 @@ function MonoFasonGiris($scope,srv, $rootScope)
         else
         {
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        }
+    }
+    $scope.YeniEvrak = function()
+    {
+        if($scope.Data.DATA.length > 0)
+        {
+            swal("Dikkat", "Eklenmiş Ürünleri Kaydetmeden Yeni Evraka Geçilemez !",icon="warning");
+        }
+        else
+        {
+            $scope.Init()
         }
     }
 }

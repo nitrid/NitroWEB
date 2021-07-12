@@ -3,6 +3,7 @@ angular.module('app').component('buttonEdit',
     templateUrl: 'js/component/button-edit.html',
     controller: function ButtonEdit($scope,$attrs,srv) 
     {
+
         let SelectionRow;
         var ctrl = this
         ctrl.Txt = ""
@@ -10,6 +11,7 @@ angular.module('app').component('buttonEdit',
 
         async function ModalShow()
         {
+
             ctrl.SelectedRow = {};
             let GrdResult = await Init()
 

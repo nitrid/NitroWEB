@@ -1,4 +1,4 @@
-function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope) 
+function MonoElektrikMontajUretim($scope, srv, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -17,6 +17,11 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
                 },
                 columns :
                 [
+                    {
+                        dataField: "URETREC",
+                        name : "SATIR NO",
+                        width: 50
+                    }, 
                     {
                         caption : "TİP",
                         dataField: "TIP",
@@ -39,10 +44,7 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
                         dataField: "URNBARKOD",
                         width: 150
                     }, 
-                    {
-                        dataField: "URETREC",
-                        width: 100
-                    }, 
+                    
                 ],
                 hoverStateEnabled: true,
                 showBorders: true,
@@ -102,7 +104,7 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
             }
         }
         $scope.BteIsEmri = 
-        {
+        {            
             title : "İş Emri Seçim",
             txt : "",
             datasource : 
@@ -674,7 +676,8 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "ELEKTRİK MONTAJ ÜRETİM"
+        $rootScope.PageName = "ELEKTRİK ÜRETİM"
+       
 
         $scope.Data = {};
         $scope.Data.UMP = [];
@@ -920,6 +923,7 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
         }
         await EtiketInsert(EtiketData);
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        $scope.JsonSave()
         $scope.KutuKontrolMiktar = 0;
     }
     $scope.BtnKaydet = async function()
@@ -942,8 +946,8 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
         var TmpDrUretSURE = 0 
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
-            console.log(TmpDrUret[i].MIKTAR)
-            console.log(TmpDrUret[i].SURE)
+            
+            
             
             TmpDrUretMiktar = TmpDrUretMiktar + TmpDrUret[i].MIKTAR
             var TmpDrUretKODU = TmpDrUret[i].KODU
@@ -977,6 +981,8 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
            $scope.IsemriKapat()
         }
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+        $scope.JsonDelete()
+        $scope.Init()
     }
     $scope.BtnEtiketBas = async function()
     {
@@ -1220,6 +1226,95 @@ function MonoElektrikMontajUretim($scope, srv,$filter, $rootScope)
             (rv[x[pKey]] = rv[x] || []).push(x);
             return rv;
         }, {});
+    }
+    $scope.JsonSave = function()
+    { 
+        let File = "./www/JsonData/" + $scope.Param.Kullanici + ".js";
+        
+        srv.Emit('JsonSave',[$scope.Data.DATA,File,$scope.Param.Kullanici]);
+    }
+    $scope.SonEvrakGetir = async function()
+    {
+        $scope.Data.DATA =   window[$scope.Param.Kullanici]
+       
+        if($scope.Data.DATA.length > 0)
+        {
+           $scope.BteIsEmri.txt = $scope.Data.DATA[0].ISEMRI
+            for(let i = 0; i < $scope.Data.DATA.length; i++)
+            {
+                if($scope.Data.DATA[i].TIP == "ÜRETİM")
+                {
+                    $scope.ToplamBarkodKontrolMiktar = $scope.ToplamBarkodKontrolMiktar + $scope.Data.DATA[i].MIKTAR
+                }
+            }
+            InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+            {                    
+                $scope.Data.UMP = await UretimMalzemePlanGetir($scope.Data.DATA[0]);
+                $scope.Data.URP = await UretimRotaPlanGetir($scope.Data.DATA[0]);
+               
+                let TmpQuery = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query : "SELECT sto_kod, sto_birim1_ad AS BIRIM1AD,sto_birim1_katsayi AS BIRIM1KATSAYI,sto_birim2_ad AS BIRIM2AD, (sto_birim2_katsayi * -1) AS BIRIM2KATSAYI,sto_birim3_ad AS BIRIM3AD, (sto_birim3_katsayi * -1) AS BIRIM3KATSAYI, " +
+                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD1, " +
+                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 2 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD2, " +
+                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 3 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD3 " +
+                    "FROM STOKLAR WHERE sto_kod = @sto_kod ",
+                    param : ['sto_kod:string|50'],
+                    value : [$scope.Data.DATA[0].KODU]
+                } 
+                let TmpData = await srv.Execute(TmpQuery)
+                $scope.Barkod1 = TmpData[0].BARKOD1;
+                $scope.Barkod2 = TmpData[0].BARKOD2;
+                $scope.Barkod3 = TmpData[0].BARKOD3;
+                if($scope.Barkod1 == '' || $scope.Barkod2 == '' || $scope.Barkod3 == '')
+                {
+                    swal("Dikkat", "Ürün Barkodlarında Eksik Mevcut Lütfen Kontrol Ediniz .",icon="warning");
+                }
+                $scope.KontrolMiktar = TmpData[0].BIRIM2KATSAYI;
+                $scope.Birim3 = TmpData[0].BIRIM3KATSAYI;
+                let TmpQuery2 = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query : "SELECT (upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = upl_isemri and ish_plan_sevkmiktar = 0),0)) AS PLANMIKTAR FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = @upl_isemri ",
+                    param : ['upl_isemri:string|50'],
+                    value : [$scope.Data.DATA[0].ISEMRI]
+                } 
+                let TmpData2 = await srv.Execute(TmpQuery2)
+                $scope.ToplamPlanMiktar = TmpData2[0].PLANMIKTAR;
+
+                if($scope.Data.UMP.length > 0)
+                {
+                    let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
+                    if(TmpDr.length > 0)
+                    {
+                        $scope.LblUrun = TmpDr[0].KODU
+                    }
+                }
+            }
+        }
+        else
+        {
+            swal("Dikkat", "Kayıt Bulunamadı...",icon="warning");
+            return;
+        }
+    }
+    $scope.JsonDelete = function()
+    { 
+        let File = "./www/JsonData/" + $scope.Param.Kullanici + ".js";
+        
+        srv.Emit('JsonSave',['',File,$scope.Param.Kullanici]);
+    }
+    $scope.YeniEvrak = function()
+    {
+        if($scope.Data.DATA.length > 0)
+        {
+            swal("Dikkat", "Eklenmiş Ürünleri Kaydetmeden Yeni Evraka Geçilemez !",icon="warning");
+        }
+        else
+        {
+            $scope.Init()
+        }
     }
 
 }
