@@ -160,6 +160,8 @@ function Main($scope,$state,srv,$rootScope)
                 YariMamulEtiketSeri : srv.GetParamValue($scope.Data,"YariMamulEtiketSeri"),
                 YariMamulGramKontrol : srv.GetParamValue($scope.Data,"YariMamulGramKontrol"),
                 YariMamulGramYuzde : srv.GetParamValue($scope.Data,"YariMamulGramYuzde"),
+                YariMamulIsEmriFlag : srv.GetParamValue($scope.Data,"YariMamulIsEmriFlag"),
+                YariMamulManuelGiris : srv.GetParamValue($scope.Data,"YariMamulManuelGiris"),
                 YariMamulOperasyonSeri : srv.GetParamValue($scope.Data,"YariMamulOperasyonSeri"),
                 YariMamulUrunCikisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunCikisSeri"),
                 YariMamulUrunGirisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunGirisSeri"),

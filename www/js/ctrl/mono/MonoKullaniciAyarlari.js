@@ -105,6 +105,8 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 YariMamulEtiketSeri : srv.GetParamValue($scope.Data,"YariMamulEtiketSeri"),
                 YariMamulGramKontrol : srv.GetParamValue($scope.Data,"YariMamulGramKontrol"),
                 YariMamulGramYuzde : srv.GetParamValue($scope.Data,"YariMamulGramYuzde"),
+                YariMamulIsEmriFlag : srv.GetParamValue($scope.Data,"YariMamulIsEmriFlag"),
+                YariMamulManuelGiris : srv.GetParamValue($scope.Data,"YariMamulManuelGiris"),
                 YariMamulOperasyonSeri : srv.GetParamValue($scope.Data,"YariMamulOperasyonSeri"),
                 YariMamulUrunCikisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunCikisSeri"),
                 YariMamulUrunGirisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunGirisSeri"),
@@ -306,6 +308,12 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 YariMamulGramYuzde : $rootScope.GeneralParamList.YariMamulGramYuzde
             },
             {
+                YariMamulIsEmriFlag : $rootScope.GeneralParamList.YariMamulIsEmriFlag
+            },
+            {
+                YariMamulManuelGiris : $rootScope.GeneralParamList.YariMamulManuelGiris
+            },
+            {
                 YariMamulOperasyonSeri : $rootScope.GeneralParamList.YariMamulOperasyonSeri
             },
             {
@@ -420,6 +428,8 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["YariMamulEtiketSeri",$rootScope.GeneralParamList.YariMamulEtiketSeri,4,""],
             ["YariMamulGramKontrol",$rootScope.GeneralParamList.YariMamulGramKontrol,4,""],
             ["YariMamulGramYuzde",$rootScope.GeneralParamList.YariMamulGramYuzde,4,""],
+            ["YariMamulIsEmriFlag",$rootScope.GeneralParamList.YariMamulIsEmriFlag,4,""],
+            ["YariMamulManuelGiris",$rootScope.GeneralParamList.YariMamulManuelGiris,4,""],
             ["YariMamulOperasyonSeri",$rootScope.GeneralParamList.YariMamulOperasyonSeri,4,""],
             ["YariMamulUrunCikisSeri",$rootScope.GeneralParamList.YariMamulUrunCikisSeri,4,""],
             ["YariMamulUrunGirisSeri",$rootScope.GeneralParamList.YariMamulUrunGirisSeri,4,""],
@@ -546,6 +556,8 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 YariMamulEtiketSeri : "",
                 YariMamulGramKontrol : false,
                 YariMamulGramYuzde : "",
+                YariMamulIsEmriFlag : "",
+                YariMamulManuelGiris : false,
                 YariMamulOperasyonSeri : "",
                 YariMamulUrunCikisSeri : "",
                 YariMamulUrunGirisSeri : "",
