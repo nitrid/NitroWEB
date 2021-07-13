@@ -2099,5 +2099,4 @@ var Query =
         param : ['ACCOUNT','TAG','VALUE','TYPE','SPECIAL'],
         type  : ['string|50','string|50','string|200','int','string|200',]
     }
-
 };
