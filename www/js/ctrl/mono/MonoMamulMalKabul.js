@@ -176,7 +176,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         {
             datasource : 
             {
-                data : $scope.Param.Mono.MamulMalKabulEtiket
+                data : $rootScope.GeneralParamList.MamulMalKabulEtiket
             },
             key : "special",
             value : "name",
@@ -459,8 +459,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             TmpData.KODU = $scope.Data.UMP[i].KODU;
             TmpData.ADI = $scope.Data.UMP[i].ADI;
 
-            if($scope.Param.Mono.MamulMalKabulDepo != "")
-                TmpData.DEPO = $scope.Param.Mono.MamulMalKabulDepo;
+            if($rootScope.GeneralParamList.MamulMalKabulDepo != "")
+                TmpData.DEPO = $rootScope.GeneralParamList.MamulMalKabulDepo;
             else
                 TmpData.DEPO = $scope.Data.UMP[i].DEPO;
 
@@ -826,10 +826,11 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         $scope.TxtBarkod = "";
         $scope.TxtMiktar = 0;
         
-        $scope.SthGSeri = $scope.Param.Mono.UrunGirisSeri;
-        $scope.SthCSeri = $scope.Param.Mono.UrunCikisSeri;
-        $scope.OpSeri = $scope.Param.Mono.OperasyonSeri;
-        $scope.EtkSeri = $scope.Param.Mono.MamulEtiketSeri;
+        $scope.SthGSeri = $rootScope.GeneralParamList.UrunGirisSeri;
+        $scope.SthCSeri = $rootScope.GeneralParamList.UrunCikisSeri;
+        $scope.OpSeri = $rootScope.GeneralParamList.OperasyonSeri;
+        $scope.EtkSeri = $rootScope.GeneralParamList.MamulEtiketSeri;
+        console.log($scope.EtkSeri)
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)

@@ -53,7 +53,7 @@ function MonoKasaBarkodOlustur($scope, srv, $rootScope)
         {
             datasource : 
             {
-                data : $scope.Param.Mono.KasaEtiket
+                data : $rootScope.GeneralParamList.KasaEtiket
             },
             key : "special",
             value : "name",
@@ -71,7 +71,7 @@ function MonoKasaBarkodOlustur($scope, srv, $rootScope)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -144,7 +144,7 @@ function MonoKasaBarkodOlustur($scope, srv, $rootScope)
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "KASA BARKOD OLUŞTUR"
 
-        $scope.EtkSeri = $scope.Param.Mono.KasaBarkodSeri;
+        $scope.EtkSeri = $rootScope.GeneralParamList.KasaBarkodSeri;
         $scope.EtkSira = 1;
 
         $scope.LblKantarKilo = 0;

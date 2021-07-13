@@ -1,4 +1,4 @@
-function MonoBarkodEtiketBasimi($scope, srv, $rootScope) 
+function MonoUretimSilme($scope, srv, $rootScope) 
 {
     function InitGrid(pData) 
     {

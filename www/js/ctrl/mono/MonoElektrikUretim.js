@@ -1,4 +1,4 @@
-function MonoElektrikMontajUretim($scope, srv, $rootScope) 
+function MonoElektrikUretim($scope, srv, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -116,7 +116,7 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
                         " UPL.upl_kodu AS STOKKODU,  " +
                         " ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI  " +
                         " FROM ISEMIRLERI as ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri  " +
-                        " WHERE ISM.is_EmriDurumu = 1 AND ISM.is_Kod LIKE '" +$scope.Param.Mono.ElektrikUretimİsEmriFlag+ "%' AND (SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_kod and ish_plan_sevkmiktar = 0) > 0 " +
+                        " WHERE ISM.is_EmriDurumu = 1 AND ISM.is_Kod LIKE '" +$rootScope.GeneralParamList.ElektrikUretimIsEmriFlag+ "%' AND (SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_kod and ish_plan_sevkmiktar = 0) > 0 " +
                         " AND UPL.upl_uretim_tuket = 1 " ,
             },
             selection : "KODU",
@@ -204,7 +204,7 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
         {
             datasource:
             {
-                data: $scope.Param.Mono.ElektrikMontajMalKabulEtiket
+                data: $rootScope.GeneralParamList.ElektrikMalKabulEtiket
             },
             key: "special",
             value: "name",
@@ -461,7 +461,7 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
             1,                                              //CREATE_USER
             1,                                              //LASTUP_USER
             $scope.CmbEtiketTasarim.return,                 //SPECIAL1
-            $scope.Param.Mono.ElektrikUretimEtiketSeri,          //SERI
+            $rootScope.GeneralParamList.ElektrikUretimEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
             pData.ISEMRI,                                   //AÇIKLAMA
             parseFloat($scope.LblKantarKilo),                 //BELGENO
@@ -570,7 +570,7 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -606,7 +606,7 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -711,14 +711,14 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
         }     
         $scope.TxtEtiketMiktar = 1;
 
-        $scope.SthGSeri = $scope.Param.Mono.ElektrikUretimUrunGirisSeri;
-        $scope.SthCSeri = $scope.Param.Mono.ElektrikUretimUrunCikisSeri;
-        $scope.OpSeri = $scope.Param.Mono.ElektrikUretimOperasyonSeri;
+        $scope.SthGSeri = $rootScope.GeneralParamList.ElektrikUretimUrunGirisSeri;
+        $scope.SthCSeri = $rootScope.GeneralParamList.ElektrikUretimUrunCikisSeri;
+        $scope.OpSeri = $rootScope.GeneralParamList.ElektrikUretimOperasyonSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
-        $scope.EtkSira = await MaxEtiketSira($scope.Param.Mono.YariMamulEtiketSeri)
+        $scope.EtkSira = await MaxEtiketSira($rootScope.GeneralParamList.YariMamulEtiketSeri)
 
         InitObj();
         InitGrd([]);
@@ -845,8 +845,8 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
             TmpData.MIKTAR = $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.MontajDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.MontajDepo;
+            if($rootScope.GeneralParamList.ElektirikMalKabulDepo != "")
+            TmpData.DEPO = $rootScope.GeneralParamList.ElektirikMalKabulDepo;
             else
             TmpData.DEPO = TmpDrUret[i].DEPO;
 
@@ -896,8 +896,8 @@ function MonoElektrikMontajUretim($scope, srv, $rootScope)
             TmpData.MIKTAR = TmpDrTuket[i].BMIKTAR * $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.MontajDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.MontajDepo;
+            if($rootScope.GeneralParamList.ElektirikMalKabulDepo != "")
+            TmpData.DEPO = $rootScope.GeneralParamList.ElektirikMalKabulDepo;
             else
             TmpData.DEPO = TmpDrTuket[i].DEPO;
 

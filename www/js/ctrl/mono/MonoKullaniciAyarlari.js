@@ -75,7 +75,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoBarkodEtiketBasimi : srv.GetParamValue($scope.Data,"MonoBarkodEtiketBasimi"),
                 MonoKasaBarkodOlustur : srv.GetParamValue($scope.Data,"MonoKasaBarkodOlustur"),
                 MonoFasonGiris : srv.GetParamValue($scope.Data,"MonoFasonGiris"),
-                MonoElektrikMontajUretim : srv.GetParamValue($scope.Data,"MonoElektrikMontajUretim"),
+                MonoElektrikUretim : srv.GetParamValue($scope.Data,"MonoElektrikUretim"),
                 MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
                 MonoUretimDashboard : srv.GetParamValue($scope.Data,"MonoUretimDashboard"),
                 // Menü Yönetim
@@ -101,7 +101,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 KasaBarkodSeri : srv.GetParamValue($scope.Data,"KasaBarkodSeri"),
                 MamulEtiketSeri : srv.GetParamValue($scope.Data,"MamulEtiketSeri"),
                 MamulMalKabulDepo : srv.GetParamValue($scope.Data,"MamulMalKabulDepo"),
-                MontajDepo : srv.GetParamValue($scope.Data,"MontajDepo"),
+                ElektirikMalKabulDepo : srv.GetParamValue($scope.Data,"ElektirikMalKabulDepo"),
                 OperasyonSeri : srv.GetParamValue($scope.Data,"OperasyonSeri"),
                 UrunCikisSeri : srv.GetParamValue($scope.Data,"UrunCikisSeri"),
                 UrunGirisSeri : srv.GetParamValue($scope.Data,"UrunGirisSeri"),
@@ -115,7 +115,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 YariMamulUrunCikisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunCikisSeri"),
                 YariMamulUrunGirisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunGirisSeri"),
                 YariMamulMalKabulEtiket : srv.GetParamValue($scope.Data,"YariMamulMalKabulEtiket"),
-                ElektrikMontajMalKabulEtiket : srv.GetParamValue($scope.Data,"ElektrikMontajMalKabulEtiket"),
+                ElektrikMalKabulEtiket : srv.GetParamValue($scope.Data,"ElektrikMalKabulEtiket"),
                 BarkodBasimiEtiket : srv.GetParamValue($scope.Data,"BarkodBasimiEtiket"),
                 MamulMalKabulEtiket : srv.GetParamValue($scope.Data,"MamulMalKabulEtiket"),
                 FasonGirisEtiket : srv.GetParamValue($scope.Data,"FasonGirisEtiket"),
@@ -216,7 +216,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoFasonGiris : $rootScope.GeneralParamList.MonoFasonGiris
             },
             {
-                MonoElektrikMontajUretim : $rootScope.GeneralParamList.MonoElektrikMontajUretim
+                MonoElektrikUretim : $rootScope.GeneralParamList.MonoElektrikUretim
             },
             {
                 MonoBasarSayarBarkodOlustur : $rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur
@@ -288,7 +288,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MamulMalKabulDepo : $rootScope.GeneralParamList.MamulMalKabulDepo
             },
             {
-                MontajDepo : $rootScope.GeneralParamList.MontajDepo
+                ElektirikMalKabulDepo : $rootScope.GeneralParamList.ElektirikMalKabulDepo
             },
             {
                 OperasyonSeri : $rootScope.GeneralParamList.OperasyonSeri
@@ -330,7 +330,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 YariMamulMalKabulEtiket : $rootScope.GeneralParamList.YariMamulMalKabulEtiket
             },
             {
-                ElektrikMontajMalKabulEtiket : $rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket
+                ElektrikMalKabulEtiket : $rootScope.GeneralParamList.ElektrikMalKabulEtiket
             },
             {
                 BarkodBasimiEtiket : $rootScope.GeneralParamList.BarkodBasimiEtiket
@@ -399,7 +399,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoBarkodEtiketBasimi",$rootScope.GeneralParamList.MonoBarkodEtiketBasimi,1,"Barkod Etiket Basımı"],
             ["MonoKasaBarkodOlustur",$rootScope.GeneralParamList.MonoKasaBarkodOlustur,1,"Kasa Barkodu Oluştur"],
             ["MonoFasonGiris",$rootScope.GeneralParamList.MonoFasonGiris,1,"Fason Giriş"],
-            ["MonoElektrikMontajUretim",$rootScope.GeneralParamList.MonoElektrikMontajUretim,1,"Elektrik Montaj Uretim"],
+            ["MonoElektrikUretim",$rootScope.GeneralParamList.MonoElektrikUretim,1,"Elektrik  Uretim"],
             ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1,"Basar Sayar Barkod Oluştur"],
             ["MonoUretimDashboard",$rootScope.GeneralParamList.MonoUretimDashboard,1,"Üretim Dashboard"],
             // Menü Yönetim
@@ -425,7 +425,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["KasaBarkodSeri",$rootScope.GeneralParamList.KasaBarkodSeri,4,""],
             ["MamulEtiketSeri",$rootScope.GeneralParamList.MamulEtiketSeri,4,""],
             ["MamulMalKabulDepo",$rootScope.GeneralParamList.MamulMalKabulDepo,4,""],
-            ["MontajDepo",$rootScope.GeneralParamList.MontajDepo,4,""],
+            ["ElektirikMalKabulDepo",$rootScope.GeneralParamList.ElektirikMalKabulDepo,4,""],
             ["OperasyonSeri",$rootScope.GeneralParamList.OperasyonSeri,4,""],
             ["UrunCikisSeri",$rootScope.GeneralParamList.UrunCikisSeri,4,""],
             ["UrunGirisSeri",$rootScope.GeneralParamList.UrunGirisSeri,4,""],
@@ -439,7 +439,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["YariMamulUrunCikisSeri",$rootScope.GeneralParamList.YariMamulUrunCikisSeri,4,""],
             ["YariMamulUrunGirisSeri",$rootScope.GeneralParamList.YariMamulUrunGirisSeri,4,""],
             ["YariMamulMalKabulEtiket",$rootScope.GeneralParamList.YariMamulMalKabulEtiket,4,"Yari Mamul Mal Kabul Etiket - 1"],
-            ["ElektrikMontajMalKabulEtiket",$rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket,4,"Barkod Etiketi"],
+            ["ElektrikMalKabulEtiket",$rootScope.GeneralParamList.ElektrikMalKabulEtiket,4,"Barkod Etiketi"],
             ["BarkodBasimiEtiket",$rootScope.GeneralParamList.BarkodBasimiEtiket,4,"Barkod Basimi Etiket - 1"],
             ["MamulMalKabulEtiket",$rootScope.GeneralParamList.MamulMalKabulEtiket,4,"Mamul Mal Kabul Etiket - 1"],
             ["FasonGirisEtiket",$rootScope.GeneralParamList.FasonGirisEtiket,4,"Fason Giris Etiket - 1"],
@@ -527,7 +527,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoBarkodEtiketBasimi : false,
                 MonoKasaBarkodOlustur : false,
                 MonoFasonGiris : false,
-                MonoElektrikMontajUretim : false,
+                MonoElektrikUretim : false,
                 MonoBasarSayarBarkodOlustur : false,
                 MonoUretimDashboard : false,
                 // Menü Yönetim
@@ -553,7 +553,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 KasaBarkodSeri : "",
                 MamulEtiketSeri : "",
                 MamulMalKabulDepo : "",
-                MontajDepo : "",
+                ElektirikMalKabulDepo : "",
                 OperasyonSeri : "",
                 UrunCikisSeri : "",
                 UrunGirisSeri : "",
@@ -567,7 +567,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 YariMamulUrunCikisSeri : "",
                 YariMamulUrunGirisSeri : "",
                 YariMamulMalKabulEtiket : "",
-                ElektrikMontajMalKabulEtiket : "",
+                ElektrikMalKabulEtiket : "",
                 BarkodBasimiEtiket : "",
                 MamulMalKabulEtiket : "",
                 FasonGirisEtiket : "",
