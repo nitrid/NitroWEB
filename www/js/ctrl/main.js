@@ -22,7 +22,7 @@ function Main($scope,$state,srv,$rootScope)
             $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam','2')
             $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam','3')
 
-            //*****  YÖNETİM  ******//
+            //******  YÖNETİM  ******//
 
             let TmpHtmlYonetim = ""
             let Sayac = 0
@@ -42,12 +42,12 @@ function Main($scope,$state,srv,$rootScope)
                 TmpHtmlYonetim = ""
             }
 
-            //*****  RAPOR  ******//
+            //******  RAPOR  ******//
 
             let TmpHtmlRapor = ""
             let Sayac2 = 0
 
-            TmpHtmlRapor += '<li><a class="dropdown-item" href="#"> Rapor &raquo; </a><ul class="submenu dropdown-menu"> '
+            TmpHtmlRapor += '<li><a class="dropdown-item" href="#"> Rapor &raquo; </a><ul class="submenu dropdown-menu">'
             for(let x = 0; x < $scope.MenuRapor.length; x++)
             {
                 if($scope.MenuRapor[x].VALUE == "true")
@@ -62,7 +62,7 @@ function Main($scope,$state,srv,$rootScope)
                 TmpHtmlRapor = ""
             }
 
-            //*****  ANA MENÜ - SUBMENU  ******//
+            //******  ANA MENÜ - SUBMENU  ******//
 
             let TmpHtml = "";
             TmpHtml += '<li class="nav-item dropdown">'
@@ -160,6 +160,8 @@ function Main($scope,$state,srv,$rootScope)
                 YariMamulEtiketSeri : srv.GetParamValue($scope.Data,"YariMamulEtiketSeri"),
                 YariMamulGramKontrol : srv.GetParamValue($scope.Data,"YariMamulGramKontrol"),
                 YariMamulGramYuzde : srv.GetParamValue($scope.Data,"YariMamulGramYuzde"),
+                YariMamulIsEmriFlag : srv.GetParamValue($scope.Data,"YariMamulIsEmriFlag"),
+                YariMamulManuelGiris : srv.GetParamValue($scope.Data,"YariMamulManuelGiris"),
                 YariMamulOperasyonSeri : srv.GetParamValue($scope.Data,"YariMamulOperasyonSeri"),
                 YariMamulUrunCikisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunCikisSeri"),
                 YariMamulUrunGirisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunGirisSeri"),
