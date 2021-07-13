@@ -110,7 +110,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         {
             datasource : 
             {
-                data : $scope.Param.Mono.BasarSayarEtiket
+                data : $rootScope.GeneralParamList.BasarSayarEtiket
             },
             key : "special",
             value : "name",
@@ -128,7 +128,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -163,7 +163,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -237,7 +237,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "BASAR SAYAR BARKOD OLUŞTUR"
 
-        $scope.EtkSeri = $scope.Param.Mono.BasarSayarSeri;
+        $scope.EtkSeri = $rootScope.GeneralParamList.BasarSayarSeri;
         $scope.EtkSira = 1;
 
         $scope.TxtSpRefMiktar = 0;

@@ -209,7 +209,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         {
             datasource:
             {
-                data: $scope.Param.Mono.BarkodBasimiEtiket
+                data: $rootScope.GeneralParamList.BarkodBasimiEtiket
             },
             key: "special",
             value: "name",
@@ -502,7 +502,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
             1,                               //CREATE_USER
             1,                               //LASTUP_USER
             $scope.CmbEtiketTasarim.return,     //SPECIAL1
-            $scope.Param.Mono.BarkodEtiketSeri ,//SERI
+            $rootScope.GeneralParamList.BarkodEtiketSeri ,//SERI
             $scope.EtkSira,                    //SIRA
             '',                              //AÇIKLAMA
             '',                              //BELGENO
@@ -550,7 +550,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         $scope.Data.DATA = [];
         $scope.Data.BARKODLIST = [];
 
-        $scope.EtkSira = await MaxEtiketSira($scope.Param.Mono.BarkodEtiketSeri)
+        $scope.EtkSira = await MaxEtiketSira($rootScope.GeneralParamList.BarkodEtiketSeri)
 
         InitGrid([]);
         InitObj();
