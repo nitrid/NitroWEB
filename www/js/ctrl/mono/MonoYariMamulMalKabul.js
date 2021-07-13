@@ -68,7 +68,6 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     }
     function InitObj() 
     {
-        console.log($rootScope.GeneralParamList.YariMamulIsEmriFlag)
         $scope.BtnKasaDaraAl =
         {
             title: "Kasa Darası Al",
