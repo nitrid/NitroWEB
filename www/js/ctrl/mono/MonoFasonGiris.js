@@ -228,13 +228,13 @@ function MonoFasonGiris($scope,srv, $rootScope)
         {
             datasource : 
             {
-                data : $rootScope.GeneralParamList.FasonGirisEtiket
+                data :  [{name: "Fason Giris Etiket - 1", special: $rootScope.GeneralParamList.FasonGirisEtiket}] 
             },
             key : "special",
             value : "name",
-            defaultVal : "1",
+            defaultVal : $rootScope.GeneralParamList.FasonGirisEtiket,
             selectionMode : "key",
-            return : "",
+            return : $rootScope.GeneralParamList.FasonGirisEtiket,
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketTasarim.return = pSelected

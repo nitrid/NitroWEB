@@ -209,13 +209,13 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         {
             datasource:
             {
-                data: $rootScope.GeneralParamList.BarkodBasimiEtiket
+                data: [{name: "Barkod Basimi Etiket - 1", special: $rootScope.GeneralParamList.BarkodBasimiEtiket}] 
             },
             key: "special",
             value: "name",
-            defaultVal: "1",
+            defaultVal: $rootScope.GeneralParamList.BarkodBasimiEtiket,
             selectionMode: "key",
-            return: "1",
+            return: $rootScope.GeneralParamList.BarkodBasimiEtiket,
             onSelected: function (pSelected) 
             {
                 $scope.CmbEtiketTasarim.return = pSelected

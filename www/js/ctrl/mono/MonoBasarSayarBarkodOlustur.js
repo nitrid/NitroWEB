@@ -110,13 +110,13 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         {
             datasource : 
             {
-                data : $rootScope.GeneralParamList.BasarSayarEtiket
+                data :  [{name: "Basar Sayar Etiket - 1", special: $rootScope.GeneralParamList.BasarSayarEtiket}] 
             },
             key : "special",
             value : "name",
-            defaultVal : "1",
+            defaultVal : $rootScope.GeneralParamList.BasarSayarEtiket,
             selectionMode : "key",
-            return : "1",
+            return : $rootScope.GeneralParamList.BasarSayarEtiket,
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketList.return = pSelected

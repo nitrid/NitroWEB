@@ -176,13 +176,13 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         {
             datasource : 
             {
-                data : $rootScope.GeneralParamList.MamulMalKabulEtiket
+                data : [{name: "Mamul Mal Kabul Etiket - 1", special: $rootScope.GeneralParamList.MamulMalKabulEtiket}] 
             },
             key : "special",
             value : "name",
-            defaultVal : "1",
+            defaultVal : $rootScope.GeneralParamList.MamulMalKabulEtiket,
             selectionMode : "key",
-            return : "1",
+            return : $rootScope.GeneralParamList.MamulMalKabulEtiket,
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -835,10 +835,17 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
-        $scope.EtkSira = (await srv.Execute('MaxEtiketSira',[$scope.EtkSeri]))[0].MAXEVRSIRA
+        $scope.EtkSira = MaxEtiketSira($scope.EtkSeri)
 
         InitObj();
         InitGrd([]);
+    }
+    async function MaxEtiketSira(pSeri)
+    {
+        return new Promise(async resolve => 
+        {
+            resolve((await srv.Execute($scope.Firma,'MaxEtiketSira',[pSeri]))[0].MAXEVRSIRA)
+        })
     }
     $scope.BtnBarkodBas = async function()
     {

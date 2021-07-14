@@ -172,13 +172,13 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         {
             datasource:
             {
-                data: $rootScope.GeneralParamList.YariMamulMalKabulEtiket
+                data: [{name: "Yari Mamul Mal Kabul Etiket - 1", special: $rootScope.GeneralParamList.YariMamulMalKabulEtiket}] 
             },
             key: "special",
             value: "name",
-            defaultVal: "1",
+            defaultVal: $rootScope.GeneralParamList.YariMamulMalKabulEtiket,
             selectionMode: "key",
-            return: "1",
+            return: $rootScope.GeneralParamList.YariMamulMalKabulEtiket,
             onSelected: function (pSelected) 
             {
                 $scope.CmbEtiketTasarim.return = pSelected

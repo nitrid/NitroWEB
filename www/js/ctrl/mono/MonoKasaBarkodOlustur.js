@@ -53,13 +53,13 @@ function MonoKasaBarkodOlustur($scope, srv, $rootScope)
         {
             datasource : 
             {
-                data : $rootScope.GeneralParamList.KasaEtiket
+                data : [{name: "Kasa Etiket - 1", special: $rootScope.GeneralParamList.KasaEtiket}] 
             },
             key : "special",
             value : "name",
-            defaultVal : "1",
+            defaultVal : $rootScope.GeneralParamList.KasaEtiket,
             selectionMode : "key",
-            return : "1",
+            return : $rootScope.GeneralParamList.KasaEtiket,
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketList.return = pSelected

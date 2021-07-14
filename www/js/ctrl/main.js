@@ -84,6 +84,7 @@ function Main($scope,$state,srv,$rootScope)
 
             await GetParamList($scope.User)
             
+            
             $state.go("main."+$rootScope.GeneralParamList.AcilisSayfasi)
         }
     }
@@ -123,6 +124,7 @@ function Main($scope,$state,srv,$rootScope)
             {
                 // Kullanıcı
                 Password : srv.GetParamValue($scope.Data,"Password"),
+                Kullanici : srv.GetParamValue($scope.Data,"Kullanici"),
                 // Menü
                 MonoMamulMalKabul : srv.GetParamValue($scope.Data,"MonoMamulMalKabul"),
                 MonoYariMamulMalKabul : srv.GetParamValue($scope.Data,"MonoYariMamulMalKabul"),
@@ -187,5 +189,6 @@ function Main($scope,$state,srv,$rootScope)
             resolve()
         });
     }
+   
 
 }

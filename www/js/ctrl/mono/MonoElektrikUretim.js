@@ -204,13 +204,13 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         {
             datasource:
             {
-                data: $rootScope.GeneralParamList.ElektrikMalKabulEtiket
+                data: [{name: "Barkod Etiketi", special: $rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket}]
             },
             key: "special",
             value: "name",
-            defaultVal: "2",
+            defaultVal: $rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket,
             selectionMode: "key",
-            return: "2",
+            return: $rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket,
             onSelected: function (pSelected) 
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -396,6 +396,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
                 0, // NAKLİYEDURUMU
                 (typeof pDrISMERKEZI == 'undefined') ? '' : pDrISMERKEZI
             ];
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -639,6 +640,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
     }
     function MaxSthSira(pSeri,pEvrakTip)
     {
+        console.log(pSeri)
         return new Promise(async resolve => 
         {
             let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
@@ -845,9 +847,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             TmpData.MIKTAR = $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
 
-            if($rootScope.GeneralParamList.ElektirikMalKabulDepo != "")
-            TmpData.DEPO = $rootScope.GeneralParamList.ElektirikMalKabulDepo;
-            else
+           
             TmpData.DEPO = TmpDrUret[i].DEPO;
 
             if(TmpDrUret[i].URETTUKET == 1)
@@ -896,9 +896,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             TmpData.MIKTAR = TmpDrTuket[i].BMIKTAR * $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
 
-            if($rootScope.GeneralParamList.ElektirikMalKabulDepo != "")
-            TmpData.DEPO = $rootScope.GeneralParamList.ElektirikMalKabulDepo;
-            else
+           
             TmpData.DEPO = TmpDrTuket[i].DEPO;
 
             if(TmpDrRota.length > 0)
@@ -981,7 +979,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
            $scope.IsemriKapat()
         }
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
-        $scope.JsonDelete()
+        $scope.JsonKapat()
         $scope.Init()
     }
     $scope.BtnEtiketBas = async function()
@@ -1227,18 +1225,71 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             return rv;
         }, {});
     }
-    $scope.JsonSave = function()
+    $scope.JsonSave = async function()
     { 
-        let File = "./www/JsonData/" + $scope.Param.Kullanici + ".js";
-        
-        srv.Emit('JsonSave',[$scope.Data.DATA,File,$scope.Param.Kullanici]);
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT JSON FROM MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+            param : ['KULLANICI:string|50','MENU:string|50'],
+            value : ['Admin',$rootScope.PageName]
+        }
+        let JsonControl = await srv.Execute(TmpQuery)
+
+        if(JsonControl.length > 0)
+        {
+            let UpdateQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA SET JSON = @JSON WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+                param : ['JSON:string|max','KULLANICI:string|50','MENU:string|50'],
+                value : [JSON.stringify($scope.Data.DATA),$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
+
+            }
+            await srv.Execute(UpdateQuery)
+        }
+        else
+        {
+            let InsertData = 
+            [
+                $rootScope.GeneralParamList.Kullanici,
+                $rootScope.PageName,
+                JSON.stringify($scope.Data.DATA),
+                0,
+            ]
+            console.log(InsertData)
+             await srv.Execute($scope.Firma,'InsertJson',InsertData);
+        }
     }
     $scope.SonEvrakGetir = async function()
     {
-        $scope.Data.DATA =   window[$scope.Param.Kullanici]
-       
+        console.log($scope.Data.DATA)
         if($scope.Data.DATA.length > 0)
         {
+            swal("Dikkat", "Üretim İşleminiz varken Evrakı Çağıramazsınız !",icon="warning");
+            return
+        }
+
+
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT JSON FROM MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+            param : ['KULLANICI:string|50','MENU:string|50'],
+            value : [$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
+        }
+        let JsonControl = await srv.Execute(TmpQuery)
+        if(JsonControl.length == 0 )
+        {
+            swal("Dikkat", "Kayıt Bulunamadı...",icon="warning");
+            return;
+        }
+
+       
+       console.log(JsonControl)
+        if(JsonControl[0].JSON != '')
+        {
+            $scope.Data.DATA = JSON.parse(JsonControl[0].JSON)
            $scope.BteIsEmri.txt = $scope.Data.DATA[0].ISEMRI
             for(let i = 0; i < $scope.Data.DATA.length; i++)
             {
@@ -1299,12 +1350,6 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             return;
         }
     }
-    $scope.JsonDelete = function()
-    { 
-        let File = "./www/JsonData/" + $scope.Param.Kullanici + ".js";
-        
-        srv.Emit('JsonSave',['',File,$scope.Param.Kullanici]);
-    }
     $scope.YeniEvrak = function()
     {
         if($scope.Data.DATA.length > 0)
@@ -1315,6 +1360,18 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         {
             $scope.Init()
         }
+    }
+    $scope.JsonKapat= async function()
+    {
+            let UpdateQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA SET DURUM = 1 WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+                param : ['KULLANICI:string|50','MENU:string|50'],
+                value : [$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
+
+            }
+            await srv.Execute(UpdateQuery)
     }
 
 }

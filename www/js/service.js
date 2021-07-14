@@ -244,6 +244,24 @@ angular.module('app.srv', []).service('srv',function($rootScope)
                     return pList[i].VALUE;
                 }
             }
+            if(pTag === 'ACCOUNT')
+            {
+                if(pList[i].VALUE == "true" || pList[i].VALUE == "false")
+                {
+                    if(window.location.hash == "#!/main/mono_kullanici_ayarlari")
+                    {
+                        return Bool(pList[i].VALUE);
+                    }
+                    else
+                    {
+                        return pList[i].VALUE;
+                    }
+                }
+                else
+                {
+                    return pList[i].ACCOUNT;
+                }
+            }
         }
     }
 });

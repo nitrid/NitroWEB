@@ -2098,6 +2098,24 @@ var Query =
                 " )",
         param : ['ACCOUNT','TAG','VALUE','TYPE','SPECIAL'],
         type  : ['string|50','string|50','string|200','int','string|200',]
+    },
+    InsertJson :
+    {
+        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_JSONDATA] " +
+                "([GUID] " +
+                ",[KULLANICI] " +
+                ",[MENU] " +
+                ",[JSON] " +
+                ",[DURUM] " +
+                " ) VALUES ( " +
+                "NEWID()           --<GUID, nvarchar(50),> \n " +
+                ",@KULLANICI             --<KULLANICI, nvarchar(50),> \n " +
+                ",@MENU            --<MENU, nvarchar(200),> \n " +
+                ",@JSON             --<JSON, nvarchar,> \n " +
+                ",@DURUM          --<DURUM, bit),> \n " +
+                " )",
+        param : ['KULLANICI','MENU','JSON','DURUM'],
+        type  : ['string|50','string|50','string|max','int']
     }
 
 };
