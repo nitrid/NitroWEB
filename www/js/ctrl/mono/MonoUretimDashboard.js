@@ -5,7 +5,54 @@ function MonoUretimDashboard($scope,srv, $rootScope)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "ÜRETİM"
+
+        // Sortable.create(demo1, 
+        // { 
+        //     animation: 100,
+        //     multiDrag: true, 
+        //     group: 'list-1', 
+        //     draggable: '.list-group-item', 
+        //     handle: '.list-group-item', 
+        //     sort: true, 
+        //     filter: '.sortable-disabled', 
+        //     chosenClass: 'active',
+        //     onChange: function(/**Event*/evt) {
+        //         evt.newIndex // most likely why this event is used is to get the dragging element's current index
+        //         // same properties as onEnd
+        //         console.log(evt.newIndex)
+        //     },
+        //     onAdd: function (/**Event*/evt) {
+        //         // same properties as onEnd
+        //         //console.log(evt.to.outerText)
+        //         //console.log(evt)
+        //         //console.log(evt.to.children[0].id)
+        //         console.log(evt.to.children)
+
+        //     },
+        //     onChange: function(/**Event*/evt) {
+        //         evt.newIndex // most likely why this event is used is to get the dragging element's current index
+        //         // same properties as onEnd
+        //         //console.log(evt.path)
+        //     }
+        // });
+        // Sortable.create(demo2, 
+        // { 
+        //     animation: 100, 
+        //     group: 'list-1', 
+        //     draggable: '.list-group-item', 
+        //     handle: '.list-group-item', 
+        //     sort: true, 
+        //     filter: '.sortable-disabled', 
+        //     chosenClass: 'active',
+        //     // onChange: function(/**Event*/evt) {
+        //     //     evt.newIndex // most likely why this event is used is to get the dragging element's current index
+        //     //     // same properties as onEnd
+        //     //     console.log(evt)
+        //     // } 
+        // });
+
     }
+
     $(function(){
         $("#pie").dxPieChart({
             palette: ['#0dcaf0', '#4cae4c', '#007bff'],

@@ -82,6 +82,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
                 MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),
                 // Menü Rapor
+                MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
+                MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
+                MonoStokDepoGirisCikisRaporu : srv.GetParamValue($scope.Data,"MonoStokDepoGirisCikisRaporu"),
                 // Parametre
                 BarkodEtiketSeri : srv.GetParamValue($scope.Data,"BarkodEtiketSeri"),
                 BasarSayarHasasTeraziIP : srv.GetParamValue($scope.Data,"BasarSayarHasasTeraziIP"),
@@ -232,6 +235,15 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoKullaniciEkle : $rootScope.GeneralParamList.MonoKullaniciEkle
             },
             // Menü Rapor
+            {
+                MonoDepoTransferRaporu : $rootScope.GeneralParamList.MonoDepoTransferRaporu
+            },
+            {
+                MonoStokSeviyeleriRaporu : $rootScope.GeneralParamList.MonoStokSeviyeleriRaporu
+            },
+            {
+                MonoStokDepoGirisCikisRaporu : $rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu
+            },
             // Parametre
             {
                 BarkodEtiketSeri : $rootScope.GeneralParamList.BarkodEtiketSeri
@@ -406,6 +418,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoKullaniciAyarlari",$rootScope.GeneralParamList.MonoKullaniciAyarlari,2,"Kullanici Ayarları"],
             ["MonoKullaniciEkle",$rootScope.GeneralParamList.MonoKullaniciEkle,2,"MonoKullaniciEkle"],
             // Menü Rapor
+            ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"MonoDepoTransferRaporu"]
+            ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"MonoStokSeviyeleriRaporu"]
+            ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"MonoStokDepoGirisCikisRaporu"]
             // Parametre
             ["BarkodEtiketSeri",$rootScope.GeneralParamList.BarkodEtiketSeri,4,""],
             ["BasarSayarHasasTeraziIP",$rootScope.GeneralParamList.BasarSayarHasasTeraziIP,4,""],
@@ -534,6 +549,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoKullaniciAyarlari : false,
                 MonoKullaniciEkle : false,
                 // Menü Rapor
+                MonoDepoTransferRaporu : false,
+                MonoStokSeviyeleriRaporu : false,
+                MonoStokDepoGirisCikisRaporu : false,
                 // Parametre
                 BarkodEtiketSeri : "",
                 BasarSayarHasasTeraziIP : "",

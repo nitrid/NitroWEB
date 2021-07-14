@@ -52,7 +52,7 @@ function Main($scope,$state,srv,$rootScope)
             {
                 if($scope.MenuRapor[x].VALUE == "true")
                 {
-                    TmpHtmlRapor += '<li><a class="dropdown-item" ui-sref="' + $scope.MenuRapor[x].TAG +'" href="">' + $scope.MenuRapor[x].SPECIAL +'</a></li>' 
+                    TmpHtmlRapor += '<li><a class="dropdown-item" ui-sref="' + 'main.' + $scope.MenuRapor[x].TAG +'" href="">' + $scope.MenuRapor[x].SPECIAL +'</a></li>' 
                     Sayac2++;
                 }
             }
@@ -134,7 +134,12 @@ function Main($scope,$state,srv,$rootScope)
                 MonoElektrikUretim : srv.GetParamValue($scope.Data,"MonoElektrikUretim"),
                 MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
                 // Menü Yönetim
+                MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
+                MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),
                 // Menü Rapor
+                MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
+                MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
+                MonoStokDepoGirisCikisRaporu : srv.GetParamValue($scope.Data,"MonoStokDepoGirisCikisRaporu"),
                 // Parametre
                 BarkodEtiketSeri : srv.GetParamValue($scope.Data,"BarkodEtiketSeri"),
                 BasarSayarHasasTeraziIP : srv.GetParamValue($scope.Data,"BasarSayarHasasTeraziIP"),

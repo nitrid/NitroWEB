@@ -143,6 +143,34 @@ angular.module("app",
             controller:"MonoKullaniciAyarlari"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoDepoTransferRaporu',
+            url: '/mono_depo_transfer_raporu',
+            templateUrl : "view/mono/MonoDepoTransferRaporu.html",
+            controller:"MonoDepoTransferRaporu"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoStokSeviyeleriRaporu',
+            url: '/mono_stok_seviyeleri_raporu',
+            templateUrl : "view/mono/MonoStokSeviyeleriRaporu.html",
+            controller:"MonoStokSeviyeleriRaporu"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoStokDepoGirisCikisRaporu',
+            url: '/mono_stok_depo_giris_cikis',
+            templateUrl : "view/mono/MonoStokDepoGirisCikisRaporu.html",
+            controller:"MonoStokDepoGirisCikisRaporu"
+        }
+    ).
+
     //DIAN MENU
     state
     (

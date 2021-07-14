@@ -2117,5 +2117,4 @@ var Query =
         param : ['KULLANICI','MENU','JSON','DURUM'],
         type  : ['string|50','string|50','string|max','int']
     }
-
 };
