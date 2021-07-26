@@ -103,12 +103,14 @@ function MonoUretimSilme($scope, srv, $rootScope)
             }
         )
     }
-    function UretimSil(pData)
+    async function UretimSil(pData)
     {
         let DeleteData = [
             pData.ISEMRI
         ]
-        let DeleteUretim = await srv.Execute($scope.Firma,'DeleteUretim',DeleteData);
+        await srv.Execute($scope.Firma,'DeleteUretim',DeleteData);
+        await srv.Execute($scope.Firma,'DeleteOperasyon',DeleteData);
+        await srv.Execute($scope.Firma,'UpdateMalzemePlani',DeleteData);
     }
     $scope.Init = async function () 
     {
@@ -125,16 +127,21 @@ function MonoUretimSilme($scope, srv, $rootScope)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "SELECT sth_isemri_gider_kodu AS ISEMRI, " +
+            query : "SELECT  sth_isemri_gider_kodu AS ISEMRI, " +
             "sth_stok_kod AS STOKKOD, " +
             "(SELECT sto_isim FROM STOKLAR WHERE sto_kod = sth_stok_kod) AS STOKADI, " +
-            "sth_miktar AS MIKTAR, " +
-            "sth_tarih AS TARIH FROM STOK_HAREKETLERI WHERE sth_tip= 0 and sth_cins = 7 and sth_evraktip = 12 and sth_isemri_gider_kodu = @sth_isemri_gider_kodu " ,
+            "SUM(sth_miktar) AS MIKTAR " +
+            "FROM STOK_HAREKETLERI WHERE sth_tip= 0 and sth_cins = 7 and sth_evraktip = 12 and sth_isemri_gider_kodu = @sth_isemri_gider_kodu GROUP BY sth_isemri_gider_kodu ,sth_stok_kod " ,
             param : ['sth_isemri_gider_kodu:string|50'],
             value : [pKodu]
         }
         console.log(TmpQuery)
         let TmpData = await srv.Execute(TmpQuery)
+        if(TmpData.length == 0)
+        {
+            swal("Dikkat", "Seçtiğiniz İş Emrine Ait Üretim Bulunamadı ..",icon="warning");
+            return;
+        }
         $scope.DataList = TmpData
         InitGrd(TmpData) 
     }

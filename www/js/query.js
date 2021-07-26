@@ -2116,5 +2116,23 @@ var Query =
                 " )",
         param : ['KULLANICI','MENU','JSON','DURUM'],
         type  : ['string|50','string|50','string|max','int']
+    },
+    DeleteUretim : 
+    {
+        query : "DELETE FROM STOK_HAREKETLERI  WHERE sth_isemri_gider_kodu = @sth_isemri_gider_kodu ",
+        param : ['sth_isemri_gider_kodu'],
+        type  : ['string|50']
+    },
+    DeleteOperasyon : 
+    {
+         query :"DELETE FROM URETIM_OPERASYON_HAREKETLERI WHERE OpT_IsEmriKodu = @OpT_IsEmriKodu ",
+         param : ['OpT_IsEmriKodu'],
+         type  : ['string|50']
+    },
+    UpdateMalzemePlani : 
+    {
+         query :"UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_uret_miktar = 0 WHERE ish_isemri = @ish_isemri ",
+         param : ['ish_isemri'],
+         type  : ['string|50']
     }
 };
