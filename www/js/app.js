@@ -170,6 +170,15 @@ angular.module("app",
             controller:"MonoStokDepoGirisCikisRaporu"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoUretimSilme',
+            url: '/mono_uretim_silme',
+            templateUrl : "view/mono/MonoUretimSilme.html",
+            controller:"MonoUretimSilme"
+        }
+    ).
 
     //DIAN MENU
     state

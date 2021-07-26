@@ -1,90 +1,15 @@
 <div ng-controller="MonoUretimSilme" ng-init="Init()">
-    <div class="row pt-2">
-        <div class="col-7">
-            <div class="card border-dark mb-3 h-80">
-                <div class="card-body text-dark py-2">
-                    <div class="row py-1">
-                        <div class="col-2 px-2">
-                            <p class="text-md-right my-0 py-0">Barkod :</p>
-                        </div>
-                        <div class="col-4 px-2">
-                            <button-edit id="1" option="BteBarkod"></button-edit>
-                        </div>
-                        <div class="col-2 px-2">
-                            <p class="text-md-right my-0 py-0">Parti :</p>
-                        </div>
-                        <div class="col-4 px-2">
-                            <button-edit id="2" option="BteParti"></button-edit>
-                        </div>
-                    </div>
-                    <div class="row py-1">
-                        <div class="col-2 px-2">
-                            <p class="text-md-right my-0 py-0">Stok :</p>
-                        </div>
-                        <div class="col-4 px-2">
-                            <button-edit id="3" option="BteStok"></button-edit>
-                        </div>
-                        <div class="col-2 px-2">
-                            <p class="text-md-right my-0 py-0">Lot :</p>
-                        </div>
-                        <div class="col-4 px-2">
-                            <input type="number" class="form-control form-control-sm" ng-model="TxtLot">
-                        </div>
-                    </div>
-                    <div class="row py-1">
-                        <div class="col-2 px-2">
-                            <p class="text-md-right my-0 py-0">Etiket :</p>
-                        </div>
-                        <div class="col-10 px-2">
-                            <combobox option="CmbEtiketTasarim"></combobox>
-                        </div>
-                    </div>
+    <div class="card border-dark mb-1 h-80">
+        <div class="card-header bg-transparent border-dark p-1">İş Emri</div>
+        <div class="card-body text-dark p-1 px-2">
+            <div class="row">
+                <div class="col-4 px-2">
+                    <p class="text-md-right my-0">İş Emri :</p>
+                </div>
+                <div class="col-8 ">
+                    <button-edit id="3" option="BteIsEmri"></button-edit>
                 </div>
             </div>
-        </div>
-        <div class="col-5">
-            <div class="card border-dark mb-3 h-80">
-                <div class="card-body text-dark py-2">
-                    <div class="row py-1">
-                        <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-0">Skt :</p>
-                        </div>
-                        <div class="col-8 px-2">
-                            <input class="form-control form-control-sm" id="Skt" type="date">
-                        </div>
-                    </div>
-                    <div class="row py-1">
-                        <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-0">Miktar :</p>
-                        </div>
-                        <div class="col-8 px-2">
-                            <input type="number" class="form-control form-control-sm" ng-model="TxtMiktar">
-                        </div>
-                    </div>
-                    <div class="row py-1">
-                        <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-0">B.Adet :</p>
-                        </div>
-                        <div class="col-8 px-2">
-                            <input type="number" class="form-control form-control-sm" ng-model="TxtBMiktar">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row pb-2">
-        <!-- <div class="col-3">
-            <button type="button" class="btn btn-block btn-secondary">İade İrsaliyesi Getir</button>
-        </div> -->
-        <div class="col-3 d-grid">
-            <button type="button" class="btn btn-secondary" ng-click="BtnEkle()">Ekle</button>
-        </div>
-        <div class="col-3 d-grid">
-            <button type="button" class="btn btn-secondary" ng-click="BtnBarkodBas()">Barkod Bas</button>
-        </div>
-        <div class="col-3 d-grid">
-            <button type="button" class="btn btn-secondary" ng-click="Init()">Temizle</button>
         </div>
     </div>
     <div class="row pt-2">
