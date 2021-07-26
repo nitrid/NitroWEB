@@ -18,9 +18,9 @@ function Main($scope,$state,srv,$rootScope)
         Menu();
         if(srv.SocketConnected)
         {
-            $scope.Menu = await srv.Execute($scope.Firm,'GetParam','1')
-            $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam','2')
-            $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam','3')
+            $scope.Menu = await srv.Execute($scope.Firm,'GetParam',['1',$scope.User])
+            $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam',['2',$scope.User])
+            $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam',['3',$scope.User])
 
             //******  YÖNETİM  ******//
 
@@ -136,6 +136,7 @@ function Main($scope,$state,srv,$rootScope)
                 // Menü Yönetim
                 MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
                 MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),
+                MonoUretimSilme : srv.GetParamValue($scope.Data,"MonoUretimSilme"),
                 // Menü Rapor
                 MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
                 MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
@@ -173,7 +174,7 @@ function Main($scope,$state,srv,$rootScope)
                 YariMamulUrunCikisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunCikisSeri"),
                 YariMamulUrunGirisSeri : srv.GetParamValue($scope.Data,"YariMamulUrunGirisSeri"),
                 YariMamulMalKabulEtiket : srv.GetParamValue($scope.Data,"YariMamulMalKabulEtiket"),
-                ElektrikMontajMalKabulEtiket : srv.GetParamValue($scope.Data,"ElektrikMontajMalKabulEtiket"),
+                ElektrikMalKabulEtiket : srv.GetParamValue($scope.Data,"ElektrikMalKabulEtiket"),
                 BarkodBasimiEtiket : srv.GetParamValue($scope.Data,"BarkodBasimiEtiket"),
                 MamulMalKabulEtiket : srv.GetParamValue($scope.Data,"MamulMalKabulEtiket"),
                 FasonGirisEtiket : srv.GetParamValue($scope.Data,"FasonGirisEtiket"),

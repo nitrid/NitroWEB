@@ -81,6 +81,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 // Menü Yönetim
                 MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
                 MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),
+                MonoUretimSilme : srv.GetParamValue($scope.Data,"MonoUretimSilme"),
                 // Menü Rapor
                 MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
                 MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
@@ -233,6 +234,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             {
                 MonoKullaniciEkle : $rootScope.GeneralParamList.MonoKullaniciEkle
+            },
+            {
+                MonoUretimSilme : $rootScope.GeneralParamList.MonoUretimSilme
             },
             // Menü Rapor
             {
@@ -401,6 +405,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
     }
     $scope.BtnParamInsert = async function()
     {
+        console.log($rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu)
         $scope.InsertData = 
         [
             // Kullanıcı
@@ -417,10 +422,11 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             // Menü Yönetim
             ["MonoKullaniciAyarlari",$rootScope.GeneralParamList.MonoKullaniciAyarlari,2,"Kullanici Ayarları"],
             ["MonoKullaniciEkle",$rootScope.GeneralParamList.MonoKullaniciEkle,2,"MonoKullaniciEkle"],
+            ["MonoUretimSilme",$rootScope.GeneralParamList.MonoUretimSilme,2,"MonoUretimSilme"],
             // Menü Rapor
-            ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"MonoDepoTransferRaporu"]
-            ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"MonoStokSeviyeleriRaporu"]
-            ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"MonoStokDepoGirisCikisRaporu"]
+            ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"MonoDepoTransferRaporu"],
+            ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"MonoStokSeviyeleriRaporu"],
+            ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"MonoStokDepoGirisCikisRaporu"],
             // Parametre
             ["BarkodEtiketSeri",$rootScope.GeneralParamList.BarkodEtiketSeri,4,""],
             ["BasarSayarHasasTeraziIP",$rootScope.GeneralParamList.BasarSayarHasasTeraziIP,4,""],
@@ -473,6 +479,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["SatirBirlestir",$rootScope.GeneralParamList.SatirBirlestir,5,""],
         ]
 
+        console.log($scope.InsertData)
         if($rootScope.GeneralParamList.Account != "")
         {
             let TmpQuery = 
@@ -548,6 +555,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 // Menü Yönetim
                 MonoKullaniciAyarlari : false,
                 MonoKullaniciEkle : false,
+                MonoUretimSilme : false,
                 // Menü Rapor
                 MonoDepoTransferRaporu : false,
                 MonoStokSeviyeleriRaporu : false,
@@ -603,6 +611,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 PlasiyerKodu : "",
                 SatirBirlestir : false,
             }
+            console.log($rootScope.GeneralParamList)
 
             $scope.CmbAcilisSayfa =
             {
