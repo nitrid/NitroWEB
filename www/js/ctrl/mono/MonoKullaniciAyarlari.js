@@ -105,7 +105,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 KasaBarkodSeri : srv.GetParamValue($scope.Data,"KasaBarkodSeri"),
                 MamulEtiketSeri : srv.GetParamValue($scope.Data,"MamulEtiketSeri"),
                 MamulMalKabulDepo : srv.GetParamValue($scope.Data,"MamulMalKabulDepo"),
-                ElektirikMalKabulDepo : srv.GetParamValue($scope.Data,"ElektirikMalKabulDepo"),
+                MontajDepo : srv.GetParamValue($scope.Data,"MontajDepo"),
                 OperasyonSeri : srv.GetParamValue($scope.Data,"OperasyonSeri"),
                 UrunCikisSeri : srv.GetParamValue($scope.Data,"UrunCikisSeri"),
                 UrunGirisSeri : srv.GetParamValue($scope.Data,"UrunGirisSeri"),
@@ -304,7 +304,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MamulMalKabulDepo : $rootScope.GeneralParamList.MamulMalKabulDepo
             },
             {
-                ElektirikMalKabulDepo : $rootScope.GeneralParamList.ElektirikMalKabulDepo
+                MontajDepo : $rootScope.GeneralParamList.MontajDepo
             },
             {
                 OperasyonSeri : $rootScope.GeneralParamList.OperasyonSeri
@@ -416,17 +416,17 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoBarkodEtiketBasimi",$rootScope.GeneralParamList.MonoBarkodEtiketBasimi,1,"Barkod Etiket Basımı"],
             ["MonoKasaBarkodOlustur",$rootScope.GeneralParamList.MonoKasaBarkodOlustur,1,"Kasa Barkodu Oluştur"],
             ["MonoFasonGiris",$rootScope.GeneralParamList.MonoFasonGiris,1,"Fason Giriş"],
-            ["MonoElektrikUretim",$rootScope.GeneralParamList.MonoElektrikUretim,1,"Elektrik  Uretim"],
+            ["MonoElektrikUretim",$rootScope.GeneralParamList.MonoElektrikUretim,1,"Elektrik Uretim"],
             ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1,"Basar Sayar Barkod Oluştur"],
             ["MonoUretimDashboard",$rootScope.GeneralParamList.MonoUretimDashboard,1,"Üretim Dashboard"],
             // Menü Yönetim
             ["MonoKullaniciAyarlari",$rootScope.GeneralParamList.MonoKullaniciAyarlari,2,"Kullanici Ayarları"],
-            ["MonoKullaniciEkle",$rootScope.GeneralParamList.MonoKullaniciEkle,2,"MonoKullaniciEkle"],
-            ["MonoUretimSilme",$rootScope.GeneralParamList.MonoUretimSilme,2,"MonoUretimSilme"],
+            ["MonoKullaniciEkle",$rootScope.GeneralParamList.MonoKullaniciEkle,2,"Kullanıcı Ekle"],
+            ["MonoUretimSilme",$rootScope.GeneralParamList.MonoUretimSilme,2,"Üretim Silme"],
             // Menü Rapor
-            ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"MonoDepoTransferRaporu"],
-            ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"MonoStokSeviyeleriRaporu"],
-            ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"MonoStokDepoGirisCikisRaporu"],
+            ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"Depo Transfer Raporu"],
+            ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"Stok Seviyeleri Raporu"],
+            ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"Depo Giriş Çıkış Raporu"],
             // Parametre
             ["BarkodEtiketSeri",$rootScope.GeneralParamList.BarkodEtiketSeri,4,""],
             ["BasarSayarHasasTeraziIP",$rootScope.GeneralParamList.BasarSayarHasasTeraziIP,4,""],
@@ -446,7 +446,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["KasaBarkodSeri",$rootScope.GeneralParamList.KasaBarkodSeri,4,""],
             ["MamulEtiketSeri",$rootScope.GeneralParamList.MamulEtiketSeri,4,""],
             ["MamulMalKabulDepo",$rootScope.GeneralParamList.MamulMalKabulDepo,4,""],
-            ["ElektirikMalKabulDepo",$rootScope.GeneralParamList.ElektirikMalKabulDepo,4,""],
+            ["MontajDepo",$rootScope.GeneralParamList.MontajDepo,4,""],
             ["OperasyonSeri",$rootScope.GeneralParamList.OperasyonSeri,4,""],
             ["UrunCikisSeri",$rootScope.GeneralParamList.UrunCikisSeri,4,""],
             ["UrunGirisSeri",$rootScope.GeneralParamList.UrunGirisSeri,4,""],
@@ -579,7 +579,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 KasaBarkodSeri : "",
                 MamulEtiketSeri : "",
                 MamulMalKabulDepo : "",
-                ElektirikMalKabulDepo : "",
+                MontajDepo : "",
                 OperasyonSeri : "",
                 UrunCikisSeri : "",
                 UrunGirisSeri : "",
