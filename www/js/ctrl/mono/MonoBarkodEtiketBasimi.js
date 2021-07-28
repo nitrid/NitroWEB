@@ -549,6 +549,14 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         $scope.Data = {};
         $scope.Data.DATA = [];
         $scope.Data.BARKODLIST = [];
+        console.log($rootScope.GeneralParamList.MonoBarkodEtiketBasimi)
+        if($rootScope.GeneralParamList.MonoBarkodEtiketBasimi != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
 
         $scope.EtkSira = await MaxEtiketSira($rootScope.GeneralParamList.BarkodEtiketSeri)
 

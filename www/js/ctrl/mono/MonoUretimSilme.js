@@ -118,6 +118,22 @@ function MonoUretimSilme($scope, srv, $rootScope)
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "ÜRETİM SİLME"
 
+        if($rootScope.GeneralParamList.MonoUretimSilme !=  "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
+
+        if($rootScope.GeneralParamList.MonoUretimSilme != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
+
         InitObj()
         InitGrd()
 

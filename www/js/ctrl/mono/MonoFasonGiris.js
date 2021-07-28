@@ -736,6 +736,14 @@ function MonoFasonGiris($scope,srv, $rootScope)
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
 
+        if($rootScope.GeneralParamList.MonoFasonGiris != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
+
         InitObj();
         InitGrd([]);
         HassasTeraziVeriGetir();

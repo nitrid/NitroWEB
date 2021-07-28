@@ -837,6 +837,14 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
         $scope.EtkSira = MaxEtiketSira($scope.EtkSeri)
 
+        if($rootScope.GeneralParamList.MonoMamulMalKabul != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
+
         InitObj();
         InitGrd([]);
     }

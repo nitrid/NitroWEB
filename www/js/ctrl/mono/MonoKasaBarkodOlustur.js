@@ -154,6 +154,13 @@ function MonoKasaBarkodOlustur($scope, srv, $rootScope)
         $scope.LblStokAdi = "";
 
         $scope.TxtEtiketMiktar = 1;
+        if($rootScope.GeneralParamList.MonoKasaBarkodOlustur != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            // var url = "index.html";
+            // window.location.href = url;
+            // event.preventDefault();        
+        }
 
         InitObj();
         MaxEtiketSira();

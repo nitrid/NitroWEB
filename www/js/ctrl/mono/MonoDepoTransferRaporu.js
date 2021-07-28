@@ -47,6 +47,13 @@ function MonoDepoTransferRaporu($scope, srv, $rootScope)
            
         }
         $scope.DepoListe = await srv.Execute(TmpQuery)
+        if($rootScope.GeneralParamList.MonoDepoTransferRaporu != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
 
         InitDatePicker()
         InitGrd()

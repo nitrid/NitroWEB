@@ -680,6 +680,14 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
         $scope.EtkSira = await MaxEtiketSira($rootScope.GeneralParamList.YariMamulEtiketSeri)
 
+        if($rootScope.GeneralParamList.MonoYariMamulMalKabul != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
+
         InitObj();
         InitGrd([]);
         HassasTeraziVeriGetir();

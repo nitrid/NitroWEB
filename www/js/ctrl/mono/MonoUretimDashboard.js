@@ -6,6 +6,8 @@ function MonoUretimDashboard($scope,srv, $rootScope)
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "ÜRETİM"
 
+       
+
         // Sortable.create(demo1, 
         // { 
         //     animation: 100,

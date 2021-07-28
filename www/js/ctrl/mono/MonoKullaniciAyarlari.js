@@ -145,7 +145,8 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
         let UpdateData = 
         [
             pValue[0],
-            pTag[0]
+            pTag[0],
+            $scope.Kullanici
         ]
 
         let UpdateControl = await srv.Execute($scope.Firma,'UpdateParam',UpdateData);
@@ -479,7 +480,6 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["SatirBirlestir",$rootScope.GeneralParamList.SatirBirlestir,5,""],
         ]
 
-        console.log($scope.InsertData)
         if($rootScope.GeneralParamList.Account != "")
         {
             let TmpQuery = 
@@ -515,6 +515,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+
 
         $rootScope.GeneralParamList = {};
 
