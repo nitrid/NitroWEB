@@ -430,7 +430,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         [
             1,                                              //CREATE_USER
             1,                                              //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,                 //SPECIAL1
+            1,                 //SPECIAL1
             $rootScope.GeneralParamList.YariMamulEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
             pData.ISEMRI,                                   //AÇIKLAMA
@@ -538,6 +538,8 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     function KantarVeriGetir() 
     {
         var net = new WebTCP('192.168.2.240', 9999);
+
+        console.log(net)
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
@@ -659,11 +661,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         $scope.LblKantarMiktar = 0;
         $scope.DataKantarKilo = 50;
         $scope.DataHassasTeraziGram = 0;
-        $scope.ManuelGirisHide = false;
-        if($rootScope.GeneralParamList.YariMamulManuelGiris ==  1)
-        {
-            $scope.ManuelGirisHide = true;
-        }
+        $scope.ManuelGirisHide = $rootScope.GeneralParamList.YariMamulManuelGiris;
 
         $scope.LblUrun = "";
         $scope.TxtBarkod = "";
@@ -899,6 +897,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         }
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+        $scope.Init()
     }
     $scope.YeniEvrak = function()
     {

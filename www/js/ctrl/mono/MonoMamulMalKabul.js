@@ -799,6 +799,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             1                                //BASILACAKMIKTAR
         ]
 
+        console.log(InsertData)
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
 
         if(InsertControl == "")
@@ -835,7 +836,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
-        $scope.EtkSira = MaxEtiketSira($scope.EtkSeri)
+        $scope.EtkSira = await MaxEtiketSira($scope.EtkSeri)
 
         if($rootScope.GeneralParamList.MonoMamulMalKabul != "true")
         {
@@ -916,6 +917,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         }
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+        $scope.Init()
     }
     $scope.BtnSatirSil = async function()
     {
