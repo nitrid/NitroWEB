@@ -136,7 +136,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             {
                 if (typeof pData != 'undefined') 
                 {
-                    if($rootScope.GeneralParamList.YariMamulManuelGiris ==  1)
+                    if($scope.ManuelGirisHide ==  true)
                     {
                         $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
                     }
@@ -422,6 +422,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
         }
         else
         {
+                            
             swal("Dikkat", "Lütfen tartım barkodu giriniz.",icon="warning");
             return;
         }
@@ -724,11 +725,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
         $scope.LblKantarMiktar = 0;
         $scope.DataKantarKilo = 50;
         $scope.DataHassasTeraziGram = 0;
-        $scope.ManuelGirisHide = false;
-        if($rootScope.GeneralParamList.YariMamulManuelGiris ==  1)
-        {
-            $scope.ManuelGirisHide = true;
-        }
+        $scope.ManuelGirisHide = $rootScope.GeneralParamList.YariMamulManuelGiris;
 
         $scope.SthGSeri = $rootScope.GeneralParamList.FasonGirisSeri;
         $scope.SthCSeri = $rootScope.GeneralParamList.FasonCikisSeri;
@@ -826,6 +823,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
         if($scope.LblUrun != '')
         {
             let TmpSira = await MaxEtiketSira($rootScope.GeneralParamList.FasonEtiketSeri)
+            console.log($rootScope.GeneralParamList.FasonEtiketSeri)
+            console.log(TmpSira)
             await EtiketInsert(TmpSira,$scope.Data.DATA[0].PARTIBARKOD);
         }
         else

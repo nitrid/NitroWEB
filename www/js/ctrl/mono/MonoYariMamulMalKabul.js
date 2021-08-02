@@ -86,7 +86,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             {
                 if (typeof pData != 'undefined') 
                 {
-                    if($rootScope.GeneralParamList.YariMamulManuelGiris ==  1)
+                    if($scope.ManuelGirisHide ==  true)
                     {
                         $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
                     }

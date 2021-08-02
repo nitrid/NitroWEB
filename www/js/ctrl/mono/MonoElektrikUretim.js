@@ -312,8 +312,8 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             }
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
@@ -421,8 +421,8 @@ function MonoElektrikUretim($scope, srv, $rootScope)
 
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 0,
                 0,
                 pSeri,
@@ -461,7 +461,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         [
             1,                                              //CREATE_USER
             1,                                              //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,                 //SPECIAL1
+            pData.SPECIAL,                 //SPECIAL1
             $rootScope.GeneralParamList.ElektrikUretimEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
             pData.ISEMRI,                                   //AÇIKLAMA
@@ -474,11 +474,11 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             1,                                              //RENKKODU
             1,                                              //BEDENKODU
             pData.URNBARKOD,                                //BARKOD
-            1                                               //BASILACAKMIKTAR
+            pData.BASMIKTAR,                                               //BASILACAKMIKTAR
         ]
         
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
-
+console.log(InsertData)
         if(InsertControl == "")
         {
             swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
@@ -922,9 +922,11 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         let EtiketData = 
         {
             "ISEMRI": $scope.BteIsEmri.txt,
-            "MIKTAR" : 1,
+            "MIKTAR" : $scope.Birim3,
+            "BASMIKTAR" : 1,
             "KODU" : $scope.LblUrun,
             "URNBARKOD" : $scope.SeriBarkod,
+            "SPECIAL" :  "2"
 
         }
         await EtiketInsert(EtiketData);
@@ -1000,9 +1002,11 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         let EtiketData = 
         {
             "ISEMRI": $scope.BteIsEmri.txt,
-            "MIKTAR" : $scope.TxtEtiketMiktar,
+            "MIKTAR" :  $scope.KontrolMiktar,
+            "BASMIKTAR": $scope.TxtEtiketMiktar,
             "KODU" : $scope.LblUrun,
-            "URNBARKOD" : $scope.Barkod2
+            "URNBARKOD" : $scope.Barkod2,
+            "SPECIAL" : "1"
 
         }
         await EtiketInsert(EtiketData);
@@ -1097,8 +1101,8 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 pParti,
                 pLot,
                 pStok,
@@ -1153,8 +1157,8 @@ function MonoElektrikUretim($scope, srv, $rootScope)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 pBarkod,
                 pStokKodu,
                 pParti,

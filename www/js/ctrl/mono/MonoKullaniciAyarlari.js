@@ -204,6 +204,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             {
                 Password : $rootScope.GeneralParamList.Password
             },
+            {
+                Kullanici : $rootScope.GeneralParamList.Kullanici
+            },
             // Menü
             {
                 MonoMamulMalKabul : $rootScope.GeneralParamList.MonoMamulMalKabul
@@ -411,6 +414,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
         [
             // Kullanıcı
             ["Password",$rootScope.GeneralParamList.Password,0,""],
+            ["Kullanici",$rootScope.GeneralParamList.Kullanici,0,""],
             // Menü
             ["MonoMamulMalKabul",$rootScope.GeneralParamList.MonoMamulMalKabul,1,"Mamül Mal Kabul"],
             ["MonoYariMamulMalKabul",$rootScope.GeneralParamList.MonoYariMamulMalKabul,1,"Yarı Mamül Mal Kabul"],
