@@ -134,6 +134,8 @@ function MonoStokDepoGirisCikisRaporu($scope, srv, $rootScope)
     $scope.BtnGetir = async function()
     {
 
+        $scope.deneme  = await srv.Scale.Send("COM7");
+        console.log($scope.deneme)
         console.log($scope.BaslangicData)
         if($scope.BaslangicData == '' || $scope.BitisData == '')
         {

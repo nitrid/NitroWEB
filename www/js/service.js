@@ -2,10 +2,12 @@ angular.module('app.srv', []).service('srv',function($rootScope)
 {
     moment.locale('tr')
     let _Socket = null;
-    
+    let _Scale = new Scale();
+console.log(_Scale)
     this.SocketConnected = false;
     this.Connection = _Connection;
     this.Execute = _Execute; 
+    this.Scale = _Scale;
     
     this.SafeApply = function(pScope,pFn) 
     {
