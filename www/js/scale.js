@@ -1,4 +1,3 @@
-console.log(require)
 var Scale = 
 (
     function()
