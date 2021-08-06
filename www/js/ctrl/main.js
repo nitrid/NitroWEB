@@ -18,9 +18,9 @@ function Main($scope,$state,srv,$rootScope)
         Menu();
         if(srv.SocketConnected)
         {
-            $scope.Menu = await srv.Execute($scope.Firm,'GetParam','1')
-            $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam','2')
-            $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam','3')
+            $scope.Menu = await srv.Execute($scope.Firm,'GetParam',['1',$scope.User])
+            $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam',['2',$scope.User])
+            $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam',['3',$scope.User])
 
             //******  YÖNETİM  ******//
 
@@ -66,7 +66,7 @@ function Main($scope,$state,srv,$rootScope)
 
             let TmpHtml = "";
             TmpHtml += '<li class="nav-item dropdown">'
-            TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> Mono </a>'
+            TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> GÜNOK </a>'
             
             TmpHtml += '<ul class="dropdown-menu">'
             for (let i = 0; i < $scope.Menu.length; i++) 

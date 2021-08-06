@@ -2056,7 +2056,7 @@ var Query =
         param : ['sto_kod'],
         type : ['string|50']
     },
-    /* Parametre
+    /* Parametre TYPE
        0 - KULLANICI
        1 - MENU
        2 - MENU YONETIM
@@ -2065,9 +2065,9 @@ var Query =
        5 - SISTEM */
     GetParam :
     {
-        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE TYPE = @TYPE",
-        param : ['TYPE'],
-        type : ['int'] 
+        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
+        param : ['TYPE','ACCOUNT'],
+        type : ['int','string|50'] 
     },
     GetKullanici : 
     {

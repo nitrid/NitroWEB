@@ -61,13 +61,6 @@ function MonoUretimDashboard($scope,srv, $rootScope)
                     type: "buttons",
                     buttons: 
                     [ 
-                        // {
-                        //     icon: "edit",
-                        //     onClick: function (e) 
-                        //     {
-                        //         GetProduct(e.row.data.PRODUCT_MAIN_CODE)
-                        //     }
-                        // },
                         {
                             icon: "file",
                             onClick: function (e) 
