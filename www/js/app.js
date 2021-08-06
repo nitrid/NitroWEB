@@ -179,24 +179,32 @@ angular.module("app",
             controller:"MonoUretimSilme"
         }
     ).
-
-    //DIAN MENU
+    //GUNOK MENU
     state
     (
         {
-            name: 'main.DianStokMaliyetOperasyonu',
-            url: '/dian_stok_maliyet_operasyon',
-            templateUrl : "view/dian/DianStokMaliyetOperasyonu.html",
-            controller:"DianStokMaliyetOperasyonu"
+            name: 'main.GunokKullaniciAyarlari',
+            url: '/gunok_kullanici_ayarlari',
+            templateUrl : "view/gunok/GunokKullaniciAyarlari.html",
+            controller:"GunokKullaniciAyarlari"
         }
     ).
     state
     (
         {
-            name: 'main.DianSatilanMalinMaliyeti',
-            url: '/dian_satilan_malin_maliyeti',
-            templateUrl : "view/dian/DianSatilanMalinMaliyeti.html",
-            controller:"DianSatilanMalinMaliyeti"
+            name: 'main.GunokOperator',
+            url: '/gunok_operator',
+            templateUrl : "view/gunok/GunokOperator.html",
+            controller:"GunokOperator"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.GunokPlanlama',
+            url: '/gunok_planlama',
+            templateUrl : "view/gunok/GunokPlanlama.html",
+            controller:"GunokPlanlama"
         }
     )
 });
