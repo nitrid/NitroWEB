@@ -4,95 +4,136 @@ function MonoUretimDashboard($scope,srv, $rootScope)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "ÜRETİM"
+        $rootScope.PageName = "PUNCH"
 
-        // Sortable.create(demo1, 
-        // { 
-        //     animation: 100,
-        //     multiDrag: true, 
-        //     group: 'list-1', 
-        //     draggable: '.list-group-item', 
-        //     handle: '.list-group-item', 
-        //     sort: true, 
-        //     filter: '.sortable-disabled', 
-        //     chosenClass: 'active',
-        //     onChange: function(/**Event*/evt) {
-        //         evt.newIndex // most likely why this event is used is to get the dragging element's current index
-        //         // same properties as onEnd
-        //         console.log(evt.newIndex)
-        //     },
-        //     onAdd: function (/**Event*/evt) {
-        //         // same properties as onEnd
-        //         //console.log(evt.to.outerText)
-        //         //console.log(evt)
-        //         //console.log(evt.to.children[0].id)
-        //         console.log(evt.to.children)
-
-        //     },
-        //     onChange: function(/**Event*/evt) {
-        //         evt.newIndex // most likely why this event is used is to get the dragging element's current index
-        //         // same properties as onEnd
-        //         //console.log(evt.path)
-        //     }
-        // });
-        // Sortable.create(demo2, 
-        // { 
-        //     animation: 100, 
-        //     group: 'list-1', 
-        //     draggable: '.list-group-item', 
-        //     handle: '.list-group-item', 
-        //     sort: true, 
-        //     filter: '.sortable-disabled', 
-        //     chosenClass: 'active',
-        //     // onChange: function(/**Event*/evt) {
-        //     //     evt.newIndex // most likely why this event is used is to get the dragging element's current index
-        //     //     // same properties as onEnd
-        //     //     console.log(evt)
-        //     // } 
-        // });
-
-    }
-
-    $(function(){
-        $("#pie").dxPieChart({
-            palette: ['#0dcaf0', '#4cae4c', '#007bff'],
-            dataSource: dataSource,
-            //title: "Olympic Medals in 2008",
-            legend: {
-                orientation: "horizontal",
-                itemTextPosition: "right",
-                horizontalAlignment: "center",
-                verticalAlignment: "bottom",
-                columnCount: 4
-            },
-            "export": {
-                enabled: false
-            },
-            series: [{
-                argumentField: "uretim",
-                valueField: "medals",
-                label: {
-                    visible: true,
-                    font: {
-                        size: 20
-                    },
-                    connector: {
-                        visible: true,
-                        width: 1.5
-                    },
-                    position: "columns",
-                    customizeText: function(arg) {
-                        return arg.valueText + " (" + arg.percentText + ")";
+        $(function(){
+            var dataGrid = $("#AcikSiparisler").dxDataGrid({
+                height: 540,
+                dataSource: $scope.employees,
+                keyExpr: "ID",
+                scrolling: {
+                    mode: "virtual"
+                },
+                sorting: {
+                    mode: "none"
+                },
+                selection: {
+                    mode: "multiple"
+                },
+                rowDragging: {
+                    allowReordering: true,
+                    onReorder: function(e) {
+                        var visibleRows = e.component.getVisibleRows(),
+                            toIndex = $scope.employees.indexOf(visibleRows[e.toIndex].data),
+                            fromIndex = $scope.employees.indexOf(e.itemData);
+                            $scope.employees.splice(fromIndex, 1);
+                            $scope.employees.splice(toIndex, 0, e.itemData);
+                        console.log(e.component)
+                        e.component.refresh();
+                        console.log($scope.employees)
                     }
-                }
-            }]
+                },
+                showBorders: true,
+                columns: [
+                {
+                    dataField: "ID",
+                    width: 55,
+                    alignment: "center"
+                },
+                {
+                    dataField: "FullName",
+                    caption: "Full Name",
+                    alignment: "center"
+                }, 
+                {
+                    dataField: "Department",
+                    caption: "Department",
+                    alignment: "center"
+                },
+                {
+                    dataField: "Title",
+                    caption: "Title",
+                    alignment: "center"
+                },
+                {      
+                    caption: "İŞLEMLER",
+                    width: 90,
+                    type: "buttons",
+                    buttons: 
+                    [ 
+                        // {
+                        //     icon: "edit",
+                        //     onClick: function (e) 
+                        //     {
+                        //         GetProduct(e.row.data.PRODUCT_MAIN_CODE)
+                        //     }
+                        // },
+                        {
+                            icon: "file",
+                            onClick: function (e) 
+                            {
+                                GetDetail(e.row.data)
+                            }
+                        },
+                    ]
+                }]
+            }).dxDataGrid("instance");
         });
-    }); 
-    var dataSource = [{
-        uretim: "KALAN",
-        medals: 200,
-    }, {
-        uretim: "ÜRETİM",
-        medals: 100
-    }];
+        $scope.employees = [{
+            ID: 1,
+            FullName: "John Heart",
+            Department: "Management",
+            Title: "CEO",
+        }, {
+            ID: 2,
+            FullName: "Samantha Bright",
+            Department: "Management",
+            Title: "COO",
+        }, {
+            ID: 3,
+            FullName: "Arthur Miller",
+            Department: "Management",
+            Title: "CTO",
+        }, {
+            ID: 4,
+            FullName: "Robert Reagan",
+            Department: "Management",
+            Title: "CMO",
+        }, {
+            ID: 5,
+            FullName: "Greta Sims",
+            Department: "Human Resources",
+            Title: "HR Manager",
+        }, {
+            ID: 6,
+            FullName: "Brett Wade",
+            Department: "IT",
+            Title: "IT Manager",
+        }, {
+            ID: 7,
+            FullName: "Sandra Johnson",
+            Department: "Human Resources",
+            Title: "Controller",
+        }, {
+            ID: 8,
+            FullName: "Ed Holmes",
+            Department: "Sales",
+            Title: "Sales Manager",
+        }, {
+            ID: 9,
+            FullName: "Barb Banks",
+            Department: "Support",
+            Title: "Support Manager",
+        }, {
+            ID: 10,
+            FullName: "Kevin Carter",
+            Department: "Shipping",
+            Title: "Shipping Manager",
+        }]
+    }
+    function GetDetail(pData)
+    {
+        $('#MdlIsEmriDetay').modal('show')
+        console.log(pData)
+    }
 }

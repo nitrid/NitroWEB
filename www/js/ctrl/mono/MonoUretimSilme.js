@@ -103,7 +103,7 @@ function MonoUretimSilme($scope, srv, $rootScope)
             }
         )
     }
-    function UretimSil(pData)
+    async function UretimSil(pData)
     {
         let DeleteData = [
             pData.ISEMRI
