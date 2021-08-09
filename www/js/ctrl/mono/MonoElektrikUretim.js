@@ -801,6 +801,7 @@ console.log(InsertData)
         }
         let TmpUretRec = 0;
 
+        console.log(TmpDrUret)
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
             let TmpRec = 0;
@@ -929,6 +930,7 @@ console.log(InsertData)
             "SPECIAL" :  "2"
 
         }
+        console.log(EtiketData)
         await EtiketInsert(EtiketData);
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
         $scope.JsonSave()
@@ -1247,7 +1249,7 @@ console.log(InsertData)
             value : ['Admin',$rootScope.PageName]
         }
         let JsonControl = await srv.Execute(TmpQuery)
-
+console.log(JsonControl)
         if(JsonControl.length > 0)
         {
             let UpdateQuery = 
@@ -1312,8 +1314,8 @@ console.log(InsertData)
             }
             InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
             {                    
-                $scope.Data.UMP = await UretimMalzemePlanGetir($scope.Data.DATA[0]);
-                $scope.Data.URP = await UretimRotaPlanGetir($scope.Data.DATA[0]);
+                $scope.Data.UMP = await UretimMalzemePlanGetir($scope.Data.DATA[0].KODU);
+                $scope.Data.URP = await UretimRotaPlanGetir($scope.Data.DATA[0].KODU);
                
                 let TmpQuery = 
                 {

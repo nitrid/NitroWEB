@@ -252,6 +252,14 @@ function MonoFasonGiris($scope,srv, $rootScope)
             }
         }
     }
+    function Scale()
+    {
+        srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
+        {
+            console.log(pData)
+            $scope.LblHassasGram = pData
+        });
+    }
     function MiktarKontrol()
     {
         if($scope.Data.UMP.length > 0)
@@ -745,6 +753,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
         InitGrd([]);
         HassasTeraziVeriGetir();
         KantarVeriGetir();
+        Scale()
     }
     $scope.BtnSatirSil = async function()
     {

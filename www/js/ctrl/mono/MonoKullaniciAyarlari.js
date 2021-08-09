@@ -198,6 +198,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
     }
     $scope.BtnParamUpdate = async function()
     {
+        console.log( $scope.Kullanici)
         let Param =
         [
             // Kullanıcı
@@ -205,7 +206,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 Password : $rootScope.GeneralParamList.Password
             },
             {
-                Kullanici : $rootScope.GeneralParamList.Kullanici
+                Kullanici : $scope.Kullanici
             },
             // Menü
             {
@@ -414,7 +415,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
         [
             // Kullanıcı
             ["Password",$rootScope.GeneralParamList.Password,0,""],
-            ["Kullanici",$rootScope.GeneralParamList.Kullanici,0,""],
+            ["Kullanici",$scope.GeneralParamList.Account,0,""],
             // Menü
             ["MonoMamulMalKabul",$rootScope.GeneralParamList.MonoMamulMalKabul,1,"Mamül Mal Kabul"],
             ["MonoYariMamulMalKabul",$rootScope.GeneralParamList.MonoYariMamulMalKabul,1,"Yarı Mamül Mal Kabul"],

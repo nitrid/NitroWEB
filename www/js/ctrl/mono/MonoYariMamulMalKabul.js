@@ -596,6 +596,14 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         socket.on('end', function (data) { console.log("socket is closed "); });
         socket.write("hello world");
     }
+    function Scale()
+    {
+        srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
+        {
+            console.log(pData)
+            $scope.LblHassasGram = pData
+        });
+    }
     function HassasData(pData)
     {
         if(pData.includes("ST,GS,+") && pData.includes("g")) 
@@ -613,6 +621,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     {
         return new Promise(async resolve => 
         {
+            console.log(pSeri)
             let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
             if(TmpData.length > 0)
             {
@@ -690,6 +699,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         InitGrd([]);
         HassasTeraziVeriGetir();
         KantarVeriGetir();
+        Scale();
     }
     $scope.BtnTartimOnayla = async function()
     {

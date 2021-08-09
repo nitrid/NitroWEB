@@ -123,6 +123,14 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
             }
         }
     }
+    function Scale()
+    {
+        srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
+        {
+            console.log(pData)
+            $scope.LblHassasGram = pData
+        });
+    }
     function KantarVeriGetir() 
     {
         var net = new WebTCP('192.168.2.240', 9999);
@@ -266,6 +274,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         MaxEtiketSira();
         KantarVeriGetir();
         HassasTeraziVeriGetir();
+        Scale()
     }
     $scope.BtnTartimOnayla = function()
     {

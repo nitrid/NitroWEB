@@ -627,7 +627,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
                 0, // NAKLİYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-            
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -672,7 +672,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
                 pDr.MIKTAR,
                 TmpSure
             ]
-            
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
