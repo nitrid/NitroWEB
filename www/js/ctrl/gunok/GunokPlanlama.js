@@ -5,6 +5,11 @@ function GunokPlanlama($scope,srv, $rootScope)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "PUNCH"
+        $scope.TestMiktar = 4
+        $scope.TxtAcikSiparisler = "Açık Siparişler("+$scope.TestMiktar+")"
+        $scope.TxtIsEmirleriListesi = "İş Emirleri Listesi("+$scope.TestMiktar+")"
+        $scope.TxtPlanlananlar = "Planlananlar("+$scope.TestMiktar+")"
+        $scope.TxtTamamlananlar = "Tamamlananlar("+$scope.TestMiktar+")"
 
         $(function(){
             var dataGrid = $("#AcikSiparisler").dxDataGrid({

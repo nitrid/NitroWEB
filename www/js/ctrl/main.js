@@ -126,13 +126,15 @@ function Main($scope,$state,srv,$rootScope)
                 Password : srv.GetParamValue($scope.Data,"Password"),
                 Kullanici : srv.GetParamValue($scope.Data,"Kullanici"),
                 // Menü
-                MonoMamulMalKabul : srv.GetParamValue($scope.Data,"MonoMamulMalKabul"),
-                MonoYariMamulMalKabul : srv.GetParamValue($scope.Data,"MonoYariMamulMalKabul"),
-                MonoBarkodEtiketBasimi : srv.GetParamValue($scope.Data,"MonoBarkodEtiketBasimi"),
-                MonoKasaBarkodOlustur : srv.GetParamValue($scope.Data,"MonoKasaBarkodOlustur"),
-                MonoFasonGiris : srv.GetParamValue($scope.Data,"MonoFasonGiris"),
-                MonoElektrikUretim : srv.GetParamValue($scope.Data,"MonoElektrikUretim"),
-                MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
+                GunokOperator : srv.GetParamValue($scope.Data,"GunokOperator"),
+                GunokPlanlama : srv.GetParamValue($scope.Data,"GunokPlanlama"),
+                // MonoMamulMalKabul : srv.GetParamValue($scope.Data,"MonoMamulMalKabul"),
+                // MonoYariMamulMalKabul : srv.GetParamValue($scope.Data,"MonoYariMamulMalKabul"),
+                // MonoBarkodEtiketBasimi : srv.GetParamValue($scope.Data,"MonoBarkodEtiketBasimi"),
+                // MonoKasaBarkodOlustur : srv.GetParamValue($scope.Data,"MonoKasaBarkodOlustur"),
+                // MonoFasonGiris : srv.GetParamValue($scope.Data,"MonoFasonGiris"),
+                // MonoElektrikUretim : srv.GetParamValue($scope.Data,"MonoElektrikUretim"),
+                // MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
                 // Menü Yönetim
                 MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
                 MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),
@@ -194,6 +196,4 @@ function Main($scope,$state,srv,$rootScope)
             resolve()
         });
     }
-   
-
 }

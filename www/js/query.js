@@ -2065,25 +2065,25 @@ var Query =
        5 - SISTEM */
     GetParam :
     {
-        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
+        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
         param : ['TYPE','ACCOUNT'],
         type : ['int','string|50'] 
     },
     GetKullanici : 
     {
-        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE ACCOUNT = @ACCOUNT",
+        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 WHERE ACCOUNT = @ACCOUNT",
         param : ['ACCOUNT'],
         type : ['string|50'] 
     },
     UpdateParam : 
     {
-        query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_PARAM SET VALUE = @VALUE WHERE TAG = @TAG",
+        query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 SET VALUE = @VALUE WHERE TAG = @TAG",
         param : ['VALUE','TAG'],
         type : ['string|50','string|50']
     },
     InsertParam :
     {
-        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_PARAM] " +
+        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_PARAM_2] " +
                 "([ACCOUNT] " +
                 ",[TAG] " +
                 ",[VALUE] " +
@@ -2101,7 +2101,7 @@ var Query =
     },
     InsertJson :
     {
-        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_JSONDATA] " +
+        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_JSONDATA_2] " +
                 "([GUID] " +
                 ",[KULLANICI] " +
                 ",[MENU] " +

@@ -4,7 +4,12 @@ function GunokOperator($scope,srv, $rootScope)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "PUNCH"
+        $rootScope.PageName = "OPERATOR"
+        $scope.TestMiktar = 4
+        $scope.TxtAcikSiparisler = "Açık Siparişler("+$scope.TestMiktar+")"
+        $scope.TxtIsEmirleriListesi = "İş Emirleri Listesi("+$scope.TestMiktar+")"
+        $scope.TxtPlanlananlar = "Planlananlar("+$scope.TestMiktar+")"
+        $scope.TxtTamamlananlar = "Tamamlananlar("+$scope.TestMiktar+")"
 
         $(function(){
             var dataGrid = $("#AcikSiparisler").dxDataGrid({
@@ -34,6 +39,15 @@ function GunokOperator($scope,srv, $rootScope)
                     }
                 },
                 showBorders: true,
+                filterRow: 
+                {
+                    visible: true,
+                    applyFilter: "auto"
+                },
+                headerFilter: 
+                {
+                    visible: true
+                },
                 columns: [
                 {
                     dataField: "ID",
@@ -63,6 +77,15 @@ function GunokOperator($scope,srv, $rootScope)
                     [ 
                         {
                             icon: "file",
+                            text: "DETAYLAR",
+                            onClick: function (e) 
+                            {
+                                GetDetail(e.row.data)
+                            }
+                        },
+                        {
+                            icon: "print",
+                            text: "ETİKES BAS",
                             onClick: function (e) 
                             {
                                 GetDetail(e.row.data)
