@@ -4,7 +4,7 @@ function GunokPlanlama($scope,srv, $rootScope)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "PUNCH"
+        //$rootScope.PageName = "PUNCH"
         $scope.TestMiktar = 4
         $scope.TxtAcikSiparisler = "Açık Siparişler("+$scope.TestMiktar+")"
         $scope.TxtIsEmirleriListesi = "İş Emirleri Listesi("+$scope.TestMiktar+")"
@@ -39,6 +39,15 @@ function GunokPlanlama($scope,srv, $rootScope)
                     }
                 },
                 showBorders: true,
+                filterRow: 
+                {
+                    visible: true,
+                    applyFilter: "auto"
+                },
+                headerFilter: 
+                {
+                    visible: true
+                },
                 columns: [
                 {
                     dataField: "ID",
@@ -73,6 +82,14 @@ function GunokPlanlama($scope,srv, $rootScope)
                                 GetDetail(e.row.data)
                             }
                         },
+                        {
+                            icon: "print",
+                            text: "ETİKES BAS",
+                            onClick: function (e) 
+                            {
+                                GetDetail(e.row.data)
+                            }
+                        }
                     ]
                 }]
             }).dxDataGrid("instance");
@@ -128,6 +145,26 @@ function GunokPlanlama($scope,srv, $rootScope)
             Department: "Shipping",
             Title: "Shipping Manager",
         }]
+
+        $scope.CmbPlanlamaSayfa =
+        {
+            datasource : 
+            {
+                data : [{KODU : '01',ADI: 'PUNCH'},{KODU : '02',ADI: 'ABKANT'},{KODU : '03',ADI: 'KAYNAK'},{KODU : '04',ADI: 'BOYA'},{KODU : '05',ADI: 'MONTAJ'}]
+            },
+            key : "KODU",
+            value : "ADI",
+            defaultVal : "PUNCH",
+            selectionMode : "row",
+            return : "PUNCH",
+            onSelected : function(pSelected)
+            {
+                $rootScope.PageName = JSON.parse(pSelected).ADI
+                console.log(JSON.parse(pSelected).KODU)
+                $rootScope.GeneralParamList.AcilisSayfasi = pSelected
+            },
+
+        }
     }
     function GetDetail(pData)
     {
