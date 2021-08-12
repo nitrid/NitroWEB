@@ -1,4 +1,4 @@
-function MonoElektrikUretim($scope, srv, $rootScope) 
+function MonoElektrikUretim($scope, srv, $window, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -478,10 +478,12 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         ]
         
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
-console.log(InsertData)
+        console.log(InsertData)
         if(InsertControl == "")
         {
-            swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+            //swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+            $('.toast').toast('show');
+            $window.document.getElementById("TxtBarkodKontrol").focus();
         }
         else
         {
@@ -679,14 +681,11 @@ console.log(InsertData)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "ELEKTRİK ÜRETİM"
-       
 
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];
         $scope.Data.DATA = [];
-
-       
 
         $scope.LblKasaDara = 0;
 
@@ -734,7 +733,6 @@ console.log(InsertData)
         InitGrd([]);
         HassasTeraziVeriGetir();
         KantarVeriGetir();
-        
     }
     $scope.BtnTartimOnayla = function()
     {
@@ -935,6 +933,7 @@ console.log(InsertData)
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
         $scope.JsonSave()
         $scope.KutuKontrolMiktar = 0;
+        $window.document.getElementById("TxtBarkodKontrol").focus();
     }
     $scope.BtnKaydet = async function()
     {
@@ -1013,6 +1012,30 @@ console.log(InsertData)
         }
         await EtiketInsert(EtiketData);
     }
+    $scope.BtnTekrarEtiketBas = async function()
+    {
+        if(typeof(SelectionRow) == "undefined")
+        {
+            swal("Dikkat", "Lütfen Tablodan Seçim Yapınız.",icon="warning");
+            return; 
+        }
+        else
+        {
+            console.log(SelectionRow)
+            let EtiketData = 
+            {
+                "ISEMRI": SelectionRow.ISEMRI,
+                "MIKTAR" :  SelectionRow.MIKTAR,
+                "BASMIKTAR": "1",
+                "KODU" : SelectionRow.KODU,
+                "URNBARKOD" : SelectionRow.URNBARKOD,
+                "SPECIAL" : "2"
+    
+            }
+            await EtiketInsert(EtiketData);
+        }
+
+    }
     $scope.TxtBarkodKontrolEvent = function(keyEvent)
     {
         if($scope.BteIsEmri.txt == "")
@@ -1059,6 +1082,7 @@ console.log(InsertData)
         if($scope.KutuKontrolMiktar != $scope.Birim3)
         {
             swal("Dikkat", "Kutu Miktarını Tamamlamadan Ekleme Yapılamaz.",icon="warning");
+            $scope.TxtBarkodKontrol = ""
             return;
         }
         
