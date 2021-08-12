@@ -11,90 +11,6 @@ function GunokOperator($scope,srv, $rootScope)
         $scope.TxtPlanlananlar = "Planlananlar("+$scope.TestMiktar+")"
         $scope.TxtTamamlananlar = "Tamamlananlar("+$scope.TestMiktar+")"
 
-        $(function(){
-            var dataGrid = $("#AcikSiparisler").dxDataGrid({
-                height: 540,
-                dataSource: $scope.employees,
-                keyExpr: "ID",
-                scrolling: {
-                    mode: "virtual"
-                },
-                sorting: {
-                    mode: "none"
-                },
-                selection: {
-                    mode: "multiple"
-                },
-                rowDragging: {
-                    allowReordering: true,
-                    onReorder: function(e) {
-                        var visibleRows = e.component.getVisibleRows(),
-                            toIndex = $scope.employees.indexOf(visibleRows[e.toIndex].data),
-                            fromIndex = $scope.employees.indexOf(e.itemData);
-                            $scope.employees.splice(fromIndex, 1);
-                            $scope.employees.splice(toIndex, 0, e.itemData);
-                        console.log(e.component)
-                        e.component.refresh();
-                        console.log($scope.employees)
-                    }
-                },
-                showBorders: true,
-                filterRow: 
-                {
-                    visible: true,
-                    applyFilter: "auto"
-                },
-                headerFilter: 
-                {
-                    visible: true
-                },
-                columns: [
-                {
-                    dataField: "ID",
-                    width: 55,
-                    alignment: "center"
-                },
-                {
-                    dataField: "FullName",
-                    caption: "Full Name",
-                    alignment: "center"
-                }, 
-                {
-                    dataField: "Department",
-                    caption: "Department",
-                    alignment: "center"
-                },
-                {
-                    dataField: "Title",
-                    caption: "Title",
-                    alignment: "center"
-                },
-                {      
-                    caption: "İŞLEMLER",
-                    width: 90,
-                    type: "buttons",
-                    buttons: 
-                    [ 
-                        {
-                            icon: "file",
-                            text: "DETAYLAR",
-                            onClick: function (e) 
-                            {
-                                GetDetail(e.row.data)
-                            }
-                        },
-                        {
-                            icon: "print",
-                            text: "ETİKES BAS",
-                            onClick: function (e) 
-                            {
-                                GetDetail(e.row.data)
-                            }
-                        },
-                    ]
-                }]
-            }).dxDataGrid("instance");
-        });
         $scope.employees = [{
             ID: 1,
             FullName: "John Heart",
@@ -146,6 +62,133 @@ function GunokOperator($scope,srv, $rootScope)
             Department: "Shipping",
             Title: "Shipping Manager",
         }]
+        GetIsEmirleri()
+    }
+    async function GetIsEmirleri()
+    {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT is_Kod AS KODU,is_Ismi AS ADI," +
+                    "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " +
+                    "UPL.upl_kodu AS STOKKODU, " +
+                    "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI " +
+                    "FROM ISEMIRLERI as ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
+                    "WHERE (SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0 " + 
+                    "AND UPL.upl_uretim_tuket = 1 ",
+            // param : ['depo:int'],
+            // value : [$scope.DepoNo]
+        }
+        console.log(TmpQuery)
+        let TmpData = await srv.Execute(TmpQuery)
+        $scope.DataList = TmpData
+        InitGrid(TmpData)
+    }
+    function InitGrid(pData)
+    {
+        $("#AcikSiparisler").dxDataGrid({
+            height: 640,
+            dataSource: pData,
+            // scrolling: {
+            //     mode: "virtual"
+            // },
+            sorting: {
+                mode: "none"
+            },
+            selection: {
+                mode: "multiple"
+            },
+            showBorders: true,
+            filterRow: 
+            {
+                visible: true,
+                applyFilter: "auto"
+            },
+            scrolling: 
+            {
+                columnRenderingMode: "horizontal"
+            },
+            paging: 
+            {
+                pageSize: 20
+            },
+            headerFilter: 
+            {
+                visible: true
+            },
+            // rowDragging: {
+            //     allowReordering: true,
+            //     onReorder: function(e) {
+            //         var visibleRows = e.component.getVisibleRows(),
+            //             toIndex = pData.indexOf(visibleRows[e.toIndex].data),
+            //             fromIndex = pData.indexOf(e.itemData);
+            //             pData.splice(fromIndex, 1);
+            //             pData.splice(toIndex, 0, e.itemData);
+            //         console.log(e.component)
+            //         e.component.refresh();
+            //         console.log(pData)
+            //     }
+            // },
+            columns: [
+            {  
+                width: 50,
+                caption: 'SIRA',
+                cellTemplate: function(cellElement, cellInfo) {  
+                    cellElement.text(cellInfo.row.rowIndex+1) 
+                }  
+            }, 
+            {
+                width: 150,
+                dataField: "KODU",
+                caption: "İş Emri No",
+                alignment: "center"
+            }, 
+            {
+                dataField: "ADI",
+                caption: "İş Emri Adı",
+                alignment: "center"
+            },
+            {
+                width: 100,
+                dataField: "PLANMIKTAR",
+                caption: "Miktar",
+                alignment: "center"
+            },
+            {
+                dataField: "STOKKODU",
+                caption: "Stok Kodu",
+                alignment: "center"
+            },
+            {
+                dataField: "STOKADI",
+                caption: "Stok Adı",
+                alignment: "center"
+            },
+            {      
+                caption: "İŞLEMLER",
+                width: 90,
+                type: "buttons",
+                buttons: 
+                [ 
+                    {
+                        icon: "file",
+                        text: "DETAYLAR",
+                        onClick: function (e) 
+                        {
+                            GetDetail(e.row.data)
+                        }
+                    },
+                    {
+                        icon: "print",
+                        text: "ETİKES BAS",
+                        onClick: function (e) 
+                        {
+                            GetDetail(e.row.data)
+                        }
+                    },
+                ]
+            }]
+        }).dxDataGrid("instance");
     }
     function GetDetail(pData)
     {
