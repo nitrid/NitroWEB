@@ -89,9 +89,7 @@ function GunokOperator($scope,srv, $rootScope)
         $("#AcikSiparisler").dxDataGrid({
             height: 640,
             dataSource: pData,
-            // scrolling: {
-            //     mode: "virtual"
-            // },
+            columnsAutoWidth: true,
             sorting: {
                 mode: "none"
             },
@@ -116,19 +114,19 @@ function GunokOperator($scope,srv, $rootScope)
             {
                 visible: true
             },
-            // rowDragging: {
-            //     allowReordering: true,
-            //     onReorder: function(e) {
-            //         var visibleRows = e.component.getVisibleRows(),
-            //             toIndex = pData.indexOf(visibleRows[e.toIndex].data),
-            //             fromIndex = pData.indexOf(e.itemData);
-            //             pData.splice(fromIndex, 1);
-            //             pData.splice(toIndex, 0, e.itemData);
-            //         console.log(e.component)
-            //         e.component.refresh();
-            //         console.log(pData)
-            //     }
-            // },
+            rowDragging: {
+                allowReordering: true,
+                onReorder: function(e) {
+                    var visibleRows = e.component.getVisibleRows(),
+                        toIndex = pData.indexOf(visibleRows[e.toIndex].data),
+                        fromIndex = pData.indexOf(e.itemData);
+                        pData.splice(fromIndex, 1);
+                        pData.splice(toIndex, 0, e.itemData);
+                    console.log(e.component)
+                    e.component.refresh();
+                    console.log(pData)
+                }
+            },
             columns: [
             {  
                 width: 50,
