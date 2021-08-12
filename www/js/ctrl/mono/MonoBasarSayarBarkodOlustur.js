@@ -276,12 +276,18 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         HassasTeraziVeriGetir();
         Scale()
     }
-    $scope.BtnTartimOnayla = function()
+    $scope.BtnTartimOnayla = async function()
     {
+        
+        
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
         $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
+    }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
     }
     $scope.BtnBarkodBas = async function()
     {

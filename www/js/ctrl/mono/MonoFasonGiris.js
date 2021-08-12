@@ -254,6 +254,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
     }
     function Scale()
     {
+        console.log($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT)
         srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
         {
             console.log(pData)
@@ -507,8 +508,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
 
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(document.getElementById("Tarih").value).format("DD.MM.YYYY"),
@@ -851,5 +852,9 @@ function MonoFasonGiris($scope,srv, $rootScope)
         {
             $scope.Init()
         }
+    }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
     }
 }

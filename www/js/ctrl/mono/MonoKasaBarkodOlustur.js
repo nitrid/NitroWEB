@@ -178,4 +178,8 @@ function MonoKasaBarkodOlustur($scope, srv, $rootScope)
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
     }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
+    }
 }

@@ -15,29 +15,22 @@ var Scale =
         {
             return new Promise(resolve =>
             {
-                let port = new SerialPort(pPort,{baudRate:9600,dataBits:8,parity:'none',stopBits:1,xon:true,xoff:true});
                 let TmpData = "";
+                let port = new SerialPort(pPort,{baudRate:9600,dataBits:8,parity:'none',stopBits:1,xon:true,xoff:true});
                 //TERAZİYE İSTEK GÖNDERİLİYOR.
                 port.on('data',line =>
                 {
-                    TmpData += line.toString('utf8');
-                    
-                    if(line.length == 2 && line[0] == 13 && line[1] == 10)
+                    TmpData +=  line.toString('utf8');
+
+                    if(TmpData.indexOf('kg') > -1)
                     {
-                        if(TmpData.indexOf('IRLIK') > -1)
-                        {
-                            TmpData = Number(TmpData.substring(TmpData.indexOf('IRLIK') + 11, TmpData.indexOf('IRLIK') + 19));
-                            if(!isNaN(TmpData))
-                                resolve(TmpData);
-                            else
-                                resolve(0);
-                        }
-                        
+                        console.log(TmpData)
+                        TmpData = Number(TmpData.substring(TmpData.indexOf('kg') - 8, TmpData.indexOf('kg')))
+                        resolve(TmpData);
                         port.close();
                     }
-                    
-                    //resolve(line.toString('utf8'));
-                    //port.close();
+                   
+                   
                 });
 
                 return port.on("close", resolve)
@@ -57,7 +50,7 @@ var Scale =
             Port.on('data',line =>
             {
                 TmpData += line.toString('utf8');
-                
+                console.log(TmpData)
                 if(line.length == 2 && line[0] == 13 && line[1] == 10)
                 {
                     if(TmpData.indexOf('IRLIK') > -1)

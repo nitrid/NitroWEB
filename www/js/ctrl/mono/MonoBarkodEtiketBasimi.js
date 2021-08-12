@@ -390,8 +390,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pBarkod,
                 pStokKodu,
                 pParti,
@@ -452,8 +452,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pParti,
                 pLot,
                 pStok,

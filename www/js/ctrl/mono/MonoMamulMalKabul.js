@@ -310,8 +310,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pParti,
                 pLot,
                 pStok,
@@ -366,8 +366,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pBarkod,
                 pStokKodu,
                 pParti,
@@ -543,8 +543,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
 
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
@@ -652,8 +652,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0,
                 0,
                 pSeri,

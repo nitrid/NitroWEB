@@ -280,8 +280,8 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
 
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
@@ -389,8 +389,8 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
 
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0,
                 0,
                 pSeri,
@@ -919,5 +919,9 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         {
             $scope.Init()
         }
+    }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
     }
 }
