@@ -26,8 +26,7 @@
         <div class="tab-pane fade" id="Tamamlanan" role="tabpanel" aria-labelledby="Tamamlanan-tab">tamamlananlar</div>
       </div>
     </div>
-  </div>
-  <!-- İŞ EMRİ DETAY MODAL -->
+      <!-- İŞ EMRİ DETAY MODAL -->
   <div class="modal fade" id="MdlIsEmriDetay" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
@@ -36,10 +35,45 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">İş Emri Kodu</span>
+                <input type="text" ng-model="IsEmriDetay.Kodu" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">İş Emri Adı</span>
+                <input type="text" ng-model="IsEmriDetay.Adi" class="form-control" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Stok Adı</span>
+                <input type="text" ng-model="IsEmriDetay.StokAdi" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Stok Kodu</span>
+                <input type="text" ng-model="IsEmriDetay.StokKodu" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Planlanan Miktar</span>
+                <input type="text" ng-model="IsEmriDetay.Miktar" class="form-control" disabled>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
         </div>
       </div>
     </div>
+  </div>
   </div>

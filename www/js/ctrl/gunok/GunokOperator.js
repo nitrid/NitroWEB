@@ -11,6 +11,8 @@ function GunokOperator($scope,srv, $rootScope)
         $scope.TxtPlanlananlar = "Planlananlar("+$scope.TestMiktar+")"
         $scope.TxtTamamlananlar = "Tamamlananlar("+$scope.TestMiktar+")"
 
+        $scope.IsEmriDetay = {}
+
         $scope.employees = [{
             ID: 1,
             FullName: "John Heart",
@@ -90,6 +92,7 @@ function GunokOperator($scope,srv, $rootScope)
             height: 640,
             dataSource: pData,
             columnsAutoWidth: true,
+            showBorders: true,
             sorting: {
                 mode: "none"
             },
@@ -191,6 +194,10 @@ function GunokOperator($scope,srv, $rootScope)
     function GetDetail(pData)
     {
         $('#MdlIsEmriDetay').modal('show')
-        console.log(pData)
+        $scope.IsEmriDetay.Kodu = pData.KODU
+        $scope.IsEmriDetay.Adi = pData.ADI
+        $scope.IsEmriDetay.Miktar = pData.PLANMIKTAR
+        $scope.IsEmriDetay.StokAdi = pData.STOKADI
+        $scope.IsEmriDetay.StokKodu = pData.STOKKODU
     }
 }
