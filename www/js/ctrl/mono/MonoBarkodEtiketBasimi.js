@@ -501,7 +501,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         [
             1,                               //CREATE_USER
             1,                               //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,     //SPECIAL1
+            "1",     //SPECIAL1
             $rootScope.GeneralParamList.BarkodEtiketSeri ,//SERI
             $scope.EtkSira,                    //SIRA
             '',                              //AÇIKLAMA

@@ -3,6 +3,7 @@ angular.module('app').component('buttonModal',
     templateUrl: 'js/component/button-modal.html',
     controller: function ButtonModal($scope,$attrs,srv) 
     {
+        console.log($attrs.id)
         let SelectionRow;
         var ctrl = this
         ctrl.Txt = ""
@@ -73,6 +74,7 @@ angular.module('app').component('buttonModal',
                         TmpColumns = ctrl.option.columns
                     }
                     //**************************************** */
+                    console.log(TmpData)
                     $("#Grd"  + ctrl.Id).dxDataGrid
                     (
                         {

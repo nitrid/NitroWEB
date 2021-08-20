@@ -116,11 +116,12 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             {
                 db : "{M}." + $scope.Firma,
                 query : "SELECT " +
-                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
+                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
-                        "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
-                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1  AND is_Kod LIKE '" +$rootScope.GeneralParamList.YariMamulIsEmriFlag+ "%' "
+                        "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AS STOKKODU, " +
+                        "ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AS MIKTAR, " +
+                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'')),'') AS STOKADI " +
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1  AND ((is_Kod LIKE '" +$rootScope.GeneralParamList.YariMamulIsEmriFlag+ "%') OR  (is_Kod LIKE 'AYD-%')) "
             },
             selection : "KODU",
             columns :
@@ -130,6 +131,17 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
                     dataField: "ADI",
                     width: 200
                 }, 
+                
+                {
+                    title: "STOK KODU",
+                    dataField: "STOKKODU",
+                    width: 200
+                },
+                {
+                    title: "MIKTAR",
+                    dataField: "MIKTAR",
+                    width: 200
+                },
                 {
                     title : "İŞ EMRİ KODU",
                     dataField: "KODU",
@@ -139,11 +151,6 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
                     title: "STOK ADI",
                     dataField: "STOKADI",
                     width: 500
-                },
-                {
-                    title: "STOK KODU",
-                    dataField: "STOKKODU",
-                    width: 200
                 },
                 {
                     dataField: "BARKOD",
@@ -428,22 +435,22 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     {
         let InsertData = 
         [
-            1,                                              //CREATE_USER
-            1,                                              //LASTUP_USER
-            1,                 //SPECIAL1
+            1,                               //CREATE_USER
+            1,                               //LASTUP_USER
+            1,     //SPECIAL1
             $rootScope.GeneralParamList.YariMamulEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
-            pData.ISEMRI,                                   //AÇIKLAMA
-            parseFloat($scope.LblKantarKilo),                 //BELGENO
-            0,                                              //ETİKETTİP
-            0,                                              //BASİMTİPİ
-            pData.MIKTAR,                                   //BASİMADET
-            1,                                              //DEPONO
-            pData.KODU,                                     //STOKKODU
-            1,                                              //RENKKODU
-            1,                                              //BEDENKODU
-            pData.URNBARKOD,                                //BARKOD
-            1                                               //BASILACAKMIKTAR
+            pData.ISEMRI,    
+            ($scope.DataKantarKilo - $scope.LblKasaDara),                              //BELGENO
+            0,                               //ETİKETTİP
+            0,                               //BASİMTİPİ
+            (pData.MIKTAR <= 32000 ? pData.MIKTAR : 32000),             //BASİMADET
+            1,                               //DEPONO
+            pData.KODU,                  //STOKKODU
+            pData.MIKTAR,                               //RENKKODU
+            1,                               //BEDENKODU
+            pData.URNBARKOD,                         //BARKOD
+            $scope.TxtBasimAdet              //BASILACAKMIKTAR
         ]
 
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
@@ -537,7 +544,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     }
     function KantarVeriGetir() 
     {
-        var net = new WebTCP('192.168.2.240', 9999);
+        var net = new WebTCP('176.236.62.130', 9999);
 
         console.log(net)
 
@@ -570,12 +577,12 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             );
             $scope.LblKantarKilo = pData.split(",   ").join("");
             $scope.LblKantarKilo = pData.split(",").join("");
-            $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
+           // $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
         }
     }
     function HassasTeraziVeriGetir() 
     {
-        var net = new WebTCP('192.168.2.240', 9999);
+        var net = new WebTCP('176.236.62.130', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
@@ -668,7 +675,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
         $scope.LblKantarMiktar = 0;
-        $scope.DataKantarKilo = 50;
+        $scope.DataKantarKilo = 0;
         $scope.DataHassasTeraziGram = 0;
         $scope.ManuelGirisHide = $rootScope.GeneralParamList.YariMamulManuelGiris;
 
@@ -676,7 +683,8 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
         $scope.TxtBarkod = "";
         $scope.TxtMiktar = 0;
 
-        $scope.TxtEtiketMiktar = 1;
+        $scope.TxtBasimAdet = 1;
+        
 
         $scope.SthGSeri = $rootScope.GeneralParamList.YariMamulUrunGirisSeri;
         $scope.SthCSeri = $rootScope.GeneralParamList.YariMamulUrunCikisSeri;
@@ -704,7 +712,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     $scope.BtnTartimOnayla = async function()
     {
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
-        $scope.DataKantarKilo = parseInt($scope.LblKantarKilo);
+        $scope.DataKantarKilo =$scope.LblKantarKilo
         if($rootScope.GeneralParamList.YariMamulGramKontrol == 1)
         {
             console.log($scope.LblUrun)
@@ -717,7 +725,11 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             }
             
         }
-       $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2));
+        console.log($scope.LblKasaDara)
+        console.log($scope.DataKantarKilo)
+        console.log($scope.DataHassasTeraziGram)
+        
+        $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * ($scope.DataKantarKilo - $scope.LblKasaDara)).toFixed(2));
       
     }
     $scope.BtnSatirSil = async function()
@@ -747,11 +759,11 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             swal("Dikkat", "Lütfen İş emri ve parti kodu seçmeden geçmeyin.",icon="warning");
             return;
         }
-        if(MiktarKontrol())
-        {
-            swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
-            return;
-        }
+        // if(MiktarKontrol())
+        // {
+        //     swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
+        //     return;
+        // }
 
         if(TmpDr.length > 0)
         {
@@ -887,11 +899,11 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             swal("Dikkat", "Lütfen İş emri seçmeden geçmeyin.",icon="warning");
             return;
         }
-        if(MiktarKontrol())
-        {
-            swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
-            return;
-        }
+        // if(MiktarKontrol())
+        // {
+        //     swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
+        //     return;
+        // }
 
         for (let i = 0; i < TmpDrUret.length; i++) 
         {

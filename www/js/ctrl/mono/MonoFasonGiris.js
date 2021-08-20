@@ -102,11 +102,11 @@ function MonoFasonGiris($scope,srv, $rootScope)
                     width: 200
                 },
                 {
-                    dataField: "STOKADI",
+                    dataField: "STOKKODU",
                     width: 500
                 },
                 {
-                    dataField: "STOKKODU",
+                    dataField: "STOKADI",
                     width: 500
                 },
                 {
@@ -124,6 +124,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                     if(TmpDr.length > 0)
                     {
                         $scope.LblDepo = TmpDr[0].DEPOADI
+                        $scope.DepoKod = TmpDr[0].DEPO
                         $scope.LblUrun = TmpDr[0].KODU
                     }
                 }
@@ -242,7 +243,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
         } 
         $scope.BtnEkle =
         {
-            title: "Ekle",
+            title: "Manuel Ekle",
             onSelected: async function (pData) 
             {
                 if (typeof pData != 'undefined') 
@@ -254,10 +255,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
     }
     function Scale()
     {
-        console.log($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT)
         srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
         {
-            console.log(pData)
             $scope.LblHassasGram = pData
         });
     }
@@ -278,7 +277,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
     }
     function KantarVeriGetir() 
     {
-        var net = new WebTCP('192.168.2.240', 9999);
+        var net = new WebTCP('176.236.62.130', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
@@ -309,12 +308,12 @@ function MonoFasonGiris($scope,srv, $rootScope)
             );
             $scope.LblKantarKilo = pData.split(",   ").join("");
             $scope.LblKantarKilo = pData.split(",").join("");
-            $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
+           // $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
         }
     }
     function HassasTeraziVeriGetir() 
     {
-        var net = new WebTCP('192.168.2.240', 9999);
+        var net = new WebTCP('176.236.62.130', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
@@ -377,14 +376,14 @@ function MonoFasonGiris($scope,srv, $rootScope)
             TmpData.KODU = $scope.Data.UMP[i].KODU;
             TmpData.ADI = $scope.Data.UMP[i].ADI;
 
-            if($scope.Data.UMP[i].URETTUKET == 1)
-            {
-                TmpData.DEPO = $rootScope.GeneralParamList.FasonDepo;                
-            }
-            else
-            {
+            // if($scope.Data.UMP[i].URETTUKET == 1)
+            // {
+            //     TmpData.DEPO = $rootScope.GeneralParamList.FasonDepo;                
+            // }
+            // else
+            // {
                 TmpData.DEPO = $scope.Data.UMP[i].DEPO;
-            }
+            //}
             
             TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * pMiktar;
             TmpData.DEPOMIKTAR = $scope.Data.UMP[i].DEPOMIKTAR;
@@ -426,7 +425,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
         }
         if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD.substring(0,2) == "27")
         {
-            $scope.EtiketMiktar = pMiktar.padStart(5, '0');
+            $scope.EtiketMiktar = pMiktar.toString().padStart(5, '0');
             TmpBarkod = $scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD + $scope.EtiketMiktar;
         }
         else
@@ -593,6 +592,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
             
+            console.log(TmpInsertData)
+
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -674,19 +675,19 @@ function MonoFasonGiris($scope,srv, $rootScope)
         [
             1,                               //CREATE_USER
             1,                               //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,     //SPECIAL1
+            1,     //SPECIAL1
             $rootScope.GeneralParamList.FasonEtiketSeri,//SERI
             pSira,                          //SIRA
-            '',                              //AÇIKLAMA
-            '',                              //BELGENO
+            $scope.LblKasaDara,                              //AÇIKLAMA
+            $scope.DataKantarKilo,                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            $scope.EtiketMiktar,             //BASİMADET
-            1,                               //DEPONO
+            (SelectionRow.MIKTAR <= 32000 ? SelectionRow.MIKTAR : 32000),             //BASİMADET
+            $scope.DepoKod,                               //DEPONO
             $scope.LblUrun,                  //STOKKODU
-            1,                               //RENKKODU
+            SelectionRow.MIKTAR,                               //RENKKODU
             1,                               //BEDENKODU
-            pBarkod,                         //BARKOD
+            SelectionRow.PARTIBARKOD,                         //BARKOD
             $scope.TxtBasimAdet              //BASILACAKMIKTAR
         ]
 
@@ -779,7 +780,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
     $scope.BtnTartimOnayla = async function()
     {
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
-        $scope.DataKantarKilo = parseInt($scope.LblKantarKilo);
+        $scope.DataKantarKilo = $scope.LblKantarKilo;
         if($rootScope.GeneralParamList.YariMamulGramKontrol == 1)
         {
             console.log($scope.LblUrun)
@@ -792,7 +793,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
             }
             
         }
-       $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2));
+       
+       $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * ($scope.DataKantarKilo - $scope.LblKasaDara)).toFixed(2));
       
     }
     $scope.BtnKaydet = async function()
@@ -827,6 +829,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
         }
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+       $scope.Init()
     }
     $scope.BtnBarkodBas = async function()
     {
@@ -835,6 +838,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             let TmpSira = await MaxEtiketSira($rootScope.GeneralParamList.FasonEtiketSeri)
             console.log($rootScope.GeneralParamList.FasonEtiketSeri)
             console.log(TmpSira)
+            console.log(SelectionRow)
             await EtiketInsert(TmpSira,$scope.Data.DATA[0].PARTIBARKOD);
         }
         else

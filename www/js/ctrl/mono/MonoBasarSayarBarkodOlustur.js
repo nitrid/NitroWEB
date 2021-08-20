@@ -287,7 +287,9 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
     }
     $scope.BtnKantarVerisiGetir = async function()
     {
+        console.log($rootScope.GeneralParamList.BasarSayarKantarPORT)
         $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
+        console.log($scope.LblKantarKilo)
     }
     $scope.BtnBarkodBas = async function()
     {

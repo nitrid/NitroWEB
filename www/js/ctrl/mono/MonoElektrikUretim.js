@@ -8,7 +8,7 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             {
                 dataSource: pData,
                 allowColumnResizing: true,
-                height: 350,
+                height: 340,
                 width: "100%",
                 columnWidth: 100,
                 selection: 
@@ -131,16 +131,16 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
                     title : "İŞ EMRİ KODU",
                     dataField: "KODU",
                     width: 200
-                }, 
-                {
-                    title: "STOK ADI",
-                    dataField: "STOKADI",
-                    width: 500
                 },
                 {
                     title: "STOK KODU",
                     dataField: "STOKKODU",
                     width: 200
+                }, 
+                {
+                    title: "STOK ADI",
+                    dataField: "STOKADI",
+                    width: 500
                 },
                 {
                     dataField: "BARKOD",
@@ -171,7 +171,7 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
                         db: "{M}." + $scope.Firma,
                         query : "SELECT sto_kod, sto_birim1_ad AS BIRIM1AD,sto_birim1_katsayi AS BIRIM1KATSAYI,sto_birim2_ad AS BIRIM2AD, (sto_birim2_katsayi * -1) AS BIRIM2KATSAYI,sto_birim3_ad AS BIRIM3AD, (sto_birim3_katsayi * -1) AS BIRIM3KATSAYI, " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD1, " +
-                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 2 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD2, " +
+                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 2 AND bar_partikodu = '' AND bar_lotno = 0),ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 3 AND bar_partikodu = '' AND bar_lotno = 0),'')) AS BARKOD2, " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 3 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD3 " +
                         "FROM STOKLAR WHERE sto_kod = @sto_kod ",
                         param : ['sto_kod:string|50'],
@@ -570,7 +570,7 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
     }
     function KantarVeriGetir() 
     {
-        var net = new WebTCP('192.168.2.240', 9999);
+        var net = new WebTCP('176.236.62.130', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
@@ -606,7 +606,7 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
     }
     function HassasTeraziVeriGetir() 
     {
-        var net = new WebTCP('192.168.2.240', 9999);
+        var net = new WebTCP('176.236.62.130', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
@@ -1270,10 +1270,10 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             db: "{M}." + $scope.Firma,
             query : "SELECT JSON FROM MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
             param : ['KULLANICI:string|50','MENU:string|50'],
-            value : ['Admin',$rootScope.PageName]
+            value : [$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
         }
         let JsonControl = await srv.Execute(TmpQuery)
-console.log(JsonControl)
+
         if(JsonControl.length > 0)
         {
             let UpdateQuery = 

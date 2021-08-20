@@ -68,7 +68,7 @@ function MonoKasaBarkodOlustur($scope, srv, $rootScope)
     }
     function KantarVeriGetir() 
     {
-        var net = new WebTCP('192.168.2.240', 9999);
+        var net = new WebTCP('176.236.62.130', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
