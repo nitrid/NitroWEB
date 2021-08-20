@@ -14,7 +14,6 @@ function Login($scope,$state,srv)
             key : "FIRM",
             value : "FIRM"
         }
-        
     }
     function Login()
     {
