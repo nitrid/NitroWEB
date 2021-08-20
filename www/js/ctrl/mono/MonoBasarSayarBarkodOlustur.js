@@ -1,4 +1,4 @@
-function MonoBasarSayarBarkodOlustur($scope,srv)
+function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
 {
     function InitObj()
     {
@@ -28,7 +28,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
                 }, 
                 {
                     dataField: "CARI",
-                    width: 200
+                    width: 300
                 }, 
                 {
                     title: "ADRES",
@@ -110,25 +110,33 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         {
             datasource : 
             {
-                data : $scope.Param.Mono.BasarSayarEtiket
+                data :  [{name: "Basar Sayar Etiket - 1", special: $rootScope.GeneralParamList.BasarSayarEtiket}] 
             },
             key : "special",
             value : "name",
-            defaultVal : "1",
+            defaultVal : $rootScope.GeneralParamList.BasarSayarEtiket,
             selectionMode : "key",
-            return : "1",
+            return : $rootScope.GeneralParamList.BasarSayarEtiket,
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketList.return = pSelected
             }
         }
     }
+    function Scale()
+    {
+        srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
+        {
+            console.log(pData)
+            $scope.LblHassasGram = pData
+        });
+    }
     function KantarVeriGetir() 
     {
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -163,7 +171,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -235,8 +243,9 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "BASAR SAYAR BARKOD OLUŞTUR"
 
-        $scope.EtkSeri = $scope.Param.Mono.BasarSayarSeri;
+        $scope.EtkSeri = $rootScope.GeneralParamList.BasarSayarSeri;
         $scope.EtkSira = 1;
 
         $scope.TxtSpRefMiktar = 0;
@@ -253,18 +262,32 @@ function MonoBasarSayarBarkodOlustur($scope,srv)
         $scope.LblStokAdi = "";
         
         $scope.TxtEtiketMiktar = 1;
+        if($rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
 
         InitObj();
         MaxEtiketSira();
         KantarVeriGetir();
         HassasTeraziVeriGetir();
+        Scale()
     }
-    $scope.BtnTartimOnayla = function()
+    $scope.BtnTartimOnayla = async function()
     {
+        
+        
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
         $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
+    }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
     }
     $scope.BtnBarkodBas = async function()
     {

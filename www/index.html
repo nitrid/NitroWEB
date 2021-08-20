@@ -1,13 +1,21 @@
+<!DOCTYPE html>
 <html ng-app="app">
     <head>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap5.min.css">
         <link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/datepicker.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/20.2.6/css/dx.common.css" />
         <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/20.2.6/css/dx.light.css" />
         
+        <script>
+            if (typeof module === 'object') {window.module = module; module = undefined;}
+        </script>
+        
         <script src="https://use.fontawesome.com/30cb34e889.js"></script>
         <script src="js/lib/jquery-3.5.1.slim.min.js"></script>
-        <script src="js/lib/bootstrap.bundle.min.js"></script>
+        <script>if (window.module) module = window.module;</script>
+        <script src="js/lib/bootstrap5.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
         <script src="js/lib/angular.js"></script>
         <script src="js/lib/angular-ui-router.min.js"></script>
         <script src="js/lib/dx.all.js"></script>
@@ -15,11 +23,20 @@
         <script src="js/lib/sweetalert.min.js"></script>
         <script src="js/lib/moment.min.js"></script>
         <script src="js/lib/moment-with-locales.js"></script>
+        <script src="js/lib/datepicker.min.js"></script>
+        <script src="js/lib/i18n/datepicker.tr.js"></script>
         <script src="js/lib/webtcp/client/webtcp-0.0.1.min.js"></script>
+        <script src="excel/Blob.js"></script>
+        <script src="excel/FileSaver.js"></script>
+        <script src="excel/jhxlsx.js"></script>
+        <script src="excel/xlsx.core.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.17/angular-filter.min.js"></script>
 
         <script src="js/ctrl/index.js"></script>
         <script src="js/ctrl/login.js"></script>
         <script src="js/ctrl/main.js"></script>
+
+        <!-- MONO -->
         <script src="js/ctrl/mono/MonoBasarSayarBarkodOlustur.js"></script>
         <script src="js/ctrl/mono/MonoMamulMalKabul.js"></script>
         <script src="js/ctrl/mono/MonoYariMamulBarkodIptal.js"></script>
@@ -29,15 +46,21 @@
         <script src="js/ctrl/mono/MonoYariMamulMalKabul.js"></script>
         <script src="js/ctrl/mono/MonoBarkodEtiketBasimi.js"></script>
         <script src="js/ctrl/mono/MonoFasonGiris.js"></script>
-        <script src="js/ctrl/mono/MonoElektrikMontajUretim.js"></script>
-
+        <script src="js/ctrl/mono/MonoElektrikUretim.js"></script>
+        <script src="js/ctrl/mono/MonoUretimDashboard.js"></script>
+        <script src="js/ctrl/mono/MonoKullaniciAyarlari.js"></script>
+        <script src="js/ctrl/mono/MonoUretimSilme.js"></script>
+        <script src="js/ctrl/mono/MonoDepoTransferRaporu.js"></script>
+        <script src="js/ctrl/mono/MonoStokSeviyeleriRaporu.js"></script>
+        <script src="js/ctrl/mono/MonoStokDepoGirisCikisRaporu.js"></script>
         <script src="js/ctrl/dian/DianStokMaliyetOperasyonu.js"></script>
+        <script src="js/ctrl/dian/DianSatilanMalinMaliyeti.js"></script>
         <script src="js/ctrl/dian/DianSatilanMalinMaliyeti.js"></script>
 
         <script src="js/app.js"></script>
         <script src="js/controller.js"></script>    
         <script src="js/param.js"></script>   
-        <script src="js/query.js"></script>  
+        <script src="js/query.js"></script>          
 
         <script src="js/service.js"></script>
         <script src="js/directive.js"></script>
@@ -45,7 +68,7 @@
         <script src="js/component/button-edit.js"></script>
         <script src="js/component/button-modal.js"></script>
         <script src="js/component/combobox.js"></script>
-        
+        <script src="js/scale.js"></script>        
         <style>
             #loading 
             {
@@ -61,7 +84,7 @@
                 text-align: center;
             }
         </style>
-        <title>NitroWEB</title>    
+        <title>MonoÜretimTakip - NitroWEB</title>    
     </head>
     <body ng-controller="Index" ng-init="Init()">    
         <div id="loading" style="display:none;z-index: 1800;">
@@ -72,5 +95,6 @@
             </div>
         </div>
         <ui-view></ui-view>
+
     </body>
 </html>

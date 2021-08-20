@@ -14,5 +14,6 @@ function Index ($scope,$state,srv)
                 $state.go('main')
             }
         }
-    }    
+    }  
+
 }

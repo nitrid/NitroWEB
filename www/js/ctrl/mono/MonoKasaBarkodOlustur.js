@@ -1,4 +1,4 @@
-function MonoKasaBarkodOlustur($scope, srv)
+function MonoKasaBarkodOlustur($scope, srv, $rootScope)
 {
     function InitObj()
     {
@@ -22,7 +22,7 @@ function MonoKasaBarkodOlustur($scope, srv)
                 },
                 {
                     dataField: "ADI",
-                    width: 200
+                    width: 500
                 },
                 {
                     dataField: "BIRIM",
@@ -53,13 +53,13 @@ function MonoKasaBarkodOlustur($scope, srv)
         {
             datasource : 
             {
-                data : $scope.Param.Mono.KasaEtiket
+                data : [{name: "Kasa Etiket - 1", special: $rootScope.GeneralParamList.KasaEtiket}] 
             },
             key : "special",
             value : "name",
-            defaultVal : "1",
+            defaultVal : $rootScope.GeneralParamList.KasaEtiket,
             selectionMode : "key",
-            return : "1",
+            return : $rootScope.GeneralParamList.KasaEtiket,
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketList.return = pSelected
@@ -71,7 +71,7 @@ function MonoKasaBarkodOlustur($scope, srv)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -142,8 +142,9 @@ function MonoKasaBarkodOlustur($scope, srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "KASA BARKOD OLUŞTUR"
 
-        $scope.EtkSeri = $scope.Param.Mono.KasaBarkodSeri;
+        $scope.EtkSeri = $rootScope.GeneralParamList.KasaBarkodSeri;
         $scope.EtkSira = 1;
 
         $scope.LblKantarKilo = 0;
@@ -153,6 +154,13 @@ function MonoKasaBarkodOlustur($scope, srv)
         $scope.LblStokAdi = "";
 
         $scope.TxtEtiketMiktar = 1;
+        if($rootScope.GeneralParamList.MonoKasaBarkodOlustur != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            // var url = "index.html";
+            // window.location.href = url;
+            // event.preventDefault();        
+        }
 
         InitObj();
         MaxEtiketSira();
@@ -169,5 +177,9 @@ function MonoKasaBarkodOlustur($scope, srv)
         {
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
+    }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
     }
 }

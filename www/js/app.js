@@ -110,12 +110,76 @@ angular.module("app",
     state
     (
         {
-            name: 'main.MonoElektrikMontajUretim',
-            url: '/mono_elektrik_montaj_uretim',
-            templateUrl : "view/mono/MonoElektrikMontajUretim.html",
-            controller:"MonoElektrikMontajUretim"
+            name: 'main.MonoElektrikUretim',
+            url: '/mono_elektrik_uretim',
+            templateUrl : "view/mono/MonoElektrikUretim.html",
+            controller:"MonoElektrikUretim"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoUretimDashboard',
+            url: '/mono_uretim_dashboard',
+            templateUrl : "view/mono/MonoUretimDashboard.html",
+            controller:"MonoUretimDashboard"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoKullaniciAyarlari',
+            url: '/mono_kullanici_ayarlari',
+            templateUrl : "view/mono/MonoKullaniciAyarlari.html",
+            controller:"MonoKullaniciAyarlari"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoKullaniciEkle',
+            url: '/mono_kullanici_ekle',
+            templateUrl : "view/mono/MonoKullaniciEkle.html",
+            controller:"MonoKullaniciAyarlari"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoDepoTransferRaporu',
+            url: '/mono_depo_transfer_raporu',
+            templateUrl : "view/mono/MonoDepoTransferRaporu.html",
+            controller:"MonoDepoTransferRaporu"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoStokSeviyeleriRaporu',
+            url: '/mono_stok_seviyeleri_raporu',
+            templateUrl : "view/mono/MonoStokSeviyeleriRaporu.html",
+            controller:"MonoStokSeviyeleriRaporu"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoStokDepoGirisCikisRaporu',
+            url: '/mono_stok_depo_giris_cikis',
+            templateUrl : "view/mono/MonoStokDepoGirisCikisRaporu.html",
+            controller:"MonoStokDepoGirisCikisRaporu"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoUretimSilme',
+            url: '/mono_uretim_silme',
+            templateUrl : "view/mono/MonoUretimSilme.html",
+            controller:"MonoUretimSilme"
+        }
+    ).
+
     //DIAN MENU
     state
     (

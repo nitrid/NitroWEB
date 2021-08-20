@@ -1,4 +1,4 @@
-function MonoYariMamulMalKabul($scope, srv) 
+function MonoYariMamulMalKabul($scope, srv, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -86,7 +86,14 @@ function MonoYariMamulMalKabul($scope, srv)
             {
                 if (typeof pData != 'undefined') 
                 {
-                    $scope.LblKasaDara = pData;
+                    if($scope.ManuelGirisHide ==  true)
+                    {
+                        $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
+                    }
+                    else
+                    {
+                        $scope.LblKasaDara = pData
+                    }
                 }
             }
         }
@@ -113,7 +120,7 @@ function MonoYariMamulMalKabul($scope, srv)
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
                         "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%AYD-%'"
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1  AND is_Kod LIKE '" +$rootScope.GeneralParamList.YariMamulIsEmriFlag+ "%' "
             },
             selection : "KODU",
             columns :
@@ -165,13 +172,13 @@ function MonoYariMamulMalKabul($scope, srv)
         {
             datasource:
             {
-                data: $scope.Param.Mono.YariMamulMalKabulEtiket
+                data: [{name: "Yari Mamul Mal Kabul Etiket - 1", special: $rootScope.GeneralParamList.YariMamulMalKabulEtiket}] 
             },
             key: "special",
             value: "name",
-            defaultVal: "1",
+            defaultVal: $rootScope.GeneralParamList.YariMamulMalKabulEtiket,
             selectionMode: "key",
-            return: "1",
+            return: $rootScope.GeneralParamList.YariMamulMalKabulEtiket,
             onSelected: function (pSelected) 
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -273,8 +280,8 @@ function MonoYariMamulMalKabul($scope, srv)
 
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
@@ -382,8 +389,8 @@ function MonoYariMamulMalKabul($scope, srv)
 
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0,
                 0,
                 pSeri,
@@ -423,8 +430,8 @@ function MonoYariMamulMalKabul($scope, srv)
         [
             1,                                              //CREATE_USER
             1,                                              //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,                 //SPECIAL1
-            $scope.Param.Mono.YariMamulEtiketSeri,          //SERI
+            1,                 //SPECIAL1
+            $rootScope.GeneralParamList.YariMamulEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
             pData.ISEMRI,                                   //AÇIKLAMA
             parseFloat($scope.LblKantarKilo),                 //BELGENO
@@ -532,8 +539,10 @@ function MonoYariMamulMalKabul($scope, srv)
     {
         var net = new WebTCP('192.168.2.240', 9999);
 
+        console.log(net)
+
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -569,7 +578,7 @@ function MonoYariMamulMalKabul($scope, srv)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -586,6 +595,14 @@ function MonoYariMamulMalKabul($scope, srv)
 
         socket.on('end', function (data) { console.log("socket is closed "); });
         socket.write("hello world");
+    }
+    function Scale()
+    {
+        srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
+        {
+            console.log(pData)
+            $scope.LblHassasGram = pData
+        });
     }
     function HassasData(pData)
     {
@@ -604,6 +621,7 @@ function MonoYariMamulMalKabul($scope, srv)
     {
         return new Promise(async resolve => 
         {
+            console.log(pSeri)
             let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
             if(TmpData.length > 0)
             {
@@ -639,19 +657,20 @@ function MonoYariMamulMalKabul($scope, srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "YARI MAMÜL MAL KABUL"
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];
         $scope.Data.DATA = [];
 
         $scope.LblKasaDara = 0;
-
         $scope.TxtSpRefMiktar = 0;
         $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
         $scope.LblKantarMiktar = 0;
-        $scope.DataKantarKilo = 0;
+        $scope.DataKantarKilo = 50;
         $scope.DataHassasTeraziGram = 0;
+        $scope.ManuelGirisHide = $rootScope.GeneralParamList.YariMamulManuelGiris;
 
         $scope.LblUrun = "";
         $scope.TxtBarkod = "";
@@ -659,26 +678,47 @@ function MonoYariMamulMalKabul($scope, srv)
 
         $scope.TxtEtiketMiktar = 1;
 
-        $scope.SthGSeri = $scope.Param.Mono.YariMamulUrunGirisSeri;
-        $scope.SthCSeri = $scope.Param.Mono.YariMamulUrunCikisSeri;
-        $scope.OpSeri = $scope.Param.Mono.YariMamulOperasyonSeri;
+        $scope.SthGSeri = $rootScope.GeneralParamList.YariMamulUrunGirisSeri;
+        $scope.SthCSeri = $rootScope.GeneralParamList.YariMamulUrunCikisSeri;
+        $scope.OpSeri = $rootScope.GeneralParamList.YariMamulOperasyonSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
-        $scope.EtkSira = await MaxEtiketSira($scope.Param.Mono.YariMamulEtiketSeri)
+        $scope.EtkSira = await MaxEtiketSira($rootScope.GeneralParamList.YariMamulEtiketSeri)
+
+        if($rootScope.GeneralParamList.MonoYariMamulMalKabul != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
 
         InitObj();
         InitGrd([]);
         HassasTeraziVeriGetir();
         KantarVeriGetir();
+        Scale();
     }
-    $scope.BtnTartimOnayla = function()
+    $scope.BtnTartimOnayla = async function()
     {
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = parseInt($scope.LblKantarKilo);
-
+        if($rootScope.GeneralParamList.YariMamulGramKontrol == 1)
+        {
+            console.log($scope.LblUrun)
+            let TmpData = await srv.Execute($scope.Firma,'StokGramDegerGetir',[$scope.LblUrun])
+            let ReferansDeger = (TmpData[0].REFDEGER) * ($rootScope.GeneralParamList.YariMamulGramYuzde / 100)
+            if(($scope.LblHassasGram / $scope.TxtSpRefMiktar) < (TmpData[0].REFDEGER - ReferansDeger) ||  ($scope.LblHassasGram / $scope.TxtSpRefMiktar) > (parseInt(TmpData[0].REFDEGER) + ReferansDeger))
+            {
+                swal("Dikkat", "Verilen Değerler Ürün İçin Belirlenen Sapma Oranından Fazla İşlem Durduruldu..",icon="warning");
+                return;
+            }
+            
+        }
        $scope.LblKantarMiktar =  parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2));
+      
     }
     $scope.BtnSatirSil = async function()
     {
@@ -725,10 +765,13 @@ function MonoYariMamulMalKabul($scope, srv)
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
     }
-    $scope.BtnEkle = function()
+    $scope.BtnEkle =  function()
     {
+
+       
         let TmpDrUret = $scope.Data.UMP.filter(x => x.URETTUKET == 1)
         let TmpDrTuket = $scope.Data.UMP.filter(x => x.URETTUKET == 0)
+       
         let TmpDrRota = [];
 
         if(TmpDrUret.length > 0)
@@ -764,8 +807,8 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.MIKTAR = parseInt(TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar);
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.YariMamulDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.YariMamulDepo;
+            if($rootScope.GeneralParamList.YariMamulDepo != "")
+            TmpData.DEPO = $rootScope.GeneralParamList.YariMamulDepo;
             else
             TmpData.DEPO = TmpDrUret[i].DEPO;
 
@@ -815,8 +858,8 @@ function MonoYariMamulMalKabul($scope, srv)
             TmpData.MIKTAR = parseInt(TmpDrTuket[i].BMIKTAR * $scope.LblKantarMiktar);
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.YariMamulDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.YariMamulDepo;
+            if($rootScope.GeneralParamList.YariMamulDepo != "")
+            TmpData.DEPO = $rootScope.GeneralParamList.YariMamulDepo;
             else
             TmpData.DEPO = TmpDrTuket[i].DEPO;
 
@@ -864,5 +907,21 @@ function MonoYariMamulMalKabul($scope, srv)
         }
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+        $scope.Init()
+    }
+    $scope.YeniEvrak = function()
+    {
+        if($scope.Data.DATA.length > 0)
+        {
+            swal("Dikkat", "Eklenmiş Ürünleri Kaydetmeden Yeni Evraka Geçilemez !",icon="warning");
+        }
+        else
+        {
+            $scope.Init()
+        }
+    }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
     }
 }

@@ -142,6 +142,15 @@ sqllib.prototype.QueryPromise = function(pQuery,pResult)
                             
                             request.input(pQuery.param[i].split(":")[0],sql.DateTime,date);    
                         }
+                        else if(pType[0] == "dateclock")
+                        {
+                            var from = pQuery.value[i]; 
+                            var numbers = from.match(/\d+/g); 
+                            console.log(numbers)
+                            var date = new Date(numbers[2] + "-" +numbers[1] + "-" + numbers[0] + ' ' +numbers[3] + ':' +numbers[4]);
+
+                            request.input(pQuery.param[i].split(":")[0],sql.Date,date); 
+                        }
                         else if(pType[0] == "bit")
                         {
                             request.input(pQuery.param[i].split(":")[0],sql.Bit,pQuery.value[i]);    

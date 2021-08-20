@@ -7,28 +7,21 @@
                         <h2 class="text-center">NitroWeb</h2>
                             <hr>
                             <form>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                                        </div>
-                                        <input name="" class="form-control" ng-model="Kullanici" placeholder="Kullanıcı Adı" >
-                                    </div> 
-                                </div> 
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                                        </div>
-                                        <input class="form-control" ng-model="Sifre" placeholder="******" type="password" >
-                                    </div> 
-                                </div> 
+                                <div class="input-group">
+                                    <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-user"></i></div>
+                                    <input type="text" class="form-control" ng-model="Kullanici" placeholder="Kullanıcı Adı" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                                </div>
+
+                                <div class="input-group py-2">
+                                    <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-lock"></i></div>
+                                    <input type="password" class="form-control" ng-model="Sifre" placeholder="******" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                                </div>
                                 <div>
                                     <combobox option="CmbFirma"></combobox>
                                 </div>
                                     <hr>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block" ng-click="BtnLogin()"> Giriş </button>
+                                <div class="form-group d-grid">
+                                    <button type="submit" class="btn btn-primary" ng-click="BtnLogin()"> Giriş </button>
                                 </div> 
                         </form>
                     </div>

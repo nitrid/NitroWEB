@@ -1,4 +1,4 @@
-function MonoElektrikMontajUretim($scope, srv) 
+function MonoElektrikUretim($scope, srv, $window, $rootScope) 
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -8,7 +8,7 @@ function MonoElektrikMontajUretim($scope, srv)
             {
                 dataSource: pData,
                 allowColumnResizing: true,
-                height: 400,
+                height: 350,
                 width: "100%",
                 columnWidth: 100,
                 selection: 
@@ -17,6 +17,11 @@ function MonoElektrikMontajUretim($scope, srv)
                 },
                 columns :
                 [
+                    {
+                        dataField: "URETREC",
+                        name : "SATIR NO",
+                        width: 50
+                    }, 
                     {
                         caption : "TİP",
                         dataField: "TIP",
@@ -39,10 +44,7 @@ function MonoElektrikMontajUretim($scope, srv)
                         dataField: "URNBARKOD",
                         width: 150
                     }, 
-                    {
-                        dataField: "URETREC",
-                        width: 100
-                    }, 
+                    
                 ],
                 hoverStateEnabled: true,
                 showBorders: true,
@@ -102,18 +104,20 @@ function MonoElektrikMontajUretim($scope, srv)
             }
         }
         $scope.BteIsEmri = 
-        {
+        {            
             title : "İş Emri Seçim",
             txt : "",
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT " +
-                        "is_Kod AS KODU,is_Ismi AS ADI, " +
-                        "(ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') - ISNULL((SELECT ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0),0)) AS PLANMIKTAR, " +
-                        "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
-                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE 'M-%' and (SELECT (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0) > 0"
+                query : " SELECT  " +
+                        " is_Kod AS KODU,is_Ismi AS ADI,  " +
+                        "  UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR,  " +
+                        " UPL.upl_kodu AS STOKKODU,  " +
+                        " ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI  " +
+                        " FROM ISEMIRLERI as ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri  " +
+                        " WHERE ISM.is_EmriDurumu = 1 AND ISM.is_Kod LIKE '" +$rootScope.GeneralParamList.ElektrikUretimIsEmriFlag+ "%' AND (SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_kod and ish_plan_sevkmiktar = 0) > 0 " +
+                        " AND UPL.upl_uretim_tuket = 1 " ,
             },
             selection : "KODU",
             columns :
@@ -200,13 +204,13 @@ function MonoElektrikMontajUretim($scope, srv)
         {
             datasource:
             {
-                data: $scope.Param.Mono.ElektrikMontajMalKabulEtiket
+                data: [{name: "Barkod Etiketi", special: $rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket}]
             },
             key: "special",
             value: "name",
-            defaultVal: "2",
+            defaultVal: $rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket,
             selectionMode: "key",
-            return: "2",
+            return: $rootScope.GeneralParamList.ElektrikMontajMalKabulEtiket,
             onSelected: function (pSelected) 
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -294,7 +298,7 @@ function MonoElektrikMontajUretim($scope, srv)
             return;
         });
     }
-    function InsertUrunGirisCikis(pGirisCikis,pDr,pSeri,pSira)
+    function InsertUrunGirisCikis(pGirisCikis,pDrKODU,pDrISEMRI,pDrMIKTAR,pDrDEPO,pDrISMERKEZI,pSeri,pSira)
     {
         return new Promise(async resolve => 
         {
@@ -306,11 +310,10 @@ function MonoElektrikMontajUretim($scope, srv)
                 TmpEvrTip = 0
                 TmpTip = 1
             }
-
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
@@ -322,7 +325,7 @@ function MonoElektrikMontajUretim($scope, srv)
                 pSira,
                 "", //BELGE NO
                 moment(new Date()).format("DD.MM.YYYY"),
-                pDr.KODU,
+                pDrKODU,
                 0, //ISKONTO 1
                 1, //ISKONTO 2
                 1, //ISKONTO 3
@@ -345,15 +348,15 @@ function MonoElektrikMontajUretim($scope, srv)
                 0, //SATIR ISKONTO TİP 10
                 0, //CARİCİNSİ
                 '', //CARI KODU,
-                pDr.ISEMRI, //İŞEMRİKODU
+                pDrISEMRI, //İŞEMRİKODU
                 "", //PERSONEL KODU
                 0, //HARDOVİZCİNSİ
                 1, //HARDOVİZKURU
                 1, //ALTDOVİZKURU
                 0, //STOKDOVİZCİNSİ
                 1, //STOKDOVİZKURU
-                pDr.MIKTAR,
-                pDr.MIKTAR,
+                pDrMIKTAR,
+                pDrMIKTAR,
                 1, //BIRIM PNTR
                 0, //TUTAR
                 0, // İSKONTO TUTAR 1
@@ -374,8 +377,8 @@ function MonoElektrikMontajUretim($scope, srv)
                 '',// AÇIKLAMA
                 '00000000-0000-0000-0000-000000000000', //sth_sip_uid
                 '00000000-0000-0000-0000-000000000000', //sth_fat_uid,
-                pDr.DEPO, //GİRİSDEPONO
-                pDr.DEPO, //CİKİSDEPONO
+                pDrDEPO, //GİRİSDEPONO
+                pDrDEPO, //CİKİSDEPONO
                 moment(new Date()).format("DD.MM.YYYY"), //MALKABULSEVKTARİHİ
                 '', // CARİSORUMLULUKMERKEZİ
                 '', // STOKSORUMLULUKMERKEZİ
@@ -391,8 +394,9 @@ function MonoElektrikMontajUretim($scope, srv)
                 0, //FIYAT LISTE NO
                 0, //NAKLİYEDEPO
                 0, // NAKLİYEDURUMU
-                (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
+                (typeof pDrISMERKEZI == 'undefined') ? '' : pDrISMERKEZI
             ];
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -407,37 +411,36 @@ function MonoElektrikMontajUretim($scope, srv)
             }
         })
     }
-    function InsertOperasyonKapama(pDr,pSeri,pSira)
+    function InsertOperasyonKapama(pDrROTAREC,pDrISEMRI,pDrKODU,pDrSAFHANO,pDrOPERASYONKODU,pDrISMERKEZI,pDrMIKTAR,pDrSURE,pSeri,pSira)
     {
         return new Promise(async resolve => 
         {
-            let TmpSure = parseInt(pDr.SURE);
+            let TmpSure = parseInt(pDrSURE);
             let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
             let TmpBasTarih = moment(new Date()).add(TmpSure * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
 
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 0,
                 0,
                 pSeri,
                 pSira,
-                pDr.ROTAREC,
+                pDrROTAREC,
                 TmpBasTarih,
                 TmpBitTarih,
-                pDr.ISEMRI,
-                pDr.KODU,
-                pDr.SAFHANO,
-                pDr.OPERASYONKODU,
-                pDr.ISMERKEZI,
-                pDr.MIKTAR,
-                pDr.MIKTAR,
-                pDr.MIKTAR,
-                pDr.MIKTAR,
+                pDrISEMRI,
+                pDrKODU,
+                pDrSAFHANO,
+                pDrOPERASYONKODU,
+                pDrISMERKEZI,
+                pDrMIKTAR,
+                pDrMIKTAR,
+                pDrMIKTAR,
+                pDrMIKTAR,
                 TmpSure
             ]
-            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -458,8 +461,8 @@ function MonoElektrikMontajUretim($scope, srv)
         [
             1,                                              //CREATE_USER
             1,                                              //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,                 //SPECIAL1
-            $scope.Param.Mono.ElektrikMontajEtiketSeri,          //SERI
+            pData.SPECIAL,                 //SPECIAL1
+            $rootScope.GeneralParamList.ElektrikUretimEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
             pData.ISEMRI,                                   //AÇIKLAMA
             parseFloat($scope.LblKantarKilo),                 //BELGENO
@@ -471,14 +474,16 @@ function MonoElektrikMontajUretim($scope, srv)
             1,                                              //RENKKODU
             1,                                              //BEDENKODU
             pData.URNBARKOD,                                //BARKOD
-            1                                               //BASILACAKMIKTAR
+            pData.BASMIKTAR,                                               //BASILACAKMIKTAR
         ]
         
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
-
+        console.log(InsertData)
         if(InsertControl == "")
         {
-            swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+            //swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+            $('.toast').toast('show');
+            $window.document.getElementById("TxtBarkodKontrol").focus();
         }
         else
         {
@@ -568,7 +573,7 @@ function MonoElektrikMontajUretim($scope, srv)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarKantarIP, $scope.Param.Mono.BasarSayarKantarPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -604,7 +609,7 @@ function MonoElektrikMontajUretim($scope, srv)
         var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
-        var socket = net.createSocket($scope.Param.Mono.BasarSayarHasasTeraziIP, $scope.Param.Mono.BasarSayarHasasTeraziPORT, options);
+        var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
         socket.on('connect', function () { console.log('connected'); });
 
         let TmpData = "";
@@ -637,6 +642,7 @@ function MonoElektrikMontajUretim($scope, srv)
     }
     function MaxSthSira(pSeri,pEvrakTip)
     {
+        console.log(pSeri)
         return new Promise(async resolve => 
         {
             let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
@@ -674,6 +680,8 @@ function MonoElektrikMontajUretim($scope, srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "ELEKTRİK ÜRETİM"
+
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];
@@ -704,14 +712,22 @@ function MonoElektrikMontajUretim($scope, srv)
         }     
         $scope.TxtEtiketMiktar = 1;
 
-        $scope.SthGSeri = $scope.Param.Mono.ElektrikMontajUrunGirisSeri;
-        $scope.SthCSeri = $scope.Param.Mono.ElektrikMontajUrunCikisSeri;
-        $scope.OpSeri = $scope.Param.Mono.ElektrikMontajOperasyonSeri;
+        $scope.SthGSeri = $rootScope.GeneralParamList.ElektrikUretimUrunGirisSeri;
+        $scope.SthCSeri = $rootScope.GeneralParamList.ElektrikUretimUrunCikisSeri;
+        $scope.OpSeri = $rootScope.GeneralParamList.ElektrikUretimOperasyonSeri;
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
-        $scope.EtkSira = await MaxEtiketSira($scope.Param.Mono.YariMamulEtiketSeri)
+        $scope.EtkSira = await MaxEtiketSira($rootScope.GeneralParamList.YariMamulEtiketSeri)
+
+        if($rootScope.GeneralParamList.MonoElektrikUretim != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
 
         InitObj();
         InitGrd([]);
@@ -779,49 +795,53 @@ function MonoElektrikMontajUretim($scope, srv)
 
         if(TmpDrUret.length > 0)
         {
-            console.log(1)
             TmpDrRota = $scope.Data.URP.filter(x => x.URUNKODU == $scope.LblUrun)
         }
         let TmpUretRec = 0;
 
+        console.log(TmpDrUret)
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
             let TmpRec = 0;
-            $scope.PartiBarkod = $scope.Barkod3
             if(TmpDrUret.length > 0)
             {
                 TmpRec = srv.Max($scope.Data.DATA.filter(x => x.URETTUKET == 1),'REC');
             }
+            $scope.SeriBarkod = ''
 
-            let TmpQuery = 
+            let length = 7;
+            let chars = '0123456789'.split('');
+            let AutoStr = "";
+            
+            if (! length) 
             {
-                db: "{M}." + $scope.Firma,
-                query : "SELECT sto_detay_takip AS TAKIP FROM STOKLAR WHERE sto_kod =@sto_kod",
-                param : ['sto_kod:string|25'],
-                value : [TmpDrUret[i].KODU]
+                length = Math.floor(Math.random() * chars.length);
             }
-            let TmpDataTakip = await srv.Execute(TmpQuery)
-            if(TmpDataTakip[0].TAKIP == 2)
+            for (let i = 0; i < length; i++) 
             {
-                let TmpLot = await MaxLot();
+                AutoStr += chars[Math.floor(Math.random() * chars.length)];
+            }
+            $scope.SeriBarkod = $scope.BteParti.txt.padStart(8, "0")   + AutoStr
 
-                if(await PartiLotOlustur($scope.BteParti.txt,TmpLot,$scope.LblUrun))
-                {
-                    TmpBarkod = $scope.BteParti.txt.padStart(8, "0") + TmpLot.toString().padStart(4, "0")
-                    $scope.PartiBarkod = TmpBarkod
-                    if(await BarkodOlustur(TmpBarkod,$scope.LblUrun,$scope.BteParti.txt,TmpLot))
-                    {
-                        
-                    }
-                }
-            }
+            let TmpInsertData =
+            [
+                $scope.SthGSeri,
+                $scope.SthGSira,
+                $scope.SeriBarkod,
+                TmpDrUret[i].KODU
+            ]
+            
+            let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
+            console.log(TmpResult)
+
+           
 
             let TmpData = {};
             TmpData.REC = TmpRec + 1;
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = TmpDrUret[i].TIP;
             TmpData.URETTUKET = TmpDrUret[i].URETTUKET;
-            TmpData.URNBARKOD = $scope.PartiBarkod;
+            TmpData.URNBARKOD = $scope.SeriBarkod;
             TmpData.ADITR = TmpDrUret[i].ADITR;
             TmpData.ADIENG = TmpDrUret[i].ADIENG;
             TmpData.ADIRU = TmpDrUret[i].ADIRU;
@@ -834,9 +854,7 @@ function MonoElektrikMontajUretim($scope, srv)
             TmpData.MIKTAR = $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.MontajDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.MontajDepo;
-            else
+           
             TmpData.DEPO = TmpDrUret[i].DEPO;
 
             if(TmpDrUret[i].URETTUKET == 1)
@@ -885,9 +903,7 @@ function MonoElektrikMontajUretim($scope, srv)
             TmpData.MIKTAR = TmpDrTuket[i].BMIKTAR * $scope.KutuKontrolMiktar
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
 
-            if($scope.Param.Mono.MontajDepo != "")
-            TmpData.DEPO = $scope.Param.Mono.MontajDepo;
-            else
+           
             TmpData.DEPO = TmpDrTuket[i].DEPO;
 
             if(TmpDrRota.length > 0)
@@ -905,14 +921,19 @@ function MonoElektrikMontajUretim($scope, srv)
         let EtiketData = 
         {
             "ISEMRI": $scope.BteIsEmri.txt,
-            "MIKTAR" : 1,
+            "MIKTAR" : $scope.Birim3,
+            "BASMIKTAR" : 1,
             "KODU" : $scope.LblUrun,
-            "URNBARKOD" : $scope.PartiBarkod,
+            "URNBARKOD" : $scope.SeriBarkod,
+            "SPECIAL" :  "2"
 
         }
+        console.log(EtiketData)
         await EtiketInsert(EtiketData);
         InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        $scope.JsonSave()
         $scope.KutuKontrolMiktar = 0;
+        $window.document.getElementById("TxtBarkodKontrol").focus();
     }
     $scope.BtnKaydet = async function()
     {
@@ -930,24 +951,47 @@ function MonoElektrikMontajUretim($scope, srv)
             swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
             return;
         }
-
+        var TmpDrUretMiktar = 0;
+        var TmpDrUretSURE = 0 
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
-            await InsertUrunGirisCikis(0,TmpDrUret[i],$scope.SthGSeri,$scope.SthGSira)
-            await InsertOperasyonKapama(TmpDrUret[i],$scope.OpSeri,$scope.OpSira)
-            await UpdateRotaPlani(TmpDrUret[i].ROTAREC, TmpDrUret[i].MIKTAR, TmpDrUret[i].SURE)
-            await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true)
+            
+            
+            
+            TmpDrUretMiktar = TmpDrUretMiktar + TmpDrUret[i].MIKTAR
+            var TmpDrUretKODU = TmpDrUret[i].KODU
+            var TmpDrUretISEMRI = TmpDrUret[i].ISEMRI
+            var TmpDrUretDEPO = TmpDrUret[i].DEPO
+            var TmpDrUretISMERKEZI = TmpDrUret[i].ISMERKEZI
+            var TmpDrUretROTAREC = TmpDrUret[i].ROTAREC
+            var TmpDrUretSAFHANO = TmpDrUret[i].SAFHANO
+            var TmpDrUretOPERASYONKODU = TmpDrUret[i].OPERASYONKODU
+            TmpDrUretSURE = TmpDrUretSURE + TmpDrUret[i].SURE
         }
-        for (let i = 0; i < TmpDrTuket.length; i++) 
+        console.log(TmpDrUretMiktar)
+        console.log(TmpDrUretSURE)
+
+            await InsertUrunGirisCikis(0,TmpDrUretKODU,TmpDrUretISEMRI,TmpDrUretMiktar,TmpDrUretDEPO,TmpDrUretISMERKEZI,$scope.SthGSeri,$scope.SthGSira)
+            await InsertOperasyonKapama(TmpDrUretROTAREC,TmpDrUretISEMRI,TmpDrUretKODU,TmpDrUretSAFHANO,TmpDrUretOPERASYONKODU,TmpDrUretISMERKEZI,TmpDrUretMiktar,TmpDrUretSURE,$scope.OpSeri,$scope.OpSira)
+            await UpdateRotaPlani(TmpDrUretROTAREC,TmpDrUretMiktar, TmpDrUretSURE)
+            await UpdateMalzemePlani(TmpDrUretISEMRI,TmpDrUretKODU, TmpDrUretMiktar, true)
+            
+            let TuketData = ToGroupBy(TmpDrTuket,'KODU')
+            
+        for (let i = 0; i < Object.values(TuketData).length; i++) 
         {
-            await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
-            await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
+            await InsertUrunGirisCikis(1,Object.values(TuketData)[i][0].KODU,Object.values(TuketData)[i][0].ISEMRI,(Object.values(TuketData)[i][0].MIKTAR *TmpDrUret.length),Object.values(TuketData)[i][0].DEPO,Object.values(TuketData)[i][0].DEPO,$scope.SthCSeri,$scope.SthCSira)
+            await UpdateMalzemePlani(Object.values(TuketData)[i][0].ISEMRI,Object.values(TuketData)[i][0].KODU, (Object.values(TuketData)[i][0].MIKTAR *TmpDrUret.length), false)
         }
+
+           
         if($scope.ToplamPlanMiktar == $scope.ToplamBarkodKontrolMiktar)
         {
            $scope.IsemriKapat()
         }
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+        $scope.JsonKapat()
+        $scope.Init()
     }
     $scope.BtnEtiketBas = async function()
     {
@@ -959,12 +1003,38 @@ function MonoElektrikMontajUretim($scope, srv)
         let EtiketData = 
         {
             "ISEMRI": $scope.BteIsEmri.txt,
-            "MIKTAR" : $scope.TxtEtiketMiktar,
+            "MIKTAR" :  $scope.KontrolMiktar,
+            "BASMIKTAR": $scope.TxtEtiketMiktar,
             "KODU" : $scope.LblUrun,
-            "URNBARKOD" : $scope.Barkod2
+            "URNBARKOD" : $scope.Barkod2,
+            "SPECIAL" : "1"
 
         }
         await EtiketInsert(EtiketData);
+    }
+    $scope.BtnTekrarEtiketBas = async function()
+    {
+        if(typeof(SelectionRow) == "undefined")
+        {
+            swal("Dikkat", "Lütfen Tablodan Seçim Yapınız.",icon="warning");
+            return; 
+        }
+        else
+        {
+            console.log(SelectionRow)
+            let EtiketData = 
+            {
+                "ISEMRI": SelectionRow.ISEMRI,
+                "MIKTAR" :  SelectionRow.MIKTAR,
+                "BASMIKTAR": "1",
+                "KODU" : SelectionRow.KODU,
+                "URNBARKOD" : SelectionRow.URNBARKOD,
+                "SPECIAL" : "2"
+    
+            }
+            await EtiketInsert(EtiketData);
+        }
+
     }
     $scope.TxtBarkodKontrolEvent = function(keyEvent)
     {
@@ -1012,6 +1082,7 @@ function MonoElektrikMontajUretim($scope, srv)
         if($scope.KutuKontrolMiktar != $scope.Birim3)
         {
             swal("Dikkat", "Kutu Miktarını Tamamlamadan Ekleme Yapılamaz.",icon="warning");
+            $scope.TxtBarkodKontrol = ""
             return;
         }
         
@@ -1056,8 +1127,8 @@ function MonoElektrikMontajUretim($scope, srv)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 pParti,
                 pLot,
                 pStok,
@@ -1112,8 +1183,8 @@ function MonoElektrikMontajUretim($scope, srv)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                1,
+                1,
                 pBarkod,
                 pStokKodu,
                 pParti,
@@ -1184,4 +1255,161 @@ function MonoElektrikMontajUretim($scope, srv)
 
        swal("Dikkat", "Son Kolinin Etiketi Yazdırıldı.",icon="success");
     }
+    ToGroupBy = function(pData,pKey)
+    {
+        return pData.reduce(function(rv, x) 
+        {
+            (rv[x[pKey]] = rv[x] || []).push(x);
+            return rv;
+        }, {});
+    }
+    $scope.JsonSave = async function()
+    { 
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT JSON FROM MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+            param : ['KULLANICI:string|50','MENU:string|50'],
+            value : ['Admin',$rootScope.PageName]
+        }
+        let JsonControl = await srv.Execute(TmpQuery)
+console.log(JsonControl)
+        if(JsonControl.length > 0)
+        {
+            let UpdateQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA SET JSON = @JSON WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+                param : ['JSON:string|max','KULLANICI:string|50','MENU:string|50'],
+                value : [JSON.stringify($scope.Data.DATA),$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
+
+            }
+            await srv.Execute(UpdateQuery)
+        }
+        else
+        {
+            let InsertData = 
+            [
+                $rootScope.GeneralParamList.Kullanici,
+                $rootScope.PageName,
+                JSON.stringify($scope.Data.DATA),
+                0,
+            ]
+            console.log(InsertData)
+             await srv.Execute($scope.Firma,'InsertJson',InsertData);
+        }
+    }
+    $scope.SonEvrakGetir = async function()
+    {
+        console.log($scope.Data.DATA)
+        if($scope.Data.DATA.length > 0)
+        {
+            swal("Dikkat", "Üretim İşleminiz varken Evrakı Çağıramazsınız !",icon="warning");
+            return
+        }
+
+
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT JSON FROM MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+            param : ['KULLANICI:string|50','MENU:string|50'],
+            value : [$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
+        }
+        let JsonControl = await srv.Execute(TmpQuery)
+        if(JsonControl.length == 0 )
+        {
+            swal("Dikkat", "Kayıt Bulunamadı...",icon="warning");
+            return;
+        }
+
+       
+       console.log(JsonControl)
+        if(JsonControl[0].JSON != '')
+        {
+            $scope.Data.DATA = JSON.parse(JsonControl[0].JSON)
+           $scope.BteIsEmri.txt = $scope.Data.DATA[0].ISEMRI
+            for(let i = 0; i < $scope.Data.DATA.length; i++)
+            {
+                if($scope.Data.DATA[i].TIP == "ÜRETİM")
+                {
+                    $scope.ToplamBarkodKontrolMiktar = $scope.ToplamBarkodKontrolMiktar + $scope.Data.DATA[i].MIKTAR
+                }
+            }
+            InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+            {                    
+                $scope.Data.UMP = await UretimMalzemePlanGetir($scope.Data.DATA[0].KODU);
+                $scope.Data.URP = await UretimRotaPlanGetir($scope.Data.DATA[0].KODU);
+               
+                let TmpQuery = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query : "SELECT sto_kod, sto_birim1_ad AS BIRIM1AD,sto_birim1_katsayi AS BIRIM1KATSAYI,sto_birim2_ad AS BIRIM2AD, (sto_birim2_katsayi * -1) AS BIRIM2KATSAYI,sto_birim3_ad AS BIRIM3AD, (sto_birim3_katsayi * -1) AS BIRIM3KATSAYI, " +
+                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD1, " +
+                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 2 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD2, " +
+                    "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod AND bar_birimpntr = 3 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD3 " +
+                    "FROM STOKLAR WHERE sto_kod = @sto_kod ",
+                    param : ['sto_kod:string|50'],
+                    value : [$scope.Data.DATA[0].KODU]
+                } 
+                let TmpData = await srv.Execute(TmpQuery)
+                $scope.Barkod1 = TmpData[0].BARKOD1;
+                $scope.Barkod2 = TmpData[0].BARKOD2;
+                $scope.Barkod3 = TmpData[0].BARKOD3;
+                if($scope.Barkod1 == '' || $scope.Barkod2 == '' || $scope.Barkod3 == '')
+                {
+                    swal("Dikkat", "Ürün Barkodlarında Eksik Mevcut Lütfen Kontrol Ediniz .",icon="warning");
+                }
+                $scope.KontrolMiktar = TmpData[0].BIRIM2KATSAYI;
+                $scope.Birim3 = TmpData[0].BIRIM3KATSAYI;
+                let TmpQuery2 = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query : "SELECT (upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = upl_isemri and ish_plan_sevkmiktar = 0),0)) AS PLANMIKTAR FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = @upl_isemri ",
+                    param : ['upl_isemri:string|50'],
+                    value : [$scope.Data.DATA[0].ISEMRI]
+                } 
+                let TmpData2 = await srv.Execute(TmpQuery2)
+                $scope.ToplamPlanMiktar = TmpData2[0].PLANMIKTAR;
+
+                if($scope.Data.UMP.length > 0)
+                {
+                    let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
+                    if(TmpDr.length > 0)
+                    {
+                        $scope.LblUrun = TmpDr[0].KODU
+                    }
+                }
+            }
+        }
+        else
+        {
+            swal("Dikkat", "Kayıt Bulunamadı...",icon="warning");
+            return;
+        }
+    }
+    $scope.YeniEvrak = function()
+    {
+        if($scope.Data.DATA.length > 0)
+        {
+            swal("Dikkat", "Eklenmiş Ürünleri Kaydetmeden Yeni Evraka Geçilemez !",icon="warning");
+        }
+        else
+        {
+            $scope.Init()
+        }
+    }
+    $scope.JsonKapat= async function()
+    {
+            let UpdateQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA SET DURUM = 1 WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+                param : ['KULLANICI:string|50','MENU:string|50'],
+                value : [$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
+
+            }
+            await srv.Execute(UpdateQuery)
+    }
+
 }

@@ -1,8 +1,8 @@
 {
-    "server":"10.41.198.248",
-    "database":"MikroDB_V15",
+    "server":"172.16.145.250",
+    "database":"MikroDB_V16",
     "uid":"nitrogen",
     "pwd":"lp8462+",
     "trustedConnection" : false,
-    "port" : "80"
+    "port" : "9090"
 }

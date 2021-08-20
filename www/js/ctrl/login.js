@@ -1,6 +1,6 @@
 function Login($scope,$state,srv)
 {
-    $scope.Init = function()
+    $scope.Init = async function()
     {
         $scope.Kullanici = ""
         $scope.Sifre = ""
@@ -8,20 +8,34 @@ function Login($scope,$state,srv)
         {
             datasource : 
             {
-                db: "MikroDB_V15",
+                db: "MikroDB_V16",
                 query: "SELECT DB_kod AS FIRM FROM VERI_TABANLARI"
             },
             key : "FIRM",
-            value : "FIRM"
+            value : "FIRM",
+            return : Param[0].Firma,
+            defaultVal : Param[0].Firma
         }
+
+        let TmpQuery = 
+        {
+            db: "MikroDB_V16",
+            query : "SELECT * FROM TERP_NITROWEB_PARAM WHERE TYPE = @TYPE",
+            param : ['TYPE'],
+            type :  ['int'],
+            value : ['0']
+        }
+        $scope.KullaniciList = await srv.Execute(TmpQuery)
     }
     function Login()
     {
         let TmpStatus = false;
-        for (let i = 0; i < Param.length; i++) 
+
+        for (let i = 0; i < $scope.KullaniciList.length; i++) 
         {
-            if(Param[i].Kullanici == $scope.Kullanici && Param[i].Sifre == $scope.Sifre)
+            if($scope.KullaniciList[i].ACCOUNT == $scope.Kullanici && $scope.KullaniciList[i].VALUE == $scope.Sifre)
             {
+                localStorage.setItem("LoginNo",(i))
                 TmpStatus = true;
             }
         }
@@ -54,7 +68,6 @@ function Login($scope,$state,srv)
         else
         {
             swal("Hatalı Giriş!", "Kullanıcı Adı veya Şifre Yanlış!",icon="error");
-            // console.log("geçersiz kullanıcı")
         }
     }
 }

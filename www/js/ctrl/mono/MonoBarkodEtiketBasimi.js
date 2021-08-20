@@ -1,4 +1,4 @@
-function MonoBarkodEtiketBasimi($scope, srv) 
+function MonoBarkodEtiketBasimi($scope, srv, $rootScope) 
 {
     function InitGrid(pData) 
     {
@@ -209,13 +209,13 @@ function MonoBarkodEtiketBasimi($scope, srv)
         {
             datasource:
             {
-                data: $scope.Param.Mono.BarkodBasimiEtiket
+                data: [{name: "Barkod Basimi Etiket - 1", special: $rootScope.GeneralParamList.BarkodBasimiEtiket}] 
             },
             key: "special",
             value: "name",
-            defaultVal: "1",
+            defaultVal: $rootScope.GeneralParamList.BarkodBasimiEtiket,
             selectionMode: "key",
-            return: "1",
+            return: $rootScope.GeneralParamList.BarkodBasimiEtiket,
             onSelected: function (pSelected) 
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -390,8 +390,8 @@ function MonoBarkodEtiketBasimi($scope, srv)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pBarkod,
                 pStokKodu,
                 pParti,
@@ -452,8 +452,8 @@ function MonoBarkodEtiketBasimi($scope, srv)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pParti,
                 pLot,
                 pStok,
@@ -502,22 +502,22 @@ function MonoBarkodEtiketBasimi($scope, srv)
             1,                               //CREATE_USER
             1,                               //LASTUP_USER
             $scope.CmbEtiketTasarim.return,     //SPECIAL1
-            $scope.Param.Mono.BarkodEtiketSeri ,//SERI
-            $scope.EtkSira,                          //SIRA
+            $rootScope.GeneralParamList.BarkodEtiketSeri ,//SERI
+            $scope.EtkSira,                    //SIRA
             '',                              //AÇIKLAMA
             '',                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            pMiktar,                         //BASİMADET
+            (pMiktar <= 32000 ? pMiktar : 32000),                         //BASİMADET
             1,                               //DEPONO
             pStokkodu,                       //STOKKODU
-            1,                               //RENKKODU
+            pMiktar,                               //RENKKODU
             1,                               //BEDENKODU
             pBarkod,                         //BARKOD
             $scope.TxtBMiktar                //BASILACAKMIKTAR
         ]
-
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
+
 
         if(InsertControl == "")
         {
@@ -539,6 +539,7 @@ function MonoBarkodEtiketBasimi($scope, srv)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "BARKOD ETİKET BASIM"
         $scope.TxtLot = "";
         $scope.TxtMiktar = 0;
         $scope.TxtBMiktar = 1;
@@ -548,8 +549,16 @@ function MonoBarkodEtiketBasimi($scope, srv)
         $scope.Data = {};
         $scope.Data.DATA = [];
         $scope.Data.BARKODLIST = [];
+        console.log($rootScope.GeneralParamList.MonoBarkodEtiketBasimi)
+        if($rootScope.GeneralParamList.MonoBarkodEtiketBasimi != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
 
-        $scope.EtkSira = await MaxEtiketSira($scope.Param.Mono.BarkodEtiketSeri)
+        $scope.EtkSira = await MaxEtiketSira($rootScope.GeneralParamList.BarkodEtiketSeri)
 
         InitGrid([]);
         InitObj();
@@ -561,6 +570,10 @@ function MonoBarkodEtiketBasimi($scope, srv)
         {
             swal("Dikkat", "Lütfen stok kodu seçmeden geçmeyin.",icon="warning");
             return;
+        }
+        if($scope.BteParti.txt == '')
+        {
+            $scope.BteBarkod.txt =  ($scope.BteBarkod.txt +$scope.TxtMiktar.toString().padStart(5, '0'));
         }
 
         if ($scope.TxtLot == "")

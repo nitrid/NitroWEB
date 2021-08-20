@@ -1,4 +1,4 @@
-function MonoSiparisToplamaListesi($scope,srv)
+function MonoSiparisToplamaListesi($scope,srv, $rootScope)
 {
 
 }

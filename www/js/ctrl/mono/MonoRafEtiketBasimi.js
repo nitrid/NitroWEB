@@ -1,4 +1,4 @@
-function MonoRafEtiketBasimi($scope,srv)
+function MonoRafEtiketBasimi($scope,srv, $rootScope)
 {
 
 }

@@ -1890,4 +1890,249 @@ var Query =
                     'OpT_OperasyonSafhaNo:int','OpT_OperasyonKodu:string|25','OpT_ismerkezi:string|25','OpT_TamamlananMiktar:float','Opt_TamamlananMiktar2:float',
                     'Opt_TamamlananMiktar3:float','Opt_TamamlananMiktar4:float','OpT_TamamlananSure:int']
     },
+    //Seri No İşleri
+    SeriNoInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_SERINO_TANIMLARI] " +
+        "([chz_Guid] " +
+        ",[chz_DBCno] " +
+        ",[chz_Spec_Rec_no] " +
+        ",[chz_iptal] " +
+        ",[chz_fileid] " +
+        ",[chz_hidden] " +
+        ",[chz_kilitli] " +
+        ",[chz_degisti] " +
+        ",[chz_checksum] " +
+        ",[chz_create_user] " +
+        ",[chz_create_date] " +
+        ",[chz_lastup_user] " +
+        ",[chz_lastup_date] " +
+        ",[chz_special1] " +
+        ",[chz_special2] " +
+        ",[chz_special3] " +
+        ",[chz_serino] " +
+        ",[chz_stok_kodu] " +
+        ",[chz_grup_kodu] " +
+        ",[chz_Tuktckodu] " +
+        ",[chz_GrnBasTarihi] " +
+        ",[chz_GrnBitTarihi] " +
+        ",[chz_aciklama1] " +
+        ",[chz_aciklama2] " +
+        ",[chz_aciklama3] " +
+        ",[chz_al_tarih] " +
+        ",[chz_al_evr_seri] " +
+        ",[chz_al_evr_sira] " +
+        ",[chz_al_cari_kodu] " +
+        ",[chz_al_wd_tarih] " +
+        ",[chz_al_wd_evr_seri] " +
+        ",[chz_al_wd_evr_sira] " +
+        ",[chz_st_tarih] " +
+        ",[chz_st_evr_seri] " +
+        ",[chz_st_evr_sira] " +
+        ",[chz_st_cari_kodu] " +
+        ",[chz_st_wd_tarih] " +
+        ",[chz_st_wd_evr_seri] " +
+        ",[chz_st_wd_evr_sira] " +
+        ",[chz_brut_fiati] " +
+        ",[chz_al_fiati_ana] " +
+        ",[chz_al_fiati_alt] " +
+        ",[chz_al_fiati_orj] " +
+        ",[chz_st_fiati_ana] " +
+        ",[chz_st_fiati_alt] " +
+        ",[chz_st_fiati_orj] " +
+        ",[chz_parca_garantisi] " +
+        ",[chz_parca_serino] " +
+        ",[chz_parca_garanti_baslangic] " +
+        ",[chz_parca_garanti_bitis] " +
+        ",[chz_makina_tipi] " +
+        ",[chz_model_yili] " +
+        ",[chz_kiraya_acilma_tarihi] " +
+        ",[chz_musteri_garanti_baslangic] " +
+        ",[chz_musteri_garanti_bitis] " +
+        ",[chz_demirbas_kodu] " +
+        ",[chz_tescil_tarihi] " +
+        ",[chz_bakim_tipi] " +
+        ",[chz_bakim_tarihi] " +
+        ",[chz_ara_bakim_sayisi] " +
+        ",[chz_bakim_peryodu] " +
+        ",[chz_sayac_tipi] " +
+        ",[chz_son_sayac_degeri] " +
+        ",[chz_motor_seri_no] " +
+        ",[chz_sase_no] " +
+        ",[chz_HGS_fl] " +
+        ",[chz_HGS_no] " +
+        ",[chz_OGS_fl] " +
+        ",[chz_OGS_no] " +
+        ",[chz_ruhsat_no] " +
+        ",[chz_ruhsat_sahibi] " +
+        ",[chz_rehin_fl] " +
+        ",[chz_rehin_nedeni] " +
+        ",[chz_sifirlama_oncesi_sayac] " +
+        ",[chz_devir_servis_sayac] " +
+        ",[chz_devir_servis_peryodu] " +
+        ")    VALUES     ( " +
+        "NEWID()          --<chz_Guid, uniqueidentifier,>  \n " +
+        ",0          --<chz_DBCno, smallint,>  \n " +
+        ",0          --<chz_Spec_Rec_no, int,>  \n " +
+        ",0          --<chz_iptal, bit,>  \n " +
+        ",94          --<chz_fileid, smallint,>  \n " +
+        ",0          --<chz_hidden, bit,>  \n " +
+        ",0          --<chz_kilitli, bit,>  \n " +
+        ",0          --<chz_degisti, bit,>  \n " +
+        ",0          --<chz_checksum, int,>  \n " +
+        ",1          --<chz_create_user, smallint,>  \n " +
+        ",GETDATE()          --<chz_create_date, datetime,>  \n " +
+        ",1          --<chz_lastup_user, smallint,>  \n " +
+        ",GETDATE()          --<chz_lastup_date, datetime,>  \n " +
+        ",''          --<chz_special1, nvarchar(4),>  \n " +
+        ",''          --<chz_special2, nvarchar(4),>  \n " +
+        ",''          --<chz_special3, nvarchar(4),>  \n " +
+        ",@SERINO          --<chz_serino, nvarchar(25),>  \n " +
+        ",@STOKKODU           --<chz_stok_kodu, nvarchar(25),>  \n " +
+        ",''         --<chz_grup_kodu, nvarchar(25),>  \n " +
+        ",''          --<chz_Tuktckodu, nvarchar(25),>  \n " +
+        ",GETDATE()          --<chz_GrnBasTarihi, datetime,>  \n " +
+        ",GETDATE()          --<chz_GrnBitTarihi, datetime,>  \n " +
+        ",''          --<chz_aciklama1, nvarchar(80),>  \n " +
+        ",''          --<chz_aciklama2, nvarchar(80),>  \n " +
+        ",''          --<chz_aciklama3, nvarchar(80),>  \n " +
+        ",GETDATE()          --<chz_al_tarih, datetime,>  \n " +
+        ",@SERI          --<chz_al_evr_seri, [dbo].[evrakseri_str],>  \n " +
+        ",@SIRA          --<chz_al_evr_sira, int,>  \n " +
+        ",''          --<chz_al_cari_kodu, nvarchar(25),>  \n " +
+        ",GETDATE()          --<chz_al_wd_tarih, datetime,>  \n " +
+        ",''          --<chz_al_wd_evr_seri, [dbo].[evrakseri_str],>  \n " +
+        ",0          --<chz_al_wd_evr_sira, int,>  \n " +
+        ",GETDATE()          --<chz_st_tarih, datetime,>  \n " +
+        ",''          --<chz_st_evr_seri, [dbo].[evrakseri_str],>  \n " +
+        ",0          --<chz_st_evr_sira, int,>  \n " +
+        ",''          --<chz_st_cari_kodu, nvarchar(25),>  \n " +
+        ",GETDATE()          --<chz_st_wd_tarih, datetime,>  \n " +
+        ",''          --<chz_st_wd_evr_seri, [dbo].[evrakseri_str],>  \n " +
+        ",0          --<chz_st_wd_evr_sira, int,>  \n " +
+        ",0          --<chz_brut_fiati, float,>  \n " +
+        ",0          --<chz_al_fiati_ana, float,>  \n " +
+        ",0          --<chz_al_fiati_alt, float,>  \n " +
+        ",0          --<chz_al_fiati_orj, float,>  \n " +
+        ",0          --<chz_st_fiati_ana, float,>  \n " +
+        ",0          --<chz_st_fiati_alt, float,>  \n " +
+        ",0          --<chz_st_fiati_orj, float,>  \n " +
+        ",0          --<chz_parca_garantisi, bit,>  \n " +
+        ",''          --<chz_parca_serino, nvarchar(25),>  \n " +
+        ",GETDATE()         --<chz_parca_garanti_baslangic, datetime,>  \n " +
+        ",GETDATE()          --<chz_parca_garanti_bitis, datetime,>  \n " +
+        ",0          --<chz_makina_tipi, tinyint,>  \n " +
+        ",''          --<chz_model_yili, nvarchar(4),>  \n " +
+        ",GETDATE()          --<chz_kiraya_acilma_tarihi, datetime,>  \n " +
+        ",GETDATE()          --<chz_musteri_garanti_baslangic, datetime,>  \n " +
+        ",GETDATE()          --<chz_musteri_garanti_bitis, datetime,>  \n " +
+        ",''          --<chz_demirbas_kodu, nvarchar(25),>  \n " +
+        ",GETDATE()          --<chz_tescil_tarihi, datetime,>  \n " +
+        ",0          --<chz_bakim_tipi, tinyint,>  \n " +
+        ",GETDATE()          --<chz_bakim_tarihi, datetime,>  \n " +
+        ",0          --<chz_ara_bakim_sayisi, int,>  \n " +
+        ",0          --<chz_bakim_peryodu, tinyint,>  \n " +
+        ",0          --<chz_sayac_tipi, tinyint,>  \n " +
+        ",0          --<chz_son_sayac_degeri, float,>  \n " +
+        ",''          --<chz_motor_seri_no, nvarchar(25),>  \n " +
+        ",''         --<chz_sase_no, nvarchar(25),>  \n " +
+        ",0          --<chz_HGS_fl, bit,>  \n " +
+        ",''          --<chz_HGS_no, nvarchar(25),>  \n " +
+        ",0          --<chz_OGS_fl, bit,>  \n " +
+        ",''          --<chz_OGS_no, nvarchar(25),>  \n " +
+        ",''          --<chz_ruhsat_no, nvarchar(25),>  \n " +
+        ",''          --<chz_ruhsat_sahibi, nvarchar(50),>  \n " +
+        ",0         --<chz_rehin_fl, bit,>  \n " +
+        ",''          --<chz_rehin_nedeni, nvarchar(100),>  \n " +
+        ",0          --<chz_sifirlama_oncesi_sayac, float,>  \n " +
+        ",0          --<chz_devir_servis_sayac, float,>  \n " +
+        ",0          --<chz_devir_servis_peryodu, float,>  \n " +
+        " ) ",
+        param :['SERI:string|25','SIRA:int','SERINO:string|50','STOKKODU:string|50']
+    },
+    StokGramDegerGetir : 
+    {
+        query : "SELECT sto_special3 AS REFDEGER FROM STOKLAR WHERE sto_kod =@sto_kod " ,
+        param : ['sto_kod'],
+        type : ['string|50']
+    },
+    /* Parametre
+       0 - KULLANICI
+       1 - MENU
+       2 - MENU YONETIM
+       3 - MENU RAPOR
+       4 - GENEL
+       5 - SISTEM */
+    GetParam :
+    {
+        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
+        param : ['TYPE','ACCOUNT'],
+        type : ['int','string|50'] 
+    },
+    GetKullanici : 
+    {
+        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM WHERE ACCOUNT = @ACCOUNT",
+        param : ['ACCOUNT'],
+        type : ['string|50'] 
+    },
+    UpdateParam : 
+    {
+        query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_PARAM SET VALUE = @VALUE WHERE TAG = @TAG AND ACCOUNT = @ACCOUNT",
+        param : ['VALUE','TAG','ACCOUNT'],
+        type : ['string|50','string|50','string|50']
+    },
+    InsertParam :
+    {
+        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_PARAM] " +
+                "([ACCOUNT] " +
+                ",[TAG] " +
+                ",[VALUE] " +
+                ",[TYPE] " +
+                ",[SPECIAL] " +
+                " ) VALUES ( " +
+                "@ACCOUNT           --<ACCOUNT, nvarchar(50),> \n " +
+                ",@TAG              --<TAG, nvarchar(50),> \n " +
+                ",@VALUE            --<VALUE, nvarchar(200),> \n " +
+                ",@TYPE             --<TYPE, tinyint,> \n " +
+                ",@SPECIAL          --<SPECIAL, nvarchar(200),> \n " +
+                " )",
+        param : ['ACCOUNT','TAG','VALUE','TYPE','SPECIAL'],
+        type  : ['string|50','string|50','string|200','int','string|200',]
+    },
+    InsertJson :
+    {
+        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_JSONDATA] " +
+                "([GUID] " +
+                ",[KULLANICI] " +
+                ",[MENU] " +
+                ",[JSON] " +
+                ",[DURUM] " +
+                " ) VALUES ( " +
+                "NEWID()           --<GUID, nvarchar(50),> \n " +
+                ",@KULLANICI             --<KULLANICI, nvarchar(50),> \n " +
+                ",@MENU            --<MENU, nvarchar(200),> \n " +
+                ",@JSON             --<JSON, nvarchar,> \n " +
+                ",@DURUM          --<DURUM, bit),> \n " +
+                " )",
+        param : ['KULLANICI','MENU','JSON','DURUM'],
+        type  : ['string|50','string|50','string|max','int']
+    },
+    DeleteUretim : 
+    {
+        query : "DELETE FROM STOK_HAREKETLERI  WHERE sth_isemri_gider_kodu = @sth_isemri_gider_kodu ",
+        param : ['sth_isemri_gider_kodu'],
+        type  : ['string|50']
+    },
+    DeleteOperasyon : 
+    {
+         query :"DELETE FROM URETIM_OPERASYON_HAREKETLERI WHERE OpT_IsEmriKodu = @OpT_IsEmriKodu ",
+         param : ['OpT_IsEmriKodu'],
+         type  : ['string|50']
+    },
+    UpdateMalzemePlani : 
+    {
+         query :"UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_uret_miktar = 0 WHERE ish_isemri = @ish_isemri ",
+         param : ['ish_isemri'],
+         type  : ['string|50']
+    }
 };

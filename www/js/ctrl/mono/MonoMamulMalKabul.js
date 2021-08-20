@@ -1,4 +1,4 @@
-function MonoMamulMalKabul($scope,srv)
+function MonoMamulMalKabul($scope,srv, $rootScope)
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -176,13 +176,13 @@ function MonoMamulMalKabul($scope,srv)
         {
             datasource : 
             {
-                data : $scope.Param.Mono.MamulMalKabulEtiket
+                data : [{name: "Mamul Mal Kabul Etiket - 1", special: $rootScope.GeneralParamList.MamulMalKabulEtiket}] 
             },
             key : "special",
             value : "name",
-            defaultVal : "1",
+            defaultVal : $rootScope.GeneralParamList.MamulMalKabulEtiket,
             selectionMode : "key",
-            return : "1",
+            return : $rootScope.GeneralParamList.MamulMalKabulEtiket,
             onSelected : function(pSelected)
             {
                 $scope.CmbEtiketTasarim.return = pSelected
@@ -310,8 +310,8 @@ function MonoMamulMalKabul($scope,srv)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pParti,
                 pLot,
                 pStok,
@@ -366,8 +366,8 @@ function MonoMamulMalKabul($scope,srv)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pBarkod,
                 pStokKodu,
                 pParti,
@@ -459,8 +459,8 @@ function MonoMamulMalKabul($scope,srv)
             TmpData.KODU = $scope.Data.UMP[i].KODU;
             TmpData.ADI = $scope.Data.UMP[i].ADI;
 
-            if($scope.Param.Mono.MamulMalKabulDepo != "")
-                TmpData.DEPO = $scope.Param.Mono.MamulMalKabulDepo;
+            if($rootScope.GeneralParamList.MamulMalKabulDepo != "")
+                TmpData.DEPO = $rootScope.GeneralParamList.MamulMalKabulDepo;
             else
                 TmpData.DEPO = $scope.Data.UMP[i].DEPO;
 
@@ -543,8 +543,8 @@ function MonoMamulMalKabul($scope,srv)
 
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
@@ -627,7 +627,7 @@ function MonoMamulMalKabul($scope,srv)
                 0, // NAKLİYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-            
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -652,8 +652,8 @@ function MonoMamulMalKabul($scope,srv)
             
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0,
                 0,
                 pSeri,
@@ -672,7 +672,7 @@ function MonoMamulMalKabul($scope,srv)
                 pDr.MIKTAR,
                 TmpSure
             ]
-            
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -799,6 +799,7 @@ function MonoMamulMalKabul($scope,srv)
             1                                //BASILACAKMIKTAR
         ]
 
+        console.log(InsertData)
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
 
         if(InsertControl == "")
@@ -814,6 +815,8 @@ function MonoMamulMalKabul($scope,srv)
     {        
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
+        $rootScope.PageName = "MAMÜL MAL KABUL"
+
         $scope.Data = {};
         $scope.Data.UMP = [];
         $scope.Data.URP = [];
@@ -824,18 +827,34 @@ function MonoMamulMalKabul($scope,srv)
         $scope.TxtBarkod = "";
         $scope.TxtMiktar = 0;
         
-        $scope.SthGSeri = $scope.Param.Mono.UrunGirisSeri;
-        $scope.SthCSeri = $scope.Param.Mono.UrunCikisSeri;
-        $scope.OpSeri = $scope.Param.Mono.OperasyonSeri;
-        $scope.EtkSeri = $scope.Param.Mono.MamulEtiketSeri;
+        $scope.SthGSeri = $rootScope.GeneralParamList.UrunGirisSeri;
+        $scope.SthCSeri = $rootScope.GeneralParamList.UrunCikisSeri;
+        $scope.OpSeri = $rootScope.GeneralParamList.OperasyonSeri;
+        $scope.EtkSeri = $rootScope.GeneralParamList.MamulEtiketSeri;
+        console.log($scope.EtkSeri)
 
         $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
         $scope.OpSira = await MaxOpSira($scope.OpSeri)
-        $scope.EtkSira = (await srv.Execute($scope.Firma,'MaxEtiketSira',[$scope.EtkSeri]))[0].MAXEVRSIRA
+        $scope.EtkSira = await MaxEtiketSira($scope.EtkSeri)
+
+        if($rootScope.GeneralParamList.MonoMamulMalKabul != "true")
+        {
+            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+            var url = "index.html";
+            window.location.href = url;
+            event.preventDefault();        
+        }
 
         InitObj();
         InitGrd([]);
+    }
+    async function MaxEtiketSira(pSeri)
+    {
+        return new Promise(async resolve => 
+        {
+            resolve((await srv.Execute($scope.Firma,'MaxEtiketSira',[pSeri]))[0].MAXEVRSIRA)
+        })
     }
     $scope.BtnBarkodBas = async function()
     {
@@ -898,6 +917,7 @@ function MonoMamulMalKabul($scope,srv)
         }
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+        $scope.Init()
     }
     $scope.BtnSatirSil = async function()
     {

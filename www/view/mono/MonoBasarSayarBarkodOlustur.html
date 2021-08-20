@@ -16,14 +16,14 @@
                         <div class="col-4 px-2">
                             <p class="text-md-right my-0 py-1">Üretilecek Ürün :</p>
                         </div>    
-                        <div class="col-8 px-2">
+                        <div class="col-8 px-1">
                             <input type="number" min="0" class="form-control form-control-sm" ng-model = "TxtSpRefMiktar">
                         </div>
                     </div>
                 </div>
                 <div class="row pb-2 px-2">
-                    <div class="col-6 offset-6">
-                        <button type="button" class="btn btn-block btn-secondary" ng-click = "BtnTartimOnayla()">Tartımı Onayla</button>
+                    <div class="col-6 offset-6 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "BtnTartimOnayla()">Tartımı Onayla</button>
                     </div>
                 </div>
             </div>
@@ -48,6 +48,11 @@
                         <p class="text-md-left my-0 py-1">{{LblKantarMiktar}}</p>
                     </div>
                 </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-6 offset-6 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "BtnKantarVerisiGetir()">Veriyi Getir</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,10 +81,10 @@
                 </div>
                 <div class="row pb-2 px-2">
                     <div class="col-3 offset-6">
-                        <button-modal id="1" option="BtnSipList"></button-modal>
+                        <button-modal id="1" class="d-grid" option="BtnSipList"></button-modal>
                     </div>
                     <div class="col-3">
-                        <button-modal id="2" option="BtnStokList"></button-modal>
+                        <button-modal id="2" class="d-grid" option="BtnStokList"></button-modal>
                     </div>
                 </div>
             </div>
@@ -113,11 +118,11 @@
                     </div>
                 </div>
                 <div class="row pb-2 px-2">
-                    <div class="col-3 offset-6">
-                        <button type="button" class="btn btn-block btn-secondary" ng-click = "Init()">Temizle</button>
+                    <div class="col-3 offset-6 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "Init()">Temizle</button>
                     </div>
-                    <div class="col-3">
-                        <button type="button" class="btn btn-block btn-secondary" ng-click = "BtnBarkodBas()">Barkod Bas</button>
+                    <div class="col-3 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "BtnBarkodBas()">Barkod Bas</button>
                     </div>
                 </div>
             </div>

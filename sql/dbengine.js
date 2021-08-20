@@ -234,6 +234,21 @@ function dbengine(config,io)
                     fn(false);
             });
         });
+        socket.on("JsonSave",function(pParam,fn)
+        {
+            let FilePath = "";
+            if(typeof process.env.APP_DIR_PATH != 'undefined')
+            {
+                FilePath = process.env.APP_DIR_PATH + "/.";
+            }
+            fs.writeFile(FilePath + pParam[1],'var ' + pParam[2]  + '= ' + JSON.stringify(pParam[0], null, '\t'),function(err)
+            {
+                if(typeof(err) != "undefined")
+                    fn(true);
+                else
+                    fn(false);
+            });
+        });
     });
 }
 
