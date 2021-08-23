@@ -6,7 +6,7 @@ var app = express();
 var WebTCP = require('./www/js/lib/webtcp/server/webtcp.js').WebTCP
 
 var server = new WebTCP();
-server.listen(9999, "192.168.2.240");
+//server.listen(9999, "192.168.2.240");
 
 app.use('/',express.static(__dirname + "/www/"));
 
