@@ -94,7 +94,30 @@ function GunokOperator($scope,srv, $rootScope)
             }
         }
     }
-    async function GetIsEmrileri(pType,pSpecial)
+    async function GetTumIsEmrileri()
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT " +
+                        "is_Guid AS GUID, " +
+                        "is_Kod AS KODU, " +
+                        "is_Ismi AS ADI, " +
+                        "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
+                        "UPL.upl_kodu AS STOKKODU, " +
+                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI " +
+                        "FROM ISEMIRLERI AS ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
+                        "WHERE " +
+                        "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
+                        "UPL.upl_uretim_tuket = 1 " ,
+            }
+
+            resolve(await srv.Execute(TmpQuery))
+        });
+    }
+    async function GetAcikIsEmrileri()
     {
         return new Promise(async resolve => 
         {
@@ -112,18 +135,41 @@ function GunokOperator($scope,srv, $rootScope)
                         "WHERE " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
-                        "((ISM.is_EmriDurumu = @is_EmriDurumu) OR (@is_EmriDurumu = -1)) AND " +
-                        "((ISM.is_special3 = @is_special3) OR (@is_special3 = 'TUMU')) " ,
-                param : ['is_EmriDurumu:int','is_special3:string|25'],
-                value : [pType,pSpecial]
+                        "ISM.is_EmriDurumu = 0 AND " +
+                        "ISM.is_special3 = '' " ,
             }
 
             resolve(await srv.Execute(TmpQuery))
         });
     }
-    function AcikIsEmriGrid(pData)
+    async function GetPlanlananIsEmrileri()
     {
-        $("#TblAcikIsEmirleri").dxDataGrid({
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT " +
+                        "is_Guid AS GUID, " +
+                        "is_Kod AS KODU, " +
+                        "is_Ismi AS ADI, " +
+                        "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
+                        "UPL.upl_kodu AS STOKKODU, " +
+                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI " +
+                        "FROM ISEMIRLERI AS ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
+                        "WHERE " +
+                        "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
+                        "UPL.upl_uretim_tuket = 1 AND " +
+                        "ISM.is_EmriDurumu = 0 AND " +
+                        "ISM.is_special3 <> '' " ,
+            }
+
+            resolve(await srv.Execute(TmpQuery))
+        });
+    }
+    function TumIsEmriGrid(pData)
+    {
+        $("#TblTumIsEmirleri").dxDataGrid({
             height: 640,
             dataSource: pData,
             columnsAutoWidth: true,
@@ -131,9 +177,7 @@ function GunokOperator($scope,srv, $rootScope)
             sorting: {
                 mode: "none"
             },
-            selection: {
-                mode: "multiple"
-            },
+          
             showBorders: true,
             filterRow: 
             {
@@ -152,27 +196,8 @@ function GunokOperator($scope,srv, $rootScope)
             {
                 visible: true
             },
-            // rowDragging: {
-            //     allowReordering: true,
-            //     onReorder: function(e) {
-            //         var visibleRows = e.component.getVisibleRows(),
-            //             toIndex = pData.indexOf(visibleRows[e.toIndex].data),
-            //             fromIndex = pData.indexOf(e.itemData);
-            //             pData.splice(fromIndex, 1);
-            //             pData.splice(toIndex, 0, e.itemData);
-            //         console.log(e.component)
-            //         e.component.refresh();
-            //         console.log(pData)
-            //     }
-            // },
-            columns: [
-            // {  
-            //     width: 50,
-            //     caption: 'SIRA',
-            //     cellTemplate: function(cellElement, cellInfo) {  
-            //         cellElement.text(cellInfo.row.rowIndex+1) 
-            //     }  
-            // }, 
+            columns: 
+            [
             {
                 width: 150,
                 dataField: "KODU",
@@ -234,9 +259,9 @@ function GunokOperator($scope,srv, $rootScope)
             },
         }).dxDataGrid("instance");
     }
-    function TumIsEmriGrid(pData)
+    function AcikIsEmriGrid(pData)
     {
-        $("#TblTumIsEmirleri").dxDataGrid({
+        $("#TblAcikIsEmirleri").dxDataGrid({
             height: 640,
             dataSource: pData,
             columnsAutoWidth: true,
@@ -244,7 +269,9 @@ function GunokOperator($scope,srv, $rootScope)
             sorting: {
                 mode: "none"
             },
-          
+            selection: {
+                mode: "multiple"
+            },
             showBorders: true,
             filterRow: 
             {
@@ -263,8 +290,7 @@ function GunokOperator($scope,srv, $rootScope)
             {
                 visible: true
             },
-            columns: 
-            [
+            columns: [
             {
                 width: 150,
                 dataField: "KODU",
@@ -486,17 +512,17 @@ function GunokOperator($scope,srv, $rootScope)
         let data = [];
         if(pType == 0)
         {
-            data = await GetIsEmrileri(-1,'TUMU');
+            data = await GetTumIsEmrileri();
             TumIsEmriGrid(data)
         }
         else if(pType == 1)
         {
-            data = await GetIsEmrileri(0,'');
+            data = await GetAcikIsEmrileri();
             AcikIsEmriGrid(data)
         }
         else if (pType == 2)
         {
-            data = await GetIsEmrileri(0,'');
+            data = await GetPlanlananIsEmrileri();
             PlanlananEmriGrid(data);
         }
     }

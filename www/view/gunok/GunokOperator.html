@@ -12,7 +12,7 @@
           </div>
       </div>
       <div class="tab-content p-0 mt-2">
-        <div class="tab-pane fade show" id="TumIsEmri" role="tabpanel" aria-labelledby="TumIsEmri-tab">
+        <div class="tab-pane fade" id="TumIsEmri" role="tabpanel" aria-labelledby="TumIsEmri-tab">
           <div class="row d-flex justify-content-around mb-2">
             <div class="col-12 d-grid"><combobox option="CmbIsMerkezleri"></combobox></div>
           </div>
@@ -26,7 +26,14 @@
           </div>
           <div id="TblAcikIsEmirleri"></div>
         </div>
-        <div class="tab-pane fade" id="Planlanan" role="tabpanel" aria-labelledby="Planlanan-tab">planlananlar</div>
+
+        <div class="tab-pane fade" id="Planlanan" role="tabpanel" aria-labelledby="Planlanan-tab">
+          <div class="row d-flex justify-content-around mb-2">
+            <div class="col-6 d-grid"><combobox option="CmbIsMerkezleri"></combobox></div>
+            <div class="col-6 d-grid"><button type="button" ng-click = "BtnPlanla()" class="btn btn-warning fw-bold">AKTİFLEŞTİR</button></div>
+          </div>
+          <div id="TblPlanlananIsEmirleri"></div>
+        </div>
       </div>
     </div>
       <!-- İŞ EMRİ DETAY MODAL -->
