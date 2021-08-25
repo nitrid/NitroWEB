@@ -1,29 +1,38 @@
 <div ng-controller="GunokPlanlama" ng-init="Init()">
-    <div class="row mt-2 p-2 m-0">
-      <div class="card border-dark">
-          <div class="card-body text-dark py-2">
-              <div class="row py-1">
-                <nav class="nav nav-pills flex-column flex-sm-row">
-                  <a class="flex-sm-fill text-md-center nav-link active fw-bold" id="AcikSip-tab" data-bs-toggle="pill" data-bs-target="#AcikSip" type="button" role="tab" aria-controls="AcikSip" aria-selected="true" href="#">{{TxtAcikSiparisler}}</a>
-                  <a class="flex-sm-fill text-md-center nav-link fw-bold" id="IsEmirleri-tab" data-bs-toggle="pill" data-bs-target="#IsEmirleri" type="button" role="tab" aria-controls="IsEmirleri" aria-selected="false" href="#">{{TxtIsEmirleriListesi}}</a>
-                  <a class="flex-sm-fill text-md-center nav-link fw-bold" id="Planlanan-tab" data-bs-toggle="pill" data-bs-target="#Planlanan" type="button" role="tab" aria-controls="Planlanan" aria-selected="false" href="#">{{TxtPlanlananlar}}</a>
-                  <a class="flex-sm-fill text-md-center nav-link fw-bold" id="Tamamlanan-tab" data-bs-toggle="pill" data-bs-target="#Tamamlanan" type="button" role="tab" aria-controls="Tamamlanan" aria-selected="false" href="#">{{TxtTamamlananlar}}</a>
-                </nav>
-              </div>
-          </div>
-      </div>
-      <div class="tab-content p-0 mt-2" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="AcikSip" role="tabpanel" aria-labelledby="AcikSip-tab">
-          <div class="row d-flex justify-content-around mb-2">
-            <div class="col-4 d-grid"><button type="button" class="btn btn-warning fw-bold">PLANLA</button></div>
-            <div class="col-4 d-grid"><combobox option="CmbPlanlamaSayfa" ng-model="GeneralParamList.AcilisSayfasi"></combobox></div>
-            <div class="col-4 d-grid"><button type="button" class="btn btn-info fw-bold">İŞ SIRALAMASINA EKLE</button></div>
-          </div>
-          <div id="AcikSiparisler"></div>
+  <div class="row mt-2 p-2 m-0">
+    <div class="card border-dark">
+        <div class="card-body text-dark py-2">
+            <div class="row py-1">
+              <nav class="nav nav-pills flex-column flex-sm-row">
+                <a class="flex-sm-fill text-md-center nav-link fw-bold" ng-click = "BtnTab(0)" id="TumIsEmri-tab" data-bs-toggle="pill" data-bs-target="#TumIsEmri" type="button" role="tab" aria-controls="TumIsEmri" aria-selected="false" href="#">Tüm İş Emirleri ({{TumIsEmirMiktar}})</a>
+                <a class="flex-sm-fill text-md-center nav-link active fw-bold" ng-click = "BtnTab(1)" id="AcikIsEmirleri-tab" data-bs-toggle="pill" data-bs-target="#AcikIsEmirleri" type="button" role="tab" aria-controls="AcikIsEmirleri" aria-selected="true" href="#">Açık İş Emirleri ({{AcikIsEmirMiktar}})</a>
+                <a class="flex-sm-fill text-md-center nav-link fw-bold" ng-click = "BtnTab(2)" id="Planlanan-tab" data-bs-toggle="pill" data-bs-target="#Planlanan" type="button" role="tab" aria-controls="Planlanan" aria-selected="false" href="#">Planlanan İş Emirleri ({{PlanlananIsEmriMiktar}})</a>
+              </nav>
+            </div>
         </div>
-        <div class="tab-pane fade" id="IsEmirleri" role="tabpanel" aria-labelledby="IsEmirleri-tab">iş emirleri listesi</div>
-        <div class="tab-pane fade" id="Planlanan" role="tabpanel" aria-labelledby="Planlanan-tab">planlananlar</div>
-        <div class="tab-pane fade" id="Tamamlanan" role="tabpanel" aria-labelledby="Tamamlanan-tab">tamamlananlar</div>
+    </div>
+    <div class="tab-content p-0 mt-2">
+      <div class="tab-pane fade" id="TumIsEmri" role="tabpanel" aria-labelledby="TumIsEmri-tab">
+        <div class="row d-flex justify-content-around mb-2">
+          <div class="col-12 d-grid"><combobox option="CmbIsMerkezleri"></combobox></div>
+        </div>
+        <div id="TblTumIsEmirleri"></div>
+      </div>
+
+      <div class="tab-pane fade show active" id="AcikIsEmirleri" role="tabpanel" aria-labelledby="AcikIsEmirleri-tab">
+        <div class="row d-flex justify-content-around mb-2">
+          <div class="col-6 d-grid"><combobox option="CmbIsMerkezleri"></combobox></div>
+          <div class="col-6 d-grid"><button type="button" ng-click = "BtnPlanla()" class="btn btn-warning fw-bold">PLANLA</button></div>
+        </div>
+        <div id="TblAcikIsEmirleri"></div>
+      </div>
+
+      <div class="tab-pane fade" id="Planlanan" role="tabpanel" aria-labelledby="Planlanan-tab">
+        <div class="row d-flex justify-content-around mb-2">
+          <div class="col-6 d-grid"><combobox option="CmbIsMerkezleri"></combobox></div>
+          <div class="col-6 d-grid"><button type="button" ng-click = "BtnSiralamaKaydet()" class="btn btn-warning fw-bold">SIRALAMAYI KAYDET</button></div>
+        </div>
+        <div id="TblPlanlananIsEmirleri"></div>
       </div>
     </div>
   </div>
@@ -36,6 +45,40 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">İş Emri Kodu</span>
+                <input type="text" ng-model="IsEmriDetay.Kodu" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">İş Emri Adı</span>
+                <input type="text" ng-model="IsEmriDetay.Adi" class="form-control" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Stok Adı</span>
+                <input type="text" ng-model="IsEmriDetay.StokAdi" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Stok Kodu</span>
+                <input type="text" ng-model="IsEmriDetay.StokKodu" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Planlanan Miktar</span>
+                <input type="text" ng-model="IsEmriDetay.Miktar" class="form-control" disabled>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
@@ -43,3 +86,4 @@
       </div>
     </div>
   </div>
+</div>

@@ -192,19 +192,19 @@ angular.module("app",
     state
     (
         {
-            name: 'main.GunokOperator',
-            url: '/gunok_operator',
-            templateUrl : "view/gunok/GunokOperator.html",
-            controller:"GunokOperator"
+            name: 'main.GunokPlanlama',
+            url: '/gunok_planlama',
+            templateUrl : "view/gunok/GunokPlanlama.html",
+            controller:"GunokPlanlama"
         }
     ).
     state
     (
         {
-            name: 'main.GunokPlanlama',
-            url: '/gunok_planlama',
-            templateUrl : "view/gunok/GunokPlanlama.html",
-            controller:"GunokPlanlama"
+            name: 'main.GunokOperator',
+            url: '/gunok_operator',
+            templateUrl : "view/gunok/GunokOperator.html",
+            controller:"GunokOperator"
         }
     )
 });
