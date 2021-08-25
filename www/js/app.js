@@ -5,6 +5,7 @@ angular.module("app",
     'app.srv',
     'app.compile'
 ])
+
 .config(function($stateProvider)
 {       
     $stateProvider.state

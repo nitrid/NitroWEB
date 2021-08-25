@@ -1,4 +1,4 @@
-angular.module('app.controller', [])
+angular.module('app.controller', ['angular.filter'])
 .controller('Index',['$scope','$state','srv', Index])
 .controller('Login',['$scope','$state','srv','$rootScope',Login])
 .controller('Main',['$scope','$state','srv','$rootScope',Main])
@@ -22,4 +22,4 @@ angular.module('app.controller', [])
 // GUNOK
 .controller('GunokKullaniciAyarlari', ['$scope', 'srv','$rootScope', GunokKullaniciAyarlari])
 .controller('GunokOperator', ['$scope', 'srv','$rootScope', GunokOperator])
-.controller('GunokPlanlama', ['$scope', 'srv','$rootScope', GunokPlanlama])
+.controller('GunokPlanlama', ['$scope', 'srv','$rootScope','$filter', GunokPlanlama])
