@@ -119,6 +119,8 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
+                        "is_EmriDurumu AS DURUM, " +
+                        "is_special3 AS SPECIAL, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
@@ -352,6 +354,22 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 for (let i = 0; i < selectedItems.selectedRowsData.length; i++) 
                 {
                     $scope.SelectedData.push(selectedItems.selectedRowsData[i]);
+                }
+            },
+            onRowPrepared(e) 
+            {  
+                if (e.rowType == 'data' && e.data.SPECIAL == "" && e.data.DURUM == 0)  
+                {  
+                    e.rowElement.css("background-color", "#FFFF00"); //AÇIK İŞ EMİRLERİ
+                    e.rowElement.addClass("AÇIK İŞ EMRİ")
+                }
+                else if(e.rowType == 'data' && e.data.DURUM == 1)
+                {
+                    e.rowElement.css("background-color", "#ADFF2F"); //TAMAMLANMIŞ İŞ EMİRLERİ
+                }
+                else if(e.rowType == 'data' && e.data.SPECIAL != "" && e.data.DURUM == 0)
+                {
+                    e.rowElement.css("background-color", "#ADD8E6"); //PLANLANMIŞ İŞ EMİRLERİ
                 }
             },
         }).dxDataGrid("instance");
