@@ -9,6 +9,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
         $scope.AcikIsEmirMiktar = 0;
         $scope.PlanlananIsEmriMiktar = 0;
         $scope.IsEmriDetay = {};
+        $scope.TabIndex = 1;
 
         $scope.SelectedData = [];
         $scope.SiralamaList = [];
@@ -18,22 +19,22 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db: "{M}." + $scope.Firma,
-                query : "SELECT 'TÜMÜ' AS KODU,'TÜMÜ' AS ACIKLAMA " +
+                query : "SELECT 'TUMU' AS KODU,'TÜMÜ' AS ACIKLAMA " +
                         "UNION ALL " +
                         "SELECT Op_Kodu AS KODU,Op_Aciklama AS ACIKLAMA FROM URETIM_OPERASYONLARI " ,
             },
             key : "KODU",
             value : "ACIKLAMA",
-            defaultVal : "TÜMÜ",
+            defaultVal : "TUMU",
             selectionMode : "key",
             return : 1,
             onSelected : function(pSelected)
             {
-                console.log(pSelected)
+                $scope.BtnTab($scope.TabIndex,pSelected);
             }
         }
 
-        $scope.BtnTab(1);
+        $scope.BtnTab(1,'TUMU');
     }
     async function GetIsEmriMiktar()
     {
@@ -107,7 +108,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             }
         }
     }
-    async function GetTumIsEmrileri()
+    async function GetTumIsEmrileri(pKod)
     {
         return new Promise(async resolve => 
         {
@@ -124,10 +125,13 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
-                        "INNER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
+                        "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
                         "WHERE " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
-                        "UPL.upl_uretim_tuket = 1 " ,
+                        "UPL.upl_uretim_tuket = 1 AND " +
+                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) " ,
+                param : ['RtP_OperasyonKodu:string|20'],
+                value : [pKod]
             }
 
             let UrunData = $filter('groupBy')((await srv.Execute(TmpQuery)), 'KODU'); //GRUPLAMA İŞLEMİ
@@ -136,12 +140,16 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             for (let i = 0; i < Object.values(UrunData).length; i++) 
             {
                 Data.push(Object.values(UrunData)[i][0]);
+            }
+            if(Data.length == 0)
+            {
+                swal("Uyarı", "Gösterilecek Veri Bulunamadı.",icon="warning");
             }
 
             resolve(Data)
         });
     }
-    async function GetAcikIsEmrileri()
+    async function GetAcikIsEmrileri(pKod)
     {
         return new Promise(async resolve => 
         {
@@ -158,12 +166,15 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
-                        "INNER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
+                        "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
                         "WHERE " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "ISM.is_EmriDurumu = 0 AND " +
-                        "ISM.is_special3 = ''  " ,
+                        "ISM.is_special3 = '' AND " +
+                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) " ,
+                        param : ['RtP_OperasyonKodu:string|20'],
+                        value : [pKod]
             }
 
             let UrunData = $filter('groupBy')((await srv.Execute(TmpQuery)), 'KODU'); //GRUPLAMA İŞLEMİ
@@ -172,12 +183,16 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             for (let i = 0; i < Object.values(UrunData).length; i++) 
             {
                 Data.push(Object.values(UrunData)[i][0]);
+            }
+            if(Data.length == 0)
+            {
+                swal("Uyarı", "Gösterilecek Veri Bulunamadı.",icon="warning");
             }
 
             resolve(Data)
         });
     }
-    async function GetPlanlananIsEmrileri()
+    async function GetPlanlananIsEmrileri(pKod)
     {
         return new Promise(async resolve => 
         {
@@ -188,18 +203,22 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
+                        "ISM.is_special3 AS SIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
-                        "INNER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
+                        "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
                         "WHERE " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "ISM.is_EmriDurumu = 0 AND " +
-                        "ISM.is_special3 <> '' ORDER BY CONVERT(int,is_special3) " ,
+                        "ISM.is_special3 <> '' AND" +
+                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) ORDER BY CONVERT(int,is_special3) " ,
+                        param : ['RtP_OperasyonKodu:string|20'],
+                        value : [pKod]
             }
 
             let UrunData = $filter('groupBy')((await srv.Execute(TmpQuery)), 'KODU'); //GRUPLAMA İŞLEMİ
@@ -208,6 +227,10 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             for (let i = 0; i < Object.values(UrunData).length; i++) 
             {
                 Data.push(Object.values(UrunData)[i][0]);
+            }
+            if(Data.length == 0)
+            {
+                swal("Uyarı", "Gösterilecek Veri Bulunamadı.",icon="warning");
             }
 
             resolve(Data)
@@ -469,7 +492,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             },
             columns: [
             {
-                width: 50,
+                width: 100,
                 dataField: "SIRA",
                 caption: "SIRA",
                 alignment: "center"
@@ -567,24 +590,25 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             swal("Dikkat", "İş Emri Planlama İşlemi İçin Listeden Seçim Yapınız.",icon="warning");
         }
     }
-    $scope.BtnTab = async function(pType)
+    $scope.BtnTab = async function(pType,pKod)
     {
         GetIsEmriMiktar();
+        $scope.TabIndex = pType;
 
         let data = [];
         if(pType == 0)
         {
-            data = await GetTumIsEmrileri();
+            data = await GetTumIsEmrileri(pKod);
             TumIsEmriGrid(data)
         }
         else if(pType == 1)
         {
-            data = await GetAcikIsEmrileri();
+            data = await GetAcikIsEmrileri(pKod);
             AcikIsEmriGrid(data)
         }
         else if (pType == 2)
         {
-            data = await GetPlanlananIsEmrileri();
+            data = await GetPlanlananIsEmrileri(pKod);
             PlanlananEmriGrid(data);
         }
     }
@@ -597,7 +621,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 sira = await MaxIsEmriSira();
                 await UpdatePlanlananIsEmri(sira,$scope.SiralamaList[i].GUID);
-                $scope.BtnTab(2);
+                $scope.BtnTab(2,'TUMU');
             }
 
             swal("Başarılı", "İş Emri Sıralama İşlemi Başarıyla Gerçekleşti.",icon="success");
