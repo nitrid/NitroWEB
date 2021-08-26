@@ -27,6 +27,22 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 await GetPlanlananIsEmrileri(pSelected);
             }
         }
+        $scope.CmbDurdurmaNedeni =
+        {
+            datasource : 
+            {
+                data :  [{name: "1", special: "Durdurma Nedeni - 1"},{name: "2", special: "Durdurma Nedeni - 2"},{name: "3", special: "Durdurma Nedeni - 3"}] 
+            },
+            key : "name",
+            value : "special",
+            defaultVal : "1",
+            selectionMode : "key",
+            return : 1,
+            onSelected : async function(pSelected)
+            {
+
+            }
+        }
 
         await GetPlanlananIsEmrileri('TUMU');
     }
@@ -43,6 +59,9 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                         "is_Ismi AS ADI, " +
                         "ISM.is_special3 AS SIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
+                        "ROTA.RtP_PlanlananMiktar AS PLANLANANMIKTAR, " +
+                        "(ROTA.RtP_PlanlananMiktar - ROTA.RtP_TamamlananMiktar) AS KALANMIKTAR, " +
+                        "ROTA.RtP_TamamlananMiktar AS TAMAMLANANMIKTAR, " +
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
@@ -126,9 +145,21 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 alignment: "center"
             },
             {
-                width: 100,
-                dataField: "PLANMIKTAR",
-                caption: "Miktar",
+                width: 200,
+                dataField: "PLANLANANMIKTAR",
+                caption: "Planlanan Miktar",
+                alignment: "center"
+            },
+            {
+                width: 200,
+                dataField: "KALANMIKTAR",
+                caption: "Kalan Miktar",
+                alignment: "center"
+            },
+            {
+                width: 200,
+                dataField: "TAMAMLANANMIKTAR",
+                caption: "Tamamlanan Miktar",
                 alignment: "center"
             },
             {
@@ -148,11 +179,11 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 buttons: 
                 [ 
                     {
-                        icon: "file",
-                        text: "DETAYLAR",
+                        icon: "pdffile",
+                        text: "PDF GOSTER",
                         onClick: function (e) 
                         {
-                            GetDetail(e.row.data)
+
                         }
                     },
                 ]
@@ -178,5 +209,9 @@ function GunokOperator($scope,srv,$rootScope,$filter)
         $scope.IsEmriDetay.Miktar = pData.PLANMIKTAR
         $scope.IsEmriDetay.StokAdi = pData.STOKADI
         $scope.IsEmriDetay.StokKodu = pData.STOKKODU
+    }
+    $scope.BtnDurdur = async function()
+    {
+        $('#MdlDurdur').modal('show')
     }
 }

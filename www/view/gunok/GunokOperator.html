@@ -3,10 +3,11 @@
     <div class="card border-dark">
         <div class="card-body text-dark py-2">
             <div class="row py-1">
-              <div class="col-3 d-grid"><combobox option="CmbIsMerkezleri" ></combobox></div>
-              <div class="col-3 d-grid"><button type="button" class="btn btn-warning fw-bold">BAŞLAT</button></div>
-              <div class="col-3 d-grid"><button type="button" class="btn btn-danger fw-bold">BİTİR</button></div>
-              <div class="col-3 d-grid"><button type="button" class="btn btn-primary fw-bold">ETİKET YAZDIR</button></div>
+              <div class="col-4 d-grid"><combobox option="CmbIsMerkezleri" ></combobox></div>
+              <div class="col-2 d-grid"><button type="button" class="btn btn-warning fw-bold">BAŞLAT</button></div>
+              <div class="col-2 d-grid"><button type="button" class="btn btn-success fw-bold">ÜRÜN GİRİŞ</button></div>
+              <div class="col-2 d-grid"><button type="button" class="btn btn-danger fw-bold" ng-click = "BtnDurdur()">DURDUR</button></div>
+              <div class="col-2 d-grid"><button type="button" class="btn btn-primary fw-bold">ETİKET YAZDIR</button></div>
             </div>
         </div>
     </div>
@@ -62,6 +63,36 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- DURDUR MODAL -->
+  <div class="modal fade" id="MdlDurdur" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title h4" id="Detay">Durdurma Nedeni</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+                <combobox option="CmbDurdurmaNedeni"></combobox>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control" style="height: 100px"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kaydet</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kapat</button>
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
 
         $scope.SelectedData = [];
         $scope.SiralamaList = [];
+        $scope.IsEmriIstasyonList = [];
 
         $scope.CmbIsMerkezleri =
         {
@@ -116,6 +117,12 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
+                        "CASE WHEN is_Onayli_fl = 0 THEN 'ONAYSIZ' WHEN is_Onayli_fl = 1 THEN 'ONAYLI' END AS ONAYDURUMU, " +
+                        "CASE WHEN is_Onceligi = 0 THEN 'DÜŞÜK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÜKSEK' END AS ONCELIK, " +
+                        "CONVERT(varchar,is_BaslangicTarihi,20) AS IS_EMRI_ACILIS_TARIH," +
+                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,20) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
+                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,20) AS IS_EMRI_PLANLAMA_TARIH, " +
+                        "ISNULL((SELECT User_name FROM MikroDB_V16.dbo.KULLANICILAR WHERE User_no = is_create_user),'VERI BULUNAMADI') AS OLUSTURAN_KULLANICI, " +
                         "CASE WHEN is_EmriDurumu = 0 AND is_special3 = '' THEN 'AÇIK' WHEN " +
                         "is_EmriDurumu = 0 AND is_special3 <> '' AND is_special3 <> '0' THEN 'PLANLANAN' WHEN " +
                         "is_EmriDurumu = 1 THEN 'AKTİF' ELSE " +
@@ -163,6 +170,12 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
+                        "CASE WHEN is_Onayli_fl = 0 THEN 'ONAYSIZ' WHEN is_Onayli_fl = 1 THEN 'ONAYLI' END AS ONAYDURUMU, " +
+                        "CASE WHEN is_Onceligi = 0 THEN 'DÜŞÜK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÜKSEK' END AS ONCELIK, " +
+                        "CONVERT(varchar,is_BaslangicTarihi,20) AS IS_EMRI_ACILIS_TARIH," +
+                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,20) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
+                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,20) AS IS_EMRI_PLANLAMA_TARIH, " +
+                        "ISNULL((SELECT User_name FROM MikroDB_V16.dbo.KULLANICILAR WHERE User_no = is_create_user),'VERI BULUNAMADI') AS OLUSTURAN_KULLANICI, " +
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
@@ -206,6 +219,12 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
+                        "CASE WHEN is_Onayli_fl = 0 THEN 'ONAYSIZ' WHEN is_Onayli_fl = 1 THEN 'ONAYLI' END AS ONAYDURUMU, " +
+                        "CASE WHEN is_Onceligi = 0 THEN 'DÜŞÜK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÜKSEK' END AS ONCELIK, " +
+                        "CONVERT(varchar,is_BaslangicTarihi,20) AS IS_EMRI_ACILIS_TARIH," +
+                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,20) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
+                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,20) AS IS_EMRI_PLANLAMA_TARIH, " +
+                        "ISNULL((SELECT User_name FROM MikroDB_V16.dbo.KULLANICILAR WHERE User_no = is_create_user),'VERI BULUNAMADI') AS OLUSTURAN_KULLANICI, " +
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
@@ -309,6 +328,30 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 },
                 {
                     width: 150,
+                    dataField: "OLUSTURAN_KULLANICI",
+                    caption: "Oluşturan Kullanıcı",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "IS_EMRI_ACILIS_TARIH",
+                    caption: "Açılış Tarihi",
+                    alignment: "center"
+                }, 
+                {
+                    width: 150,
+                    dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
+                    caption: "Aktifleştirme Tarihi",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "IS_EMRI_PLANLAMA_TARIH",
+                    caption: "Planlama Tarihi",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
                     dataField: "KODU",
                     caption: "İş Emri No",
                     alignment: "center"
@@ -319,9 +362,9 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 },
                 {
-                    width: 100,
+                    width: 200,
                     dataField: "PLANMIKTAR",
-                    caption: "Miktar",
+                    caption: "Planlanan Miktar",
                     alignment: "center"
                 },
                 {
@@ -354,6 +397,14 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                             onClick: function (e) 
                             {
                                 GetDetail(e.row.data)
+                            }
+                        },
+                        {
+                            icon: "pdffile",
+                            text: "PDF GOSTER",
+                            onClick: function (e) 
+                            {
+
                             }
                         },
                     ]
@@ -422,6 +473,30 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             columns: [
             {
                 width: 150,
+                dataField: "OLUSTURAN_KULLANICI",
+                caption: "Oluşturan Kullanıcı",
+                alignment: "center"
+            },
+            {
+                width: 150,
+                dataField: "IS_EMRI_ACILIS_TARIH",
+                caption: "Açılış Tarihi",
+                alignment: "center"
+            }, 
+            {
+                width: 150,
+                dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
+                caption: "Aktifleştirme Tarihi",
+                alignment: "center"
+            },
+            {
+                width: 150,
+                dataField: "IS_EMRI_PLANLAMA_TARIH",
+                caption: "Planlama Tarihi",
+                alignment: "center"
+            },
+            {
+                width: 150,
                 dataField: "KODU",
                 caption: "İş Emri No",
                 alignment: "center"
@@ -432,9 +507,9 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 alignment: "center"
             },
             {
-                width: 100,
+                width: 200,
                 dataField: "PLANMIKTAR",
-                caption: "Miktar",
+                caption: "Planlanan Miktar",
                 alignment: "center"
             },
             {
@@ -469,6 +544,14 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                             GetDetail(e.row.data)
                         }
                     },
+                    {
+                        icon: "pdffile",
+                        text: "PDF GOSTER",
+                        onClick: function (e) 
+                        {
+                            
+                        }
+                    }
                 ]
             }],
             onSelectionChanged: function(selectedItems) 
@@ -524,6 +607,30 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             },
             columns: [
             {
+                width: 150,
+                dataField: "OLUSTURAN_KULLANICI",
+                caption: "Oluşturan Kullanıcı",
+                alignment: "center"
+            },
+            {
+                width: 150,
+                dataField: "IS_EMRI_ACILIS_TARIH",
+                caption: "Açılış Tarihi",
+                alignment: "center"
+            }, 
+            {
+                width: 150,
+                dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
+                caption: "Aktifleştirme Tarihi",
+                alignment: "center"
+            },
+            {
+                width: 150,
+                dataField: "IS_EMRI_PLANLAMA_TARIH",
+                caption: "Planlama Tarihi",
+                alignment: "center"
+            },
+            {
                 width: 100,
                 dataField: "SIRA",
                 caption: "SIRA",
@@ -541,9 +648,9 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 alignment: "center"
             },
             {
-                width: 100,
+                width: 200,
                 dataField: "PLANMIKTAR",
-                caption: "Miktar",
+                caption: "Planlanan Miktar",
                 alignment: "center"
             },
             {
@@ -578,18 +685,60 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                             GetDetail(e.row.data)
                         }
                     },
+                    {
+                        icon: "pdffile",
+                        text: "PDF GOSTER",
+                        onClick: function (e) 
+                        {
+                            
+                        }
+                    }
                 ]
             }],
         }).dxDataGrid("instance");
     }
-    function GetDetail(pData)
+    async function GetDetail(pData)
     {
         $('#MdlIsEmriDetay').modal('show')
+        $scope.IsEmriIstasyonList = await GetIsEmriIstasyonlari(pData.KODU);
+
+        console.log($scope.IsEmriIstasyonList)
+
         $scope.IsEmriDetay.Kodu = pData.KODU
         $scope.IsEmriDetay.Adi = pData.ADI
         $scope.IsEmriDetay.Miktar = pData.PLANMIKTAR
         $scope.IsEmriDetay.StokAdi = pData.STOKADI
         $scope.IsEmriDetay.StokKodu = pData.STOKKODU
+        $scope.IsEmriDetay.OLUSTURAN_KULLANICI = pData.OLUSTURAN_KULLANICI
+        $scope.IsEmriDetay.IS_EMRI_ACILIS_TARIH = pData.IS_EMRI_ACILIS_TARIH
+        $scope.IsEmriDetay.IS_EMRI_AKTIFLESTIRME_TARIH = pData.IS_EMRI_AKTIFLESTIRME_TARIH
+        $scope.IsEmriDetay.IS_EMRI_PLANLAMA_TARIH = pData.IS_EMRI_PLANLAMA_TARIH
+        $scope.IsEmriDetay.ONAYDURUMU = pData.ONAYDURUMU
+        $scope.IsEmriDetay.ONCELIK = pData.ONCELIK
+    }
+    function GetIsEmriIstasyonlari(pKod)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT " +
+                        "Op_Aciklama AS ACIKLAMA, " +
+                        "Op_Kodu AS KODU " +
+                        "FROM URETIM_ROTA_PLANLARI AS ROTA " +
+                        "INNER JOIN " +
+                        "URETIM_OPERASYONLARI AS OP ON ROTA.RtP_OperasyonKodu = OP.Op_Kodu " +
+                        "WHERE " +
+                        "RtP_IsEmriKodu = @RtP_IsEmriKodu " ,
+                        param : ['RtP_IsEmriKodu:string|20'],
+                        value : [pKod]
+            }
+
+            let data = await srv.Execute(TmpQuery);
+
+            resolve(data)
+        });
     }
     $scope.BtnPlanla = async function()
     {
