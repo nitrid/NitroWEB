@@ -116,6 +116,10 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
+                        "CASE WHEN is_EmriDurumu = 0 AND is_special3 = '' THEN 'AÇIK' WHEN " +
+                        "is_EmriDurumu = 0 AND is_special3 <> '' AND is_special3 <> '0' THEN 'PLANLANAN' WHEN " +
+                        "is_EmriDurumu = 1 THEN 'AKTİF' ELSE " +
+                        " 'KAPANAN' END AS ISEMRIDURUM, " +
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
@@ -276,7 +280,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             sorting: {
                 mode: "none"
             },
-          
+
             showBorders: true,
             filterRow: 
             {
@@ -297,57 +301,64 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             },
             columns: 
             [
-            {
-                width: 150,
-                dataField: "KODU",
-                caption: "İş Emri No",
-                alignment: "center"
-            }, 
-            {
-                dataField: "ADI",
-                caption: "İş Emri Adı",
-                alignment: "center"
-            },
-            {
-                width: 100,
-                dataField: "PLANMIKTAR",
-                caption: "Miktar",
-                alignment: "center"
-            },
-            {
-                dataField: "STOKKODU",
-                caption: "Stok Kodu",
-                alignment: "center"
-            },
-            {
-                dataField: "STOKADI",
-                caption: "Stok Adı",
-                alignment: "center"
-            },
-            {      
-                caption: "İŞLEMLER",
-                width: 90,
-                type: "buttons",
-                buttons: 
-                [ 
-                    {
-                        icon: "file",
-                        text: "DETAYLAR",
-                        onClick: function (e) 
+                {
+                    width: 150,
+                    dataField: "ISEMRIDURUM",
+                    caption: "İş Emri Durumu",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "KODU",
+                    caption: "İş Emri No",
+                    alignment: "center"
+                }, 
+                {
+                    dataField: "ADI",
+                    caption: "İş Emri Adı",
+                    alignment: "center"
+                },
+                {
+                    width: 100,
+                    dataField: "PLANMIKTAR",
+                    caption: "Miktar",
+                    alignment: "center"
+                },
+                {
+                    dataField: "STOKKODU",
+                    caption: "Stok Kodu",
+                    alignment: "center"
+                },
+                {
+                    dataField: "STOKADI",
+                    caption: "Stok Adı",
+                    alignment: "center"
+                },
+                {      
+                    caption: "İŞLEMLER",
+                    width: 90,
+                    type: "buttons",
+                    buttons: 
+                    [ 
                         {
-                            GetDetail(e.row.data)
-                        }
-                    },
-                    {
-                        icon: "print",
-                        text: "ETİKES BAS",
-                        onClick: function (e) 
+                            icon: "file",
+                            text: "DETAYLAR",
+                            onClick: function (e) 
+                            {
+                                GetDetail(e.row.data)
+                            }
+                        },
                         {
-                            GetDetail(e.row.data)
-                        }
-                    },
-                ]
-            }],
+                            icon: "print",
+                            text: "ETİKES BAS",
+                            onClick: function (e) 
+                            {
+                                GetDetail(e.row.data)
+                            }
+                        },
+                    ]
+                }
+            ],
             onSelectionChanged: function(selectedItems) 
             {
                 $scope.SelectedData = [];
@@ -358,18 +369,21 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             },
             onRowPrepared(e) 
             {  
-                if (e.rowType == 'data' && e.data.SPECIAL == "" && e.data.DURUM == 0)  
+                if (e.rowType == 'data' && e.data.DURUM == 0 && e.data.SPECIAL == "" )  
                 {  
-                    e.rowElement.css("background-color", "#FFFF00"); //AÇIK İŞ EMİRLERİ
-                    e.rowElement.addClass("AÇIK İŞ EMRİ")
+                    e.rowElement.css("background-color", "#FFFF00"); //BEKLEYEN İŞ EMİRLERİ
                 }
-                else if(e.rowType == 'data' && e.data.DURUM == 1)
+                else if(e.rowType == 'data' && e.data.DURUM == 0 && e.data.SPECIAL != "")
                 {
-                    e.rowElement.css("background-color", "#ADFF2F"); //TAMAMLANMIŞ İŞ EMİRLERİ
+                    e.rowElement.css("background-color", "#87bdd8"); //PLANLANMIŞ İŞ EMİRLERİ
                 }
-                else if(e.rowType == 'data' && e.data.SPECIAL != "" && e.data.DURUM == 0)
+                else if(e.rowType == 'data'  && e.data.DURUM == 1)
                 {
-                    e.rowElement.css("background-color", "#ADD8E6"); //PLANLANMIŞ İŞ EMİRLERİ
+                    e.rowElement.css("background-color", "#ADFF2F"); //AKTİF İŞ EMİRLERİ
+                }
+                else if(e.rowType == 'data' && e.data.DURUM == 2)
+                {
+                    e.rowElement.css("background-color", "#eea29a"); //KAPANMIŞ İŞ EMİRLERİ
                 }
             },
         }).dxDataGrid("instance");
@@ -601,7 +615,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
 
             swal("Başarılı", "İş Emri No : " + infodata + "\n" +"Planlama İşlemi Gerçekleştirildi.",icon="success");
             GetIsEmriMiktar();
-            PlanlananEmriGrid(0,'');
+            $scope.BtnTab(1,'TUMU');
         }
         else
         {

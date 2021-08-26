@@ -155,14 +155,6 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                             GetDetail(e.row.data)
                         }
                     },
-                    {
-                        icon: "print",
-                        text: "ETİKES BAS",
-                        onClick: function (e) 
-                        {
-                            GetDetail(e.row.data)
-                        }
-                    },
                 ]
             }],
             onCellPrepared: function(e) 
