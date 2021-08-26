@@ -21,5 +21,5 @@ angular.module('app.controller', ['angular.filter'])
 .controller('MonoUretimSilme', ['$scope', 'srv','$rootScope', MonoUretimSilme])
 // GUNOK
 .controller('GunokKullaniciAyarlari', ['$scope', 'srv','$rootScope', GunokKullaniciAyarlari])
-.controller('GunokOperator', ['$scope', 'srv','$rootScope', GunokOperator])
+.controller('GunokOperator', ['$scope', 'srv','$rootScope','$filter', GunokOperator])
 .controller('GunokPlanlama', ['$scope', 'srv','$rootScope','$filter', GunokPlanlama])
