@@ -79,7 +79,6 @@
                 <input type="text" ng-model="IsEmriDetay.StokKodu" class="form-control" disabled>
               </div>
             </div>
-        
           </div>
           </br>
           <div class="row">
@@ -125,6 +124,15 @@
               <div class="input-group mb-3 input-group-lg">
                 <span class="fw-bold input-group-text">Planlanan Miktar</span>
                 <input type="text" ng-model="IsEmriDetay.Miktar" class="form-control" disabled>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-6" ng-repeat="List in IsEmriIstasyonList">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">İstasyon Adı</span>
+                <input type="text" ng-model="List.ACIKLAMA" class="form-control" disabled>
               </div>
             </div>
           </div>

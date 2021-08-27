@@ -702,8 +702,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
         $('#MdlIsEmriDetay').modal('show')
         $scope.IsEmriIstasyonList = await GetIsEmriIstasyonlari(pData.KODU);
 
-        console.log($scope.IsEmriIstasyonList)
-
         $scope.IsEmriDetay.Kodu = pData.KODU
         $scope.IsEmriDetay.Adi = pData.ADI
         $scope.IsEmriDetay.Miktar = pData.PLANMIKTAR
