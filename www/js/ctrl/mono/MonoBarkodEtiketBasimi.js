@@ -544,6 +544,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         $scope.TxtMiktar = 0;
         $scope.TxtBMiktar = 1;
         $scope.StokAdi = "";
+        $scope.BteBarkodText = ""
         document.getElementById("Skt").value = "";
 
         $scope.Data = {};
@@ -573,7 +574,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         }
         if($scope.BteParti.txt == '')
         {
-            $scope.BteBarkod.txt =  ($scope.BteBarkod.txt +$scope.TxtMiktar.toString().padStart(5, '0'));
+            $scope.BteBarkodText =  ($scope.BteBarkod.txt +$scope.TxtMiktar.toString().padStart(5, '0'));
         }
 
         if ($scope.TxtLot == "")
@@ -589,7 +590,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
                         TmpBarkod = $scope.BteParti.txt.padStart(10, "0") + TmpLot.ToString().padStart(6, "0");
                         if(await BarkodOlustur(TmpBarkod,$scope.BteStok.txt,$scope.BteParti.txt,$scope.TxtLot))
                         {
-                            $scope.BteBarkod.txt = TmpBarkod;
+                            $scope.BteBarkodText = TmpBarkod;
                         }
                     }
                     swal("Başarılı", "Parti lot Ve Barkod Oluşturuldu.",icon="success");
@@ -606,8 +607,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
 
         let TmpData = {};
         TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
-        TmpData.BARKOD = $scope.BteBarkod.txt;
-        TmpData.PARTIBARKOD = $scope.BteBarkod.txt;
+        TmpData.BARKOD = $scope.BteBarkodText;
+        TmpData.PARTIBARKOD = $scope.BteBarkodText;
         TmpData.URNBARKOD = $scope.Data.BARKODLIST[0].URNBARKOD;
         TmpData.KODU = $scope.BteStok.txt;
         TmpData.ADI = $scope.StokAdi;

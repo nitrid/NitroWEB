@@ -1235,18 +1235,22 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
     }
     $scope.BtnSonKoKoli = async function()
     {
+        console.log($scope.SthGSira)
         let TmpQuery = 
             {
                 db: "{M}." + $scope.Firma,
-                query : "SELECT TOP 1 Etkb_Barkodu AS BARKOD FROM ETIKETBAS ORDER BY Etkb_create_date desc ",
-
+                query : "SELECT TOP 1 Etkb_Barkodu AS BARKOD FROM ETIKETBAS WHERE Etkb_evrakno_seri = @Etkb_Seri ORDER BY Etkb_create_date desc ",
+                param : ['Etkb_Seri:string|50'],
+                value : [$scope.SthGSeri]
             }
         let Sonkoli = await srv.Execute(TmpQuery)
+
+        console.log(Sonkoli)
 
         let UpdateQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "UPDATE ETIKETBAS SET Etkb_special1 = 3 where Etkb_Barkodu = @bar_kodu ",
+            query : "UPDATE ETIKETBAS SET Etkb_special1 = 2 where Etkb_Barkodu = @bar_kodu ",
             param : ['bar_kodu:string|50'],
             value : [Sonkoli[0].BARKOD]
 

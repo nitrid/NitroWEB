@@ -84,10 +84,10 @@ function MonoFasonGiris($scope,srv, $rootScope)
             {
                 db : "{M}." + $scope.Firma,
                 query : "SELECT " +
-                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
+                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
-                        "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
-                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
+                        "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AS STOKKODU, " +
+                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'')),'') AS STOKADI " +
                         "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%F%' "
             },
             selection : "KODU",
@@ -277,7 +277,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
     }
     function KantarVeriGetir() 
     {
-        var net = new WebTCP('176.236.62.130', 9999);
+        var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: false, keepAlive: false, initialDelay: 10000 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarKantarIP, $rootScope.GeneralParamList.BasarSayarKantarPORT, options);
@@ -313,7 +313,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
     }
     function HassasTeraziVeriGetir() 
     {
-        var net = new WebTCP('176.236.62.130', 9999);
+        var net = new WebTCP('192.168.2.240', 9999);
 
         options = { encoding: "utf-8", timeout: 0, noDelay: true, keepAlive: false, initialDelay: 0 }
         var socket = net.createSocket($rootScope.GeneralParamList.BasarSayarHasasTeraziIP, $rootScope.GeneralParamList.BasarSayarHasasTeraziPORT, options);
@@ -364,7 +364,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = $scope.Data.UMP[i].TIP;
             TmpData.URETTUKET = $scope.Data.UMP[i].URETTUKET;
-            TmpData.PARTIBARKOD = pBarkod;
+            TmpData.PARTIBARKOD =$scope.Data.UMP[i].BARKOD+ $scope.EtiketMiktar;
             TmpData.URNBARKOD = $scope.Data.UMP[i].BARKOD;
             TmpData.ADITR = $scope.Data.UMP[i].ADITR;
             TmpData.ADIENG = $scope.Data.UMP[i].ADIENG;
@@ -684,7 +684,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             0,                               //BASİMTİPİ
             (SelectionRow.MIKTAR <= 32000 ? SelectionRow.MIKTAR : 32000),             //BASİMADET
             $scope.DepoKod,                               //DEPONO
-            $scope.LblUrun,                  //STOKKODU
+            SelectionRow.KODU,                  //STOKKODU
             SelectionRow.MIKTAR,                               //RENKKODU
             1,                               //BEDENKODU
             SelectionRow.PARTIBARKOD,                         //BARKOD
@@ -783,7 +783,9 @@ function MonoFasonGiris($scope,srv, $rootScope)
         $scope.DataKantarKilo = $scope.LblKantarKilo;
         if($rootScope.GeneralParamList.YariMamulGramKontrol == 1)
         {
-            console.log($scope.LblUrun)
+            console.log(($scope.LblHassasGram / $scope.TxtSpRefMiktar))
+            console.log($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000))
+            console.log(($scope.DataKantarKilo - $scope.LblKasaDara))
             let TmpData = await srv.Execute($scope.Firma,'StokGramDegerGetir',[$scope.LblUrun])
             let ReferansDeger = (TmpData[0].REFDEGER) * ($rootScope.GeneralParamList.YariMamulGramYuzde / 100)
             if(($scope.LblHassasGram / $scope.TxtSpRefMiktar) < (TmpData[0].REFDEGER - ReferansDeger) ||  ($scope.LblHassasGram / $scope.TxtSpRefMiktar) > (parseInt(TmpData[0].REFDEGER) + ReferansDeger))

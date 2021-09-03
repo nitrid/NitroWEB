@@ -122,6 +122,36 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
                 $scope.CmbEtiketList.return = pSelected
             }
         }
+        $scope.BtnManuelKasaDaraAl =
+        {
+            title: "Kasa Darası Elle Giriş",
+            onSelected: async function (pData) 
+            {
+                if (typeof pData != 'undefined') 
+                {
+                    if($scope.ManuelGirisHide ==  true)
+                    {
+                        $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
+                        console.log($scope.LblKasaDara)
+                    }
+                    else
+                    {
+                        $scope.LblKasaDara = pData
+                    }
+                }
+            }
+        }
+        $scope.BtnManuelMiktarGiris =
+        {
+            title: "Manuel Miktar Giriş",
+            onSelected: async function (pData) 
+            {
+                if(typeof pData != 'undefined') 
+                {
+                    $scope.LblKantarMiktar = pData;
+                }
+            }
+        }
     }
     function Scale()
     {
@@ -204,6 +234,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
     }
     async function EtiketInsert()
     {
+        $scope.YazdirilacakBarkod = $scope.LblBarkod + (parseInt($scope.LblKantarMiktar)).toString().padStart(5, '0');
         let InsertData = 
         [
             1,                               //CREATE_USER
@@ -212,17 +243,18 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
             $scope.EtkSeri,                  //SERI
             $scope.EtkSira,                  //SIRA
             '',                              //AÇIKLAMA
-            '',                              //BELGENO
+            ($scope.LblKantarKilo - $scope.LblKasaDara),            //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
             $scope.LblKantarMiktar,          //BASİMADET
             1,                               //DEPONO
             $scope.LblStokKodu,              //STOKKODU
-            1,                               //RENKKODU
+            $scope.LblKantarMiktar,          //RENKKODU
             1,                               //BEDENKODU
-            $scope.LblBarkod,                //BARKOD
+            $scope.YazdirilacakBarkod,                //BARKOD
             $scope.TxtEtiketMiktar           //BASILACAKMIKTAR
         ]
+        console.log(InsertData)
 
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
 
@@ -251,6 +283,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         $scope.TxtSpRefMiktar = 0;
         $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
+        $scope.LblKasaDara = 0;
         $scope.LblKantarMiktar = 0;
         $scope.DataKantarKilo = 0;
         $scope.DataHassasTeraziGram = 0;
@@ -260,6 +293,8 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         $scope.LblBarkod = "";
         $scope.LblStokKodu = "";
         $scope.LblStokAdi = "";
+
+        $scope.ManuelGirisHide = false;
         
         $scope.TxtEtiketMiktar = 1;
         if($rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur != "true")
@@ -283,7 +318,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
-        $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
+        $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * ($scope.DataKantarKilo - $scope.LblKasaDara)).toFixed(2);
     }
     $scope.BtnKantarVerisiGetir = async function()
     {
