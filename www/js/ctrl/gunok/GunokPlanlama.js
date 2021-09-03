@@ -14,6 +14,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
         $scope.SelectedData = [];
         $scope.SiralamaList = [];
         $scope.IsEmriIstasyonList = [];
+        $scope.PlanlananList = [];
 
         $scope.CmbIsMerkezleri =
         {
@@ -266,6 +267,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "ISM.is_EmriDurumu = 0 AND " +
                         "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
+                        "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
                         "TERP.SPECIAL = 'ALTISEMRI' " +
                         "ORDER BY TERP.ISEMRI_ISTASYON_SIRA,TERP.ISEMRI_SIRA " ,
@@ -273,7 +275,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
             }
 
-            let Data = await srv.Execute(TmpQuery);
+            let Data = await srv.Execute(TmpQuery); //GRUPLAMA İŞLEMİ
 
             if(Data.length == 0)
             {
@@ -575,7 +577,8 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 visible: true
             },
-            rowDragging: {
+            rowDragging: 
+            {
                 allowReordering: true,
                 onReorder: function(e) 
                 {
@@ -586,6 +589,8 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                     pData.splice(toIndex, 0, e.itemData);
                     e.component.refresh();
                     $scope.SiralamaList = pData;
+
+                    console.log($scope.SiralamaList)
                 }
             },
             columns: [
@@ -767,11 +772,17 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
         else if (pType == 2)
         {
             data = await GetPlanlananIsEmrileri(pKod);
+            $scope.PlanlananList = data;
             PlanlananEmriGrid(data);
         }
     }
     $scope.BtnSiralamaKaydet = async function()
     {
+        if($scope.SiralamaList.length == 0 && $scope.PlanlananList.length > 0)
+        {   
+            $scope.SiralamaList = $scope.PlanlananList;
+        }
+
         if($scope.SiralamaList.length > 0)
         {
             let IsEmriSira = 0;
@@ -781,9 +792,10 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 
                 console.log($scope.SiralamaList[i].GUID)
                 console.log(IsEmriSira)
-                await srv.Execute($scope.Firma,'UpdateIsEmriSira',[IsEmriSira,$scope.SiralamaList[i].GUID]);
+                await srv.Execute($scope.Firma,'UpdateIsEmriSira',[IsEmriSira,$scope.SiralamaList[i].GUID,$scope.CmbIsMerkezleri.return]);
             }
 
+            $scope.SiralamaList = [];
             $scope.BtnTab(2,$scope.CmbIsMerkezleri.return)
             swal("Başarılı", "İş Emri Sıralama İşlemi Başarıyla Gerçekleşti.",icon="success");
         }
