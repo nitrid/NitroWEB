@@ -270,7 +270,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
                         "TERP.SPECIAL = 'ALTISEMRI' " +
-                        "ORDER BY TERP.ISEMRI_ISTASYON_SIRA,TERP.ISEMRI_SIRA " ,
+                        "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA),CONVERT(int,TERP.ISEMRI_SIRA) " ,
                         param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
                         value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
             }
@@ -589,8 +589,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                     pData.splice(toIndex, 0, e.itemData);
                     e.component.refresh();
                     $scope.SiralamaList = pData;
-
-                    console.log($scope.SiralamaList)
                 }
             },
             columns: [
@@ -789,9 +787,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             for (let i = 0; i < $scope.SiralamaList.length; i++) 
             {
                 IsEmriSira = (await srv.Execute($scope.Firma,'MaxIsEmriIstasyonSira',[$scope.CmbIsMerkezleri.return]))[0].MAXISEMRISIRA; //ALT İŞ EMRİNE BAĞLI MAKSİMUM SIRA GETİRİLİYOR
-                
-                console.log($scope.SiralamaList[i].GUID)
-                console.log(IsEmriSira)
                 await srv.Execute($scope.Firma,'UpdateIsEmriSira',[IsEmriSira,$scope.SiralamaList[i].GUID,$scope.CmbIsMerkezleri.return]);
             }
 
