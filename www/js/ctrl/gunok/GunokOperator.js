@@ -99,7 +99,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
         $("#TblPlanlananIsEmirleri").dxDataGrid({
             height: 640,
             dataSource: pData,
-            columnsAutoWidth: true,
+            columnMinWidth: 200,
             showBorders: true,
             sorting: {
                 mode: "none"

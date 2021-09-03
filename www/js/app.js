@@ -193,6 +193,15 @@ angular.module("app",
     state
     (
         {
+            name: 'main.GunokKullaniciEkle',
+            url: '/gunok_kullanici_ekle',
+            templateUrl : "view/gunok/GunokKullaniciEkle.html",
+            controller:"GunokKullaniciAyarlari"
+        }
+    ).
+    state
+    (
+        {
             name: 'main.GunokPlanlama',
             url: '/gunok_planlama',
             templateUrl : "view/gunok/GunokPlanlama.html",

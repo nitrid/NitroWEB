@@ -50,8 +50,14 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                             "COUNT(upl_miktar) AS TUMISEMIRLERIMIKTAR " +
                             "FROM ISEMIRLERI AS ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
                             "WHERE " +
-                            "UPL.upl_uretim_tuket = 1 " +
-                            "GROUP BY is_DBCno " 
+                            "ISM.is_BagliOlduguIsemri = '' AND " +
+                            "UPL.upl_uretim_tuket = 1 AND " +
+                            "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
+                            "((ISM.is_EmriDurumu <> @is_EmriDurumu) OR (@is_EmriDurumu <> 2)) " +
+                            "GROUP BY is_DBCno " ,
+                    param : ['is_Onayli_fl:string|5','is_EmriDurumu:int'],
+                    value : [$rootScope.GeneralParamList.IsEmriOnayDurumu,$rootScope.GeneralParamList.KapananIsEmri]
+                
                 }
                 let TmpData = await srv.Execute(TmpQuery)
                 if(TmpData.length > 0)
@@ -71,9 +77,16 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                     query : "SELECT " +
                             "COUNT(upl_miktar) AS ACIKISEMIRLERIMIKTAR " +
                             "FROM ISEMIRLERI AS ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
+                            "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                             "WHERE " +
-                            "UPL.upl_uretim_tuket = 1 AND ISM.is_EmriDurumu = 0 AND ISM.is_special3 = '' " +
-                            "GROUP BY is_DBCno " 
+                            "ISM.is_BagliOlduguIsemri = '' AND " +
+                            "UPL.upl_uretim_tuket = 1 AND " +
+                            "ISM.is_EmriDurumu = 0 AND " +
+                            "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
+                            "TERP.SPECIAL IS NULL " +
+                            "GROUP BY is_DBCno " ,
+                    param : ['is_Onayli_fl:string|5'],
+                    value : [$rootScope.GeneralParamList.IsEmriOnayDurumu]
                 }
                 let TmpData = await srv.Execute(TmpQuery)
                 if(TmpData.length > 0)
@@ -93,9 +106,16 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                     query : "SELECT " +
                             "COUNT(upl_miktar) AS PLANLANANISEMIRLERIMIKTAR " +
                             "FROM ISEMIRLERI AS ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
+                            "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                             "WHERE " +
-                            "UPL.upl_uretim_tuket = 1 AND ISM.is_special3 <> '' AND ISM.is_EmriDurumu = 0 " +
-                            "GROUP BY is_DBCno " 
+                            "ISM.is_BagliOlduguIsemri <> '' AND " +
+                            "UPL.upl_uretim_tuket = 1 AND " +
+                            "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
+                            "ISM.is_EmriDurumu = 0 AND " +
+                            "TERP.SPECIAL = 'ALTISEMRI' " +
+                            "GROUP BY is_DBCno " ,
+                    param : ['is_Onayli_fl:string|5'],
+                    value : [$rootScope.GeneralParamList.IsEmriOnayDurumu]
                 }
                 let TmpData = await srv.Execute(TmpQuery)
                 if(TmpData.length > 0)
@@ -130,6 +150,8 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
+                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "is_EmriDurumu AS DURUM, " +
                         "is_special3 AS SPECIAL, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
@@ -140,20 +162,18 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
                         "WHERE " +
+                        "ISM.is_BagliOlduguIsemri = '' AND " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
-                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) " ,
-                param : ['RtP_OperasyonKodu:string|20'],
-                value : [pKod]
+                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
+                        "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
+                        "((ISM.is_EmriDurumu <> @is_EmriDurumu) OR (@is_EmriDurumu <> 2)) " ,
+                param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5','is_EmriDurumu:int'],
+                value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu,$rootScope.GeneralParamList.KapananIsEmri]
             }
 
-            let UrunData = $filter('groupBy')((await srv.Execute(TmpQuery)), 'KODU'); //GRUPLAMA İŞLEMİ
-            let Data = [];
-
-            for (let i = 0; i < Object.values(UrunData).length; i++) 
-            {
-                Data.push(Object.values(UrunData)[i][0]);
-            }
+            let Data = await srv.Execute(TmpQuery);
+       
             if(Data.length == 0)
             {
                 swal("Uyarı", "Gösterilecek Veri Bulunamadı.",icon="warning");
@@ -172,9 +192,9 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 query : "SELECT " +
                         "CASE WHEN is_Onayli_fl = 0 THEN 'ONAYSIZ' WHEN is_Onayli_fl = 1 THEN 'ONAYLI' END AS ONAYDURUMU, " +
                         "CASE WHEN is_Onceligi = 0 THEN 'DÜŞÜK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÜKSEK' END AS ONCELIK, " +
-                        "CONVERT(varchar,is_BaslangicTarihi,20) AS IS_EMRI_ACILIS_TARIH," +
-                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,20) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
-                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,20) AS IS_EMRI_PLANLAMA_TARIH, " +
+                        "CONVERT(varchar,is_BaslangicTarihi,102) AS IS_EMRI_ACILIS_TARIH," +
+                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,102) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
+                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,102) AS IS_EMRI_PLANLAMA_TARIH, " +
                         "ISNULL((SELECT User_name FROM MikroDB_V16.dbo.KULLANICILAR WHERE User_no = is_create_user),'VERI BULUNAMADI') AS OLUSTURAN_KULLANICI, " +
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
@@ -182,27 +202,27 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
+                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
+                        "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                         "WHERE " +
+                        "ISM.is_BagliOlduguIsemri = '' AND " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "ISM.is_EmriDurumu = 0 AND " +
-                        "ISM.is_special3 = '' AND " +
-                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) " ,
-                        param : ['RtP_OperasyonKodu:string|20'],
-                        value : [pKod]
+                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
+                        "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
+                        "TERP.SPECIAL IS NULL ",
+                        param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
+                        value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
             }
 
-            let UrunData = $filter('groupBy')((await srv.Execute(TmpQuery)), 'KODU'); //GRUPLAMA İŞLEMİ
-            let Data = [];
+            let Data = await srv.Execute(TmpQuery);
 
-            for (let i = 0; i < Object.values(UrunData).length; i++) 
-            {
-                Data.push(Object.values(UrunData)[i][0]);
-            }
             if(Data.length == 0)
             {
                 swal("Uyarı", "Gösterilecek Veri Bulunamadı.",icon="warning");
@@ -221,72 +241,46 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 query : "SELECT " +
                         "CASE WHEN is_Onayli_fl = 0 THEN 'ONAYSIZ' WHEN is_Onayli_fl = 1 THEN 'ONAYLI' END AS ONAYDURUMU, " +
                         "CASE WHEN is_Onceligi = 0 THEN 'DÜŞÜK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÜKSEK' END AS ONCELIK, " +
-                        "CONVERT(varchar,is_BaslangicTarihi,20) AS IS_EMRI_ACILIS_TARIH," +
-                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,20) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
-                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,20) AS IS_EMRI_PLANLAMA_TARIH, " +
+                        "CONVERT(varchar,is_BaslangicTarihi,102) AS IS_EMRI_ACILIS_TARIH," +
+                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,102) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
+                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,102) AS IS_EMRI_PLANLAMA_TARIH, " +
                         "ISNULL((SELECT User_name FROM MikroDB_V16.dbo.KULLANICILAR WHERE User_no = is_create_user),'VERI BULUNAMADI') AS OLUSTURAN_KULLANICI, " +
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
-                        "ISM.is_special3 AS SIRA, " +
+                        "TERP.ISEMRI_SIRA AS ISEMRISIRA, " +
+                        "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
+                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
+                        "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                         "WHERE " +
+                        "(SELECT sto_cins FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu) = 3 AND " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "ISM.is_EmriDurumu = 0 AND " +
-                        "ISM.is_special3 <> '' AND" +
-                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) ORDER BY CONVERT(int,is_special3) " ,
-                        param : ['RtP_OperasyonKodu:string|20'],
-                        value : [pKod]
+                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
+                        "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
+                        "TERP.SPECIAL = 'ALTISEMRI' " +
+                        "ORDER BY TERP.ISEMRI_ISTASYON_SIRA,TERP.ISEMRI_SIRA " ,
+                        param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
+                        value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
             }
 
-            let UrunData = $filter('groupBy')((await srv.Execute(TmpQuery)), 'KODU'); //GRUPLAMA İŞLEMİ
-            let Data = [];
+            let Data = await srv.Execute(TmpQuery);
 
-            for (let i = 0; i < Object.values(UrunData).length; i++) 
-            {
-                Data.push(Object.values(UrunData)[i][0]);
-            }
             if(Data.length == 0)
             {
                 swal("Uyarı", "Gösterilecek Veri Bulunamadı.",icon="warning");
             }
 
             resolve(Data)
-        });
-    }
-    async function UpdatePlanlananIsEmri(pSira,pGuid)
-    {
-        return new Promise(async resolve => 
-        {
-            let TmpQuery = 
-            {
-                db: "{M}." + $scope.Firma,
-                query : "UPDATE ISEMIRLERI SET is_special3 = @is_special3 WHERE is_Guid = @is_Guid ",
-                param : ["is_special3:string|15","is_Guid:string|50"],
-                value : [pSira,pGuid]
-            }
-
-            resolve(await srv.Execute(TmpQuery))
-        });
-    }
-    async function MaxIsEmriSira()
-    {
-        return new Promise(async resolve => 
-        {
-            let TmpQuery = 
-            {
-                db: "{M}." + $scope.Firma,
-                query : "SELECT ISNULL(MAX(CONVERT(int,is_special3)),0) + 1 AS MAXISEMRISIRA FROM ISEMIRLERI "
-            }
-
-            resolve((await srv.Execute(TmpQuery))[0].MAXISEMRISIRA)
         });
     }
     function TumIsEmriGrid(pData)
@@ -299,7 +293,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             sorting: {
                 mode: "none"
             },
-
             showBorders: true,
             filterRow: 
             {
@@ -318,18 +311,10 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 visible: true
             },
-            columns: 
-            [
+            columns: [
                 {
-                    width: 150,
-                    dataField: "ISEMRIDURUM",
-                    caption: "İş Emri Durumu",
-                    alignment: "center"
-                },
-                {
-                    width: 150,
-                    dataField: "OLUSTURAN_KULLANICI",
-                    caption: "Oluşturan Kullanıcı",
+                    dataField: "SIPARISNO",
+                    caption: "Sipariş No",
                     alignment: "center"
                 },
                 {
@@ -357,11 +342,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 }, 
                 {
-                    dataField: "ADI",
-                    caption: "İş Emri Adı",
-                    alignment: "center"
-                },
-                {
                     width: 200,
                     dataField: "PLANMIKTAR",
                     caption: "Planlanan Miktar",
@@ -375,6 +355,11 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 {
                     dataField: "STOKADI",
                     caption: "Stok Adı",
+                    alignment: "center"
+                },
+                {
+                    dataField: "CARIISMI",
+                    caption: "Cari Adı",
                     alignment: "center"
                 },
                 {      
@@ -404,12 +389,11 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                             text: "PDF GOSTER",
                             onClick: function (e) 
                             {
-
+                                
                             }
-                        },
+                        }
                     ]
-                }
-            ],
+            }],
             onSelectionChanged: function(selectedItems) 
             {
                 $scope.SelectedData = [];
@@ -472,9 +456,8 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             },
             columns: [
             {
-                width: 150,
-                dataField: "OLUSTURAN_KULLANICI",
-                caption: "Oluşturan Kullanıcı",
+                dataField: "SIPARISNO",
+                caption: "Sipariş No",
                 alignment: "center"
             },
             {
@@ -502,11 +485,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 alignment: "center"
             }, 
             {
-                dataField: "ADI",
-                caption: "İş Emri Adı",
-                alignment: "center"
-            },
-            {
                 width: 200,
                 dataField: "PLANMIKTAR",
                 caption: "Planlanan Miktar",
@@ -520,6 +498,11 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 dataField: "STOKADI",
                 caption: "Stok Adı",
+                alignment: "center"
+            },
+            {
+                dataField: "CARIISMI",
+                caption: "Cari Adı",
                 alignment: "center"
             },
             {      
@@ -606,94 +589,84 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 }
             },
             columns: [
-            {
-                width: 150,
-                dataField: "OLUSTURAN_KULLANICI",
-                caption: "Oluşturan Kullanıcı",
-                alignment: "center"
-            },
-            {
-                width: 150,
-                dataField: "IS_EMRI_ACILIS_TARIH",
-                caption: "Açılış Tarihi",
-                alignment: "center"
-            }, 
-            {
-                width: 150,
-                dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
-                caption: "Aktifleştirme Tarihi",
-                alignment: "center"
-            },
-            {
-                width: 150,
-                dataField: "IS_EMRI_PLANLAMA_TARIH",
-                caption: "Planlama Tarihi",
-                alignment: "center"
-            },
-            {
-                width: 100,
-                dataField: "SIRA",
-                caption: "SIRA",
-                alignment: "center"
-            }, 
-            {
-                width: 150,
-                dataField: "KODU",
-                caption: "İş Emri No",
-                alignment: "center"
-            }, 
-            {
-                dataField: "ADI",
-                caption: "İş Emri Adı",
-                alignment: "center"
-            },
-            {
-                width: 200,
-                dataField: "PLANMIKTAR",
-                caption: "Planlanan Miktar",
-                alignment: "center"
-            },
-            {
-                dataField: "STOKKODU",
-                caption: "Stok Kodu",
-                alignment: "center"
-            },
-            {
-                dataField: "STOKADI",
-                caption: "Stok Adı",
-                alignment: "center"
-            },
-            {      
-                caption: "İŞLEMLER",
-                width: 90,
-                type: "buttons",
-                buttons: 
-                [ 
-                    {
-                        icon: "file",
-                        text: "DETAYLAR",
-                        onClick: function (e) 
+                {
+                    dataField: "SIPARISNO",
+                    caption: "Sipariş No",
+                    alignment: "center"
+                },
+                {
+                    dataField: "ISTASYONSIRA",
+                    caption: "Istasyon Sıra",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "IS_EMRI_ACILIS_TARIH",
+                    caption: "Açılış Tarihi",
+                    alignment: "center"
+                }, 
+                {
+                    width: 150,
+                    dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
+                    caption: "Aktifleştirme Tarihi",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "IS_EMRI_PLANLAMA_TARIH",
+                    caption: "Planlama Tarihi",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "KODU",
+                    caption: "İş Emri No",
+                    alignment: "center"
+                }, 
+                {
+                    width: 200,
+                    dataField: "PLANMIKTAR",
+                    caption: "Planlanan Miktar",
+                    alignment: "center"
+                },
+                {
+                    dataField: "STOKKODU",
+                    caption: "Stok Kodu",
+                    alignment: "center"
+                },
+                {
+                    dataField: "STOKADI",
+                    caption: "Stok Adı",
+                    alignment: "center"
+                },
+                {
+                    dataField: "CARIISMI",
+                    caption: "Cari Adı",
+                    alignment: "center"
+                },
+                {      
+                    caption: "İŞLEMLER",
+                    width: 90,
+                    type: "buttons",
+                    buttons: 
+                    [ 
                         {
-                            GetDetail(e.row.data)
-                        }
-                    },
-                    {
-                        icon: "print",
-                        text: "ETİKES BAS",
-                        onClick: function (e) 
+                            icon: "print",
+                            text: "ETİKES BAS",
+                            onClick: function (e) 
+                            {
+
+                            }
+                        },
                         {
-                            GetDetail(e.row.data)
+                            icon: "pdffile",
+                            text: "PDF GOSTER",
+                            onClick: function (e) 
+                            {
+                                
+                            }
                         }
-                    },
-                    {
-                        icon: "pdffile",
-                        text: "PDF GOSTER",
-                        onClick: function (e) 
-                        {
-                            
-                        }
-                    }
-                ]
+                    ]
             }],
         }).dxDataGrid("instance");
     }
@@ -743,26 +716,32 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
         if($scope.SelectedData.length > 0)
         {
             let infodata = [];
+
             for (let i = 0; i < $scope.SelectedData.length; i++) 
             {
-                let TmpQuery = 
-                {
-                    db: "{M}." + $scope.Firma,
-                    query : "UPDATE ISEMIRLERI SET is_special3 = '0' WHERE is_Guid = @GUID ",
-                    param : ['GUID:string|50'],
-                    value : [$scope.SelectedData[i].GUID]
-                }
+                let IsEmriSira = 0;
 
-                let TmpData = await srv.Execute(TmpQuery)
-                if(TmpData.length == 0)
+                let BagliIsEmriList = await srv.Execute($scope.Firma,'BagliIsEmriGet',[$scope.SelectedData[i].KODU]); //ANA İŞ EMRİNE BAĞLI İŞ EMİRLERİ LİSTELENİYOR
+                await srv.Execute($scope.Firma,'IsEmriListesiInsert',[$scope.SelectedData[i].GUID,$scope.SelectedData[i].KODU,0,0,'','','ANAISEMRI']); //ANA İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
+
+                if(BagliIsEmriList.length > 0)
                 {
-                    infodata.push($scope.SelectedData[i].ADI)
+                    for (let x = 0; x < BagliIsEmriList.length; x++) 
+                    {
+                        IsEmriSira = (await srv.Execute($scope.Firma,'MaxIsEmriSira',[]))[0].MAXISEMRISIRA; //ALT İŞ EMRİNE BAĞLI MAKSİMUM SIRA GETİRİLİYOR
+                        let TmpData = await srv.Execute($scope.Firma,'IsEmriListesiInsert',[BagliIsEmriList[x].GUID,BagliIsEmriList[x].KODU,IsEmriSira,0,$scope.SelectedData[i].KODU,BagliIsEmriList[x].OPKODU,'ALTISEMRI']); //ALT İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
+                        
+                        if(TmpData.length == 0)
+                        {
+                            infodata.push(BagliIsEmriList[x].KODU)
+                        }
+                    }
                 }
             }
 
-            swal("Başarılı", "İş Emri No : " + infodata + "\n" +"Planlama İşlemi Gerçekleştirildi.",icon="success");
+            swal("Başarılı","İş Emri No : " + infodata + "\n" +"Planlama İşlemi Gerçekleştirildi.",icon="success");
             GetIsEmriMiktar();
-            $scope.BtnTab(1,'TUMU');
+            $scope.BtnTab(1,'TUMU')
         }
         else
         {
@@ -795,14 +774,17 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
     {
         if($scope.SiralamaList.length > 0)
         {
-            let sira = 0
+            let IsEmriSira = 0;
             for (let i = 0; i < $scope.SiralamaList.length; i++) 
             {
-                sira = await MaxIsEmriSira();
-                await UpdatePlanlananIsEmri(sira,$scope.SiralamaList[i].GUID);
-                $scope.BtnTab(2,'TUMU');
+                IsEmriSira = (await srv.Execute($scope.Firma,'MaxIsEmriIstasyonSira',[$scope.CmbIsMerkezleri.return]))[0].MAXISEMRISIRA; //ALT İŞ EMRİNE BAĞLI MAKSİMUM SIRA GETİRİLİYOR
+                
+                console.log($scope.SiralamaList[i].GUID)
+                console.log(IsEmriSira)
+                await srv.Execute($scope.Firma,'UpdateIsEmriSira',[IsEmriSira,$scope.SiralamaList[i].GUID]);
             }
 
+            $scope.BtnTab(2,$scope.CmbIsMerkezleri.return)
             swal("Başarılı", "İş Emri Sıralama İşlemi Başarıyla Gerçekleşti.",icon="success");
         }
         else
