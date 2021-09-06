@@ -19,9 +19,8 @@
         <div id="TblTumIsEmirleri"></div>
         <div class="text-center">
           <p class="text-muted font-15 font-family-secondary mb-0">
-            <span class="mx-2"><i class="fas fa-brush" style="color: #FFFF00;"></i> Açık İş Emirleri</span>
             <span class="mx-2"><i class="fas fa-brush" style="color: #87bdd8;"></i> Planlanmış İş Emirleri</span>
-            <span class="mx-2"><i class="fas fa-brush" style="color: #ADFF2F;"></i> Aktif İş Emirleri</span>
+            <span class="mx-2"><i class="fas fa-brush" style="color: #FFFF00;"></i> Aktif İş Emirleri</span>
             <span class="mx-2"><i class="fas fa-brush" style="color: #eea29a;"></i> Kapanmış İş Emirleri</span>
           </p>
         </div>
@@ -146,7 +145,14 @@
               </div>
             </div>
             <div class="tab-pane fade" id="YariMamulDetay" role="tabpanel" aria-labelledby="YariMamulDetay-tab">
-           
+              <div class="row">
+                <div class="col-6" ng-repeat="YariMamul in YariMamulList">
+                  <div class="input-group mb-3 input-group-lg">
+                    <span class="fw-bold input-group-text">Yarı Mamül Kodu :</span>
+                    <input type="text" ng-model="YariMamul.upl_kodu" class="form-control" disabled>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="tab-pane fade" id="ReceteDetay" role="tabpanel" aria-labelledby="ReceteDetay-tab">
               

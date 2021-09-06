@@ -20,6 +20,6 @@ angular.module('app.controller', ['angular.filter'])
 .controller('MonoStokDepoGirisCikisRaporu', ['$scope', 'srv','$rootScope', MonoStokDepoGirisCikisRaporu])
 .controller('MonoUretimSilme', ['$scope', 'srv','$rootScope', MonoUretimSilme])
 // GUNOK
-.controller('GunokKullaniciAyarlari', ['$scope', 'srv','$rootScope', GunokKullaniciAyarlari])
+.controller('GunokKullaniciAyarlari', ['$scope', 'srv','$rootScope','$state', GunokKullaniciAyarlari])
 .controller('GunokOperator', ['$scope', 'srv','$rootScope','$filter', GunokOperator])
 .controller('GunokPlanlama', ['$scope', 'srv','$rootScope','$filter', GunokPlanlama])

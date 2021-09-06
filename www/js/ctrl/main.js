@@ -128,20 +128,11 @@ function Main($scope,$state,srv,$rootScope)
                 // Menü
                 GunokOperator : srv.GetParamValue($scope.Data,"GunokOperator"),
                 GunokPlanlama : srv.GetParamValue($scope.Data,"GunokPlanlama"),
-                // MonoMamulMalKabul : srv.GetParamValue($scope.Data,"MonoMamulMalKabul"),
-                // MonoYariMamulMalKabul : srv.GetParamValue($scope.Data,"MonoYariMamulMalKabul"),
-                // MonoBarkodEtiketBasimi : srv.GetParamValue($scope.Data,"MonoBarkodEtiketBasimi"),
-                // MonoKasaBarkodOlustur : srv.GetParamValue($scope.Data,"MonoKasaBarkodOlustur"),
-                // MonoFasonGiris : srv.GetParamValue($scope.Data,"MonoFasonGiris"),
-                // MonoElektrikUretim : srv.GetParamValue($scope.Data,"MonoElektrikUretim"),
-                // MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
+                GunokUretimDashboard : srv.GetParamValue($scope.Data,"GunokUretimDashboard"),
                 // Menü Yönetim
-                MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
-                MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),
-                // Menü Rapor
-                MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
-                MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
-                MonoStokDepoGirisCikisRaporu : srv.GetParamValue($scope.Data,"MonoStokDepoGirisCikisRaporu"),
+                GunokKullaniciAyarlari : srv.GetParamValue($scope.Data,"GunokKullaniciAyarlari"),
+                GunokKullaniciEkle : srv.GetParamValue($scope.Data,"GunokKullaniciEkle"),
+                GunokUretimSilme : srv.GetParamValue($scope.Data,"GunokUretimSilme"),
                 // Parametre
                 OperasyonKodu : srv.GetParamValue($scope.Data,"OperasyonKodu"),
                 IsEmriOnayDurumu : srv.GetParamValue($scope.Data,"IsEmriOnayDurumu"),
@@ -162,6 +153,7 @@ function Main($scope,$state,srv,$rootScope)
                 PlasiyerKodu : srv.GetParamValue($scope.Data,"PlasiyerKodu"),
                 SatirBirlestir : srv.GetParamValue($scope.Data,"SatirBirlestir"),
             }
+
             resolve()
         });
     }

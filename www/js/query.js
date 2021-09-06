@@ -2089,15 +2089,17 @@ var Query =
                 ",[VALUE] " +
                 ",[TYPE] " +
                 ",[SPECIAL] " +
+                ",[FIRM] " +
                 " ) VALUES ( " +
                 "@ACCOUNT           --<ACCOUNT, nvarchar(50),> \n " +
                 ",@TAG              --<TAG, nvarchar(50),> \n " +
                 ",@VALUE            --<VALUE, nvarchar(200),> \n " +
                 ",@TYPE             --<TYPE, tinyint,> \n " +
                 ",@SPECIAL          --<SPECIAL, nvarchar(200),> \n " +
+                ",@FIRM             --<SPECIAL, nvarchar(25),> \n " +
                 " )",
-        param : ['ACCOUNT','TAG','VALUE','TYPE','SPECIAL'],
-        type  : ['string|50','string|50','string|200','int','string|200',]
+        param : ['ACCOUNT','TAG','VALUE','TYPE','SPECIAL','FIRM'],
+        type  : ['string|50','string|50','string|200','int','string|200','string|25']
     },
     InsertJson :
     {
@@ -2161,4 +2163,25 @@ var Query =
         query : "UPDATE MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_ISTASYON_SIRA = @ISEMRI_ISTASYON_SIRA WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ['ISEMRI_ISTASYON_SIRA:string|25','ISEMRI_GUID:string|50','ISEMRI_ISTASYON_KOD:string|25']
     },
+    IsEmriIstasyonlariGet : 
+    {
+        query : "SELECT " +
+                "Op_Aciklama AS ACIKLAMA, " +
+                "Op_Kodu AS KODU " +
+                "FROM URETIM_ROTA_PLANLARI AS ROTA " +
+                "INNER JOIN " +
+                "URETIM_OPERASYONLARI AS OP ON ROTA.RtP_OperasyonKodu = OP.Op_Kodu " +
+                "WHERE " +
+                "RtP_IsEmriKodu = @RtP_IsEmriKodu " ,
+        param : ['RtP_IsEmriKodu:string|20']
+    },
+    YariMamulGet : 
+    {
+        query : "SELECT upl_kodu,is_Kod FROM ISEMIRLERI AS ISM " +
+                "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
+                "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri AND " +
+                "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 3 GROUP BY upl_kodu,is_Kod " ,
+        param : ['is_BagliOlduguIsemri'],
+        type : ['string|25']
+    }
 };

@@ -7,7 +7,7 @@
               <div class="col-2 d-grid"><button type="button" class="btn btn-warning fw-bold">BAŞLAT</button></div>
               <div class="col-2 d-grid"><button type="button" class="btn btn-success fw-bold">ÜRÜN GİRİŞ</button></div>
               <div class="col-2 d-grid"><button type="button" class="btn btn-danger fw-bold" ng-click = "BtnDurdur()">DURDUR</button></div>
-              <div class="col-2 d-grid"><button type="button" class="btn btn-primary fw-bold">ETİKET YAZDIR</button></div>
+              <div class="col-2 d-grid"><button type="button" class="btn btn-primary fw-bold" ng-click = "BtnEtiketYazdir(0)">ETİKET YAZDIR</button></div>
             </div>
         </div>
     </div>
@@ -15,54 +15,42 @@
       <div class="row d-flex justify-content-around mb-2">
       </div>
       <div id="TblPlanlananIsEmirleri"></div>
+      <div class="text-center">
+        <p class="text-muted font-15 font-family-secondary mb-0">
+          <span class="mx-2"><i class="fas fa-brush" style="color: #87bdd8;"></i> Planlanmış İş Emirleri</span>
+          <span class="mx-2"><i class="fas fa-brush" style="color: #FFFF00;"></i> Aktif İş Emirleri</span>
+        </p>
+      </div>
     </div>
   </div>
-  <!-- İŞ EMRİ DETAY MODAL -->
-  <div class="modal fade" id="MdlIsEmriDetay" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
+  <!-- ETİKET YAZDIR -->
+  <div class="modal fade" id="MdlEtiketYazdir" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title h4" id="Detay">İş Emri Detayı</h5>
+          <h5 class="modal-title h4" id="Detay">Etiket Yazdırma</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-6">
+            <div class="col-12">
               <div class="input-group mb-3 input-group-lg">
-                <span class="fw-bold input-group-text">İş Emri Kodu</span>
-                <input type="text" ng-model="IsEmriDetay.Kodu" class="form-control" disabled>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="input-group mb-3 input-group-lg">
-                <span class="fw-bold input-group-text">İş Emri Adı</span>
-                <input type="text" ng-model="IsEmriDetay.Adi" class="form-control" disabled>
+                <span class="fw-bold input-group-text">Ürün Adet : </span>
+                <input type="number" min="1" ng-model = "UrunAdet" class="form-control">
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-12">
               <div class="input-group mb-3 input-group-lg">
-                <span class="fw-bold input-group-text">Stok Adı</span>
-                <input type="text" ng-model="IsEmriDetay.StokAdi" class="form-control" disabled>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="input-group mb-3 input-group-lg">
-                <span class="fw-bold input-group-text">Stok Kodu</span>
-                <input type="text" ng-model="IsEmriDetay.StokKodu" class="form-control" disabled>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="input-group mb-3 input-group-lg">
-                <span class="fw-bold input-group-text">Planlanan Miktar</span>
-                <input type="text" ng-model="IsEmriDetay.Miktar" class="form-control" disabled>
+                <span class="fw-bold input-group-text">Basım Miktar : </span>
+                <input type="number" min="1" ng-model = "BasimMiktar" class="form-control">
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+          <button type="button" class="btn btn-primary" ng-click = "BtnEtiketYazdir(1)">Etiket Yazdır</button>
         </div>
       </div>
     </div>

@@ -230,7 +230,7 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             {
                 if(pList[i].VALUE == "true" || pList[i].VALUE == "false")
                 {
-                    if(window.location.hash == "#!/main/mono_kullanici_ayarlari")
+                    if(window.location.hash == "#!/main/gunok_kullanici_ayarlari")
                     {
                         return Bool(pList[i].VALUE);
                     }
@@ -248,7 +248,7 @@ angular.module('app.srv', []).service('srv',function($rootScope)
             {
                 if(pList[i].VALUE == "true" || pList[i].VALUE == "false")
                 {
-                    if(window.location.hash == "#!/main/mono_kullanici_ayarlari")
+                    if(window.location.hash == "#!/main/gunok_kullanici_ayarlari")
                     {
                         return Bool(pList[i].VALUE);
                     }

@@ -71,22 +71,13 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 // Kullanıcı
                 Password : srv.GetParamValue($scope.Data,"Password"),
                 // Menü
-                MonoMamulMalKabul : srv.GetParamValue($scope.Data,"MonoMamulMalKabul"),
-                MonoYariMamulMalKabul : srv.GetParamValue($scope.Data,"MonoYariMamulMalKabul"),
-                MonoBarkodEtiketBasimi : srv.GetParamValue($scope.Data,"MonoBarkodEtiketBasimi"),
-                MonoKasaBarkodOlustur : srv.GetParamValue($scope.Data,"MonoKasaBarkodOlustur"),
-                MonoFasonGiris : srv.GetParamValue($scope.Data,"MonoFasonGiris"),
-                MonoElektrikUretim : srv.GetParamValue($scope.Data,"MonoElektrikUretim"),
-                MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
-                MonoUretimDashboard : srv.GetParamValue($scope.Data,"MonoUretimDashboard"),
+                GunokPlanlama : srv.GetParamValue($scope.Data,"GunokPlanlama"),
+                GunokOperator : srv.GetParamValue($scope.Data,"GunokOperator"),
+                GunokUretimDashboard : srv.GetParamValue($scope.Data,"GunokUretimDashboard"),
                 // Menü Yönetim
-                MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
-                MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),
-                MonoUretimSilme : srv.GetParamValue($scope.Data,"MonoUretimSilme"),
-                // Menü Rapor
-                MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
-                MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
-                MonoStokDepoGirisCikisRaporu : srv.GetParamValue($scope.Data,"MonoStokDepoGirisCikisRaporu"),
+                GunokKullaniciAyarlari : srv.GetParamValue($scope.Data,"GunokKullaniciAyarlari"),
+                GunokKullaniciEkle : srv.GetParamValue($scope.Data,"GunokKullaniciEkle"),
+                GunokUretimSilme : srv.GetParamValue($scope.Data,"GunokUretimSilme"),
                 // Parametre
                 OperasyonKodu : srv.GetParamValue($scope.Data,"OperasyonKodu"),
                 IsEmriOnayDurumu : srv.GetParamValue($scope.Data,"IsEmriOnayDurumu"),
@@ -107,6 +98,8 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 PlasiyerKodu : srv.GetParamValue($scope.Data,"PlasiyerKodu"),
                 SatirBirlestir : srv.GetParamValue($scope.Data,"SatirBirlestir"),
             }
+
+            console.log($rootScope.GeneralParamList)
             resolve()
         });
     }
@@ -131,7 +124,8 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             pData[0],
             pData[1],
             pData[2],
-            pData[3]
+            pData[3],
+            $scope.Firma
         ]
         let InsertControl = await srv.Execute($scope.Firma,'InsertParam',InsertData);
     }
@@ -177,7 +171,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
         {
             datasource : 
             {
-                data :  [{name: "TÜMÜ", special: "TUMU"},{name: "ONAYLI", special: "true"},{name: "ONAYSIZ", special: "false"}] 
+                data :  [{name: "ONAYLI", special: "true"},{name: "ONAYSIZ", special: "false"}] 
             },
             key : "special",
             value : "name",
@@ -227,48 +221,23 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             // Menü
             {
-                MonoMamulMalKabul : $rootScope.GeneralParamList.MonoMamulMalKabul
+                GunokPlanlama : $rootScope.GeneralParamList.GunokPlanlama
             },
             {
-                MonoYariMamulMalKabul : $rootScope.GeneralParamList.MonoYariMamulMalKabul
+                GunokOperator : $rootScope.GeneralParamList.GunokOperator
             },
             {
-                MonoBarkodEtiketBasimi : $rootScope.GeneralParamList.MonoBarkodEtiketBasimi
-            },
-            {
-                MonoKasaBarkodOlustur : $rootScope.GeneralParamList.MonoKasaBarkodOlustur
-            },
-            {
-                MonoFasonGiris : $rootScope.GeneralParamList.MonoFasonGiris
-            },
-            {
-                MonoElektrikUretim : $rootScope.GeneralParamList.MonoElektrikUretim
-            },
-            {
-                MonoBasarSayarBarkodOlustur : $rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur
-            },
-            {
-                MonoUretimDashboard : $rootScope.GeneralParamList.MonoUretimDashboard
+                GunokUretimDashboard : $rootScope.GeneralParamList.GunokUretimDashboard
             },
             // Menü Yönetim
             {
-                MonoKullaniciAyarlari : $rootScope.GeneralParamList.MonoKullaniciAyarlari
+                GunokKullaniciAyarlari : $rootScope.GeneralParamList.GunokKullaniciAyarlari
             },
             {
-                MonoKullaniciEkle : $rootScope.GeneralParamList.MonoKullaniciEkle
+                GunokKullaniciEkle : $rootScope.GeneralParamList.GunokKullaniciEkle
             },
             {
-                MonoUretimSilme : $rootScope.GeneralParamList.MonoUretimSilme
-            },
-            // Menü Rapor
-            {
-                MonoDepoTransferRaporu : $rootScope.GeneralParamList.MonoDepoTransferRaporu
-            },
-            {
-                MonoStokSeviyeleriRaporu : $rootScope.GeneralParamList.MonoStokSeviyeleriRaporu
-            },
-            {
-                MonoStokDepoGirisCikisRaporu : $rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu
+                GunokUretimSilme : $rootScope.GeneralParamList.GunokUretimSilme
             },
             // Parametre
             {
@@ -329,22 +298,13 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["Password",$rootScope.GeneralParamList.Password,0,""],
             ["Kullanici",$scope.GeneralParamList.Account,0,""],
             // Menü
-            ["MonoMamulMalKabul",$rootScope.GeneralParamList.MonoMamulMalKabul,1,"Mamül Mal Kabul"],
-            ["MonoYariMamulMalKabul",$rootScope.GeneralParamList.MonoYariMamulMalKabul,1,"Yarı Mamül Mal Kabul"],
-            ["MonoBarkodEtiketBasimi",$rootScope.GeneralParamList.MonoBarkodEtiketBasimi,1,"Barkod Etiket Basımı"],
-            ["MonoKasaBarkodOlustur",$rootScope.GeneralParamList.MonoKasaBarkodOlustur,1,"Kasa Barkodu Oluştur"],
-            ["MonoFasonGiris",$rootScope.GeneralParamList.MonoFasonGiris,1,"Fason Giriş"],
-            ["MonoElektrikUretim",$rootScope.GeneralParamList.MonoElektrikUretim,1,"Elektrik Uretim"],
-            ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1,"Basar Sayar Barkod Oluştur"],
-            ["MonoUretimDashboard",$rootScope.GeneralParamList.MonoUretimDashboard,1,"Üretim Dashboard"],
+            ["GunokPlanlama",$rootScope.GeneralParamList.GunokPlanlama,1,"Planlama"],
+            ["GunokOperator",$rootScope.GeneralParamList.GunokOperator,1,"Operatör"],
+            ["GunokUretimDashboard",$rootScope.GeneralParamList.GunokUretimDashboard,1,"Uretim Dashboard"],
             // Menü Yönetim
-            ["MonoKullaniciAyarlari",$rootScope.GeneralParamList.MonoKullaniciAyarlari,2,"Kullanici Ayarları"],
-            ["MonoKullaniciEkle",$rootScope.GeneralParamList.MonoKullaniciEkle,2,"Kullanıcı Ekle"],
-            ["MonoUretimSilme",$rootScope.GeneralParamList.MonoUretimSilme,2,"Üretim Silme"],
-            // Menü Rapor
-            ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"Depo Transfer Raporu"],
-            ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"Stok Seviyeleri Raporu"],
-            ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"Depo Giriş Çıkış Raporu"],
+            ["GunokKullaniciAyarlari",$rootScope.GeneralParamList.GunokKullaniciAyarlari,2,"Kullanici Ayarları"],
+            ["GunokKullaniciEkle",$rootScope.GeneralParamList.GunokKullaniciEkle,2,"Kullanıcı Ekle"],
+            ["GunokUretimSilme",$rootScope.GeneralParamList.GunokUretimSilme,2,"Üretim Silme"],
             // Parametre
             ["OperasyonKodu",$rootScope.GeneralParamList.OperasyonKodu,4,""],
             ["IsEmriOnayDurumu",$rootScope.GeneralParamList.IsEmriOnayDurumu,4,""],
@@ -380,11 +340,12 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
     
             if(IsThereAccount.length == 0)
             {
+                console.log($scope.InsertData)
                 for(let i = 0; i < $scope.InsertData.length; i++)
                 {
                     ParamInsert($scope.InsertData[i])
                 }
-                $state.go("main.MonoKullaniciAyarlari")
+                $state.go("main.GunokKullaniciAyarlari")
             }
             else
             {
@@ -406,7 +367,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
         let TmpQuery = 
         {
             db: "MikroDB_V16",
-            query : "SELECT * FROM TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE",
+            query : "SELECT * FROM TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE AND TAG = 'Password' ",
             param : ['TYPE'],
             type :  ['int'],
             value : ['0']
@@ -429,22 +390,13 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 Account : "",
                 Password : "",
                 // Menü
-                MonoMamulMalKabul : false,
-                MonoYariMamulMalKabul : false,
-                MonoBarkodEtiketBasimi : false,
-                MonoKasaBarkodOlustur : false,
-                MonoFasonGiris : false,
-                MonoElektrikUretim : false,
-                MonoBasarSayarBarkodOlustur : false,
-                MonoUretimDashboard : false,
+                GunokPlanlama : false,
+                GunokOperator : false,
+                GunokUretimDashboard : false,
                 // Menü Yönetim
-                MonoKullaniciAyarlari : false,
-                MonoKullaniciEkle : false,
-                MonoUretimSilme : false,
-                // Menü Rapor
-                MonoDepoTransferRaporu : false,
-                MonoStokSeviyeleriRaporu : false,
-                MonoStokDepoGirisCikisRaporu : false,
+                GunokKullaniciAyarlari : false,
+                GunokKullaniciEkle : false,
+                GunokUretimSilme : false,
                 // Parametre
                 OperasyonKodu : "",
                 IsEmriOnayDurumu : "",
@@ -503,7 +455,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             {
                 datasource : 
                 {
-                    data :  [{name: "TÜMÜ", special: "TUMU"},{name: "ONAYLI", special: "true"},{name: "ONAYSIZ", special: "false"}] 
+                    data :  [{name: "ONAYLI", special: "true"},{name: "ONAYSIZ", special: "false"}] 
                 },
                 key : "special",
                 value : "name",
