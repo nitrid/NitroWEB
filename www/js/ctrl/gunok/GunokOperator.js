@@ -13,7 +13,20 @@ function GunokOperator($scope,srv,$rootScope,$filter)
         $scope.EtkSira = 1;
 
         $scope.SelectedRow = [];
+        $scope.EtiketList = [];
         $scope.IsEmriDetay = {};
+        $scope.Data = {};
+        $scope.Data.UMP = [];
+        $scope.Data.URP = [];
+        $scope.Data.DATA = [];
+
+        $scope.SthGSeri = $rootScope.GeneralParamList.UrunGirisSeri;
+        $scope.SthCSeri = $rootScope.GeneralParamList.UrunCikisSeri;
+        $scope.OpSeri = $rootScope.GeneralParamList.OperasyonSeri;
+
+        $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
+        $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
+        $scope.OpSira = await MaxOpSira($scope.OpSeri)
 
         $scope.CmbIsMerkezleri =
         {
@@ -26,9 +39,9 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             },
             key : "KODU",
             value : "ACIKLAMA",
-            defaultVal : "TUMU",
+            defaultVal : $rootScope.GeneralParamList.OperasyonKodu,
             selectionMode : "key",
-            return : 1,
+            return : $rootScope.GeneralParamList.OperasyonKodu,
             onSelected : async function(pSelected)
             {
                 await GetPlanlananIsEmrileri(pSelected);
@@ -51,7 +64,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             }
         }
 
-        await GetPlanlananIsEmrileri('TUMU');
+        await GetPlanlananIsEmrileri($rootScope.GeneralParamList.OperasyonKodu);
     }
     async function GetPlanlananIsEmrileri(pKod)
     {
@@ -117,7 +130,8 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             dataSource: pData,
             columnMinWidth: 200,
             showBorders: true,
-            sorting: {
+            sorting: 
+            {
                 mode: "none"
             },
             showBorders: true,
@@ -236,44 +250,120 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                     e.rowElement.css("background-color", "#eea29a"); //KAPANMIŞ İŞ EMİRLERİ
                 }
             },
-            onSelectionChanged: function (selectedItems) 
+            onSelectionChanged: async function (selectedItems) 
             {
-                $scope.SelectedRow = selectedItems.selectedRowsData[0];
+                $scope.SelectedRow = selectedItems.selectedRowsData;
+
+                $scope.Data.UMP = await UretimMalzemePlanGetir(selectedItems.selectedRowsData[0].KODU);
+                $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU);
             }
         }).dxDataGrid("instance");
     }
-    async function EtiketInsert()
+    function MaxSthSira(pSeri,pEvrakTip)
     {
-        let InsertData = 
-        [
-            $rootScope.GeneralParamList.MikroId,                                         //CREATE_USER
-            $rootScope.GeneralParamList.MikroId,                                         //LASTUP_USER
-            '',                                                                          //SPECIAL1
-            $scope.EtkSeri,                                                              //SERI
-            $scope.EtkSira,                                                              //SIRA
-            '',                                                                          //AÇIKLAMA
-            '',                                                                          //BELGENO
-            0,                                                                           //ETİKETTİP
-            0,                                                                           //BASİMTİPİ
-            $scope.UrunAdet,                                                             //BASİMADET
-            1,                                                                           //DEPONO
-            $scope.SelectedRow.STOKKODU,                                                 //STOKKODU
-            1,                                                                           //RENKKODU
-            1,                                                                           //BEDENKODU
-            $scope.SelectedRow.BARKOD + ($scope.UrunAdet).toString().padStart(5, '0'),   //BARKOD
-            $scope.BasimMiktar                                                           //BASILACAKMIKTAR
-        ]
-
-        let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
-
-        if(InsertControl == "")
+        return new Promise(async resolve => 
         {
+            let TmpData = await srv.Execute($scope.Firma,'MaxStokHarSira',[pSeri,pEvrakTip])
+            if(TmpData.length > 0)
+            {
+                resolve(TmpData[0].MAXEVRSIRA);
+                return;
+            }
+            resolve(1);
+            return;
+        })
+    }
+    function MaxOpSira(pSeri)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpData = await srv.Execute($scope.Firma,'MaxOperasyonSira',[pSeri])
+            if(TmpData.length > 0)
+            {
+                resolve(TmpData[0].MAXEVRSIRA);
+                return;
+            }
+            resolve(1);
+            return;
+        })
+    }
+    async function EtiketPrint(pData)
+    {
+        return new Promise(async resolve => 
+        {
+            for (let i = 0; i < $scope.BasimMiktar; i++) 
+            {
+                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $rootScope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(pData).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+                {
+                    console.log(pResult)
+                })
+            }
+       
             swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
-        }
-        else
+            resolve()
+        });
+    }
+    function UretimMalzemePlanGetir(pIsEmri)
+    {
+        return new Promise(async resolve => 
         {
-            swal("İşlem Başarısız!", "Etiket Yazdırma İşleminde Hata Oluştu.",icon="error");
-        }
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT " +
+                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = upl_kodu AND bar_birimpntr = 1),'') AS BARKOD, " +
+                        "upl_kodu AS KODU, " +
+                        "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = upl_kodu),'') AS ADI, " +
+                        "upl_isemri AS ISEMRI, " +
+                        "CASE WHEN upl_uretim_tuket = 1 THEN 'ÜRETİM' ELSE 'TÜKETİM' END AS TIP, " +
+                        "upl_uretim_tuket AS URETTUKET, " +
+                        "upl_depno AS DEPO, " +
+                        "dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) AS DEPOMIKTAR, " +
+                        "upl_miktar AS PMIKTAR, " +
+                        "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),0) AS BMIKTAR " +
+                        "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri",
+                param : ['upl_isemri:string|50'],
+                value : [pIsEmri]
+            }
+
+            let TmpData = await srv.Execute(TmpQuery)
+
+            if(typeof TmpData == 'undefined')
+            {
+                TmpData = []
+            }
+
+            resolve(TmpData);
+        });
+    }
+    function UretimRotaPlanGetir(pIsEmri)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT " +
+                        "RtP_Guid AS REC, " +
+                        "RtP_IsEmriKodu AS ISEMRI, " +
+                        "RtP_OperasyonSafhaNo AS SAFHANO, " +
+                        "RtP_OperasyonKodu AS OPERASYONKODU, " +
+                        "RtP_PlanlananIsMerkezi AS ISMERKEZI, " +
+                        "RtP_UrunKodu AS URUNKODU, " +
+                        "ROUND(CAST((RtP_PlanlananSure / RtP_PlanlananMiktar) AS float),2) AS SURE " +
+                        "FROM URETIM_ROTA_PLANLARI WHERE RtP_IsEmriKodu = @RtP_IsEmriKodu",
+                param : ['RtP_IsEmriKodu:string|50'],
+                value : [pIsEmri]
+            }
+
+            let TmpData = await srv.Execute(TmpQuery)
+
+            if (typeof TmpData == 'undefined')
+            {
+                TmpData = []
+            }
+            resolve(TmpData);
+        });
     }
     $scope.BtnDurdur = async function()
     {
@@ -297,8 +387,11 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 swal("Uyarı", "Seçmiş Olduğunuz Satırın Barkod Bilgisi Bulunamadı.",icon="warning");
                 return;
             }
-            await EtiketInsert();
-            $('#MdlEtiketYazdir').modal('hide')
+
+            $scope.SelectedRow.UrunAdet = $scope.UrunAdet;
+            await EtiketPrint($scope.SelectedRow);
+            
+            $('#MdlEtiketYazdir').modal('hide');
         }
     }
 }

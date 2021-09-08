@@ -50,52 +50,60 @@
                 <div class="card-header bg-transparent border-dark py-1 fw-bolder">Parametre Ayarları</div>
                 <div class="card-body text-dark py-2">
                     <div class="row py-1 d-flex align-items-center">
-                        <div class="col-7">
+                        <div class="col-6">
+                            <span class="text-md-right" >Tasarım Yolu :</span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.TasarimYolu">
+                        </div>
+                        <div class="col-6">
+                            <span class="text-md-right" >Tasarım Listesi :</span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <div class="form-group">
+                                <combobox option="CmbTasarimList" ng-model="GeneralParamList.Tasarim"></combobox>
+                            </div>  
+                        </div>
+                        <div class="col-6">
                             <span class="text-md-right" >İstasyon Kodu:</span>
                         </div>
-                        <div class="col-5 mb-1">
+                        <div class="col-6 mb-1">
                             <div class="form-group">
                                 <combobox option="CmbOperasyon" ng-model="GeneralParamList.OperasyonKodu"></combobox>
                             </div>  
                         </div>
-                        <div class="col-7">
+                        <div class="col-6">
                             <span class="text-md-right" >İş Emri Onay Durum :</span>
                         </div>
-                        <div class="col-5 mb-1">
+                        <div class="col-6 mb-1">
                             <div class="form-group">
                                 <combobox option="CmbIsEmriOnayDurumu" ng-model="GeneralParamList.IsEmriOnayDurumu"></combobox>
                             </div>  
                         </div>
-                        <div class="col-7">
+                        <div class="col-6">
                             <span class="text-md-right" >Kapanan İş Emirlerini Göster :</span>
                         </div>
-                        <div class="col-5 mb-1">
+                        <div class="col-6 mb-1">
                             <div class="form-group">
                                 <combobox option="CmbKapananIsEmri" ng-model="GeneralParamList.KapananIsEmri"></combobox>
                             </div>  
                         </div>
-                        <div class="col-7">
-                            <span class="text-md-right" >Barkod Etiket Seri:</span>
-                        </div>
-                        <div class="col-5 mb-1">
-                            <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BarkodEtiketSeri">
-                        </div>
-                        <div class="col-7">
+                        <div class="col-6">
                             <span class="text-md-right" >Operasyon Seri:</span>
                         </div>
-                        <div class="col-5 mb-1">
+                        <div class="col-6 mb-1">
                             <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.OperasyonSeri">
                         </div>
-                        <div class="col-7">
+                        <div class="col-6">
                             <span class="text-md-right" >Ürün Çıkış Seri:</span>
                         </div>
-                        <div class="col-5 mb-1">
+                        <div class="col-6 mb-1">
                             <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.UrunCikisSeri">
                         </div>
-                        <div class="col-7">
+                        <div class="col-6">
                             <span class="text-md-right" >Ürün Giriş Seri:</span>
                         </div>
-                        <div class="col-5 mb-1">
+                        <div class="col-6 mb-1">
                             <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.UrunGirisSeri">
                         </div>
                     </div>

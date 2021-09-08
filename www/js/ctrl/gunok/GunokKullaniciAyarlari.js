@@ -82,7 +82,8 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 OperasyonKodu : srv.GetParamValue($scope.Data,"OperasyonKodu"),
                 IsEmriOnayDurumu : srv.GetParamValue($scope.Data,"IsEmriOnayDurumu"),
                 KapananIsEmri : srv.GetParamValue($scope.Data,"KapananIsEmri"),
-                BarkodEtiketSeri : srv.GetParamValue($scope.Data,"BarkodEtiketSeri"),
+                TasarimYolu : srv.GetParamValue($scope.Data,"TasarimYolu"),
+                Tasarim : srv.GetParamValue($scope.Data,"Tasarim"),
                 OperasyonSeri : srv.GetParamValue($scope.Data,"OperasyonSeri"),
                 UrunCikisSeri : srv.GetParamValue($scope.Data,"UrunCikisSeri"),
                 UrunGirisSeri : srv.GetParamValue($scope.Data,"UrunGirisSeri"),
@@ -99,7 +100,6 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 SatirBirlestir : srv.GetParamValue($scope.Data,"SatirBirlestir"),
             }
 
-            console.log($rootScope.GeneralParamList)
             resolve()
         });
     }
@@ -128,6 +128,22 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             $scope.Firma
         ]
         let InsertControl = await srv.Execute($scope.Firma,'InsertParam',InsertData);
+    }
+    function GetTasarimList()
+    {
+        return new Promise(async resolve => 
+        {
+            let TasarimList = [];
+
+            srv.Emit('DesingList',"",(pResult)=>
+            {
+                for (let i = 0; i < pResult.length; i++) 
+                {
+                    TasarimList.push({key : "key",value : pResult[i]})
+                }
+            })
+            resolve(TasarimList);
+        });
     }
     $scope.EditUser = async function(pKullanici)
     {
@@ -199,6 +215,22 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 $rootScope.GeneralParamList.KapananIsEmri = pSelected
             }
         }
+        $scope.CmbTasarimList =
+        {
+            datasource : 
+            {
+                data :  await GetTasarimList()
+            },
+            key : "key",
+            value : "value",
+            defaultVal : $rootScope.GeneralParamList.Tasarim,
+            selectionMode : "value",
+            return : $rootScope.GeneralParamList.Tasarim,
+            onSelected : function(pSelected)
+            {
+                $rootScope.GeneralParamList.Tasarim = pSelected
+            }
+        }
 
         $("#TbUserEdit").addClass('show active');
         $("#TbUserList").removeClass('show active');
@@ -241,7 +273,19 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             // Parametre
             {
-                BarkodEtiketSeri : $rootScope.GeneralParamList.BarkodEtiketSeri
+                OperasyonKodu : $rootScope.GeneralParamList.OperasyonKodu
+            },
+            {
+                IsEmriOnayDurumu : $rootScope.GeneralParamList.IsEmriOnayDurumu
+            },
+            {
+                KapananIsEmri : $rootScope.GeneralParamList.KapananIsEmri
+            },
+            {
+                TasarimYolu : $rootScope.GeneralParamList.TasarimYolu
+            },
+            {
+                Tasarim : $rootScope.GeneralParamList.Tasarim
             },
             {
                 OperasyonSeri : $rootScope.GeneralParamList.OperasyonSeri
@@ -309,7 +353,8 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["OperasyonKodu",$rootScope.GeneralParamList.OperasyonKodu,4,""],
             ["IsEmriOnayDurumu",$rootScope.GeneralParamList.IsEmriOnayDurumu,4,""],
             ["KapananIsEmri",$rootScope.GeneralParamList.KapananIsEmri,4,""],
-            ["BarkodEtiketSeri",$rootScope.GeneralParamList.BarkodEtiketSeri,4,""],
+            ["TasarimYolu",$rootScope.GeneralParamList.TasarimYolu,4,""],
+            ["Tasarim",$rootScope.GeneralParamList.Tasarim,4,""],
             ["OperasyonSeri",$rootScope.GeneralParamList.OperasyonSeri,4,""],
             ["UrunCikisSeri",$rootScope.GeneralParamList.UrunCikisSeri,4,""],
             ["UrunGirisSeri",$rootScope.GeneralParamList.UrunGirisSeri,4,""],
@@ -340,7 +385,6 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
     
             if(IsThereAccount.length == 0)
             {
-                console.log($scope.InsertData)
                 for(let i = 0; i < $scope.InsertData.length; i++)
                 {
                     ParamInsert($scope.InsertData[i])
@@ -363,7 +407,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
 
         $rootScope.GeneralParamList = {};
-
+      
         let TmpQuery = 
         {
             db: "MikroDB_V16",
@@ -401,7 +445,8 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 OperasyonKodu : "",
                 IsEmriOnayDurumu : "",
                 KapananIsEmri : "",
-                BarkodEtiketSeri : "",
+                TasarimYolu : "",
+                Tasarim : "",
                 OperasyonSeri : "",
                 UrunCikisSeri : "",
                 UrunGirisSeri : "",
@@ -481,6 +526,22 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 onSelected : function(pSelected)
                 {
                     $rootScope.GeneralParamList.KapananIsEmri = pSelected
+                }
+            }
+            $scope.CmbTasarimList =
+            {
+                datasource : 
+                {
+                    data :  await GetTasarimList()
+                },
+                key : "key",
+                value : "value",
+                defaultVal : $rootScope.GeneralParamList.Tasarim,
+                selectionMode : "key",
+                return : $rootScope.GeneralParamList.Tasarim,
+                onSelected : function(pSelected)
+                {
+                    $rootScope.GeneralParamList.Tasarim = pSelected
                 }
             }
         }

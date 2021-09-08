@@ -36,7 +36,7 @@ angular.module('app.srv', []).service('srv',function($rootScope)
         });
     }
     this.Emit = function(eventName,data,callback)
-    {        
+    {      
         _Socket.emit(eventName, data, function () 
         {
             var args = arguments;

@@ -1,6 +1,7 @@
 let fs = require('fs');
 let _sql = require("./sqllib");
 let lic = require('./license');
+let devprint = new (require('../devprint/devprint'));
 
 let msql;
 let tsql;
@@ -247,6 +248,20 @@ function dbengine(config,io)
                     fn(true);
                 else
                     fn(false);
+            });
+        });
+        socket.on("DevPrint",function(pParam,fn)
+        {
+            devprint.Print(pParam,function(pData)
+            {
+                fn(pData)
+            });
+        });
+        socket.on("DesingList",function(pParam,fn)
+        {
+            fs.readdir("./printdesing/Desing/", (err, files) => 
+            {
+                fn(files)
             });
         });
     });
