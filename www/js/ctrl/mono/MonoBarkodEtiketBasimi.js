@@ -576,6 +576,10 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         {
             $scope.BteBarkodText =  ($scope.BteBarkod.txt +$scope.TxtMiktar.toString().padStart(5, '0'));
         }
+        else
+        {
+            $scope.BteBarkodText =  $scope.BteBarkod.txt 
+        }
 
         if ($scope.TxtLot == "")
         {
@@ -593,6 +597,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
                             $scope.BteBarkodText = TmpBarkod;
                         }
                     }
+                    else
+                    
                     swal("Başarılı", "Parti lot Ve Barkod Oluşturuldu.",icon="success");
                 }
             }

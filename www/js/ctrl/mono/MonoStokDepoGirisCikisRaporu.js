@@ -68,7 +68,7 @@ function MonoStokDepoGirisCikisRaporu($scope, srv, $rootScope)
             {
                 dataSource: pData,
                 allowColumnResizing: true,
-                height: 1000,
+                height: 600,
                 width: "100%",
                 columnWidth: 100,
                 columns :
