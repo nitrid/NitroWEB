@@ -87,6 +87,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
                         "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AS STOKKODU, " +
+                        "ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AS MIKTAR, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'')),'') AS STOKADI " +
                         "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%F%' "
             },
@@ -103,11 +104,15 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 },
                 {
                     dataField: "STOKKODU",
-                    width: 500
+                    width: 400
                 },
                 {
                     dataField: "STOKADI",
-                    width: 500
+                    width: 400
+                },
+                {
+                    dataField: "MIKTAR",
+                    width: 200
                 },
                 {
                     dataField: "BARKOD",
@@ -116,6 +121,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             ],
             onSelected : async function(pData)
             {
+                $scope.Miktar = pData.MIKTAR
                 $scope.Data.UMP = await UretimMalzemePlanGetir(pData.KODU);
                     
                 if($scope.Data.UMP.length > 0)
@@ -126,6 +132,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                         $scope.LblDepo = TmpDr[0].DEPOADI
                         $scope.DepoKod = TmpDr[0].DEPO
                         $scope.LblUrun = TmpDr[0].KODU
+                        
                     }
                 }
             }
@@ -730,6 +737,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
 
         $scope.LblKasaDara = 0;
         $scope.TxtSpRefMiktar = 0;
+        $scope.Miktar = 0;
         $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
         $scope.LblKantarMiktar = 0;

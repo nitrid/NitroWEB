@@ -143,7 +143,8 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
                     width: 500
                 },
                 {
-                    dataField: "BARKOD",
+                    title : "KALAN MIKTAR",
+                    dataField: "PLANMIKTAR",
                     width: 200
                 },  
             ],
@@ -1235,7 +1236,6 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
     }
     $scope.BtnSonKoKoli = async function()
     {
-        console.log($scope.SthGSira)
         let TmpQuery = 
             {
                 db: "{M}." + $scope.Firma,
@@ -1414,6 +1414,28 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
 
             }
             await srv.Execute(UpdateQuery)
+    }
+    $scope.BtnIsEmriDetay = async function()
+    {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT  upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = upl_isemri and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR ," +
+            " upl_miktar AS ToplamMiktar, (SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = upl_isemri and ish_plan_sevkmiktar = 0) AS URETILEN  FROM URETIM_MALZEME_PLANLAMA" + 
+            " WHERE upl_isemri = @upl_isemri AND upl_uretim_tuket = 1", 
+            param : ['upl_isemri:string|50'],
+            value : [$scope.BteIsEmri.txt]
+        }
+        let Detay = await srv.Execute(TmpQuery)
+        if(Detay.length > 0)
+        {
+            swal("İş Emri Detayı", "Planlanan Miktar : " + Detay[0].ToplamMiktar +" \n Önceden Tamamlanmış Miktar "+ Detay[0].URETILEN + " \n Kalan Miktar : "+ Detay[0].PLANMIKTAR + " \n Koli İçi Kapasite " + $scope.Birim3 +   "  \n Kutu İçi Kapasite " + $scope.KontrolMiktar +  " ",icon="");
+        }
+        else
+        {
+            swal("Dikkat", "Detay Bukunamadı  .",icon="warning");
+        }
+
     }
 
 }

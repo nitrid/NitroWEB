@@ -59,30 +59,34 @@
                             <input type="number" min="1" class="form-control-custom form-control-sm" type="text" id="TxtBarkodKontrol"  ng-keypress = "TxtBarkodKontrolEvent($event)"  ng-model = "TxtBarkodKontrol">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-5 px-2">
+                    <div class="row py-0 mt-1 mb-1">
+                        <div class="col-4 px-2">
                             <p class="text-md-right my-0 py-1">Toplam Planlanan Miktar :</p>
                         </div>
-                        <div class="col-7">
+                        <div class="col-4">
                             <p class="text-md-left my-0 py-1">{{ToplamPlanMiktar}}</p>
+                        </div>
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-warning" ng-click = "BtnIsEmriDetay()">İş Emri Detayları</button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-5 px-2">
+                        <div class="col-4 px-2">
                             <p class="text-md-right my-0 py-1">Toplam Eklenen Miktar :</p>
                         </div>
-                        <div class="col-7 ">
+                        <div class="col-4 ">
                             <p class="text-md-left my-0 py-1">{{ToplamBarkodKontrolMiktar}}</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-5 px-2">
+                        <div class="col-4 px-2">
                             <p class="text-md-right my-0 py-1">Koli İçi Eklenen :</p>
                         </div>
-                        <div class="col-7 ">
+                        <div class="col-4 ">
                             <p class="text-md-left my-0 py-1">{{KutuKontrolMiktar}}</p>
                         </div>
                     </div>
+                    
                     <div class="row py-0 mt-3 mb-1">
                         <div class="col-4 d-grid">
                             <button type="button" class="btn btn-success" ng-click = "BtnEkleVeYazdir()">Ekle B. Bas</button>

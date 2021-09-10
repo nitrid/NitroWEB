@@ -275,7 +275,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "BASAR SAYAR BARKOD OLUŞTUR"
+        $rootScope.PageName = "SAYAR TARTAR BARKOD OLUŞTUR"
 
         $scope.EtkSeri = $rootScope.GeneralParamList.BasarSayarSeri;
         $scope.EtkSira = 1;

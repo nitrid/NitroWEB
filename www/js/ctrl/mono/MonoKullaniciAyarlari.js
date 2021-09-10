@@ -423,7 +423,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoKasaBarkodOlustur",$rootScope.GeneralParamList.MonoKasaBarkodOlustur,1,"Kasa Barkodu Oluştur"],
             ["MonoFasonGiris",$rootScope.GeneralParamList.MonoFasonGiris,1,"Fason Giriş"],
             ["MonoElektrikUretim",$rootScope.GeneralParamList.MonoElektrikUretim,1,"Elektrik Uretim"],
-            ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1,"Basar Sayar Barkod Oluştur"],
+            ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1," Sayar Tartar Barkod Oluştur"],
             ["MonoUretimDashboard",$rootScope.GeneralParamList.MonoUretimDashboard,1,"Üretim Dashboard"],
             // Menü Yönetim
             ["MonoKullaniciAyarlari",$rootScope.GeneralParamList.MonoKullaniciAyarlari,2,"Kullanici Ayarları"],
