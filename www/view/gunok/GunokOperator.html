@@ -4,8 +4,8 @@
         <div class="card-body text-dark py-2">
             <div class="row py-1">
               <div class="col-4 d-grid"><combobox option="CmbIsMerkezleri" ></combobox></div>
-              <div class="col-2 d-grid"><button type="button" class="btn btn-warning fw-bold">BAŞLAT</button></div>
-              <div class="col-2 d-grid"><button type="button" class="btn btn-success fw-bold">ÜRÜN GİRİŞ</button></div>
+              <div class="col-2 d-grid"><button type="button" class="btn btn-warning fw-bold" ng-click = "BtnBaslat()">BAŞLAT</button></div>
+              <div class="col-2 d-grid"><button type="button" class="btn btn-success fw-bold" ng-click = "BtnUrunGiris(0)">ÜRÜN GİRİŞ</button></div>
               <div class="col-2 d-grid"><button type="button" class="btn btn-danger fw-bold" ng-click = "BtnDurdur()">DURDUR</button></div>
               <div class="col-2 d-grid"><button type="button" class="btn btn-primary fw-bold" ng-click = "BtnEtiketYazdir(0)">ETİKET YAZDIR</button></div>
             </div>
@@ -81,6 +81,31 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kaydet</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ÜRÜN GİRİŞ MODAL -->
+  <div class="modal fade" id="MdlUrunGiris" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title h4" id="Detay">Ürün Miktar Girişi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Miktar : </span>
+                <input type="number" min="1" ng-model = "MiktarGiris" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click = "BtnUrunGiris(1)">Onayla</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
         </div>
       </div>
     </div>

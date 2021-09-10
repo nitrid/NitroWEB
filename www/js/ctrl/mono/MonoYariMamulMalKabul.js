@@ -751,8 +751,6 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     }
     $scope.BtnEkle =  function()
     {
-
-       
         let TmpDrUret = $scope.Data.UMP.filter(x => x.URETTUKET == 1)
         let TmpDrTuket = $scope.Data.UMP.filter(x => x.URETTUKET == 0)
        

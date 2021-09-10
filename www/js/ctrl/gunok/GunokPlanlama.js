@@ -246,7 +246,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
-                        "TERP.ISEMRI_SIRA AS ISEMRISIRA, " +
                         "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
@@ -267,7 +266,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
                         "TERP.SPECIAL = 'ALTISEMRI' " +
-                        "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA),CONVERT(int,TERP.ISEMRI_SIRA) " ,
+                        "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) " ,
                         param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
                         value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
             }
@@ -429,7 +428,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                 mode: "none"
             },
             selection: {
-                mode: "multiple"
+                mode: "single"
             },
             showBorders: true,
             filterRow: 
@@ -515,14 +514,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                         }
                     },
                     {
-                        icon: "print",
-                        text: "ETİKES BAS",
-                        onClick: function (e) 
-                        {
-                            GetDetail(e.row.data)
-                        }
-                    },
-                    {
                         icon: "pdffile",
                         text: "PDF GOSTER",
                         onClick: function (e) 
@@ -534,12 +525,17 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             }],
             onSelectionChanged: function(selectedItems) 
             {
-                $scope.SelectedData = [];
-                for (let i = 0; i < selectedItems.selectedRowsData.length; i++) 
+                selectedItems.component.repaint();
+                $scope.SelectedData = selectedItems.selectedRowsData;
+              },
+            onCellPrepared: function(e) 
+            {
+                if (e.rowType == "data" && e.row.isSelected) 
                 {
-                    $scope.SelectedData.push(selectedItems.selectedRowsData[i]);
+                    e.cellElement.css("background-color", "#00d000");
                 }
             },
+   
         }).dxDataGrid("instance");
     }
     function PlanlananEmriGrid(pData)
@@ -647,11 +643,11 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
                     buttons: 
                     [ 
                         {
-                            icon: "print",
-                            text: "ETİKES BAS",
+                            icon: "file",
+                            text: "DETAYLAR",
                             onClick: function (e) 
                             {
-
+                                GetDetail(e.row.data)
                             }
                         },
                         {
@@ -688,37 +684,56 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
     {
         if($scope.SelectedData.length > 0)
         {
-            let infodata = [];
+            let InsertKontrol = await srv.Execute($scope.Firma,'IsEmriListesiInsert',[$scope.SelectedData[0].GUID,$scope.SelectedData[0].KODU,0,'','','ANAISEMRI']); //ANA İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
 
-            for (let i = 0; i < $scope.SelectedData.length; i++) 
+            if(InsertKontrol == "")
             {
-                let IsEmriSira = 0;
-
-                let BagliIsEmriList = await srv.Execute($scope.Firma,'BagliIsEmriGet',[$scope.SelectedData[i].KODU]); //ANA İŞ EMRİNE BAĞLI İŞ EMİRLERİ LİSTELENİYOR
-                await srv.Execute($scope.Firma,'IsEmriListesiInsert',[$scope.SelectedData[i].GUID,$scope.SelectedData[i].KODU,0,0,'','','ANAISEMRI']); //ANA İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
-
-                if(BagliIsEmriList.length > 0)
+                let BagliIsEmriList = await srv.Execute($scope.Firma,'BagliIsEmriGet',[$scope.SelectedData[0].KODU]); //ANA İŞ EMRİNE BAĞLI İŞ EMİRLERİ ROTA BAZINDA LİSTELENİYOR
+                let BagliIsEmriGrup = Object.keys($filter('groupBy')(BagliIsEmriList, 'KODU')); //ALT İŞ EMİRLERİ GRUPLAMA İŞLEMİ YAPILIYOR (ALT İŞ EMİRLERİNDE ÇİFT KAYIT OLMASIN DİYE)
+    
+                if(BagliIsEmriGrup.length > 0)
                 {
-                    for (let x = 0; x < BagliIsEmriList.length; x++) 
+                    for (let i = 0; i < BagliIsEmriGrup.length; i++) 
                     {
-                        IsEmriSira = (await srv.Execute($scope.Firma,'MaxIsEmriSira',[]))[0].MAXISEMRISIRA; //ALT İŞ EMRİNE BAĞLI MAKSİMUM SIRA GETİRİLİYOR
-                        let TmpData = await srv.Execute($scope.Firma,'IsEmriListesiInsert',[BagliIsEmriList[x].GUID,BagliIsEmriList[x].KODU,IsEmriSira,0,$scope.SelectedData[i].KODU,BagliIsEmriList[x].OPKODU,'ALTISEMRI']); //ALT İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
-                        
-                        if(TmpData.length == 0)
+                        let BasliAltIsEmri = await srv.Execute($scope.Firma,'BagliIsEmriGet',[BagliIsEmriGrup[i]]); //ALT İŞ EMRİNE BAĞLI İŞ EMİRLERİ LİSTELENİYOR
+    
+                        for (let x = 0; x < BasliAltIsEmri.length; x++) 
                         {
-                            infodata.push(BagliIsEmriList[x].KODU)
+                            BagliIsEmriList.push(BasliAltIsEmri[x]); //TUM İŞ EMİRLERİ TEK DİZİYE DOLDURULUYOR
+                        } 
+                    }
+    
+                    for (let i = 0; i < BagliIsEmriList.length; i++) 
+                    {
+                        let InsertKontrol = await srv.Execute($scope.Firma,'IsEmriListesiInsert',[BagliIsEmriList[i].GUID,BagliIsEmriList[i].KODU,0,BagliIsEmriList[i].BAGLIISEMRI,BagliIsEmriList[i].OPKODU,'ALTISEMRI']); //ALT İŞ EMİRLERİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
+                        if(InsertKontrol != "")
+                        {
+                            for (let x = 0; x < BagliIsEmriList.length; x++) 
+                            {
+                                await srv.Execute($scope.Firma,'DeleteIsEmriSira',[BagliIsEmriList[x].ISEMRI_GUID]); //EĞER İNSERT İŞLEMİNDE BİR SORUN VARSA İNSERT EDİLEN TÜM KAYITLAR SİLİNİYOR.
+                            }
+                            await srv.Execute($scope.Firma,'DeleteIsEmriSira',[$scope.SelectedData[0].GUID]);
+
+                            swal("Başarısız","İş Emri Planlama İşleminde Hata Oluştu Tekrar Deneyiniz.",icon="error");
+                            return;
                         }
                     }
                 }
-            }
 
-            swal("Başarılı","İş Emri No : " + infodata + "\n" +"Planlama İşlemi Gerçekleştirildi.",icon="success");
-            GetIsEmriMiktar();
-            $scope.BtnTab(1,'TUMU')
+                swal("Başarılı",BagliIsEmriList.length + " Adet Rota Planlama İşlemi Başarıyla Gerçekleşti.",icon="success");
+                GetIsEmriMiktar();
+                $scope.BtnTab(1,'TUMU')
+            }
+            else
+            {
+                await srv.Execute($scope.Firma,'DeleteIsEmriSira',[$scope.SelectedData[0].GUID]);
+                swal("Başarısız","İş Emri Planlama İşleminde Hata Oluştu Tekrar Deneyiniz.",icon="error");
+                return;
+            }
         }
         else
         {
-            swal("Dikkat", "İş Emri Planlama İşlemi İçin Listeden Seçim Yapınız.",icon="warning");
+            swal("Uyarı","Lütfen Listeden Seçim Yapınız.",icon="warning");
         }
     }
     $scope.BtnTab = async function(pType,pKod)
