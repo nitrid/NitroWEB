@@ -2147,6 +2147,8 @@ var Query =
                 ",[ISEMRI_BAGLI_IS_EMRI] " +
                 ",[ISEMRI_ISTASYON_KOD] " +
                 ",[SPECIAL] " +
+                ",[ISEMRI_BAS_TARIH] " +
+                ",[ISEMRI_BIT_TARIH] " +
                 " ) VALUES ( " +
                 "@ISEMRI_GUID                       --<ISEMRI_GUID, uniqueidentifier,> \n " +
                 ",@ISEMRI_KOD                       --<ISEMRI_KOD, nvarchar(50),> \n " +
@@ -2154,6 +2156,8 @@ var Query =
                 ",@ISEMRI_BAGLI_IS_EMRI             --<ISEMRI_BAGLI_IS_EMRI, nvarchar(50),> \n " +
                 ",@ISEMRI_ISTASYON_KOD              --<ISEMRI_ISTASYON_KOD, nvarchar(50),> \n " +
                 ",@SPECIAL                          --<SPECIAL, nvarchar(50),> \n " +
+                ",'1997-02-24 00:00:00.000'         --<ISEMRI_BAS_TARIH, datetime,> \n " +
+                ",'1997-02-24 00:00:00.000'         --<ISEMRI_BIT_TARIH, datetime,> \n " +
                 " )",
         param :['ISEMRI_GUID:string|50','ISEMRI_KOD:string|50','ISEMRI_ISTASYON_SIRA:string|50','ISEMRI_BAGLI_IS_EMRI:string|50','ISEMRI_ISTASYON_KOD:string|50','SPECIAL:string|50']
     },
@@ -2187,5 +2191,10 @@ var Query =
     {
         query : "UPDATE ISEMIRLERI SET is_lastup_date = GETDATE(),is_Emri_AktiflesmeTarihi = CONVERT(nvarchar,GETDATE(),102),is_EmriDurumu = 1 WHERE is_Guid = @is_Guid",
         param : ['is_Guid:string|50']
+    },
+    UpdateIsEmriDate : 
+    {
+        query : "UPDATE MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+        param : ['ISEMRI_BAS_TARIH:datetime','ISEMRI_BIT_TARIH:datetime','ISEMRI_GUID:string|50','ISEMRI_ISTASYON_KOD:string|25']
     }
 };

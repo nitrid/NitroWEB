@@ -736,9 +736,10 @@ function GunokOperator($scope,srv,$rootScope,$filter)
               {
                 if (willDelete) 
                 {
-                    await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]);
+                    console.log(moment(new Date()).format("DD.MM.YYYY HH:mm:ss"))
+                    await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]); 
+                    await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
                     await GetPlanlananIsEmrileri($rootScope.GeneralParamList.OperasyonKodu,"#FFFF00");
-
                   swal("Başarılı! İş Emri Başlatıldı.", 
                   {
                     icon: "success",
@@ -787,10 +788,10 @@ function GunokOperator($scope,srv,$rootScope,$filter)
 
             for (let i = 0; i < TmpDrUret.length; i++) 
             {
-                await InsertUrunGirisCikis(0,TmpDrUret[i],$rootScope.GeneralParamList.UrunGirisSeri,$scope.SthGSira)
-                await InsertOperasyonKapama(TmpDrUret[i],$rootScope.GeneralParamList.OperasyonSeri,$scope.OpSira)
-                await UpdateRotaPlani(TmpDrUret[i].ROTAREC, TmpDrUret[i].MIKTAR, TmpDrUret[i].SURE)
-                await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true)
+                await InsertUrunGirisCikis(0,TmpDrUret[i],$rootScope.GeneralParamList.UrunGirisSeri,$scope.SthGSira) // edilmeyecek
+                await InsertOperasyonKapama(TmpDrUret[i],$rootScope.GeneralParamList.OperasyonSeri,$scope.OpSira) // puch 
+                await UpdateRotaPlani(TmpDrUret[i].ROTAREC, TmpDrUret[i].MIKTAR, TmpDrUret[i].SURE)             //
+                await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true) // edilmeyecek
             }
             for (let i = 0; i < TmpDrTuket.length; i++) 
             {
