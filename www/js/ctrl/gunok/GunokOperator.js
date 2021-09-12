@@ -81,6 +81,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
                         "is_EmriDurumu AS DURUM, " +
+                        "TERP.ISEMRI_STATUS AS ISEMRISTATUS, " +
                         "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " +
                         "ROTA.RtP_PlanlananMiktar AS PLANLANANROTAMIKTAR, " +
@@ -102,7 +103,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                         "(SELECT sto_cins FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu) = 3 AND " +
                         "(ROTA.RtP_PlanlananMiktar - ROTA.RtP_TamamlananMiktar) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
-                        "ISM.is_EmriDurumu IN(0,1) AND " +
+                        "TERP.ISEMRI_STATUS IN(0,1) AND " +
                         "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
                         "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl AND  " +
@@ -239,15 +240,15 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             },
             onRowPrepared(e) 
             {  
-                if (e.rowType == 'data' && e.data.DURUM == 0)  
+                if (e.rowType == 'data' && e.data.ISEMRISTATUS == 0)  
                 {  
                     e.rowElement.css("background-color", "#87bdd8"); //PLANLANAN İŞ EMİRLERİ
                 }
-                else if(e.rowType == 'data'  && e.data.DURUM == 1)
+                else if(e.rowType == 'data'  && e.data.ISEMRISTATUS == 1)
                 {
                     e.rowElement.css("background-color", "#FFFF00"); //AKTİF İŞ EMİRLERİ
                 }
-                else if(e.rowType == 'data' && e.data.DURUM == 2)
+                else if(e.rowType == 'data' && e.data.ISEMRISTATUS == 2)
                 {
                     e.rowElement.css("background-color", "#eea29a"); //KAPANMIŞ İŞ EMİRLERİ
                 }
@@ -256,7 +257,6 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             {
                 $scope.SelectedRow = selectedItems.selectedRowsData;
                 $scope.Data.UMP = await UretimMalzemePlanGetir(selectedItems.selectedRowsData[0].KODU);
-                console.log($scope.Data.UMP)
                 $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU,selectedItems.selectedRowsData[0].OPERASYONKODU);
             }
         }).dxDataGrid("instance");
@@ -401,7 +401,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             TmpData.ISEMRI = TmpDrUret[i].ISEMRI;
             TmpData.KODU = TmpDrUret[i].KODU;
             TmpData.ADI = TmpDrUret[i].ADI;
-            TmpData.MIKTAR = parseInt($scope.MiktarGiris);
+            TmpData.MIKTAR = parseInt(TmpDrUret[i].BMIKTAR * $scope.MiktarGiris);
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
             TmpData.DEPO = TmpDrUret[i].DEPO;
 
@@ -442,7 +442,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             TmpData.ISEMRI = TmpDrTuket[i].ISEMRI;
             TmpData.KODU = TmpDrTuket[i].KODU;
             TmpData.ADI = TmpDrTuket[i].ADI;
-            TmpData.MIKTAR = parseInt($scope.MiktarGiris);
+            TmpData.MIKTAR = parseInt(TmpDrTuket[i].BMIKTAR * $scope.MiktarGiris);
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
             TmpData.DEPO = TmpDrTuket[i].DEPO;
 
@@ -592,9 +592,12 @@ function GunokOperator($scope,srv,$rootScope,$filter)
         return new Promise(async resolve => 
         {
             let TmpSure = parseInt(pDr.SURE);
+            // let TmpBasTarih = moment(new Date()).add(TmpSure * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
+            // let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
+            
+            let TmpBasTarih = moment((await srv.Execute($scope.Firma,'GetIsEmriDate',[pDr.ISEMRI,pDr.OPERASYONKODU]))[0].DATE).format("DD.MM.YYYY HH:mm:ss")
             let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
-            let TmpBasTarih = moment(new Date()).add(TmpSure * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
-
+            
             let TmpInsertData =
             [
                 $scope.Param.MikroId,
@@ -667,11 +670,11 @@ function GunokOperator($scope,srv,$rootScope,$filter)
 
             if(pUret)
             {
-                TmpUpdateQuery = "UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_uret_miktar = ish_uret_miktar + @miktar WHERE ish_isemri = @ish_isemri AND ish_stokhizm_gid_kod = @ish_stokhizm_gid_kod"
+                TmpUpdateQuery = "UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_lastup_date = GETDATE(),ish_uret_miktar = ish_uret_miktar + @miktar WHERE ish_isemri = @ish_isemri AND ish_stokhizm_gid_kod = @ish_stokhizm_gid_kod"
             }
             else
             {
-                TmpUpdateQuery = "UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_sevk_miktar = ish_sevk_miktar + @miktar WHERE ish_isemri = @ish_isemri AND ish_stokhizm_gid_kod = @ish_stokhizm_gid_kod"
+                TmpUpdateQuery = "UPDATE ISEMRI_MALZEME_DURUMLARI SET ish_lastup_date = GETDATE(),ish_sevk_miktar = ish_sevk_miktar + @miktar WHERE ish_isemri = @ish_isemri AND ish_stokhizm_gid_kod = @ish_stokhizm_gid_kod"
             }
 
             let TmpQuery = 
@@ -849,7 +852,8 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                     await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false);
                 }
             }
-            await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
+
+            $scope.Init();
 
             swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
         }
