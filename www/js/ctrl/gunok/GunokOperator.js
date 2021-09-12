@@ -83,7 +83,10 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                         "is_EmriDurumu AS DURUM, " +
                         "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " +
-                        "(ROTA.RtP_TamamlananMiktar) AS TAMAMLANANMIKTAR, " +
+                        "ROTA.RtP_PlanlananMiktar AS PLANLANANROTAMIKTAR, " +
+                        "ROTA.RtP_TamamlananMiktar AS TAMAMLANANROTAMIKTAR, " +
+                        "ROTA.RtP_OperasyonSafhaNo AS SAFHANO, " +
+                        "ROTA.RtP_SonrakiSafhaNo AS SONRAKISAFHANO, " +
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = UPL.upl_kodu),'') AS BARKOD, " + 
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
@@ -97,7 +100,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                         "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                         "WHERE " +
                         "(SELECT sto_cins FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu) = 3 AND " +
-                        "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
+                        "(ROTA.RtP_PlanlananMiktar - ROTA.RtP_TamamlananMiktar) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "ISM.is_EmriDurumu IN(0,1) AND " +
                         "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
@@ -155,11 +158,13 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             },
             columns: [
                 {
+                    width: 100,
                     dataField: "ISTASYONSIRA",
                     caption: "Istasyon Sıra",
                     alignment: "center"
                 },
                 {
+                    width: 100,
                     dataField: "SIPARISNO",
                     caption: "Sipariş No",
                     alignment: "center"
@@ -172,13 +177,13 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 }, 
                 {
                     width: 200,
-                    dataField: "PLANMIKTAR",
+                    dataField: "PLANLANANROTAMIKTAR",
                     caption: "Planlanan Miktar",
                     alignment: "center"
                 },
                 {
                     width: 200,
-                    dataField: "TAMAMLANANMIKTAR",
+                    dataField: "TAMAMLANANROTAMIKTAR",
                     caption: "Tamamlanan Miktar",
                     alignment: "center"
                 },
@@ -251,7 +256,8 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             {
                 $scope.SelectedRow = selectedItems.selectedRowsData;
                 $scope.Data.UMP = await UretimMalzemePlanGetir(selectedItems.selectedRowsData[0].KODU);
-                $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU);
+                console.log($scope.Data.UMP)
+                $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU,selectedItems.selectedRowsData[0].OPERASYONKODU);
             }
         }).dxDataGrid("instance");
     }
@@ -332,7 +338,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             resolve(TmpData);
         });
     }
-    function UretimRotaPlanGetir(pIsEmri)
+    function UretimRotaPlanGetir(pIsEmri,pOpKod)
     {
         return new Promise(async resolve => 
         {
@@ -341,15 +347,18 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
                         "RtP_Guid AS REC, " +
-                        "RtP_IsEmriKodu AS ISEMRI, " +
+                        "RtP_PlanlananMiktar AS PLANLANANMIKTAR, " + 
+                        "RtP_TamamlananMiktar AS TAMAMLANANMIKTAR, " + 
                         "RtP_OperasyonSafhaNo AS SAFHANO, " +
+                        "RtP_SonrakiSafhaNo AS SONRAKISAFHANO, " +
+                        "RtP_IsEmriKodu AS ISEMRI, " +
                         "RtP_OperasyonKodu AS OPERASYONKODU, " +
                         "RtP_PlanlananIsMerkezi AS ISMERKEZI, " +
                         "RtP_UrunKodu AS URUNKODU, " +
                         "ROUND(CAST((RtP_PlanlananSure / RtP_PlanlananMiktar) AS float),2) AS SURE " +
                         "FROM URETIM_ROTA_PLANLARI WHERE RtP_IsEmriKodu = @RtP_IsEmriKodu AND RtP_OperasyonKodu = @RtP_OperasyonKodu",
                 param : ['RtP_IsEmriKodu:string|50','RtP_OperasyonKodu:string|25'],
-                value : [pIsEmri,$rootScope.GeneralParamList.OperasyonKodu]
+                value : [pIsEmri,pOpKod]
             }
 
             let TmpData = await srv.Execute(TmpQuery)
@@ -686,6 +695,31 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             }
         });
     }
+    function RotaControl(pKod,pSafha)
+    {
+        return new Promise(async resolve => 
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT " +
+                        "RtP_OperasyonKodu AS OPERASYONKODU, " +
+                        "(SELECT Op_Aciklama FROM URETIM_OPERASYONLARI WHERE Op_Kodu = RtP_OperasyonKodu) AS OPERASYONADI, " +
+                        "RtP_TamamlananMiktar AS TAMAMLANANMIKTAR, " +
+                        "RtP_OperasyonSafhaNo AS SAFHA " +
+                        "FROM URETIM_ROTA_PLANLARI " +
+                        "WHERE " +
+                        "RtP_IsEmriKodu = @RtP_IsEmriKodu AND " +
+                        "RtP_OperasyonSafhaNo = @RtP_OperasyonSafhaNo - 1 " ,
+                param : ['RtP_IsEmriKodu:string|50','RtP_OperasyonSafhaNo:int'],
+                value : [pKod,pSafha]
+            }
+
+            let TmpResult = await srv.Execute(TmpQuery)
+
+            resolve(TmpResult);
+        });
+    }
     $scope.BtnDurdur = async function()
     {
         $('#MdlDurdur').modal('show')
@@ -736,10 +770,9 @@ function GunokOperator($scope,srv,$rootScope,$filter)
               {
                 if (willDelete) 
                 {
-                    console.log(moment(new Date()).format("DD.MM.YYYY HH:mm:ss"))
                     await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]); 
                     await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
-                    await GetPlanlananIsEmrileri($rootScope.GeneralParamList.OperasyonKodu,"#FFFF00");
+                    await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
                   swal("Başarılı! İş Emri Başlatıldı.", 
                   {
                     icon: "success",
@@ -768,7 +801,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
             return;
         }
-
+     
         if(pType == 0)
         {
             $scope.Data.DATA = [];
@@ -776,6 +809,17 @@ function GunokOperator($scope,srv,$rootScope,$filter)
         }
         else if(pType == 1)
         {   
+            if($scope.SelectedRow[0].SAFHANO > 1)
+            {
+                let rotacontrol = await RotaControl($scope.SelectedRow[0].KODU,$scope.SelectedRow[0].SAFHANO);
+
+                if(rotacontrol[0].TAMAMLANANMIKTAR < $scope.MiktarGiris) //BİR ÖNCEKİ İSTASYONDAKİ MİKTAR KONTROLÜ
+                {
+                    swal("İşlem Başarısız!","Bir Önceki (" + rotacontrol[0].OPERASYONADI + ") İstasyonda \n Tamamlanan Miktar : " + rotacontrol[0].TAMAMLANANMIKTAR ,icon="error"); 
+                    return;
+                }
+            }
+
             BaslatData();
             let TmpDrTuket = $scope.Data.DATA.filter(x => x.URETTUKET == 0);
             let TmpDrUret = $scope.Data.DATA.filter(x => x.URETTUKET == 1);
@@ -788,16 +832,24 @@ function GunokOperator($scope,srv,$rootScope,$filter)
 
             for (let i = 0; i < TmpDrUret.length; i++) 
             {
-                await InsertUrunGirisCikis(0,TmpDrUret[i],$rootScope.GeneralParamList.UrunGirisSeri,$scope.SthGSira) // edilmeyecek
-                await InsertOperasyonKapama(TmpDrUret[i],$rootScope.GeneralParamList.OperasyonSeri,$scope.OpSira) // puch 
-                await UpdateRotaPlani(TmpDrUret[i].ROTAREC, TmpDrUret[i].MIKTAR, TmpDrUret[i].SURE)             //
-                await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true) // edilmeyecek
+                await InsertOperasyonKapama(TmpDrUret[i],$rootScope.GeneralParamList.OperasyonSeri,$scope.OpSira);
+                await UpdateRotaPlani(TmpDrUret[i].ROTAREC, TmpDrUret[i].MIKTAR, TmpDrUret[i].SURE);
+
+                if($scope.SelectedRow[0].SONRAKISAFHANO == 0)
+                {
+                    await InsertUrunGirisCikis(0,TmpDrUret[i],$rootScope.GeneralParamList.UrunGirisSeri,$scope.SthGSira);
+                    await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true);
+                }
             }
             for (let i = 0; i < TmpDrTuket.length; i++) 
             {
-                await InsertUrunGirisCikis(1,TmpDrTuket[i],$rootScope.GeneralParamList.UrunCikisSeri,$scope.SthCSira)
-                await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
+                if($scope.SelectedRow[0].SONRAKISAFHANO == 0)
+                {
+                    await InsertUrunGirisCikis(1,TmpDrTuket[i],$rootScope.GeneralParamList.UrunCikisSeri,$scope.SthCSira);
+                    await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false);
+                }
             }
+            await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
 
             swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
         }
