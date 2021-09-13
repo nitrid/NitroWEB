@@ -838,16 +838,20 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 return;
             }
             let InfoText = "";
-            for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
-            {
-                if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
-                {
-                    InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' - ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' - ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
 
-                    if(i == TmpDrTuket.length - 1)
+            if($rootScope.GeneralParamList.StokEksiyeDusme == false)
+            {
+                for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
+                {
+                    if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
                     {
-                        swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-                        return;
+                        InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' - ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' - ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
+
+                        if(i == TmpDrTuket.length - 1)
+                        {
+                            swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                            return;
+                        }
                     }
                 }
             }
@@ -861,6 +865,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 {
                     await InsertUrunGirisCikis(0,TmpDrUret[i],$rootScope.GeneralParamList.UrunGirisSeri,$scope.SthGSira);
                     await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true);
+                    await srv.Execute($scope.Firma,'IsEmriKapat',[$scope.SelectedRow[0].GUID]); 
                 }
             }
             for (let i = 0; i < TmpDrTuket.length; i++) 

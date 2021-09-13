@@ -2194,6 +2194,11 @@ var Query =
         query : "UPDATE ISEMIRLERI SET is_lastup_date = GETDATE(),is_Emri_AktiflesmeTarihi = CONVERT(nvarchar,GETDATE(),102),is_EmriDurumu = 1 WHERE is_Guid = @is_Guid",
         param : ['is_Guid:string|50']
     },
+    IsEmriKapat : 
+    {
+        query : "UPDATE ISEMIRLERI SET is_lastup_date = GETDATE(),is_KapanisTarihi = CONVERT(nvarchar,GETDATE(),102),is_EmriDurumu = 2 WHERE is_Guid = @is_Guid",
+        param : ['is_Guid:string|50']
+    },
     UpdateIsEmriDate : 
     {
         query : "UPDATE MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH,ISEMRI_STATUS = 1 WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",

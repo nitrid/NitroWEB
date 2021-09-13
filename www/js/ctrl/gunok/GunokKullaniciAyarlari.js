@@ -97,6 +97,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 KiloUzunluk : srv.GetParamValue($scope.Data,"KiloUzunluk"),
                 MikroId : srv.GetParamValue($scope.Data,"MikroId"),
                 PlasiyerKodu : srv.GetParamValue($scope.Data,"PlasiyerKodu"),
+                StokEksiyeDusme : srv.GetParamValue($scope.Data,"StokEksiyeDusme"),
                 SatirBirlestir : srv.GetParamValue($scope.Data,"SatirBirlestir"),
             }
 
@@ -325,6 +326,9 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 PlasiyerKodu : $rootScope.GeneralParamList.PlasiyerKodu
             },
             {
+                StokEksiyeDusme : $rootScope.GeneralParamList.StokEksiyeDusme
+            },
+            {
                 SatirBirlestir : $rootScope.GeneralParamList.SatirBirlestir
             },
         ]
@@ -368,6 +372,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["KiloUzunluk",$rootScope.GeneralParamList.KiloUzunluk,5,""],
             ["MikroId",$rootScope.GeneralParamList.MikroId,5,""],
             ["PlasiyerKodu",$rootScope.GeneralParamList.PlasiyerKodu,5,""],
+            ["StokEksiyeDusme",$rootScope.GeneralParamList.StokEksiyeDusme,5,""],
             ["SatirBirlestir",$rootScope.GeneralParamList.SatirBirlestir,5,""],
         ]
 
@@ -460,6 +465,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 KiloUzunluk : "",
                 MikroId : "",
                 PlasiyerKodu : "",
+                StokEksiyeDusme : false,
                 SatirBirlestir : false,
             }
             $scope.CmbAcilisSayfa =

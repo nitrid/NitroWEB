@@ -152,6 +152,7 @@ function Main($scope,$state,srv,$rootScope)
                 KiloUzunluk : srv.GetParamValue($scope.Data,"KiloUzunluk"),
                 MikroId : srv.GetParamValue($scope.Data,"MikroId"),
                 PlasiyerKodu : srv.GetParamValue($scope.Data,"PlasiyerKodu"),
+                StokEksiyeDusme : srv.GetParamValue($scope.Data,"StokEksiyeDusme"),
                 SatirBirlestir : srv.GetParamValue($scope.Data,"SatirBirlestir"),
             }
 
