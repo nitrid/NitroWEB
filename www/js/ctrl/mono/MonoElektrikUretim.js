@@ -969,8 +969,6 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             var TmpDrUretOPERASYONKODU = TmpDrUret[i].OPERASYONKODU
             TmpDrUretSURE = TmpDrUretSURE + TmpDrUret[i].SURE
         }
-        console.log(TmpDrUretMiktar)
-        console.log(TmpDrUretSURE)
 
             await InsertUrunGirisCikis(0,TmpDrUretKODU,TmpDrUretISEMRI,TmpDrUretMiktar,TmpDrUretDEPO,TmpDrUretISMERKEZI,$scope.SthGSeri,$scope.SthGSira)
             await InsertOperasyonKapama(TmpDrUretROTAREC,TmpDrUretISEMRI,TmpDrUretKODU,TmpDrUretSAFHANO,TmpDrUretOPERASYONKODU,TmpDrUretISMERKEZI,TmpDrUretMiktar,TmpDrUretSURE,$scope.OpSeri,$scope.OpSira)
