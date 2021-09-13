@@ -87,6 +87,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                         "ROTA.RtP_PlanlananMiktar AS PLANLANANROTAMIKTAR, " +
                         "ROTA.RtP_TamamlananMiktar AS TAMAMLANANROTAMIKTAR, " +
                         "ROTA.RtP_OperasyonSafhaNo AS SAFHANO, " +
+                        "ISNULL((SELECT RT.RtP_TamamlananMiktar FROM URETIM_ROTA_PLANLARI AS RT WHERE RT.RtP_OperasyonSafhaNo = ROTA.RtP_OperasyonSafhaNo - 1 AND RT.RtP_IsEmriKodu = is_Kod),0) AS ONCEKIISTASYONTAMAMLANANMIKTAR, " +
                         "ROTA.RtP_SonrakiSafhaNo AS SONRAKISAFHANO, " +
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = UPL.upl_kodu),'') AS BARKOD, " + 
@@ -100,14 +101,13 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
                         "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                         "WHERE " +
-                        "(SELECT sto_cins FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu) = 3 AND " +
+                        "(SELECT sto_cins FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu) IN(4,3) AND " +
                         "(ROTA.RtP_PlanlananMiktar - ROTA.RtP_TamamlananMiktar) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "TERP.ISEMRI_STATUS IN(0,1) AND " +
                         "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
                         "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
-                        "ISM.is_Onayli_fl = @is_Onayli_fl AND  " +
-                        "TERP.SPECIAL = 'ALTISEMRI' " +
+                        "ISM.is_Onayli_fl = @is_Onayli_fl   " +
                         "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) " ,
                         param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
                         value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
@@ -175,7 +175,13 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                     dataField: "KODU",
                     caption: "İş Emri No",
                     alignment: "center"
-                }, 
+                },
+                {
+                    width: 300,
+                    dataField: "ONCEKIISTASYONTAMAMLANANMIKTAR",
+                    caption: "Önceki İstasyon Tamamlanan Miktar",
+                    alignment: "center"
+                },
                 {
                     width: 200,
                     dataField: "PLANLANANROTAMIKTAR",
@@ -401,7 +407,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             TmpData.ISEMRI = TmpDrUret[i].ISEMRI;
             TmpData.KODU = TmpDrUret[i].KODU;
             TmpData.ADI = TmpDrUret[i].ADI;
-            TmpData.MIKTAR = parseInt(TmpDrUret[i].BMIKTAR * $scope.MiktarGiris);
+            TmpData.MIKTAR = parseFloat(TmpDrUret[i].BMIKTAR * $scope.MiktarGiris);
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
             TmpData.DEPO = TmpDrUret[i].DEPO;
 
@@ -442,7 +448,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             TmpData.ISEMRI = TmpDrTuket[i].ISEMRI;
             TmpData.KODU = TmpDrTuket[i].KODU;
             TmpData.ADI = TmpDrTuket[i].ADI;
-            TmpData.MIKTAR = parseInt(TmpDrTuket[i].BMIKTAR * $scope.MiktarGiris);
+            TmpData.MIKTAR = parseFloat(TmpDrTuket[i].BMIKTAR * $scope.MiktarGiris);
             TmpData.DEPOMIKTAR = TmpDrTuket[i].DEPOMIKTAR;
             TmpData.DEPO = TmpDrTuket[i].DEPO;
 
@@ -551,7 +557,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 0, // MASRAFVERGİ
                 0, // ODEME NO                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                 '',// AÇIKLAMA
-                $scope.SelectedRow[0].BAGLANTIID,       //sth_sip_uid
+                '00000000-0000-0000-0000-000000000000',       //sth_sip_uid
                 '00000000-0000-0000-0000-000000000000', //sth_fat_uid,
                 pDr.DEPO, //GİRİSDEPONO
                 pDr.DEPO, //CİKİSDEPONO
@@ -591,12 +597,11 @@ function GunokOperator($scope,srv,$rootScope,$filter)
     {
         return new Promise(async resolve => 
         {
-            let TmpSure = parseInt(pDr.SURE);
-            // let TmpBasTarih = moment(new Date()).add(TmpSure * -1,'seconds').format("DD.MM.YYYY HH:mm:ss")
-            // let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
-            
-            let TmpBasTarih = moment((await srv.Execute($scope.Firma,'GetIsEmriDate',[pDr.ISEMRI,pDr.OPERASYONKODU]))[0].DATE).format("DD.MM.YYYY HH:mm:ss")
-            let TmpBitTarih = moment(new Date()).format("DD.MM.YYYY HH:mm:ss")
+            let BasTarih = (await srv.Execute($scope.Firma,'GetIsEmriDate',[pDr.ISEMRI,pDr.OPERASYONKODU]))[0].DATE;
+            let BitTarih = new Date();
+            let TmpSure = (new Date(moment(BitTarih).format("YYYY-MM-DDTHH:mm:ss")) - new Date(moment(BasTarih).format("YYYY-MM-DDTHH:mm:ss"))) / 1000;
+
+            await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(BasTarih).format("DD.MM.YYYY HH:mm:ss"),moment(BitTarih).format("DD.MM.YYYY HH:mm:ss"),$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
             
             let TmpInsertData =
             [
@@ -607,8 +612,8 @@ function GunokOperator($scope,srv,$rootScope,$filter)
                 pSeri,
                 pSira,
                 pDr.ROTAREC,
-                TmpBasTarih,
-                TmpBitTarih,
+                moment(BasTarih).format("DD.MM.YYYY HH:mm:ss"),
+                moment(BitTarih).format("DD.MM.YYYY HH:mm:ss"),
                 pDr.ISEMRI,
                 pDr.KODU,
                 pDr.SAFHANO,
@@ -756,7 +761,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
     {
         if($scope.SelectedRow.length > 0)
         {
-            if($scope.SelectedRow[0].DURUM == 1)
+            if($scope.SelectedRow[0].ISEMRISTATUS == 1)
             {
                 swal("Uyarı", "Lütfen Planlanmış İş Emri Seçiniz.",icon="warning");
                 return;
@@ -799,7 +804,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             swal("Uyarı", "Lütfen Satır Seçimi Yapınız.",icon="warning");
             return;
         }
-        if($scope.SelectedRow[0].DURUM == 0)
+        if($scope.SelectedRow[0].ISEMRISTATUS == 0)
         {
             swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
             return;
@@ -827,12 +832,26 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             let TmpDrTuket = $scope.Data.DATA.filter(x => x.URETTUKET == 0);
             let TmpDrUret = $scope.Data.DATA.filter(x => x.URETTUKET == 1);
 
-            if(MiktarKontrol())
+            if(MiktarKontrol()) //Girilen Miktar İle Planlanan Miktar Kontrol
             {
                 swal("Dikkat", "Üretilecek Ürün Planlanan Üründen Fazla Olamaz.",icon="warning");
                 return;
             }
+            let InfoText = "";
+            for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
+            {
+                if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
+                {
+                    InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' - ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' - ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
 
+                    if(i == TmpDrTuket.length - 1)
+                    {
+                        swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                        return;
+                    }
+                }
+            }
+            
             for (let i = 0; i < TmpDrUret.length; i++) 
             {
                 await InsertOperasyonKapama(TmpDrUret[i],$rootScope.GeneralParamList.OperasyonSeri,$scope.OpSira);

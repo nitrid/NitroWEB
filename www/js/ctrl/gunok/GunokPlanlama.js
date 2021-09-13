@@ -527,7 +527,9 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 selectedItems.component.repaint();
                 $scope.SelectedData = selectedItems.selectedRowsData;
-              },
+
+                console.log($scope.SelectedData)
+            },
             onCellPrepared: function(e) 
             {
                 if (e.rowType == "data" && e.row.isSelected) 
@@ -684,7 +686,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
     {
         if($scope.SelectedData.length > 0)
         {
-            let InsertKontrol = await srv.Execute($scope.Firma,'IsEmriListesiInsert',[$scope.SelectedData[0].GUID,$scope.SelectedData[0].KODU,0,'','','ANAISEMRI']); //ANA İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
+            let InsertKontrol = await srv.Execute($scope.Firma,'IsEmriListesiInsert',[$scope.SelectedData[0].GUID,$scope.SelectedData[0].KODU,0,'',$scope.SelectedData[0].OPERASYONKODU,'ANAISEMRI']); //ANA İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
 
             if(InsertKontrol == "")
             {
