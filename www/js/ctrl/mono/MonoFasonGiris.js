@@ -499,7 +499,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             return;
         });
     }
-    function InsertUrunGirisCikis(pGirisCikis,pDr,pSeri,pSira)
+    function InsertUrunGirisCikis(pGirisCikis,TmpKodu,TmpIsemrı,TmpMiktar,TmpDepo,TmpParti,TmpLot,TmpIsmerkezi,pSeri,pSira)
     {
         return new Promise(async resolve => 
         {
@@ -527,7 +527,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 pSira,
                 $scope.TxtEvrakno, //BELGE NO
                 moment(new Date()).format("DD.MM.YYYY"),
-                pDr.KODU,
+                TmpKodu,
                 0, //ISKONTO 1
                 1, //ISKONTO 2
                 1, //ISKONTO 3
@@ -550,15 +550,15 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 0, //SATIR ISKONTO TİP 10
                 0, //CARİCİNSİ
                 $scope.BteFasoncu.txt, //CARI KODU,
-                pDr.ISEMRI, //İŞEMRİKODU
+                TmpIsemrı, //İŞEMRİKODU
                 "", //PERSONEL KODU
                 0, //HARDOVİZCİNSİ
                 1, //HARDOVİZKURU
                 1, //ALTDOVİZKURU
                 0, //STOKDOVİZCİNSİ
                 1, //STOKDOVİZKURU
-                pDr.MIKTAR,
-                pDr.MIKTAR,
+                TmpMiktar,
+                TmpMiktar,
                 1, //BIRIM PNTR
                 0, //TUTAR
                 0, // İSKONTO TUTAR 1
@@ -579,15 +579,15 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 '',// AÇIKLAMA
                 '00000000-0000-0000-0000-000000000000', //sth_sip_uid
                 '00000000-0000-0000-0000-000000000000', //sth_fat_uid,
-                pDr.DEPO, //GİRİSDEPONO
-                pDr.DEPO, //CİKİSDEPONO
+                TmpDepo, //GİRİSDEPONO
+                TmpDepo, //CİKİSDEPONO
                 moment(new Date()).format("DD.MM.YYYY"), //MALKABULSEVKTARİHİ
                 '', // CARİSORUMLULUKMERKEZİ
                 '', // STOKSORUMLULUKMERKEZİ
                 0,  // VERGİSİZFL
                 1,  // ADRESNO
-                pDr.PARTI, 
-                pDr.LOT,
+                TmpParti, 
+                TmpLot,
                 '', // PROJE KODU
                 '', // EXİMKODU
                 0, // DİSTİCARETTURU
@@ -596,7 +596,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 0, //FIYAT LISTE NO
                 0, //NAKLİYEDEPO
                 0, // NAKLİYEDURUMU
-                (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
+                (typeof TmpIsmerkezi == 'undefined') ? '' : TmpIsmerkezi
             ];
             
             console.log(TmpInsertData)
@@ -827,16 +827,34 @@ function MonoFasonGiris($scope,srv, $rootScope)
         //     }
         // }
         //************************/
+
+        var TmpUretMiktar = 0
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
-            await InsertUrunGirisCikis(0,TmpDrUret[i],$scope.SthGSeri,$scope.SthGSira)
-            await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true)
+           var TmpUretKodu = TmpDrUret[i].KODU
+           var TmpUretIsemrı = TmpDrUret[i].ISEMRI
+           TmpUretMiktar = TmpUretMiktar + TmpDrUret[i].MIKTAR
+           var TmpUretDepo = TmpDrUret[i].DEPO
+           var TmpUretParti = TmpDrUret[i].PARTI
+           var TmpUretLot = TmpDrUret[i].LOT
+           var TmpUretIsmerkezi = TmpDrUret[i].ISMERKEZI
+
         }
-        for (let i = 0; i < TmpDrTuket.length; i++) 
+        await InsertUrunGirisCikis(0,TmpUretKodu,TmpUretIsemrı,TmpUretMiktar,TmpUretDepo,TmpUretParti,TmpUretLot,TmpUretIsmerkezi,$scope.SthGSeri,$scope.SthGSira)
+        await UpdateMalzemePlani(TmpUretIsemrı, TmpUretKodu, TmpUretMiktar, true)
+       
+        let TuketData = ToGroupBy(TmpDrTuket,'KODU')
+        console.log(TmpDrTuket)
+        console.log(TuketData)
+            
+        for (let i = 0; i < Object.values(TuketData).length; i++) 
         {
-            await InsertUrunGirisCikis(1,TmpDrTuket[i],$scope.SthCSeri,$scope.SthCSira)
-            await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false)
+            let TmpMiktar = srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = "+Object.values(TuketData)[i][0].KODU+"")
+            await InsertUrunGirisCikis(1,Object.values(TuketData)[i][0].KODU,Object.values(TuketData)[i][0].ISEMRI,TmpMiktar,Object.values(TuketData)[i][0].DEPO,'',0,TmpUretIsmerkezi,$scope.SthCSeri,$scope.SthCSira)
+            await UpdateMalzemePlani(Object.values(TuketData)[i][0].ISEMRI,Object.values(TuketData)[i][0].KODU, (Object.values(TuketData)[i][0].MIKTAR *TmpDrUret.length), false)
         }
+       // await InsertUrunGirisCikis(1,TmpTuketKodu,TmpTuketIsemrı,TmpTuketMiktar,TmpTuketDepo,TmpTuketParti,TmpTuketLot,TmpTuketIsmerkezi,$scope.SthCSeri,$scope.SthCSira)
+       // await UpdateMalzemePlani(TmpTuketIsemrı, TmpTuketKodu,TmpTuketMiktar, false)
 
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
        $scope.Init()
@@ -870,5 +888,13 @@ function MonoFasonGiris($scope,srv, $rootScope)
     $scope.BtnKantarVerisiGetir = async function()
     {
         $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
+    }
+    ToGroupBy = function(pData,pKey)
+    {
+        return pData.reduce(function(rv, x) 
+        {
+            (rv[x[pKey]] = rv[x] || []).push(x);
+            return rv;
+        }, {});
     }
 }

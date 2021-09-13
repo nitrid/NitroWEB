@@ -957,8 +957,6 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
             
-            
-            
             TmpDrUretMiktar = TmpDrUretMiktar + TmpDrUret[i].MIKTAR
             var TmpDrUretKODU = TmpDrUret[i].KODU
             var TmpDrUretISEMRI = TmpDrUret[i].ISEMRI
