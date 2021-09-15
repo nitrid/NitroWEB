@@ -839,7 +839,7 @@ function GunokOperator($scope,srv,$rootScope,$filter)
             }
             let InfoText = "";
 
-            if($rootScope.GeneralParamList.StokEksiyeDusme == false)
+            if($rootScope.GeneralParamList.StokEksiyeDusme == "false")
             {
                 for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
                 {

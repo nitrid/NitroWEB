@@ -527,8 +527,6 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
             {
                 selectedItems.component.repaint();
                 $scope.SelectedData = selectedItems.selectedRowsData;
-
-                console.log($scope.SelectedData)
             },
             onCellPrepared: function(e) 
             {
