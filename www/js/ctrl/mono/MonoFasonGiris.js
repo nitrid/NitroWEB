@@ -818,15 +818,19 @@ function MonoFasonGiris($scope,srv, $rootScope)
             return;
         }
         //* DEPO MİKTAR KONTROL */        
-        // for(let i = 0;i < TmpDrTuket.length;i++)
-        // {
-        //     if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
-        //     {
-        //         swal("Dikkat", "Depo miktarı eksiye düşemez ! (" + TmpDrTuket[i].KODU + " - " + TmpDrTuket[i].DEPOMIKTAR + " - " + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + ")",icon="warning");
-        //         return;
-        //     }
-        // }
-        //************************/
+        for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
+        {
+            if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
+            {
+                InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' - ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' - ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
+
+                if(i == TmpDrTuket.length - 1)
+                {
+                    swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                    return;
+                }
+            }
+        }
 
         var TmpUretMiktar = 0
         for (let i = 0; i < TmpDrUret.length; i++) 
