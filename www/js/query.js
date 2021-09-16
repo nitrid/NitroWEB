@@ -1989,7 +1989,7 @@ var Query =
         ",''          --<chz_special3, nvarchar(4),>  \n " +
         ",@SERINO          --<chz_serino, nvarchar(25),>  \n " +
         ",@STOKKODU           --<chz_stok_kodu, nvarchar(25),>  \n " +
-        ",''         --<chz_grup_kodu, nvarchar(25),>  \n " +
+        ",@MIKTAR         --<chz_grup_kodu, nvarchar(25),>  \n " +
         ",''          --<chz_Tuktckodu, nvarchar(25),>  \n " +
         ",GETDATE()          --<chz_GrnBasTarihi, datetime,>  \n " +
         ",GETDATE()          --<chz_GrnBitTarihi, datetime,>  \n " +
@@ -2048,7 +2048,7 @@ var Query =
         ",0          --<chz_devir_servis_sayac, float,>  \n " +
         ",0          --<chz_devir_servis_peryodu, float,>  \n " +
         " ) ",
-        param :['SERI:string|25','SIRA:int','SERINO:string|50','STOKKODU:string|50']
+        param :['SERI:string|25','SIRA:int','SERINO:string|50','STOKKODU:string|50','MIKTAR:string|50']
     },
     StokGramDegerGetir : 
     {

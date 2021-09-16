@@ -331,10 +331,54 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         if($scope.LblStokKodu != '')
         {
             await EtiketInsert();
+            
+            await $scope.SeriBarkodOlustur()
+            let TmpInsertData =
+            [
+                'SYM',
+                0,
+                $scope.SeriBarkod,
+                $scope.LblStokKodu,
+                $scope.LblKantarMiktar
+            ]
+           
+            let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
+            
         }
         else
         {
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
+    }
+    $scope.SeriBarkodOlustur = async function()
+    {
+        $scope.SeriBarkod = ''
+        let length = 7;
+        let chars = '0123456789'.split('');
+        let AutoStr = "";
+        
+        if (! length) 
+        {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        for (let i = 0; i < length; i++) 
+        {
+            AutoStr += chars[Math.floor(Math.random() * chars.length)];
+        }
+        $scope.BteParti = moment(new Date()).format("YYYYMMGG"),
+        $scope.SeriBarkod = $scope.BteParti.padStart(8, "0")   + AutoStr
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT chz_serino FROM STOK_SERINO_TANIMLARI WHERE chz_serino = @chz_serino ",
+            param : ['chz_serino:string|50'],
+            value : [$scope.SeriBarkod]
+        }
+        let SeriKontrol = await srv.Execute(TmpQuery)
+        if(SeriKontrol.length > 0)
+         {
+            $scope.PartiBarkod()
+           
+         }
     }
 }

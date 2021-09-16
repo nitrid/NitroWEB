@@ -267,14 +267,15 @@ function MonoFasonGiris($scope,srv, $rootScope)
             $scope.LblHassasGram = pData
         });
     }
-    function MiktarKontrol()
+    function MiktarKontrol(pMiktar)
     {
         if($scope.Data.UMP.length > 0)
         {
             let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
             if(TmpDr.length > 0)
             {
-                if(TmpDr[0].PMIKTAR < srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))
+
+                if(parseInt(srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))+parseInt(pMiktar) > TmpDr[0].PMIKTAR)
                 {
                     return true;
                 }
@@ -354,7 +355,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             $scope.LblHassasGram = pData.split(",   ").join("");
         }
     }
-    function Ekle(pBarkod,pParti,pLot,pMiktar)
+    async function Ekle(pBarkod,pParti,pLot,pMiktar)
     {
         let TmpUretRec = 0;
 
@@ -365,13 +366,32 @@ function MonoFasonGiris($scope,srv, $rootScope)
             {
                 TmpRec = srv.Max($scope.Data.DATA,'REC');
             }
+            if($scope.Data.UMP[i].URETTUKET == 1)
+            {
+
+                await $scope.SeriBarkodOlustur()
+            
+
+                let TmpInsertData =
+                [
+                    $scope.SthGSeri,
+                    $scope.SthGSira,
+                    $scope.SeriBarkod,
+                    $scope.Data.UMP[i].KODU,
+                    $scope.Data.UMP[i].BMIKTAR * pMiktar
+                ]
+               
+                let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
+                console.log(TmpResult)  
+            }
+
             
             let TmpData = {};
             TmpData.REC = TmpRec + 1;
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = $scope.Data.UMP[i].TIP;
             TmpData.URETTUKET = $scope.Data.UMP[i].URETTUKET;
-            TmpData.PARTIBARKOD =$scope.Data.UMP[i].BARKOD+ $scope.EtiketMiktar;
+            TmpData.PARTIBARKOD = $scope.SeriBarkod;
             TmpData.URNBARKOD = $scope.Data.UMP[i].BARKOD;
             TmpData.ADITR = $scope.Data.UMP[i].ADITR;
             TmpData.ADIENG = $scope.Data.UMP[i].ADIENG;
@@ -425,22 +445,25 @@ function MonoFasonGiris($scope,srv, $rootScope)
             swal("Dikkat", "Lütfen İş emri,fasoncu ve tarih seçmeden geçmeyin.",icon="warning");
             return;
         }
-        if(MiktarKontrol())
+        $scope.EtiketMiktar = pMiktar.toString().padStart(5, '0');
+        if(MiktarKontrol($scope.EtiketMiktar))
         {
             swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
             return;
         }
-        if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD.substring(0,2) == "27")
-        {
-            $scope.EtiketMiktar = pMiktar.toString().padStart(5, '0');
-            TmpBarkod = $scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD + $scope.EtiketMiktar;
-        }
-        else
-        {
+
+        
+        // if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD.substring(0,2) == "27")
+        // {
+        //     
+        //     TmpBarkod = $scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD + $scope.EtiketMiktar;
+        // }
+        // else
+        // {
                             
-            swal("Dikkat", "Lütfen tartım barkodu giriniz.",icon="warning");
-            return;
-        }
+        //     swal("Dikkat", "Lütfen tartım barkodu giriniz.",icon="warning");
+        //     return;
+        // }
    
         Ekle(TmpBarkod,'',0,$scope.EtiketMiktar);
     }
@@ -900,5 +923,35 @@ function MonoFasonGiris($scope,srv, $rootScope)
             (rv[x[pKey]] = rv[x] || []).push(x);
             return rv;
         }, {});
+    }
+    $scope.SeriBarkodOlustur = async function()
+    {
+        $scope.SeriBarkod = ''
+        let length = 7;
+        let chars = '0123456789'.split('');
+        let AutoStr = "";
+        
+        if (! length) 
+        {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        for (let i = 0; i < length; i++) 
+        {
+            AutoStr += chars[Math.floor(Math.random() * chars.length)];
+        }
+        $scope.SeriBarkod = $scope.BteParti.txt.padStart(8, "0")   + AutoStr
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT chz_serino FROM STOK_SERINO_TANIMLARI WHERE chz_serino = @chz_serino ",
+            param : ['chz_serino:string|50'],
+            value : [$scope.SeriBarkod]
+        }
+        let SeriKontrol = await srv.Execute(TmpQuery)
+        if(SeriKontrol.length > 0)
+         {
+            $scope.PartiBarkod()
+            console.log(11123)
+         }
     }
 }

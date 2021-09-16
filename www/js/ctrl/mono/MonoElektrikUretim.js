@@ -808,30 +808,19 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             {
                 TmpRec = srv.Max($scope.Data.DATA.filter(x => x.URETTUKET == 1),'REC');
             }
-            $scope.SeriBarkod = ''
-
-            let length = 7;
-            let chars = '0123456789'.split('');
-            let AutoStr = "";
             
-            if (! length) 
-            {
-                length = Math.floor(Math.random() * chars.length);
-            }
-            for (let i = 0; i < length; i++) 
-            {
-                AutoStr += chars[Math.floor(Math.random() * chars.length)];
-            }
-            $scope.SeriBarkod = $scope.BteParti.txt.padStart(8, "0")   + AutoStr
+            await $scope.SeriBarkodOlustur()
 
             let TmpInsertData =
             [
                 $scope.SthGSeri,
                 $scope.SthGSira,
                 $scope.SeriBarkod,
-                TmpDrUret[i].KODU
+                TmpDrUret[i].KODU,
+                $scope.KutuKontrolMiktar
             ]
             
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
             console.log(TmpResult)
 
@@ -1432,6 +1421,35 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             swal("Dikkat", "Detay Bukunamadı  .",icon="warning");
         }
 
+    }
+    $scope.SeriBarkodOlustur = async function()
+    {
+        $scope.SeriBarkod = ''
+        let length = 7;
+        let chars = '0123456789'.split('');
+        let AutoStr = "";
+        
+        if (! length) 
+        {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        for (let i = 0; i < length; i++) 
+        {
+            AutoStr += chars[Math.floor(Math.random() * chars.length)];
+        }
+        $scope.SeriBarkod = $scope.BteParti.txt.padStart(8, "0")   + AutoStr
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT chz_serino FROM STOK_SERINO_TANIMLARI WHERE chz_serino = @chz_serino ",
+            param : ['chz_serino:string|50'],
+            value : [$scope.SeriBarkod]
+        }
+        let SeriKontrol = await srv.Execute(TmpQuery)
+        if(SeriKontrol.length > 0)
+         {
+            $scope.SeriBarkodOlustur()
+         }
     }
 
 }

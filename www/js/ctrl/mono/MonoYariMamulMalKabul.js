@@ -777,7 +777,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
     }
-    $scope.BtnEkle =  function()
+    $scope.BtnEkle = async  function()
     {
 
        
@@ -801,12 +801,26 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
                 TmpRec = srv.Max($scope.Data.DATA.filter(x => x.URETTUKET == 1),'REC');
             }
 
+            await $scope.SeriBarkodOlustur()
+            
+
+            let TmpInsertData =
+            [
+                $scope.SthGSeri,
+                $scope.SthGSira,
+                $scope.SeriBarkod,
+                TmpDrUret[i].KODU,
+                parseInt(TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar)
+            ]
+           
+            let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
+            console.log(TmpResult)  
             let TmpData = {};
             TmpData.REC = TmpRec + 1;
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
             TmpData.TIP = TmpDrUret[i].TIP;
             TmpData.URETTUKET = TmpDrUret[i].URETTUKET;
-            TmpData.URNBARKOD = TmpDrUret[i].BARKOD + (TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar).toString().padStart(5, '0');
+            TmpData.URNBARKOD = $scope.SeriBarkod;
             TmpData.ADITR = TmpDrUret[i].ADITR;
             TmpData.ADIENG = TmpDrUret[i].ADIENG;
             TmpData.ADIRU = TmpDrUret[i].ADIRU;
@@ -818,6 +832,8 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             TmpData.ADI = TmpDrUret[i].ADI;
             TmpData.MIKTAR = parseInt(TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar);
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
+
+            
 
             if($rootScope.GeneralParamList.YariMamulDepo != "")
             TmpData.DEPO = $rootScope.GeneralParamList.YariMamulDepo;
@@ -935,5 +951,36 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
     $scope.BtnKantarVerisiGetir = async function()
     {
         $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
+    }
+    $scope.SeriBarkodOlustur = async function()
+    {
+        $scope.SeriBarkod = ''
+        let length = 7;
+        let chars = '0123456789'.split('');
+        let AutoStr = "";
+        
+        if (! length) 
+        {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        for (let i = 0; i < length; i++) 
+        {
+            AutoStr += chars[Math.floor(Math.random() * chars.length)];
+        }
+        $scope.BteParti = moment(new Date()).format("YYYYMMGG"),
+        $scope.SeriBarkod = $scope.BteParti.padStart(8, "0")   + AutoStr
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT chz_serino FROM STOK_SERINO_TANIMLARI WHERE chz_serino = @chz_serino ",
+            param : ['chz_serino:string|50'],
+            value : [$scope.SeriBarkod]
+        }
+        let SeriKontrol = await srv.Execute(TmpQuery)
+        if(SeriKontrol.length > 0)
+         {
+            $scope.PartiBarkod()
+           
+         }
     }
 }
