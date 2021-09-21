@@ -377,7 +377,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         let SeriKontrol = await srv.Execute(TmpQuery)
         if(SeriKontrol.length > 0)
          {
-            $scope.PartiBarkod()
+            $scope.SeriBarkodOlustur()
            
          }
     }

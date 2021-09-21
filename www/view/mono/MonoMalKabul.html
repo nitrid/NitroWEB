@@ -1,4 +1,4 @@
-<div ng-controller="MonoFasonGiris" ng-init="Init()">
+<div ng-controller="MonoMalKabul" ng-init="Init()">
     <div class="row pt-3">
         <div class="col-4">
             <div class="card border-dark mb-3" style="height: 170px;">
@@ -84,11 +84,11 @@
     <div class="row pt-3">
         <div class="col-6">
             <div class="card border-dark mb-3" style="height: 240px;">
-                <div class="card-header bg-transparent border-dark py-1">İş Emri</div>
+                <div class="card-header bg-transparent border-dark py-1">Stok</div>
                 <div class="card-body text-dark py-2">
                     <div class="row py-1">
                         <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-1">İş Emri :</p>
+                            <p class="text-md-right my-0 py-1">Stok :</p>
                         </div>    
                         <div class="col-8 px-2">
                             <button-edit id="3" option="BteIsEmri"></button-edit>
@@ -96,7 +96,7 @@
                     </div>
                     <div class="row py-1">
                         <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-1">Fasoncu :</p>
+                            <p class="text-md-right my-0 py-1">Cari :</p>
                         </div>    
                         <div class="col-8 px-2">
                             <button-edit id="4" option="BteFasoncu"></button-edit>
@@ -104,10 +104,10 @@
                     </div>
                     <div class="row">
                         <div class="col-4 px-2">
-                            <p class="text-md-right my-0 py-1">Üretilecek Ürün :</p>
+                            <p class="text-md-right my-0 py-1">Ürün :</p>
                         </div>    
                         <div class="col-8 px-2">
-                            <p class="text-md-left my-0 py-1">{{LblUrun}}</p>
+                            <p class="text-md-left my-0 py-1">{{LblStokAdi}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -180,10 +180,7 @@
         <div class="col-2" ng-show="ManuelGirisHide">
             <button-input id="Ekle" class="d-grid" option="BtnEkle"></button-input>
         </div>
-        <div class="col-2 offset-2  d-grid" >
-            <button-input id="SeriEkle" class="d-grid" option="BtnSeriEkle"></button-input>
-        </div>
-        <div class="col-2 d-grid">
+        <div class="col-2 offset-4 d-grid">
             <button type="button" class="btn btn-secondary" ng-click="BtnBarkodBas()">Barkod Bas</button>
         </div>
       

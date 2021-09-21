@@ -179,6 +179,24 @@ angular.module("app",
             controller:"MonoUretimSilme"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoMalKabul',
+            url: '/mono_mal_kabul',
+            templateUrl : "view/mono/MonoMalKabul.html",
+            controller:"MonoMalKabul"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoParcaliUretim',
+            url: '/mono_parcali_uretim',
+            templateUrl : "view/mono/MonoParcaliUretim.html",
+            controller:"MonoParcaliUretim"
+        }
+    ).
 
     //DIAN MENU
     state
