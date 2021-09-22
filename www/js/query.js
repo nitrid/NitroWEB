@@ -1818,6 +1818,9 @@ var Query =
                 ",[Opt_kalipkodu] " +
                 ",[Opt_HazirlikElemanSayisi] " +
                 ",[Opt_OperasyonElemanSayisi] " +
+                ",[Opt_HareketGrupKodu1] " +
+                ",[Opt_HareketGrupKodu2] " +
+                ",[Opt_HareketGrupKodu3] " +
                 ") VALUES ( " +
                 " 0					        --<OpT_DBCno, smallint,> \n" +
                 ",0					        --<OpT_SpecRECNo, int,> \n" +
@@ -1884,6 +1887,9 @@ var Query =
                 ",''						--<Opt_kalipkodu, nvarchar(25),> \n" +
                 ",0						    --<Opt_HazirlikElemanSayisi, float,> \n" +
                 ",0						    --<Opt_OperasyonElemanSayisi, float,> \n" +
+                ",''						--<Opt_HareketGrupKodu1, nvarchar(25),> \n" +
+                ",''					    --<Opt_HareketGrupKodu2, nvarchar(25),> \n" +
+                ",''						--<Opt_HareketGrupKodu3, nvarchar(25),> \n" +
                 ")",               
             param :['OpT_create_user:int','OpT_lastup_user:int','OpT_firmano:int','OpT_subeno:int','OpT_EvrakNoSeri:string|25','OpT_EvrakNoSira:int',
                     'OpT_RotaPlan_uid:string|50','OpT_baslamatarihi:datetime','OpT_bitis_tarihi:datetime','OpT_IsEmriKodu:string|25','OpT_UrunKodu:string|25',
@@ -2191,12 +2197,12 @@ var Query =
     },
     IsEmriBaslat : 
     {
-        query : "UPDATE ISEMIRLERI SET is_lastup_date = GETDATE(),is_Emri_AktiflesmeTarihi = CONVERT(nvarchar,GETDATE(),102),is_EmriDurumu = 1 WHERE is_Guid = @is_Guid",
+        query : "UPDATE ISEMIRLERI SET is_lastup_date = GETDATE(), is_BaslangicTarihi = CONVERT(nvarchar,GETDATE(),102), is_Emri_AktiflesmeTarihi = CONVERT(nvarchar,GETDATE(),102),is_EmriDurumu = 1 WHERE is_Guid = @is_Guid",
         param : ['is_Guid:string|50']
     },
     IsEmriKapat : 
     {
-        query : "UPDATE ISEMIRLERI SET is_lastup_date = GETDATE(),is_KapanisTarihi = CONVERT(nvarchar,GETDATE(),102),is_EmriDurumu = 2 WHERE is_Guid = @is_Guid",
+        query : "UPDATE ISEMIRLERI SET is_lastup_date = GETDATE(), is_KapanisTarihi = CONVERT(nvarchar,GETDATE(),102), is_EmriDurumu = 2 WHERE is_Guid = @is_Guid",
         param : ['is_Guid:string|50']
     },
     UpdateIsEmriDate : 
