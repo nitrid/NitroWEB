@@ -805,12 +805,6 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                 return;
             }
 
-            if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].PLANMIKTAR) //GİRİLEN MİKTAR + TAMAMLANAN MİKTAR KONTROLÜ
-            {
-                swal("Dikkat", "(Üretilecek Ürün + Tamamlanan Miktar) Planlanan Miktardan Fazla Olamaz.",icon="warning");
-                return;
-            }
-           
             if($rootScope.GeneralParamList.StokEksiyeDusme == "false")
             {
                 let InfoText = "";
@@ -819,16 +813,21 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                     if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
                     {
                         InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' \n ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' \n ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
-
-                        if(i == TmpDrTuket.length - 1)
-                        {
-                            swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-                            return;
-                        }
                     }
                 }
-            }
+                if(InfoText != "")
+                {
+                    swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                    return;
+                }
+            } 
 
+            if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].PLANLANANROTAMIKTAR) //GİRİLEN MİKTAR + TAMAMLANAN MİKTAR KONTROLÜ
+            {
+                swal("Dikkat", "(Üretilecek Ürün + Tamamlanan Miktar) Planlanan Miktardan Fazla Olamaz.",icon="warning");
+                return;
+            }
+           
             await InsertOperasyonKapama($scope.Data.URP[0],$rootScope.GeneralParamList.OperasyonSeri,$scope.OpSira);
             await UpdateRotaPlani($scope.Data.URP[0]);
 
@@ -843,7 +842,7 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                 await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true);
             }
 
-            if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) == $scope.SelectedRow[0].PLANMIKTAR && $scope.SelectedRow[0].SONRAKISAFHANO == 0)
+            if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) == $scope.SelectedRow[0].PLANLANANROTAMIKTAR && $scope.SelectedRow[0].SONRAKISAFHANO == 0)
             {
                 await srv.Execute($scope.Firma,'IsEmriKapat',[$scope.SelectedRow[0].GUID]); 
             }
