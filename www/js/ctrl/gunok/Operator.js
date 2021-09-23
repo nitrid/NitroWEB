@@ -773,6 +773,17 @@ function Operator($scope,srv,$rootScope,$filter)
               {
                 if (willDelete) 
                 {
+                    if($scope.SelectedRow[0].SAFHANO > 1)
+                    {
+                        let rotacontrol = await RotaControl($scope.SelectedRow[0].KODU,$scope.SelectedRow[0].SAFHANO);
+        
+                        if(rotacontrol[0].TAMAMLANANMIKTAR == 0) //BİR ÖNCEKİ İSTASYONDAKİ MİKTAR KONTROLÜ
+                        {
+                            swal("İşlem Başarısız!","Bir Önceki İstasyonda Tamamlanan Miktar 0'dan Büyük Olmalı." ,icon="error"); 
+                            return;
+                        }
+                    }
+
                     if($scope.SelectedRow[0].SAFHANO == 1)
                     {
                         await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]);
