@@ -246,12 +246,12 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
             ($scope.LblKantarKilo - $scope.LblKasaDara),            //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            $scope.LblKantarMiktar,          //BASİMADET
+            0,          //BASİMADET
             1,                               //DEPONO
             $scope.LblStokKodu,              //STOKKODU
             $scope.LblKantarMiktar,          //RENKKODU
             1,                               //BEDENKODU
-            $scope.YazdirilacakBarkod,                //BARKOD
+            $scope.SeriBarkod,                //BARKOD
             $scope.TxtEtiketMiktar           //BASILACAKMIKTAR
         ]
         console.log(InsertData)
@@ -330,7 +330,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
     {
         if($scope.LblStokKodu != '')
         {
-            await EtiketInsert();
+            
             
             await $scope.SeriBarkodOlustur()
             let TmpInsertData =
@@ -341,8 +341,9 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
                 $scope.LblStokKodu,
                 $scope.LblKantarMiktar
             ]
-           
+           console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
+            await EtiketInsert();
             
         }
         else

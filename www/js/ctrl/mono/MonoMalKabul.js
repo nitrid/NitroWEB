@@ -210,7 +210,7 @@ function MonoMalKabul($scope,srv, $rootScope)
         {
             datasource : 
             {
-                data :  [{name: "Fason Giris Etiket - 1", special: $rootScope.GeneralParamList.FasonGirisEtiket}] 
+                data :  [{name: "Mal Giris Etiket - 1", special: $rootScope.GeneralParamList.FasonGirisEtiket}] 
             },
             key : "special",
             value : "name",
