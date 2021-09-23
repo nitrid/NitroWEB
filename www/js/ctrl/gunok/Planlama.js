@@ -1,4 +1,4 @@
-function GunokPlanlama($scope,srv,$rootScope,$filter)
+function Planlama($scope,srv,$rootScope,$filter)
 {
     $scope.Init = async function () 
     {
@@ -182,6 +182,7 @@ function GunokPlanlama($scope,srv,$rootScope,$filter)
     }
     async function GetAcikIsEmrileri(pKod)
     {
+        console.log(pKod)
         return new Promise(async resolve => 
         {
             let TmpQuery = 

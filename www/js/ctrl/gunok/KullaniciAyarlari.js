@@ -1,4 +1,4 @@
-function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
+function KullaniciAyarlari($scope, srv, $rootScope, $state)
 {
     async function InitGrd()
     {
@@ -71,13 +71,14 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 // Kullanıcı
                 Password : srv.GetParamValue($scope.Data,"Password"),
                 // Menü
-                GunokPlanlama : srv.GetParamValue($scope.Data,"GunokPlanlama"),
-                GunokOperator : srv.GetParamValue($scope.Data,"GunokOperator"),
-                GunokUretimDashboard : srv.GetParamValue($scope.Data,"GunokUretimDashboard"),
+                Planlama : srv.GetParamValue($scope.Data,"Planlama"),
+                Operator : srv.GetParamValue($scope.Data,"Operator"),
+                UretimTamamlama : srv.GetParamValue($scope.Data,"UretimTamamlama"),
+                UretimDashboard : srv.GetParamValue($scope.Data,"UretimDashboard"),
                 // Menü Yönetim
-                GunokKullaniciAyarlari : srv.GetParamValue($scope.Data,"GunokKullaniciAyarlari"),
-                GunokKullaniciEkle : srv.GetParamValue($scope.Data,"GunokKullaniciEkle"),
-                GunokUretimSilme : srv.GetParamValue($scope.Data,"GunokUretimSilme"),
+                KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
+                KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
+                UretimSilme : srv.GetParamValue($scope.Data,"UretimSilme"),
                 // Parametre
                 OperasyonKodu : srv.GetParamValue($scope.Data,"OperasyonKodu"),
                 IsEmriOnayDurumu : srv.GetParamValue($scope.Data,"IsEmriOnayDurumu"),
@@ -155,7 +156,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             datasource : 
             {
                 db: "MikroDB_V16",
-                query : "SELECT * FROM TERP_NITROWEB_PARAM_2 WHERE TYPE IN ('1','2','3') ORDER BY TYPE",
+                query : "SELECT TAG AS TAG,MAX(SPECIAL) AS SPECIAL FROM TERP_NITROWEB_PARAM_2 WHERE TYPE IN ('1','2','3') GROUP BY TAG ",
             },
             key : "TAG",
             value : "SPECIAL",
@@ -254,23 +255,26 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             // Menü
             {
-                GunokPlanlama : $rootScope.GeneralParamList.GunokPlanlama
+                Planlama : $rootScope.GeneralParamList.Planlama
             },
             {
-                GunokOperator : $rootScope.GeneralParamList.GunokOperator
+                Operator : $rootScope.GeneralParamList.Operator
             },
             {
-                GunokUretimDashboard : $rootScope.GeneralParamList.GunokUretimDashboard
+                UretimTamamlama : $rootScope.GeneralParamList.UretimTamamlama
+            },
+            {
+                UretimDashboard : $rootScope.GeneralParamList.UretimDashboard
             },
             // Menü Yönetim
             {
-                GunokKullaniciAyarlari : $rootScope.GeneralParamList.GunokKullaniciAyarlari
+                KullaniciAyarlari : $rootScope.GeneralParamList.KullaniciAyarlari
             },
             {
-                GunokKullaniciEkle : $rootScope.GeneralParamList.GunokKullaniciEkle
+                KullaniciEkle : $rootScope.GeneralParamList.KullaniciEkle
             },
             {
-                GunokUretimSilme : $rootScope.GeneralParamList.GunokUretimSilme
+                UretimSilme : $rootScope.GeneralParamList.UretimSilme
             },
             // Parametre
             {
@@ -346,13 +350,14 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["Password",$rootScope.GeneralParamList.Password,0,""],
             ["Kullanici",$scope.GeneralParamList.Account,0,""],
             // Menü
-            ["GunokPlanlama",$rootScope.GeneralParamList.GunokPlanlama,1,"Planlama"],
-            ["GunokOperator",$rootScope.GeneralParamList.GunokOperator,1,"Operatör"],
-            ["GunokUretimDashboard",$rootScope.GeneralParamList.GunokUretimDashboard,1,"Uretim Dashboard"],
+            ["Planlama",$rootScope.GeneralParamList.Planlama,1,"Planlama"],
+            ["Operator",$rootScope.GeneralParamList.Operator,1,"Operatör"],
+            ["UretimTamamlama",$rootScope.GeneralParamList.UretimTamamlama,1,"Üretim Tamamlama"],
+            ["UretimDashboard",$rootScope.GeneralParamList.UretimDashboard,1,"Uretim Dashboard"],
             // Menü Yönetim
-            ["GunokKullaniciAyarlari",$rootScope.GeneralParamList.GunokKullaniciAyarlari,2,"Kullanici Ayarları"],
-            ["GunokKullaniciEkle",$rootScope.GeneralParamList.GunokKullaniciEkle,2,"Kullanıcı Ekle"],
-            ["GunokUretimSilme",$rootScope.GeneralParamList.GunokUretimSilme,2,"Üretim Silme"],
+            ["KullaniciAyarlari",$rootScope.GeneralParamList.KullaniciAyarlari,2,"Kullanici Ayarları"],
+            ["KullaniciEkle",$rootScope.GeneralParamList.KullaniciEkle,2,"Kullanıcı Ekle"],
+            ["UretimSilme",$rootScope.GeneralParamList.UretimSilme,2,"Üretim Silme"],
             // Parametre
             ["OperasyonKodu",$rootScope.GeneralParamList.OperasyonKodu,4,""],
             ["IsEmriOnayDurumu",$rootScope.GeneralParamList.IsEmriOnayDurumu,4,""],
@@ -394,7 +399,7 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 {
                     ParamInsert($scope.InsertData[i])
                 }
-                $state.go("main.GunokKullaniciAyarlari")
+                $state.go("main.KullaniciAyarlari")
             }
             else
             {
@@ -439,13 +444,14 @@ function GunokKullaniciAyarlari($scope, srv, $rootScope, $state)
                 Account : "",
                 Password : "",
                 // Menü
-                GunokPlanlama : false,
-                GunokOperator : false,
-                GunokUretimDashboard : false,
+                Planlama : false,
+                Operator : false,
+                UretimTamamlama : false,
+                UretimDashboard : false,
                 // Menü Yönetim
-                GunokKullaniciAyarlari : false,
-                GunokKullaniciEkle : false,
-                GunokUretimSilme : false,
+                KullaniciAyarlari : false,
+                KullaniciEkle : false,
+                UretimSilme : false,
                 // Parametre
                 OperasyonKodu : "",
                 IsEmriOnayDurumu : "",

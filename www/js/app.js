@@ -184,37 +184,46 @@ angular.module("app",
     state
     (
         {
-            name: 'main.GunokKullaniciAyarlari',
-            url: '/gunok_kullanici_ayarlari',
-            templateUrl : "view/gunok/GunokKullaniciAyarlari.html",
-            controller:"GunokKullaniciAyarlari"
+            name: 'main.KullaniciAyarlari',
+            url: '/kullanici_ayarlari',
+            templateUrl : "view/gunok/KullaniciAyarlari.html",
+            controller:"KullaniciAyarlari"
         }
     ).
     state
     (
         {
-            name: 'main.GunokKullaniciEkle',
-            url: '/gunok_kullanici_ekle',
-            templateUrl : "view/gunok/GunokKullaniciEkle.html",
-            controller:"GunokKullaniciAyarlari"
+            name: 'main.KullaniciEkle',
+            url: '/kullanici_ekle',
+            templateUrl : "view/gunok/KullaniciEkle.html",
+            controller:"KullaniciAyarlari"
         }
     ).
     state
     (
         {
-            name: 'main.GunokPlanlama',
-            url: '/gunok_planlama',
-            templateUrl : "view/gunok/GunokPlanlama.html",
-            controller:"GunokPlanlama"
+            name: 'main.Planlama',
+            url: '/planlama',
+            templateUrl : "view/gunok/Planlama.html",
+            controller:"Planlama"
         }
     ).
     state
     (
         {
-            name: 'main.GunokOperator',
-            url: '/gunok_operator',
-            templateUrl : "view/gunok/GunokOperator.html",
-            controller:"GunokOperator"
+            name: 'main.Operator',
+            url: '/operator',
+            templateUrl : "view/gunok/Operator.html",
+            controller:"Operator"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.UretimTamamlama',
+            url: '/uretimtamamlama',
+            templateUrl : "view/gunok/UretimTamamlama.html",
+            controller:"UretimTamamlama"
         }
     )
 });

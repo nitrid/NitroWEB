@@ -126,13 +126,14 @@ function Main($scope,$state,srv,$rootScope)
                 Password : srv.GetParamValue($scope.Data,"Password"),
                 Kullanici : srv.GetParamValue($scope.Data,"Kullanici"),
                 // Menü
-                GunokOperator : srv.GetParamValue($scope.Data,"GunokOperator"),
-                GunokPlanlama : srv.GetParamValue($scope.Data,"GunokPlanlama"),
-                GunokUretimDashboard : srv.GetParamValue($scope.Data,"GunokUretimDashboard"),
+                Operator : srv.GetParamValue($scope.Data,"Operator"),
+                Planlama : srv.GetParamValue($scope.Data,"Planlama"),
+                UretimTamamlama : srv.GetParamValue($scope.Data,"UretimTamamlama"),
+                UretimDashboard : srv.GetParamValue($scope.Data,"UretimDashboard"),
                 // Menü Yönetim
-                GunokKullaniciAyarlari : srv.GetParamValue($scope.Data,"GunokKullaniciAyarlari"),
-                GunokKullaniciEkle : srv.GetParamValue($scope.Data,"GunokKullaniciEkle"),
-                GunokUretimSilme : srv.GetParamValue($scope.Data,"GunokUretimSilme"),
+                KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
+                KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
+                UretimSilme : srv.GetParamValue($scope.Data,"UretimSilme"),
                 // Parametre
                 OperasyonKodu : srv.GetParamValue($scope.Data,"OperasyonKodu"),
                 IsEmriOnayDurumu : srv.GetParamValue($scope.Data,"IsEmriOnayDurumu"),

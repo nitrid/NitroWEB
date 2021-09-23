@@ -1,4 +1,4 @@
-<div ng-controller="GunokKullaniciAyarlari" ng-init="Init(1)">
+<div ng-controller="KullaniciAyarlari" ng-init="Init(1)">
     <div class="row pt-2">
         <div class="col-md-4 offset-8 d-grid">
             <button class="btn btn-success mb-2 text-white fw-bold" ng-click="BtnParamInsert()">KAYDET</button>
@@ -126,7 +126,7 @@
                         </div>
                         <div class="col-3 mt-2">
                             <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.GunokPlanlama">
+                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.Planlama">
                             </div>
                         </div>
                         <div class="col-9 px-2">
@@ -134,7 +134,15 @@
                         </div>
                         <div class="col-3 mt-2">
                             <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.GunokOperator">
+                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.Operator">
+                            </div>
+                        </div>
+                        <div class="col-9 px-2">
+                            <p class="text-md-right my-0 py-1" >Üretim Tamamlama:</p>
+                        </div>
+                        <div class="col-3 mt-2">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.UretimTamamlama">
                             </div>
                         </div>
                         <div class="col-9 px-2">
@@ -142,7 +150,7 @@
                         </div>
                         <div class="col-3 mt-2">
                             <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.GunokUretimDashboard">
+                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.UretimDashboard">
                             </div>
                         </div>
                     </div>
@@ -157,7 +165,7 @@
                         </div>
                         <div class="col-3 mt-2">
                             <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.GunokKullaniciAyarlari">
+                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.KullaniciAyarlari">
                             </div>
                         </div>
                         <div class="col-9 px-2">
@@ -165,7 +173,7 @@
                         </div>
                         <div class="col-3 mt-2">
                             <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.GunokKullaniciEkle">
+                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.KullaniciEkle">
                             </div>
                         </div>
                         <div class="col-9 px-2">
@@ -173,7 +181,7 @@
                         </div>
                         <div class="col-3 mt-2">
                             <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.GunokUretimSilme">
+                                <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.UretimSilme">
                             </div>
                         </div>
                     </div>

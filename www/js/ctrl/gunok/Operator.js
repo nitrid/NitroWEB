@@ -1,4 +1,4 @@
-function GunokOperator($scope,srv,$rootScope,$filter)
+function Operator($scope,srv,$rootScope,$filter)
 {
     $scope.Init = async function () 
     {
