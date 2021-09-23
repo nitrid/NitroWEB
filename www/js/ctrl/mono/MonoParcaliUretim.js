@@ -77,7 +77,7 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT sip_evrakno_seri AS SERI , sip_evrakno_sira AS SIRA, (SELECT cari_unvan1 FROM CARI_HESAPLAR WHERE cari_kod = sip_musteri_kod) AS CARI from SIPARISLER  " +
+                query : "SELECT sip_evrakno_seri AS SERI , sip_evrakno_sira AS SIRA, (SELECT cari_unvan1 FROM CARI_HESAPLAR WHERE cari_kod = sip_musteri_kod) AS CARI from SIPARISLER  where sip_kapat_fl = 0 and sip_tip = 0 " +
                 "GROUP BY sip_evrakno_seri,sip_evrakno_sira,sip_musteri_kod " +
                 "HAVING SUM(sip_miktar) > sum(sip_teslim_miktar) " ,
             },
@@ -782,6 +782,11 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
         let TmpDrUret = $scope.Data.UMP.filter(x => x.URETTUKET == 1)
         let TmpDrTuket = $scope.Data.UMP.filter(x => x.URETTUKET == 0)
         let TmpDrRota = [];
+        let InfoText = ''
+        for (let r = 0; r < TmpDrUret.length; r++) 
+        {
+            InfoText = InfoText + 'Stok Kodu : ' + TmpDrUret[r].KODU + "\n"
+        }
 
        
 
@@ -807,9 +812,11 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
                 console.log(Detay[x].DEPOMIKTAR)
                 if((Detay[x].MIKTAR * TmpDrUret[i].PMIKTAR) >  Detay[x].DEPOMIKTAR)
                 {
-                    swal("Dikkat", " " +TmpDrUret[i].KODU +" Kodlu Üretim İçin Gerekli Stoklar Depoda Eksik Lütfen Kontrol Edip Tekrar Deneyiniz.",icon="warning");
+                    swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                    
                     $scope.Init()
                     return
+                    
                 }
             }
 

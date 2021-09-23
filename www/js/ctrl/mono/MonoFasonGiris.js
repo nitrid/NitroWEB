@@ -537,14 +537,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
     {
         return new Promise(async resolve => 
         {
-            let TmpEvrTip = 12;
+            let TmpEvrTip = 13;
             let TmpTip = 0;
-
-            if(pGirisCikis == 1)
-            {
-                TmpEvrTip = 0
-                TmpTip = 1
-            }
 
             let TmpInsertData = 
             [
@@ -851,7 +845,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
             swal("Dikkat", "Kayıt Girilmeden Bu İşlemi Yapamazsınız !",icon="warning");
             return;
         }
-        //* DEPO MİKTAR KONTROL */        
+        //* DEPO MİKTAR KONTROL */     
+        let InfoText = "";   
         for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
         {
             if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
@@ -899,18 +894,18 @@ function MonoFasonGiris($scope,srv, $rootScope)
     }
     $scope.BtnBarkodBas = async function()
     {
-        if($scope.LblUrun != '')
-        {
+        // if($scope.LblUrun != '')
+        // {
             let TmpSira = await MaxEtiketSira($rootScope.GeneralParamList.FasonEtiketSeri)
             console.log($rootScope.GeneralParamList.FasonEtiketSeri)
             console.log(TmpSira)
             console.log(SelectionRow)
             await EtiketInsert(TmpSira,$scope.Data.DATA[0].PARTIBARKOD);
-        }
-        else
-        {
-            swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
-        }
+        // }
+        // else
+        // {
+        //     swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        // }
     }
     $scope.YeniEvrak = function()
     {
@@ -987,7 +982,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 [
                     1,                               //CREATE_USER
                     1,                               //LASTUP_USER
-                    1,     //SPECIAL1
+                    2,     //SPECIAL1
                     $rootScope.GeneralParamList.FasonEtiketSeri,//SERI
                     1,                          //SIRA
                     0,                              //AÇIKLAMA
