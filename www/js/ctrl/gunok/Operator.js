@@ -262,7 +262,6 @@ function Operator($scope,srv,$rootScope,$filter)
             onSelectionChanged: async function (selectedItems) 
             {
                 $scope.SelectedRow = selectedItems.selectedRowsData;
-                console.log($scope.SelectedRow)
 
                 $scope.Data.UMP = await UretimMalzemePlanGetir(selectedItems.selectedRowsData[0].KODU);
                 $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU);
