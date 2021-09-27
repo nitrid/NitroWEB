@@ -469,10 +469,6 @@ function MonoMalKabul($scope,srv, $rootScope)
     {
         return new Promise(async resolve => 
         {
-            let TmpEvrTip = 12;
-    
-
-
             let TmpInsertData = 
             [
                 $rootScope.GeneralParamList.MikroId,
@@ -483,7 +479,7 @@ function MonoMalKabul($scope,srv, $rootScope)
                 0,
                 0,
                 0,
-                1,
+                13,
                 pSeri,
                 pSira,
                 $scope.TxtEvrakno, //BELGE NO

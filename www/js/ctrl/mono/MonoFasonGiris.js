@@ -537,8 +537,14 @@ function MonoFasonGiris($scope,srv, $rootScope)
     {
         return new Promise(async resolve => 
         {
-            let TmpEvrTip = 13;
+            let TmpEvrTip = 12;
             let TmpTip = 0;
+
+            if(pGirisCikis == 1)
+            {
+                TmpEvrTip = 0
+                TmpTip = 1
+            }
 
             let TmpInsertData = 
             [
