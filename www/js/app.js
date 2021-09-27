@@ -191,6 +191,15 @@ angular.module("app",
     state
     (
         {
+            name: 'main.MonoUretimParcalama',
+            url: '/mono_uretim_parcalama',
+            templateUrl : "view/mono/MonoUretimParcalama.html",
+            controller:"MonoUretimParcalama"
+        }
+    ).
+    state
+    (
+        {
             name: 'main.MonoParcaliUretim',
             url: '/mono_parcali_uretim',
             templateUrl : "view/mono/MonoParcaliUretim.html",

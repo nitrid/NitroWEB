@@ -234,6 +234,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoParcaliUretim : $rootScope.GeneralParamList.MonoParcaliUretim
             },
             {
+                MonoUretimParcalama : $rootScope.GeneralParamList.MonoUretimParcalama
+            },
+            {
                 MonoBasarSayarBarkodOlustur : $rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur
             },
             {
@@ -431,6 +434,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoElektrikUretim",$rootScope.GeneralParamList.MonoElektrikUretim,1,"Elektrik Uretim"],
             ["MonoMalKabul",$rootScope.GeneralParamList.MonoMalKabul,1,"Mal Kabul"],
             ["MonoParcaliUretim",$rootScope.GeneralParamList.MonoParcaliUretim,1,"Parcali Uretim"],
+            ["MonoUretimParcalama",$rootScope.GeneralParamList.MonoUretimParcalama,1,"Üretim Parçalama"],
             ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1," Sayar Tartar Barkod Oluştur"],
             ["MonoUretimDashboard",$rootScope.GeneralParamList.MonoUretimDashboard,1,"Üretim Dashboard"],
             // Menü Yönetim
@@ -566,6 +570,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoElektrikUretim : false,
                 MonoMalKabul : false,
                 MonoParcaliUretim : false,
+                MonoUretimParcalama : false,
                 MonoBasarSayarBarkodOlustur : false,
                 MonoUretimDashboard : false,
                 // Menü Yönetim
