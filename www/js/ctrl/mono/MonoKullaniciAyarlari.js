@@ -86,6 +86,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
                 MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
                 MonoStokDepoGirisCikisRaporu : srv.GetParamValue($scope.Data,"MonoStokDepoGirisCikisRaporu"),
+                MonoSeriNoKontrol : srv.GetParamValue($scope.Data,"MonoSeriNoKontrol"),
                 // Parametre
                 BarkodEtiketSeri : srv.GetParamValue($scope.Data,"BarkodEtiketSeri"),
                 BasarSayarHasasTeraziIP : srv.GetParamValue($scope.Data,"BasarSayarHasasTeraziIP"),
@@ -261,6 +262,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             {
                 MonoStokDepoGirisCikisRaporu : $rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu
+            },
+            {
+                MonoSeriNoKontrol : $rootScope.GeneralParamList.MonoSeriNoKontrol
             },
             // Parametre
             {
@@ -445,6 +449,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"Depo Transfer Raporu"],
             ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"Stok Seviyeleri Raporu"],
             ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"Depo Giriş Çıkış Raporu"],
+            ["MonoSeriNoKontrol",$rootScope.GeneralParamList.MonoSeriNoKontrol,3,"Seri No Kontrol"],
             // Parametre
             ["BarkodEtiketSeri",$rootScope.GeneralParamList.BarkodEtiketSeri,4,""],
             ["BasarSayarHasasTeraziIP",$rootScope.GeneralParamList.BasarSayarHasasTeraziIP,4,""],
@@ -581,6 +586,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoDepoTransferRaporu : false,
                 MonoStokSeviyeleriRaporu : false,
                 MonoStokDepoGirisCikisRaporu : false,
+                MonoSeriNoKontrol : false,
                 // Parametre
                 BarkodEtiketSeri : "",
                 BasarSayarHasasTeraziIP : "",
