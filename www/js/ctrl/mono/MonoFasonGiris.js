@@ -518,7 +518,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                         "dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
                         "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),0) AS BMIKTAR " +
-                        "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri",
+                        "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri order by upl_kodu desc",
                 param : ['upl_isemri:string|50'],
                 value : [pIsEmri]
             }
@@ -867,20 +867,29 @@ function MonoFasonGiris($scope,srv, $rootScope)
             }
         }
 
-        var TmpUretMiktar = 0
-        for (let i = 0; i < TmpDrUret.length; i++) 
-        {
-           var TmpUretKodu = TmpDrUret[i].KODU
-           var TmpUretIsemrı = TmpDrUret[i].ISEMRI
-           TmpUretMiktar = TmpUretMiktar + TmpDrUret[i].MIKTAR
-           var TmpUretDepo = TmpDrUret[i].DEPO
-           var TmpUretParti = TmpDrUret[i].PARTI
-           var TmpUretLot = TmpDrUret[i].LOT
-           var TmpUretIsmerkezi = TmpDrUret[i].ISMERKEZI
+        let UretData = ToGroupBy(TmpDrUret,'KODU')
 
+        for (let x = 0; x < Object.values(UretData).length; x++) 
+        {
+            var TmpUretMiktar = 0
+            TmpUretMiktar = srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = "+Object.values(UretData)[x][0].KODU+"")
+            var TmpUretKodu = Object.values(UretData)[x][0].KODU
+            for (let i = 0; i < TmpDrUret.length; i++) 
+            {
+               
+                var TmpUretIsemrı = TmpDrUret[i].ISEMRI
+                var TmpUretDepo = TmpDrUret[i].DEPO
+                var TmpUretParti = TmpDrUret[i].PARTI
+                var TmpUretLot = TmpDrUret[i].LOT
+                var TmpUretIsmerkezi = TmpDrUret[i].ISMERKEZI
+            }
+            console.log(TmpUretMiktar)
+            console.log(TmpUretKodu)
+            await InsertUrunGirisCikis(0,TmpUretKodu,TmpUretIsemrı,TmpUretMiktar,TmpUretDepo,TmpUretParti,TmpUretLot,TmpUretIsmerkezi,$scope.SthGSeri,$scope.SthGSira)
+            await UpdateMalzemePlani(TmpUretIsemrı, TmpUretKodu, TmpUretMiktar, true)
         }
-        await InsertUrunGirisCikis(0,TmpUretKodu,TmpUretIsemrı,TmpUretMiktar,TmpUretDepo,TmpUretParti,TmpUretLot,TmpUretIsmerkezi,$scope.SthGSeri,$scope.SthGSira)
-        await UpdateMalzemePlani(TmpUretIsemrı, TmpUretKodu, TmpUretMiktar, true)
+        
+       
        
         let TuketData = ToGroupBy(TmpDrTuket,'KODU')
         console.log(TmpDrTuket)

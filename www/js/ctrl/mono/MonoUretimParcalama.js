@@ -165,7 +165,7 @@ function MonoUretimParcalama($scope,srv, $rootScope)
     }
     async function Ekle(pStok,pMiktar,pDepo)
     {
-        await StokHarKaydet(pStok,pMiktar,pDepo,1)
+       
 
         let TmpQuery = 
         {
@@ -177,6 +177,7 @@ function MonoUretimParcalama($scope,srv, $rootScope)
         let Detay = await srv.Execute(TmpQuery)  
         if(Detay.length > 0)
         {
+            await StokHarKaydet(pStok,pMiktar,pDepo,1)
             for (let i = 0; i < Detay.length; i++) 
             {
                 await StokHarKaydet(Detay[i].KODU,(Detay[i].MIKTAR * pMiktar),pDepo,0)    

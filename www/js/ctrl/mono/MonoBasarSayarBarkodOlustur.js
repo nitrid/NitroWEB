@@ -318,7 +318,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
-        $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * ($scope.DataKantarKilo - $scope.LblKasaDara)).toFixed(2);
+        $scope.LblKantarMiktar = parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * ($scope.DataKantarKilo - $scope.LblKasaDara)));
     }
     $scope.BtnKantarVerisiGetir = async function()
     {
