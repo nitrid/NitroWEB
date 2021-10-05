@@ -30,9 +30,9 @@ function Operator($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db: "{M}." + $scope.Firma,
-                query : "SELECT 'TUMU' AS KODU,'TÜMÜ' AS ACIKLAMA " +
+                query : "SELECT '0' AS KODU,'TÜMÜ' AS ACIKLAMA " +
                         "UNION ALL " +
-                        "SELECT Op_Kodu AS KODU,Op_Aciklama AS ACIKLAMA FROM URETIM_OPERASYONLARI " ,
+                        "SELECT Op_Kodu AS KODU,Op_Aciklama AS ACIKLAMA FROM URETIM_OPERASYONLARI ORDER BY KODU " ,
             },
             key : "KODU",
             value : "ACIKLAMA",
@@ -92,6 +92,9 @@ function Operator($scope,srv,$rootScope,$filter)
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = UPL.upl_kodu),'') AS BARKOD, " + 
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
+                        "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
+                        "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
+                        "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
                         "ISM.is_Baglanti_uid AS BAGLANTIID, " +
                         "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
@@ -105,8 +108,8 @@ function Operator($scope,srv,$rootScope,$filter)
                         "(ROTA.RtP_PlanlananMiktar - ROTA.RtP_TamamlananMiktar) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "TERP.ISEMRI_STATUS IN(0,1) AND " +
-                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
-                        "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = 'TUMU')) AND " +
+                        "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
+                        "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl   " +
                         "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) " ,
                         param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
@@ -207,6 +210,24 @@ function Operator($scope,srv,$rootScope,$filter)
                 {
                     dataField: "CARIISMI",
                     caption: "Cari Adı",
+                    alignment: "center"
+                },
+                {
+                    width: 120,
+                    dataField: "MALZEMETIPI",
+                    caption: "MALZ. TIP",
+                    alignment: "center"
+                },
+                {
+                    width: 120,
+                    dataField: "SACKALINLIK",
+                    caption: "S. KALINLIK",
+                    alignment: "center"
+                },
+                {
+                    width: 120,
+                    dataField: "SONHALI",
+                    caption: "SON HALI",
                     alignment: "center"
                 },
                 {      
@@ -333,7 +354,7 @@ function Operator($scope,srv,$rootScope,$filter)
                         "upl_depno AS DEPO, " +
                         "dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
-                        "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),0) AS BMIKTAR " +
+                        "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),1) AS BMIKTAR " +
                         "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri AND upl_safhano = @upl_safhano",
                 param : ['upl_isemri:string|50','upl_safhano:string|25'],
                 value : [pIsEmri,$scope.SelectedRow[0].SAFHANO]
@@ -759,6 +780,27 @@ function Operator($scope,srv,$rootScope,$filter)
             {
                 swal("Uyarı", "Lütfen Planlanmış İş Emri Seçiniz.",icon="warning");
                 return;
+            }
+
+            $scope.ControlData = await UretimMalzemePlanGetir($scope.SelectedRow[0].KODU)
+
+            let TmpDrTuket = $scope.ControlData.filter(x => x.URETTUKET == 0);
+
+            if($scope.ControlData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
+            {
+                let InfoTextBalsat = "";
+                for(let i = 0;i < $scope.ControlData.length;i++) //Depo Miktar Kontrol
+                {
+                    if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
+                    {
+                        InfoTextBalsat = InfoTextBalsat + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' \n ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' \n ' + 'Miktar : ' + srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
+                    }
+                }
+                if(InfoTextBalsat != "")
+                {
+                    swal("Dikkat", "Depo En Az Bir Ürün İçin Yeterli Değil. " + "\n" + InfoTextBalsat,icon="warning");
+                    return;
+                }
             }
 
             swal({

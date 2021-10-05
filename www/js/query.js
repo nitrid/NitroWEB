@@ -2083,9 +2083,9 @@ var Query =
     },
     UpdateParam : 
     {
-        query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 SET VALUE = @VALUE WHERE TAG = @TAG",
-        param : ['VALUE','TAG'],
-        type : ['string|50','string|50']
+        query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 SET VALUE = @VALUE WHERE TAG = @TAG AND ACCOUNT = @ACCOUNT ",
+        param : ['VALUE','TAG','ACCOUNT'],
+        type : ['string|50','string|50','string|50']
     },
     InsertParam :
     {

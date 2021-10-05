@@ -155,6 +155,9 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
+                        "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
+                        "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
+                        "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
@@ -201,6 +204,9 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
+                        "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
+                        "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
+                        "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
                         "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
@@ -251,6 +257,9 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
+                        "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
+                        "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
+                        "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
                         "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
@@ -312,6 +321,7 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
                 {
+                    width: 100,
                     dataField: "SIPARISNO",
                     caption: "Sipariş No",
                     alignment: "center"
@@ -341,7 +351,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 }, 
                 {
-                    width: 200,
+                    width: 100,
                     dataField: "PLANMIKTAR",
                     caption: "Planlanan Miktar",
                     alignment: "center"
@@ -359,6 +369,24 @@ function Planlama($scope,srv,$rootScope,$filter)
                 {
                     dataField: "CARIISMI",
                     caption: "Cari Adı",
+                    alignment: "center"
+                },
+                {
+                     width: 120,
+                    dataField: "MALZEMETIPI",
+                    caption: "MALZ. TIP",
+                    alignment: "center"
+                },
+                {
+                     width: 120,
+                   dataField: "SACKALINLIK",
+                    caption: "S. KALINLIK",
+                    alignment: "center"
+                },
+                {
+                     width: 120,
+                 dataField: "SONHALI",
+                    caption: "SON HALI",
                     alignment: "center"
                 },
                 {      
@@ -451,6 +479,7 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
             {
+                width: 100,
                 dataField: "SIPARISNO",
                 caption: "Sipariş No",
                 alignment: "center"
@@ -480,7 +509,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                 alignment: "center"
             }, 
             {
-                width: 200,
+                width: 100,
                 dataField: "PLANMIKTAR",
                 caption: "Planlanan Miktar",
                 alignment: "center"
@@ -498,6 +527,24 @@ function Planlama($scope,srv,$rootScope,$filter)
             {
                 dataField: "CARIISMI",
                 caption: "Cari Adı",
+                alignment: "center"
+            },
+            {
+                 width: 120,
+                    dataField: "MALZEMETIPI",
+                caption: "MALZ. TIP",
+                alignment: "center"
+            },
+            {
+                 width: 120,
+                   dataField: "SACKALINLIK",
+                caption: "S. KALINLIK",
+                alignment: "center"
+            },
+            {
+                 width: 120,
+                 dataField: "SONHALI",
+                caption: "SON HALI",
                 alignment: "center"
             },
             {      
@@ -583,6 +630,7 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
                 {
+                    width: 100,
                     dataField: "SIPARISNO",
                     caption: "Sipariş No",
                     alignment: "center"
@@ -611,13 +659,13 @@ function Planlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 },
                 {
-                    width: 150,
+                    width: 200,
                     dataField: "KODU",
                     caption: "İş Emri No",
                     alignment: "center"
                 }, 
                 {
-                    width: 200,
+                    width: 100,
                     dataField: "PLANMIKTAR",
                     caption: "Planlanan Miktar",
                     alignment: "center"
@@ -635,6 +683,24 @@ function Planlama($scope,srv,$rootScope,$filter)
                 {
                     dataField: "CARIISMI",
                     caption: "Cari Adı",
+                    alignment: "center"
+                },
+                {
+                     width: 120,
+                    dataField: "MALZEMETIPI",
+                    caption: "MALZ. TIP",
+                    alignment: "center"
+                },
+                {
+                     width: 120,
+                   dataField: "SACKALINLIK",
+                    caption: "S. KALINLIK",
+                    alignment: "center"
+                },
+                {
+                     width: 120,
+                 dataField: "SONHALI",
+                    caption: "SON HALI",
                     alignment: "center"
                 },
                 {      

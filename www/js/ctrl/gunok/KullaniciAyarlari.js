@@ -65,7 +65,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         return new Promise(async resolve => 
         {
             $scope.Data = await srv.Execute($scope.Firm,'GetKullanici',[pKullanici])
-
+            console.log($scope.Data)
             $rootScope.GeneralParamList = 
             {
                 // Kullanıcı
@@ -101,7 +101,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 StokEksiyeDusme : srv.GetParamValue($scope.Data,"StokEksiyeDusme"),
                 SatirBirlestir : srv.GetParamValue($scope.Data,"SatirBirlestir"),
             }
-
+            $scope.EditUser()
             resolve()
         });
     }
@@ -193,7 +193,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             key : "special",
             value : "name",
-            defaultVal : $rootScope.GeneralParamList.IsEmriOnayDurumu,
+            defaultVal : $rootScope.GeneralParamList.IsEmriOnayDurumu.toString(),
             selectionMode : "key",
             return : $rootScope.GeneralParamList.IsEmriOnayDurumu,
             onSelected : function(pSelected)
@@ -209,7 +209,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             key : "special",
             value : "name",
-            defaultVal : $rootScope.GeneralParamList.KapananIsEmri,
+            defaultVal : $rootScope.GeneralParamList.KapananIsEmri.toString(),
             selectionMode : "key",
             return : $rootScope.GeneralParamList.KapananIsEmri,
             onSelected : function(pSelected)

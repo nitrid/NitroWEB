@@ -73,6 +73,9 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                         "UPL.upl_kodu AS STOKKODU, " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = UPL.upl_kodu),'') AS BARKOD, " + 
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
+                        "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
+                        "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
+                        "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
                         "ISM.is_Baglanti_uid AS BAGLANTIID, " +
                         "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
@@ -145,24 +148,25 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 },
                 {
-                    width: 150,
+                    width: 200,
                     dataField: "KODU",
                     caption: "İş Emri No",
                     alignment: "center"
                 },
                 {
-                    width: 200,
+                    width: 150,
                     dataField: "PLANLANANROTAMIKTAR",
                     caption: "Planlanan Miktar",
                     alignment: "center"
                 },
                 {
-                    width: 200,
+                    width: 150,
                     dataField: "TAMAMLANANROTAMIKTAR",
                     caption: "Tamamlanan Miktar",
                     alignment: "center"
                 },
                 {
+                    width: 200,
                     dataField: "STOKKODU",
                     caption: "Stok Kodu",
                     alignment: "center"
@@ -175,6 +179,24 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                 {
                     dataField: "CARIISMI",
                     caption: "Cari Adı",
+                    alignment: "center"
+                },
+                {
+                    width: 120,
+                    dataField: "MALZEMETIPI",
+                    caption: "MALZ. TIP",
+                    alignment: "center"
+                },
+                {
+                    width: 120,
+                    dataField: "SACKALINLIK",
+                    caption: "S. KALINLIK",
+                    alignment: "center"
+                },
+                {
+                    width: 120,
+                    dataField: "SONHALI",
+                    caption: "SON HALI",
                     alignment: "center"
                 },
                 {      
