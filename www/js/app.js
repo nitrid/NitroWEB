@@ -206,6 +206,15 @@ angular.module("app",
             controller:"MonoParcaliUretim"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoSeriNoKontrol',
+            url: '/mono_seri_no_kontrol',
+            templateUrl : "view/mono/MonoSeriNoKontrol.html",
+            controller:"MonoSeriNoKontrol"
+        }
+    ).
 
     //DIAN MENU
     state

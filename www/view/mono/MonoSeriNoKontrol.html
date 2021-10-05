@@ -1,0 +1,71 @@
+<div ng-controller="MonoSeriNoKontrol" ng-init="Init()">
+    <div class="card border-dark mb-1 h-80">
+        <div class="card-header bg-transparent border-dark p-1">Seri No</div>
+        <div class="card-body text-dark p-1 px-2">
+            <div class="row">
+                <div class="col-4 px-2">
+                    <p class="text-md-right my-0">Seri No :</p>
+                </div>
+                <div class="col-8 ">
+                    <button-edit id="3" option="BteSeriNo"></button-edit>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card border-dark mb-3" style="height: 300px;">
+            <div class="card-header bg-transparent border-dark py-1">Seri No Detayları</div>
+            <div class="card-body text-dark py-2">
+                <div class="row py-1">
+                    <div class="col-4 px-2">
+                        <p class="text-md-right my-0 py-1">Seri No :</p>
+                    </div>    
+                    <div class="col-8 px-2">
+                        <p class="text-md-left my-0 py-1">{{SeriNo}}</p>
+                    </div>
+                </div>
+                <div class="row py-1">
+                    <div class="col-4 px-2">
+                        <p class="text-md-right my-0 py-1">Oluşturulma Tarihi :</p>
+                    </div>    
+                    <div class="col-8 px-2">
+                        <p class="text-md-left my-0 py-1">{{OlusturmaTarih}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 px-2">
+                        <p class="text-md-right my-0 py-1">Oluşturulma Evrakı :</p>
+                    </div>    
+                    <div class="col-8 px-2">
+                        <p class="text-md-left my-0 py-1">{{OlusturmaEvrak}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 px-2">
+                        <p class="text-md-right my-0 py-1">Sevkiyat Tarihi :</p>
+                    </div>    
+                    <div class="col-8 px-2">
+                        <p class="text-md-left my-0 py-1">{{SatisTarih}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 px-2">
+                        <p class="text-md-right my-0 py-1">Sevkiyat Carisi :</p>
+                    </div>    
+                    <div class="col-8 px-2">
+                        <p class="text-md-left my-0 py-1">{{CariAdi}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 px-2">
+                        <p class="text-md-right my-0 py-1">Sevkiyat Evrakı :</p>
+                    </div>    
+                    <div class="col-8 px-2">
+                        <p class="text-md-left my-0 py-1">{{SatisEvrak}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
