@@ -150,7 +150,12 @@
                   <div class="input-group mb-3 input-group-lg">
                     <span class="fw-bold input-group-text">Yarı Mamül Kodu :</span>
                     <input type="text" ng-model="YariMamul.upl_kodu" class="form-control" disabled>
+                    <input type="text" ng-model="YariMamul.upl_miktar" class="form-control" disabled>
+                    <input type="text" ng-model="YariMamul.TAMAMLANAN" class="form-control" disabled>
                   </div>
+                </div>
+                <div class="row col-4 offset-8">
+                  <button type="button" class="btn btn-primary" ng-click="SubeSirapisOlustur()">Depo Sipariş Oluştur</button>
                 </div>
               </div>
             </div>

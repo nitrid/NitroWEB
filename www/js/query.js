@@ -1113,6 +1113,13 @@ var Query =
         param : ['sth_evrakno_seri','sth_evraktip'],
         type : ['string|25','int']
     },
+    MaxDepoSipSira :
+    {
+        query: "SELECT ISNULL(MAX(ssip_evrakno_sira),0) + 1 AS MAXEVRSIRA FROM DEPOLAR_ARASI_SIPARISLER " +
+                "WHERE ssip_evrakno_seri = @ssip_evrakno_seri " ,
+        param : ['ssip_evrakno_seri'],
+        type : ['string|25']
+    },
     //Cari Hareket
     CariHarGetir : 
     {
@@ -2188,7 +2195,7 @@ var Query =
     },
     YariMamulGet : 
     {
-        query : "SELECT upl_kodu,is_Kod FROM ISEMIRLERI AS ISM " +
+        query : "SELECT upl_kodu,is_Kod,sum(upl_miktar) AS upl_miktar,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0) AS TAMAMLANAN  FROM ISEMIRLERI AS ISM " +
                 "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                 "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri AND " +
                 "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 3 GROUP BY upl_kodu,is_Kod " ,
@@ -2214,5 +2221,107 @@ var Query =
     {
         query : "SELECT CONVERT(VARCHAR,ISEMRI_BAS_TARIH,120) AS DATE FROM MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ["ISEMRI_KOD:string|50","ISEMRI_ISTASYON_KOD:string|25"]
+    },
+    DepoSiparisInsert :
+    {
+        query : 
+                "INSERT INTO [DEPOLAR_ARASI_SIPARISLER] " +
+                "([ssip_DBCno] " +
+                ",[ssip_SpecRECno] " +
+                ",[ssip_iptal] " +
+                ",[ssip_fileid] " +
+                ",[ssip_hidden] " +
+                ",[ssip_kilitli] " +
+                ",[ssip_degisti] " +
+                ",[ssip_checksum] " +
+                ",[ssip_create_user] " +
+                ",[ssip_create_date] " +
+                ",[ssip_lastup_user] " +
+                ",[ssip_lastup_date] " +
+                ",[ssip_special1] " +
+                ",[ssip_special2] " +
+                ",[ssip_special3] " +
+                ",[ssip_firmano] " +
+                ",[ssip_subeno] " +
+                ",[ssip_tarih] " +
+                ",[ssip_teslim_tarih] " +
+                ",[ssip_evrakno_seri] " +
+                ",[ssip_evrakno_sira] " +
+                ",[ssip_satirno] " +
+                ",[ssip_belgeno] " +
+                ",[ssip_belge_tarih] " +
+                ",[ssip_stok_kod] " +
+                ",[ssip_miktar] " +
+                ",[ssip_b_fiyat] " +
+                ",[ssip_tutar] " +
+                ",[ssip_teslim_miktar] " +
+                ",[ssip_aciklama] " +
+                ",[ssip_girdepo] " +
+                ",[ssip_cikdepo] " +
+                ",[ssip_kapat_fl] " +
+                ",[ssip_birim_pntr] " +
+                ",[ssip_fiyat_liste_no] " +
+                ",[ssip_stal_uid] " +
+                ",[ssip_paket_kod] " +
+                ",[ssip_kapatmanedenkod] " +
+                ",[ssip_projekodu] " +
+                ",[ssip_sormerkezi] " +
+                ",[ssip_gecerlilik_tarihi] " +
+                ",[ssip_rezervasyon_miktari] " +
+                ",[ssip_rezerveden_teslim_edilen] " +
+                ") " +
+                "VALUES " +
+                "(0							--<ssip_DBCno, smallint,> \n" +
+                ",0							--<ssip_SpecRECno, int,> \n" +
+                ",0							--<ssip_iptal, bit,> \n" +
+                ",86							--<ssip_fileid, smallint,> \n" +
+                ",0							--<ssip_hidden, bit,> \n" +
+                ",0							--<ssip_kilitli, bit,> \n" +
+                ",0							--<ssip_degisti, bit,> \n" +
+                ",0							--<ssip_checksum, int,> \n" +
+                ",@ssip_create_user							--<ssip_create_user, smallint,> \n" +
+                ",CONVERT(NVARCHAR(10),GETDATE(),112) 		--<ssip_create_date, datetime,> \n" +
+                ",@ssip_lastup_user					--<ssip_lastup_user, smallint,> \n" +
+                ",CONVERT(NVARCHAR(10),GETDATE(),112) 		--<ssip_lastup_date, datetime,> \n" +
+                ",''							--<ssip_special1, varchar(4),> \n" +
+                ",''							--<ssip_special2, varchar(4),> \n" +
+                ",''							--<ssip_special3, varchar(4),> \n" +
+                ",@ssip_firmano					--<ssip_firmano, int,> \n" +
+                ",@ssip_subeno					--<ssip_subeno, int,> \n" +
+                ",CONVERT(NVARCHAR(10),GETDATE(),112)						--<ssip_tarih, datetime,> \n" +
+                ",CONVERT(NVARCHAR(10),GETDATE(),112)					--<ssip_teslim_tarih, datetime,> \n" +
+                ",@ssip_evrakno_seri					--<ssip_evrakno_seri, varchar(4),> \n" +
+                ",@ssip_evrakno_sira					--<ssip_evrakno_sira, int,> \n" +
+                ",(SELECT ISNULL(MAX(ssip_satirno),-1) + 1 AS SATIRNO FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_evrakno_seri = @ssip_evrakno_seri AND ssip_evrakno_sira = @ssip_evrakno_sira)	--<ssip_satirno, int,> \n" +
+                ",@ssip_belgeno					--<ssip_belgeno, varchar(15),> \n" +
+                ",CONVERT(NVARCHAR(10),GETDATE(),112)					--<ssip_belge_tarih, datetime,> \n" +
+                ",@ssip_stok_kod					--<ssip_stok_kod, varchar(25),> \n" +
+                ",@ssip_miktar					--<ssip_miktar, float,> \n" +
+                ",@ssip_b_fiyat					--<ssip_b_fiyat, float,> \n" +
+                ",@ssip_tutar						--<ssip_tutar, float,> \n" +
+                ",@ssip_teslim_miktar					--<ssip_teslim_miktar, float,> \n" +
+                ",''							--<ssip_aciklama, varchar(50),> \n" +
+                ",@ssip_girdepo					--<ssip_girdepo, int,> \n" +
+                ",@ssip_cikdepo					--<ssip_cikdepo, int,> \n" +
+                ",0							--<ssip_kapat_fl, bit,> \n" +
+                ",@ssip_birim_pntr					--<ssip_birim_pntr, tinyint,> \n" +
+                ",@ssip_fiyat_liste_no				--<ssip_fiyat_liste_no, int,> \n" +
+                ",cast(cast(0 as binary) as uniqueidentifier)		--<ssip_stal_uid, smallint,> \n" +
+                ",''							--<ssip_paket_kod, varchar(25),> \n" +
+                ",''                           --<ssip_kapatmanedenkod, varchar(25),> \n" +
+                ",''                          --<ssip_projekodu, varchar(25),> \n" +
+                ",@ssip_sormerkezi                          --<ssip_sormerkezi, varchar(25),> \n" +
+                ",''                          --<ssip_gecerlilik_tarihi, datetime,> \n" +
+                ",0                           --<ssip_rezervasyon_miktari, float,> \n" +
+                ",0                          --<ssip_rezerveden_teslim_edilen, float,> \n" +
+                ") " ,
+            param :['ssip_create_user:int','ssip_lastup_user:int','ssip_firmano:int','ssip_subeno:int','ssip_evrakno_seri:string|25',
+                    'ssip_evrakno_sira:int','ssip_belgeno:string|25','ssip_stok_kod:string|25','ssip_miktar:float','ssip_b_fiyat:float','ssip_tutar:float',
+                    'ssip_teslim_miktar:float','ssip_girdepo:int','ssip_cikdepo:int','ssip_birim_pntr:int','ssip_fiyat_liste_no:int','ssip_sormerkezi:string|25']
+    },
+    DepoSiparisKontrol : 
+    {
+        query : "SELECT ssip_belgeno FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_belgeno =@ssip_belgeno and ssip_miktar > ssip_teslim_miktar and ssip_kapat_fl = 0",
+        param : ["ssip_belgeno:string|50"]
     }
 };

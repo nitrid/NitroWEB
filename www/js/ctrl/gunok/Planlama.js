@@ -10,6 +10,7 @@ function Planlama($scope,srv,$rootScope,$filter)
         $scope.PlanlananIsEmriMiktar = 0;
         $scope.IsEmriDetay = {};
         $scope.TabIndex = 1;
+        $scope.IsSıparisBelgeNo = 's'
 
         $scope.SelectedData = [];
         $scope.SiralamaList = [];
@@ -734,6 +735,7 @@ function Planlama($scope,srv,$rootScope,$filter)
         $('#MdlIsEmriDetay').modal('show')
         $scope.IsEmriIstasyonList = await srv.Execute($scope.Firma,'IsEmriIstasyonlariGet',[pData.KODU]);
         $scope.YariMamulList = await srv.Execute($scope.Firma,'YariMamulGet',[pData.KODU]);
+        $scope.IsSıparisBelgeNo = pData.KODU
 
         $scope.IsEmriDetay.Kodu = pData.KODU
         $scope.IsEmriDetay.Adi = pData.ADI
@@ -849,6 +851,53 @@ function Planlama($scope,srv,$rootScope,$filter)
         else
         {
             swal("Uyarı", "Planlama Listesinde Değişiklik Bulunamadı.",icon="warning");
+        }
+    }
+    $scope.SubeSirapisOlustur = async function()
+    {
+
+        let TmpSiparis = await srv.Execute($scope.Firma,'DepoSiparisKontrol',[$scope.IsSıparisBelgeNo])
+        if(TmpSiparis.length > 0)
+        {
+            swal("Dikkat", " İş Emrine Ait Açık Depo Siparişi Bulunmaktadır .",icon="warning");
+            return
+        }
+
+        $scope.SiparisSeri =  'DPS'
+        let TmpSira = await srv.Execute($scope.Firma,'MaxDepoSipSira',[$scope.SiparisSeri])
+        if(TmpSira.length > 0)
+        {
+            $scope.SiparisSira = TmpSira[0].MAXEVRSIRA
+        }
+        for (let i = 0; i < $scope.YariMamulList.length; i++) 
+        {
+            
+            if(($scope.YariMamulList[i].upl_miktar - $scope.YariMamulList[i].TAMAMLANAN) > 0)
+            {
+                let TmpData = [
+
+                    99,
+                    99,
+                    0,
+                    0,
+                    $scope.SiparisSeri,
+                    $scope.SiparisSira,
+                    $scope.IsSıparisBelgeNo,
+                    $scope.YariMamulList[i].upl_kodu,
+                    ($scope.YariMamulList[i].upl_miktar - $scope.YariMamulList[i].TAMAMLANAN ),
+                    0,
+                    0,
+                    0,
+                    111,
+                    112,
+                    1,
+                    0,
+                    ''
+                ]
+                await srv.Execute($scope.Firma,'DepoSiparisInsert',TmpData)
+            }
+            
+            swal("Başarılı", " Sipariş Başarıyla Olusturuldu.",icon="success");
         }
     }
 }
