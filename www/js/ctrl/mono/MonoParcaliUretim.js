@@ -808,15 +808,18 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
             let Detay = await srv.Execute(TmpQuery)
             for (let x = 0; x < Detay.length; x++) 
             {
-                console.log((Detay[x].MIKTAR * TmpDrUret[i].PMIKTAR))
-                console.log(Detay[x].DEPOMIKTAR)
+               
                 if((Detay[x].MIKTAR * TmpDrUret[i].PMIKTAR) >  Detay[x].DEPOMIKTAR)
                 {
                     swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-                    
-                    $scope.Init()
-                    return
-                    
+                    InfoText = InfoText + 'Stok Kodu : ' + Detay[x].KODU + ' - ' + 'Depo Miktar : ' + "\n"
+
+                    if(x == Detay.length - 1)
+                    {
+                        swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                        $scope.Init()
+                        return;
+                    }
                 }
             }
 
