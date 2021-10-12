@@ -142,9 +142,9 @@ function MonoSeriNoKontrol($scope, srv, $rootScope)
             query : "SELECT  chz_serino AS SERINO, " +
             "CONVERT(VARCHAR,chz_al_tarih,104) AS ALTARIH, " +
             " chz_al_evr_seri + ' - ' + CONVERT(VARCHAR,chz_al_evr_sira) AS ALISEVRAK, " +
-            "ISNULL((SELECT CONVERT(VARCHAR,sth_tarih,104) FROM STOK_HAREKETLERI WHERE sth_evrakno_seri = chz_al_evr_seri and sth_evrakno_sira = chz_al_evr_sira and sth_evraktip = 1),'') AS  SATTARIH ," +
+            "ISNULL((SELECT TOP 1 CONVERT(VARCHAR,sth_tarih,104) FROM STOK_HAREKETLERI WHERE sth_evrakno_seri = chz_st_evr_seri and sth_evrakno_sira = chz_st_evr_sira and sth_evraktip = 1),'') AS  SATTARIH ," +
             " chz_st_evr_seri + ' - ' + CONVERT(VARCHAR,chz_st_evr_sira) AS SATISEVRAK, " +
-            "ISNULL((Select cari_unvan1 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sth_cari_kodu FROM STOK_HAREKETLERI WHERE sth_evrakno_seri = chz_al_evr_seri and sth_evrakno_sira = chz_al_evr_sira and sth_evraktip = 1)),'') AS CARIADI " +
+            "ISNULL((Select TOP 1 cari_unvan1 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT TOP 1 sth_cari_kodu FROM STOK_HAREKETLERI WHERE sth_evrakno_seri = chz_st_evr_seri and sth_evrakno_sira = chz_st_evr_sira and sth_evraktip = 1)),'') AS CARIADI " +
             "FROM  STOK_SERINO_TANIMLARI WHERE chz_serino = @chz_serino " ,
             param : ['chz_serino:string|50'],
             value : [pKodu]
