@@ -50,7 +50,8 @@ angular.module('app').component('buttonEdit',
                     let TmpDataSource = ctrl.option.datasource;
                     let TmpData = [];
                     let TmpColumns = [];
-                    
+                    let TmpDetail = ctrl.option.masterDetail
+                    console.log(TmpDetail)
                     if(typeof TmpDataSource == 'undefined')
                     {
                         resolve(false)
@@ -101,6 +102,7 @@ angular.module('app').component('buttonEdit',
                             },
                             hoverStateEnabled: true,
                             showBorders: true,
+                            filtering: true,
                             columns: TmpColumns,
                             paging: 
                             {
@@ -115,13 +117,13 @@ angular.module('app').component('buttonEdit',
                             {
                                 visible: true
                             },
+                            masterDetail: TmpDetail,
                             onSelectionChanged: function (selectedItems) 
                             {
                                 SelectionRow = selectedItems.selectedRowsData[0];
                             }
                         }
                     )
-
                     resolve(true)
                 }
                 else

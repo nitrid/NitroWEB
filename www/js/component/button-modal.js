@@ -82,6 +82,7 @@ angular.module('app').component('buttonModal',
                             allowColumnResizing: true,
                             width: "100%",
                             columnWidth: 100,
+                            
                             selection: 
                             {
                                 mode: "single"

@@ -143,32 +143,98 @@ function MonoMalKabul($scope,srv, $rootScope)
         }
         $scope.BteFasoncu = 
         {
-            title : "Cari Seçim",
+            title : "SIPARIS Seçim",
             txt : "",
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT " +
-                        "cari_kod AS KODU,cari_unvan1 AS ADI " +
-                        "FROM CARI_HESAPLAR"
+                query : "select sip_evrakno_seri AS SERI , sip_evrakno_sira AS SIRA , sip_musteri_kod AS CARI, " +
+                        "(SELECT cari_unvan1 FROM CARI_HESAPLAR WHERE cari_kod = sip_musteri_kod) AS CARIADI  " +
+                        "from SIPARISLER WHERE sip_tip = 1 and sip_kapat_fl = 0 " +
+                        "GROUP BY sip_evrakno_seri,sip_evrakno_sira,sip_musteri_kod " +
+                        "HAVING SUM(sip_miktar) > SUM(sip_teslim_miktar) ",
             },
-            selection : "KODU",
+            showBorders: true,
+            filtering: true,
+            selection : "CARIADI",
             columns :
             [
                 {
-                    dataField: "KODU",
+                    dataField: "SERI",
                     width: 200
                 }, 
                 {
-                    dataField: "ADI",
-                    width: 500
+                    dataField: "SIRA",
+                    width: 200
+                }, 
+                {
+                    dataField: "CARIADI",
+                    width: 400
+                }, 
+                {
+                    dataField: "CARI",
+                    width: 200
                 }, 
             ],
+            masterDetail: 
+            {
+                enabled: true,
+                template: async function(container, options) 
+                {
+                    let Detail = await DetayGetir(options.data)
+
+                $("<div>")
+                    .addClass("master-detail-caption")
+                    .appendTo(container);
+
+                $("<div>")
+                    .dxDataGrid({
+                        columnAutoWidth: false,
+                        showBorders: true,
+                        dataSource: Detail,
+                        filtering: true,
+                        filterRow: 
+                        {
+                            visible: true,
+                            applyFilter: "auto"
+                        },
+                        headerFilter: 
+                        {
+                            visible: true
+                        },
+                        columns: 
+                        [ 
+                            {
+                                dataField : "KODU",
+                                caption: "KODU",
+                                dataType: "text",
+                                align: "center",
+                            },
+                            {
+                                dataField : "ADI",
+                                caption: "ADI",
+                                dataType: "text",
+                                align: "center",
+                            }, 
+                            {
+                                dataField : "MIKTAR",
+                                caption: "MIKTAR",
+                                dataType: "text",
+                                align: "center",
+                            },                           
+                        ],
+                        
+                    }).appendTo(container);
+                }
+            },
             onSelected : async function(pData)
             {
                 if(typeof pData != 'undefined')
                 {                    
-                    
+                    $scope.CariKodu = pData.CARI
+                    $scope.CariAdı = pData.CARIADI;
+                    $scope.SipSeri = pData.SERI
+                    $scope.SipSira = pData.SIRA
                 }
             }
         }
@@ -277,6 +343,22 @@ function MonoMalKabul($scope,srv, $rootScope)
            // $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
         }
     }
+    async function DetayGetir(pData)
+    {
+        return new Promise(async resolve => 
+            {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query :"SELECT sip_stok_kod AS KODU, (SELECT sto_isim FROM STOKLAR WHERE sto_kod = sip_stok_kod) AS ADI,sip_miktar AS MIKTAR FROM SIPARISLER WHERE sip_evrakno_seri = @sip_evrakno_seri and sip_evrakno_sira = @sip_evrakno_sira and sip_tip = 1 ",
+            param : ['sip_evrakno_seri:string|50','sip_evrakno_sira:string|50'],
+            value : [pData.SERI,pData.SIRA]
+        }
+        let TmpData = await srv.Execute(TmpQuery)
+        resolve(TmpData)
+        });
+        
+    }
     function HassasTeraziVeriGetir() 
     {
         var net = new WebTCP('192.168.2.240', 9999);
@@ -375,6 +457,7 @@ function MonoMalKabul($scope,srv, $rootScope)
         
         InitGrd($scope.Data.DATA)
     }
+   
      $scope.Ekle = async function(pMiktar)
     {
 
@@ -465,8 +548,25 @@ function MonoMalKabul($scope,srv, $rootScope)
             return;
         });
     }
-    function InsertUrunGirisCikis(TmpKodu,TmpIsemrı,TmpMiktar,TmpDepo,TmpParti,TmpLot,TmpIsmerkezi,pSeri,pSira)
+    async function InsertUrunGirisCikis(TmpKodu,TmpIsemrı,TmpMiktar,TmpDepo,TmpParti,TmpLot,TmpIsmerkezi,pSeri,pSira)
     {
+        let TmpSipQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT sip_Guid FROM  SIPARISLER WHERE sip_evrakno_seri = @sip_evrakno_seri AND sip_evrakno_sira = @sip_evrakno_sira and sip_stok_kod = @sip_stok_kod and sip_tip = 1  ",
+            param : ['sip_evrakno_seri:string|25','sip_evrakno_sira:int','sip_stok_kod:string|50'],
+            value : [$scope.SipSeri,$scope.SipSira,TmpKodu]
+        }
+        let TmpResults = await srv.Execute(TmpSipQuery)
+        if(TmpResults.length > 0)
+        {
+            $scope.SipGuid = TmpResults[0].sip_Guid
+        }
+        else
+        {
+            $scope.SipGuid ='00000000-0000-0000-0000-000000000000'
+        }
+        
         return new Promise(async resolve => 
         {
             let TmpInsertData = 
@@ -506,7 +606,7 @@ function MonoMalKabul($scope,srv, $rootScope)
                 0, //SATIR ISKONTO TİP 9
                 0, //SATIR ISKONTO TİP 10
                 0, //CARİCİNSİ
-                $scope.BteFasoncu.txt, //CARI KODU,
+                $scope.CariKodu, //CARI KODU,
                 TmpIsemrı, //İŞEMRİKODU
                 "", //PERSONEL KODU
                 0, //HARDOVİZCİNSİ
@@ -534,7 +634,7 @@ function MonoMalKabul($scope,srv, $rootScope)
                 0, // MASRAFVERGİ
                 0, // ODEME NO                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                 '',// AÇIKLAMA
-                '00000000-0000-0000-0000-000000000000', //sth_sip_uid
+                $scope.SipGuid, //sth_sip_uid
                 '00000000-0000-0000-0000-000000000000', //sth_fat_uid,
                 TmpDepo, //GİRİSDEPONO
                 TmpDepo, //CİKİSDEPONO
@@ -557,11 +657,25 @@ function MonoMalKabul($scope,srv, $rootScope)
             ];
             
             console.log(TmpInsertData)
-
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
+            console.log(TmpResult)
             if(typeof TmpResult != 'undefined')
             {
+                if($scope.SipGuid != '00000000-0000-0000-0000-000000000000')
+                {
+                    let TmpSipQuery = 
+                    {
+                        db: "{M}." + $scope.Firma,
+                        query : "UPDATE SIPARISLER SET sip_teslim_miktar = sip_teslim_miktar + @MIKTAR WHERE sip_Guid = @sip_Guid  ",
+                        param : ['MIKTAR:float','sip_Guid:string|50'],
+                        value : [TmpMiktar,$scope.SipGuid]
+                    }
+                    console.log(TmpSipQuery)
+                    let TmpResults = await srv.Execute(TmpSipQuery)
+                    console.log(TmpResults)
+                }
+                
                 resolve(true);
                 return
             }
@@ -708,7 +822,7 @@ function MonoMalKabul($scope,srv, $rootScope)
         $scope.SthGSeri = $rootScope.GeneralParamList.FasonGirisSeri;
         $scope.SthCSeri = $rootScope.GeneralParamList.FasonCikisSeri;
 
-        $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
+        $scope.SthGSira = await MaxSthSira($scope.SthGSeri,1)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
 
         // if($rootScope.GeneralParamList.MonoMalKabul != "true")

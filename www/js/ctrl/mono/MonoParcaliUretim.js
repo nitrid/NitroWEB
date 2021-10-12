@@ -782,11 +782,8 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
         let TmpDrUret = $scope.Data.UMP.filter(x => x.URETTUKET == 1)
         let TmpDrTuket = $scope.Data.UMP.filter(x => x.URETTUKET == 0)
         let TmpDrRota = [];
-        let InfoText = ''
-        for (let r = 0; r < TmpDrUret.length; r++) 
-        {
-            InfoText = InfoText + 'Stok Kodu : ' + TmpDrUret[r].KODU + "\n"
-        }
+     
+      
 
        
 
@@ -806,6 +803,7 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
                 value : [TmpDrUret[i].KODU,TmpDrUret[i].KODU]
             }
             let Detay = await srv.Execute(TmpQuery)
+            let InfoText = ''
             for (let x = 0; x < Detay.length; x++) 
             {
                
@@ -814,13 +812,14 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
                     swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
                     InfoText = InfoText + 'Stok Kodu : ' + Detay[x].KODU + ' - ' + 'Depo Miktar : ' + "\n"
 
-                    if(x == Detay.length - 1)
-                    {
-                        swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-                        $scope.Init()
-                        return;
-                    }
+                   
                 }
+            }
+            if(InfoText != "")
+            {
+                swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                $scope.Init()
+                return;
             }
 
             let TmpData = {};

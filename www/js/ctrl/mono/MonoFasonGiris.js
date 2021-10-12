@@ -858,13 +858,13 @@ function MonoFasonGiris($scope,srv, $rootScope)
             if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
             {
                 InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' - ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' - ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
-
-                if(i == TmpDrTuket.length - 1)
-                {
-                    swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-                    return;
-                }
             }
+        }
+
+        if(InfoText != "")
+        {
+            swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+            return;
         }
 
         let UretData = ToGroupBy(TmpDrUret,'KODU')
