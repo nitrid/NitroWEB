@@ -19,7 +19,7 @@ function Login($scope,$state,srv)
 
         let TmpQuery = 
         {
-            db: "MikroDB_V16",
+            db: "GENDB_NITROWEB",
             query : "SELECT * FROM TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE",
             param : ['TYPE'],
             type :  ['int'],

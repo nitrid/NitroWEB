@@ -2078,25 +2078,25 @@ var Query =
        5 - SISTEM */
     GetParam :
     {
-        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
+        query : "SELECT * FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
         param : ['TYPE','ACCOUNT'],
         type : ['int','string|50'] 
     },
     GetKullanici : 
     {
-        query : "SELECT * FROM MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 WHERE ACCOUNT = @ACCOUNT",
+        query : "SELECT * FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_2 WHERE ACCOUNT = @ACCOUNT",
         param : ['ACCOUNT'],
         type : ['string|50'] 
     },
     UpdateParam : 
     {
-        query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_PARAM_2 SET VALUE = @VALUE WHERE TAG = @TAG AND ACCOUNT = @ACCOUNT ",
+        query : "UPDATE GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_2 SET VALUE = @VALUE WHERE TAG = @TAG AND ACCOUNT = @ACCOUNT ",
         param : ['VALUE','TAG','ACCOUNT'],
         type : ['string|50','string|50','string|50']
     },
     InsertParam :
     {
-        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_PARAM_2] " +
+        query : "INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_PARAM_2] " +
                 "([ACCOUNT] " +
                 ",[TAG] " +
                 ",[VALUE] " +
@@ -2116,7 +2116,7 @@ var Query =
     },
     InsertJson :
     {
-        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_JSONDATA_2] " +
+        query : "INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_JSONDATA_2] " +
                 "([GUID] " +
                 ",[KULLANICI] " +
                 ",[MENU] " +
@@ -2135,12 +2135,12 @@ var Query =
     //GUNOK
     DeleteIsEmriSira : 
     {
-        query : "DELETE FROM MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] WHERE ISEMRI_GUID = @ISEMRI_GUID ",
+        query : "DELETE FROM GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] WHERE ISEMRI_GUID = @ISEMRI_GUID ",
         param : ['ISEMRI_GUID:string|50']
     },
     MaxIsEmriIstasyonSira : 
     {
-        query : "SELECT ISNULL(MAX(CONVERT(int,ISEMRI_ISTASYON_SIRA)),0) + 1 AS MAXISEMRISIRA FROM MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] WHERE SPECIAL = 'ALTISEMRI' AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+        query : "SELECT ISNULL(MAX(CONVERT(int,ISEMRI_ISTASYON_SIRA)),0) + 1 AS MAXISEMRISIRA FROM GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] WHERE SPECIAL = 'ALTISEMRI' AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ['ISEMRI_ISTASYON_KOD:string|25']
     },
     BagliIsEmriGet : 
@@ -2153,7 +2153,7 @@ var Query =
     },
     IsEmriListesiInsert : 
     {
-        query : "INSERT INTO MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] " +
+        query : "INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] " +
                 "([ISEMRI_GUID] " +
                 ",[ISEMRI_KOD] " +
                 ",[ISEMRI_ISTASYON_SIRA] " +
@@ -2178,7 +2178,7 @@ var Query =
     },
     UpdateIsEmriSira : 
     {
-        query : "UPDATE MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_ISTASYON_SIRA = @ISEMRI_ISTASYON_SIRA WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+        query : "UPDATE GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_ISTASYON_SIRA = @ISEMRI_ISTASYON_SIRA WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ['ISEMRI_ISTASYON_SIRA:string|25','ISEMRI_GUID:string|50','ISEMRI_ISTASYON_KOD:string|25']
     },
     IsEmriIstasyonlariGet : 
@@ -2195,7 +2195,7 @@ var Query =
     },
     YariMamulGet : 
     {
-        query : "SELECT upl_kodu,is_Kod,sum(upl_miktar) AS upl_miktar,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0) AS TAMAMLANAN  FROM ISEMIRLERI AS ISM " +
+        query : "SELECT upl_kodu,is_Kod  FROM ISEMIRLERI AS ISM " +
                 "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                 "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri AND " +
                 "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 3 GROUP BY upl_kodu,is_Kod " ,
@@ -2214,12 +2214,12 @@ var Query =
     },
     UpdateIsEmriDate : 
     {
-        query : "UPDATE MikroDB_V16.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH,ISEMRI_STATUS = 1 WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+        query : "UPDATE GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH,ISEMRI_STATUS = 1 WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ['ISEMRI_BAS_TARIH:datetime','ISEMRI_BIT_TARIH:datetime','ISEMRI_GUID:string|50','ISEMRI_ISTASYON_KOD:string|25']
     },
     GetIsEmriDate : 
     {
-        query : "SELECT CONVERT(VARCHAR,ISEMRI_BAS_TARIH,120) AS DATE FROM MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+        query : "SELECT CONVERT(VARCHAR,ISEMRI_BAS_TARIH,120) AS DATE FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ["ISEMRI_KOD:string|50","ISEMRI_ISTASYON_KOD:string|25"]
     },
     DepoSiparisInsert :
@@ -2321,7 +2321,32 @@ var Query =
     },
     DepoSiparisKontrol : 
     {
-        query : "SELECT ssip_belgeno FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_belgeno =@ssip_belgeno and ssip_miktar > ssip_teslim_miktar and ssip_kapat_fl = 0",
+        query : "SELECT ssip_evrakno_seri + ' - ' + CONVERT(varchar,ssip_evrakno_sira) AS SERISIRA  FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_belgeno =@ssip_belgeno and ssip_miktar > ssip_teslim_miktar and ssip_kapat_fl = 0",
         param : ["ssip_belgeno:string|50"]
+    },
+    GecikmeInsert : 
+    {
+        query : "INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_URETIM_GECIKME]  " +
+                " ([GUID]  " +
+                ",[CUSER]  " +
+                ",[CDATE]  " +
+                ",[ISEMRI]  " +
+                ",[SAFHAID]  " +
+                ",[DURZAMAN]  " +
+                ",[BASZAMAN]  " +
+                ",[STOKKODU]  " +
+                ",[ACIKLAMA])  " +
+                " VALUES  " +
+                "(newid()         --     <GUID, uniqueidentifier,>  \n " +
+                ",@CUSER          --    <CUSER, nvarchar(50),>  \n " +
+                ",getdate()       --      <CDATE, datetime,>  \n " +
+                ",@ISEMRI         --     <ISEMRI, nvarchar(50),>  \n " +
+                ",@SAFHAID        --      <SAFHAID, nvarchar(50),>  \n " +
+                ",getdate()       --       <DURZAMAN, datetime,>  \n " +
+                ",getdate()       --       <BASZAMAN, datetime,>  \n " +
+                ",@STOKKODU       --       <STOKKODU, nvarchar(50),>  \n " +
+                ",@ACIKLAMA       --       <ACIKLAMA, nvarchar(50),>   \n " +
+                " ) ",
+                param : ["CUSER:string|50","ISEMRI:string|50","SAFHAID:string|50","STOKKODU:string|50","ACIKLAMA:string|50"]
     }
 };

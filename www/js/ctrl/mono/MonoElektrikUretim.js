@@ -1230,7 +1230,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "SELECT JSON FROM MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+            query : "SELECT JSON FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
             param : ['KULLANICI:string|50','MENU:string|50'],
             value : ['Admin',$rootScope.PageName]
         }
@@ -1241,7 +1241,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             let UpdateQuery = 
             {
                 db: "{M}." + $scope.Firma,
-                query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA SET JSON = @JSON WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+                query : "UPDATE GENDB_NITROWEB.dbo.TERP_NITROWEB_JSONDATA SET JSON = @JSON WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
                 param : ['JSON:string|max','KULLANICI:string|50','MENU:string|50'],
                 value : [JSON.stringify($scope.Data.DATA),$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
 
@@ -1274,7 +1274,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "SELECT JSON FROM MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+            query : "SELECT JSON FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_JSONDATA WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
             param : ['KULLANICI:string|50','MENU:string|50'],
             value : [$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
         }
@@ -1366,7 +1366,7 @@ function MonoElektrikUretim($scope, srv, $rootScope)
             let UpdateQuery = 
             {
                 db: "{M}." + $scope.Firma,
-                query : "UPDATE MikroDB_V16.dbo.TERP_NITROWEB_JSONDATA SET DURUM = 1 WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
+                query : "UPDATE GENDB_NITROWEB.dbo.TERP_NITROWEB_JSONDATA SET DURUM = 1 WHERE DURUM = 0 AND KULLANICI = @KULLANICI AND MENU =@MENU ",
                 param : ['KULLANICI:string|50','MENU:string|50'],
                 value : [$rootScope.GeneralParamList.Kullanici,$rootScope.PageName]
 

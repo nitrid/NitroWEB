@@ -72,18 +72,36 @@
           <div class="row">
             <div class="col-12">
               <div class="form-floating">
-                <textarea class="form-control" style="height: 100px"></textarea>
+                <textarea class="form-control"  ng-model="DurdurmaAciklama" style="height: 100px"></textarea>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kaydet</button>
+          <button type="button" class="btn btn-primary" ng-click="GecikmeKaydet()" data-bs-dismiss="modal">Kaydet</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kapat</button>
         </div>
       </div>
     </div>
   </div>
+    <!-- DEPO MİKTAR MODAL -->
+    <div class="modal fade" id="MdlDepeMiktar" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="card border-dark">
+              <span class="fw-bold input-group-text">Depo Miktarları Eksik </span>
+          </div>
+          <div class="row">
+            <div id="TblDepoMiktar"></div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
   <!-- ÜRÜN GİRİŞ MODAL -->
   <div class="modal fade" id="MdlUrunGiris" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

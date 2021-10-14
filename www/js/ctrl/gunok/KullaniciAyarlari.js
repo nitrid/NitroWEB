@@ -155,7 +155,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         {
             datasource : 
             {
-                db: "MikroDB_V16",
+                db: "GENDB_NITROWEB",
                 query : "SELECT TAG AS TAG,MAX(SPECIAL) AS SPECIAL FROM TERP_NITROWEB_PARAM_2 WHERE TYPE IN ('1','2','3') GROUP BY TAG ",
             },
             key : "TAG",
@@ -385,7 +385,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         {
             let TmpQuery = 
             {
-                db: "MikroDB_V16",
+                db: "GENDB_NITROWEB",
                 query : "SELECT TOP 1 ACCOUNT FROM TERP_NITROWEB_PARAM_2 WHERE ACCOUNT = @ACCOUNT",
                 param : ['ACCOUNT'],
                 type :  ['string|50'],
@@ -420,7 +420,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
       
         let TmpQuery = 
         {
-            db: "MikroDB_V16",
+            db: "GENDB_NITROWEB",
             query : "SELECT * FROM TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE AND TAG = 'Password' ",
             param : ['TYPE'],
             type :  ['int'],
@@ -478,7 +478,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             {
                 datasource : 
                 {
-                    db: "MikroDB_V16",
+                    db: "GENDB_NITROWEB",
                     query : "SELECT TAG,SPECIAL,TYPE FROM TERP_NITROWEB_PARAM_2 WHERE TYPE IN ('1','2','3') GROUP BY TAG,SPECIAL,TYPE ORDER BY TYPE",
                 },
                 key : "TAG",

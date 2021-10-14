@@ -52,7 +52,7 @@
                   <nav class="nav nav-pills flex-column flex-sm-row">
                     <a class="flex-sm-fill text-md-center nav-link active fw-bold" id="IsEmriDetay-tab" data-bs-toggle="pill" data-bs-target="#IsEmriDetay" type="button" role="tab" aria-controls="IsEmriDetay" aria-selected="false" href="#">İş Emri Detay</a>
                     <a class="flex-sm-fill text-md-center nav-link fw-bold" id="YariMamulDetay-tab" data-bs-toggle="pill" data-bs-target="#YariMamulDetay" type="button" role="tab" aria-controls="YariMamulDetay" aria-selected="true" href="#">Yarı Mamül Detay</a>
-                    <a class="flex-sm-fill text-md-center nav-link fw-bold" id="ReceteDetay-tab" data-bs-toggle="pill" data-bs-target="#ReceteDetay" type="button" role="tab" aria-controls="ReceteDetay" aria-selected="false" href="#">Reçete Detay</a>
+                    <a class="flex-sm-fill text-md-center nav-link fw-bold" id="ResimDetay-tab" data-bs-toggle="pill" data-bs-target="#ResimDetay" type="button" role="tab" aria-controls="ResimDetay" aria-selected="false" href="#">Ürün Resmi</a>
                   </nav>
                 </div>
             </div>
@@ -150,19 +150,44 @@
                   <div class="input-group mb-3 input-group-lg">
                     <span class="fw-bold input-group-text">Yarı Mamül Kodu :</span>
                     <input type="text" ng-model="YariMamul.upl_kodu" class="form-control" disabled>
-                    <input type="text" ng-model="YariMamul.upl_miktar" class="form-control" disabled>
-                    <input type="text" ng-model="YariMamul.TAMAMLANAN" class="form-control" disabled>
                   </div>
                 </div>
                 <div class="row col-4 offset-8">
-                  <button type="button" class="btn btn-primary" ng-click="SubeSirapisOlustur()">Depo Sipariş Oluştur</button>
+                  <button type="button" class="btn btn-primary" ng-click="SubeSirapisView()"> İlk Madde Malzeme Sipariş Oluştur</button>
                 </div>
               </div>
             </div>
-            <div class="tab-pane fade" id="ReceteDetay" role="tabpanel" aria-labelledby="ReceteDetay-tab">
+            <div class="tab-pane fade" id="ResimDetay" role="tabpanel" aria-labelledby="ResimDetay-tab">
               
             </div>
           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Malzeme Sipariş Modal -->
+  <div class="modal fade" id="MdlSiparis" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="card border-dark">
+        </div>
+        <div class="row">
+          <div class="col-6" ng-repeat="IlkMadde in IlkMaddeList">
+            <div class="input-group mb-3 input-group-lg">
+              <span class="fw-bold input-group-text">İlk Madde Malzeme  Kodu :</span>
+              <input type="text" ng-class="IlkMadde.class" ng-model="IlkMadde.upl_kodu" class="form-control" disabled>
+              <input type="text" ng-class="IlkMadde.class" ng-model="IlkMadde.upl_miktar" class="form-control" disabled>
+              <input type="text" ng-class="IlkMadde.class" ng-model="IlkMadde.TAMAMLANAN" class="form-control" disabled>
+            </div>
+          </div>
+          <div class="row col-4 offset-8">
+            <button type="button" class="btn btn-primary" ng-click="SubeSirapisOlustur()"> İlk Madde Malzeme Sipariş Oluştur</button>
+          </div>
+        </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>

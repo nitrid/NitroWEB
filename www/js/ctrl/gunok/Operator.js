@@ -6,13 +6,16 @@ function Operator($scope,srv,$rootScope,$filter)
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "OPERATOR";
         
+        DepoMiktarGrid()
         $scope.TabIndex = 1;
         $scope.UrunAdet = 1;
         $scope.BasimMiktar = 1;
         $scope.EtkSeri = "";
         $scope.EtkSira = 1;
         $scope.MiktarGiris = 1;
-
+        $scope.DurdurmaAciklama = ""
+        
+        $scope.DepoMiktarData = []
         $scope.SelectedRow = [];
         $scope.EtiketList = [];
 
@@ -48,7 +51,9 @@ function Operator($scope,srv,$rootScope,$filter)
         {
             datasource : 
             {
-                data :  [{name: "1", special: "Durdurma Nedeni - 1"},{name: "2", special: "Durdurma Nedeni - 2"},{name: "3", special: "Durdurma Nedeni - 3"}] 
+                db: "{M}." + $scope.Firma,
+                query : "select GckNdn_kod AS name,GckNdn_aciklama as special from URETIM_GECIKME_NEDENLERI " 
+                
             },
             key : "name",
             value : "special",
@@ -57,7 +62,7 @@ function Operator($scope,srv,$rootScope,$filter)
             return : 1,
             onSelected : async function(pSelected)
             {
-
+                $scope.DurdurmaNedeni = pSelected
             }
         }
 
@@ -80,6 +85,7 @@ function Operator($scope,srv,$rootScope,$filter)
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
+                        "TERP.ISEMRI_ISTASYON_KOD AS ISTASYONKOD, " +
                         "is_EmriDurumu AS DURUM, " +
                         "TERP.ISEMRI_STATUS AS ISEMRISTATUS, " +
                         "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
@@ -102,12 +108,12 @@ function Operator($scope,srv,$rootScope,$filter)
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
-                        "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
+                        "LEFT JOIN GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                         "WHERE " +
                         "(SELECT sto_cins FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu) IN(4,3) AND " +
                         "(ROTA.RtP_PlanlananMiktar - ROTA.RtP_TamamlananMiktar) > 0  AND " +
                         "UPL.upl_uretim_tuket = 1 AND " +
-                        "TERP.ISEMRI_STATUS IN(0,1) AND " +
+                        "TERP.ISEMRI_STATUS IN(0,1,3) AND " +
                         "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
                         "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl   " +
@@ -281,6 +287,10 @@ function Operator($scope,srv,$rootScope,$filter)
                 {
                     e.rowElement.css("background-color", "#eea29a"); //KAPANMIŞ İŞ EMİRLERİ
                 }
+                else if(e.rowType == 'data' && e.data.ISEMRISTATUS == 3)
+                {
+                    e.rowElement.css("background-color", "#ff0000"); //DURDURULMUS İŞ EMİRLERİ
+                }
             },
             onSelectionChanged: async function (selectedItems) 
             {
@@ -289,6 +299,56 @@ function Operator($scope,srv,$rootScope,$filter)
                 $scope.Data.UMP = await UretimMalzemePlanGetir(selectedItems.selectedRowsData[0].KODU);
                 $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU);
             }
+        }).dxDataGrid("instance");
+    }
+    function DepoMiktarGrid()
+    {
+        $("#TblDepoMiktar").dxDataGrid({
+            height: 640,
+            dataSource:  $scope.DepoMiktarData,
+            columnsAutoWidth: true,
+            showBorders: true,
+            sorting: {
+                mode: "none"
+            },
+            showBorders: true,
+            filterRow: 
+            {
+                visible: true,
+                applyFilter: "auto"
+            },
+            scrolling: 
+            {
+                columnRenderingMode: "horizontal"
+            },
+            paging: 
+            {
+                pageSize: 20
+            },
+            headerFilter: 
+            {
+                visible: true
+            },
+            columns: [
+                {
+                    width: 200,
+                    dataField: "STOK",
+                    caption: "STOK KODU",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "MIKTAR",
+                    caption: "MIKTAR",
+                    alignment: "center"
+                },
+                {
+                    width: 150,
+                    dataField: "DEPO",
+                    caption: "DEPO MİKTAR",
+                    alignment: "center"
+                },
+            ],
         }).dxDataGrid("instance");
     }
     function MaxSthSira(pSeri,pEvrakTip)
@@ -354,7 +414,7 @@ function Operator($scope,srv,$rootScope,$filter)
                         "CASE WHEN upl_uretim_tuket = 1 THEN 'ÜRETİM' ELSE 'TÜKETİM' END AS TIP, " +
                         "upl_uretim_tuket AS URETTUKET, " +
                         "upl_depno AS DEPO, " +
-                        "dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) AS DEPOMIKTAR, " +
+                        "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @upl_isemri AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
                         "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),1) AS BMIKTAR " +
                         "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri AND upl_safhano = @upl_safhano",
@@ -363,7 +423,7 @@ function Operator($scope,srv,$rootScope,$filter)
             }
 
             let TmpData = await srv.Execute(TmpQuery)
-
+            console.log(TmpData)
             if(typeof TmpData == 'undefined')
             {
                 TmpData = []
@@ -783,6 +843,21 @@ function Operator($scope,srv,$rootScope,$filter)
                 swal("Uyarı", "Lütfen Planlanmış İş Emri Seçiniz.",icon="warning");
                 return;
             }
+            else if($scope.SelectedRow[0].ISEMRISTATUS == 3)
+            {
+                let TmpQuery = 
+                {
+                    db: "GENDB_NITROWEB",
+                    query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '1' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD " +
+                    "update [dbo].[TERP_NITROWEB_URETIM_GECIKME] SET BASZAMAN = GETDATE() WHERE ISEMRI = @ISEMRI_KOD AND SAFHAID = @ISEMRI_ISTASYON_KOD ",
+                    param : ['ISEMRI_KOD:string|50','ISEMRI_ISTASYON_KOD:string|50'],
+                    value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD,]
+                }
+
+                let TmpResult = await srv.Execute(TmpQuery)
+                await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
+                return;
+            }
 
             $scope.ControlData = await UretimMalzemePlanGetir($scope.SelectedRow[0].KODU)
 
@@ -792,16 +867,21 @@ function Operator($scope,srv,$rootScope,$filter)
             if(TmpDrTuketData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
             {
                 let InfoTextBalsat = "";
-                for(let i = 0;i < TmpDrTuketData.length;i++) //Depo Miktar Kontrol
+                for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
                 {
-                    if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) > TmpDrTuketData[i].DEPOMIKTAR)
+                    if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
                     {
-                        InfoTextBalsat = InfoTextBalsat + 'Stok Kodu : ' + TmpDrTuketData[i].KODU + ' \n ' + 'Depo Miktar : ' + TmpDrTuketData[i].DEPOMIKTAR + ' \n ' + 'Miktar : ' + srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) + "\n"
+                        InfoTextBalsat[i] =  {STOK: TmpDrTuket[i].KODU, DEPO: TmpDrTuket[i].DEPOMIKTAR, MIKTAR: srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU)}
                     }
                 }
                 if(InfoTextBalsat != "")
                 {
-                    swal("Dikkat", "Depo En Az Bir Ürün İçin Yeterli Değil. " + "\n" + InfoTextBalsat,icon="warning");
+                    DepoMiktarGrid()
+                    $scope.DepoMiktarData = InfoTextBalsat
+                    console.log(InfoTextBalsat)
+                    $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
+                    
+                    $('#MdlDepeMiktar').modal('show')
                     return;
                 }
             }
@@ -864,6 +944,11 @@ function Operator($scope,srv,$rootScope,$filter)
             swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
             return;
         }
+        if($scope.SelectedRow[0].ISEMRISTATUS == 3)
+        {
+            swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
+            return;
+        }
      
         if(pType == 0)
         {
@@ -895,17 +980,22 @@ function Operator($scope,srv,$rootScope,$filter)
 
             if($rootScope.GeneralParamList.StokEksiyeDusme == "false")
             {
-                let InfoText = "";
+                let InfoText = [];
                 for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
                 {
                     if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
                     {
-                        InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' \n ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' \n ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
+                        InfoText[i] =  {STOK: TmpDrTuket[i].KODU, DEPO: TmpDrTuket[i].DEPOMIKTAR, MIKTAR: srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU)}
                     }
                 }
                 if(InfoText != "")
                 {
-                    swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                    DepoMiktarGrid()
+                    $scope.DepoMiktarData = InfoText
+                    console.log(InfoText)
+                    $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
+                    
+                    $('#MdlDepeMiktar').modal('show')
                     return;
                 }
             }
@@ -939,5 +1029,53 @@ function Operator($scope,srv,$rootScope,$filter)
 
             swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
         }
+    }
+    $scope.GecikmeKaydet = async function()
+    {
+        if($scope.SelectedRow.length <= 0)
+        {
+            swal("Uyarı", "Lütfen Satır Seçimi Yapınız.",icon="warning");
+            return;
+        }
+        if($scope.SelectedRow[0].ISEMRISTATUS == 0)
+        {
+            swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
+            return;
+        }
+        if($scope.SelectedRow[0].ISEMRISTATUS == 3)
+        {
+            swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
+            return;
+        }
+        let TmpInsertData = 
+        [
+            $rootScope.GeneralParamList.MikroId,
+            $scope.SelectedRow[0].KODU,
+            $scope.SelectedRow[0].ISTASYONKOD,
+            '',
+            $scope.DurdurmaAciklama
+        ]
+        let TmpResult = await srv.Execute($scope.Firma,'GecikmeInsert',TmpInsertData);
+
+        if(typeof TmpResult != 'undefined')
+        {
+            let TmpQuery = 
+            {
+                db: "GENDB_NITROWEB",
+                query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '3' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+                param : ['ISEMRI_KOD:string|50','ISEMRI_ISTASYON_KOD:string|50'],
+                value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD]
+            }
+
+            console.log(TmpQuery)
+            let TmpResult = await srv.Execute(TmpQuery)
+            await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#ff0000");
+        }
+        else
+        {
+            swal("Uyarı", "Durdurma Tablosuna Kayıt Atılamadı.",icon="warning");
+        }
+
+        
     }
 }
