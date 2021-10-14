@@ -17,15 +17,16 @@ function Planlama($scope,srv,$rootScope,$filter)
         $scope.IsEmriIstasyonList = [];
         $scope.PlanlananList = [];
         $scope.YariMamulList = [];
+        $scope.IlkMaddeList =  [];
 
         $scope.CmbIsMerkezleri =
         {
             datasource : 
             {
                 db: "{M}." + $scope.Firma,
-                query : "SELECT 'TUMU' AS KODU,'TÜMÜ' AS ACIKLAMA " +
-                        "UNION ALL " +
-                        "SELECT Op_Kodu AS KODU,Op_Aciklama AS ACIKLAMA FROM URETIM_OPERASYONLARI " ,
+                query : "SELECT 'TUMU' AS KODU,'TUMU' AS ACIKLAMA " +
+                "UNION ALL " +
+                "SELECT Op_Kodu AS KODU,Op_Aciklama AS ACIKLAMA FROM URETIM_OPERASYONLARI ORDER BY KODU " ,
             },
             key : "KODU",
             value : "ACIKLAMA",
@@ -80,7 +81,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                     query : "SELECT " +
                             "COUNT(upl_miktar) AS ACIKISEMIRLERIMIKTAR " +
                             "FROM ISEMIRLERI AS ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
-                            "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
+                            "LEFT JOIN GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                             "WHERE " +
                             "ISM.is_BagliOlduguIsemri = '' AND " +
                             "UPL.upl_uretim_tuket = 1 AND " +
@@ -109,7 +110,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                     query : "SELECT " +
                             "COUNT(upl_miktar) AS PLANLANANISEMIRLERIMIKTAR " +
                             "FROM ISEMIRLERI AS ISM INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL on ISM.is_Kod =  UPL.upl_isemri " +
-                            "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
+                            "LEFT JOIN GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                             "WHERE " +
                             "ISM.is_BagliOlduguIsemri <> '' AND " +
                             "UPL.upl_uretim_tuket = 1 AND " +
@@ -214,7 +215,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
-                        "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
+                        "LEFT JOIN GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                         "WHERE " +
                         "ISM.is_BagliOlduguIsemri = '' AND " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
@@ -267,7 +268,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
-                        "LEFT JOIN MikroDB_V16.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
+                        "LEFT JOIN GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI AS TERP ON TERP.ISEMRI_KOD = ISM.is_Kod COLLATE Turkish_CI_AS " +
                         "WHERE " +
                         "(SELECT sto_cins FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu) = 3 AND " +
                         "(SELECT TOP 1 (ish_planuretim - ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = ISM.is_Kod and ish_plan_sevkmiktar = 0) > 0  AND " +
@@ -853,13 +854,36 @@ function Planlama($scope,srv,$rootScope,$filter)
             swal("Uyarı", "Planlama Listesinde Değişiklik Bulunamadı.",icon="warning");
         }
     }
-    $scope.SubeSirapisOlustur = async function()
+    $scope.SubeSirapisView = async function()
     {
 
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT upl_kodu,is_Kod,sum(upl_miktar) AS upl_miktar,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0) AS TAMAMLANAN,  " +
+                "CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
+                " FROM ISEMIRLERI AS ISM " +
+                "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
+                "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri AND  " +
+                "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 1 GROUP BY upl_kodu,is_Kod " ,
+            param : ['is_BagliOlduguIsemri'],
+            type : ['string|25'],
+            value : [$scope.IsSıparisBelgeNo]
+        }
+
+        let TmpResult = await srv.Execute(TmpQuery)
+ 
+        console.log(TmpResult)
+        $scope.IlkMaddeList = TmpResult
+        $('#MdlSiparis').modal('show')
+    }
+    $scope.SubeSirapisOlustur = async function()
+    {
+        
         let TmpSiparis = await srv.Execute($scope.Firma,'DepoSiparisKontrol',[$scope.IsSıparisBelgeNo])
         if(TmpSiparis.length > 0)
         {
-            swal("Dikkat", " İş Emrine Ait Açık Depo Siparişi Bulunmaktadır .",icon="warning");
+            swal("Dikkat", " İş Emrine Ait Açık Depo Siparişi Bulunmaktadır \n Depo Sipariş Numarası : " + TmpSiparis[0].SERISIRA + ".",icon="warning");
             return
         }
 
@@ -869,10 +893,10 @@ function Planlama($scope,srv,$rootScope,$filter)
         {
             $scope.SiparisSira = TmpSira[0].MAXEVRSIRA
         }
-        for (let i = 0; i < $scope.YariMamulList.length; i++) 
+        for (let i = 0; i < $scope.IlkMaddeList.length; i++) 
         {
             
-            if(($scope.YariMamulList[i].upl_miktar - $scope.YariMamulList[i].TAMAMLANAN) > 0)
+            if(($scope.IlkMaddeList[i].upl_miktar - $scope.IlkMaddeList[i].TAMAMLANAN) > 0)
             {
                 let TmpData = [
 
@@ -883,8 +907,8 @@ function Planlama($scope,srv,$rootScope,$filter)
                     $scope.SiparisSeri,
                     $scope.SiparisSira,
                     $scope.IsSıparisBelgeNo,
-                    $scope.YariMamulList[i].upl_kodu,
-                    ($scope.YariMamulList[i].upl_miktar - $scope.YariMamulList[i].TAMAMLANAN ),
+                    $scope.IlkMaddeList[i].upl_kodu,
+                    ($scope.IlkMaddeList[i].upl_miktar - $scope.IlkMaddeList[i].TAMAMLANAN),
                     0,
                     0,
                     0,
