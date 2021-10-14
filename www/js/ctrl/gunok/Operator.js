@@ -162,13 +162,13 @@ function Operator($scope,srv,$rootScope,$filter)
             },
             columns: [
                 {
-                    width: 100,
+                    width: 50,
                     dataField: "ISTASYONSIRA",
                     caption: "Istasyon Sıra",
                     alignment: "center"
                 },
                 {
-                    width: 100,
+                    width: 80,
                     dataField: "SIPARISNO",
                     caption: "Sipariş No",
                     alignment: "center"
@@ -180,19 +180,19 @@ function Operator($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 },
                 {
-                    width: 300,
+                    width: 50,
                     dataField: "ONCEKIISTASYONTAMAMLANANMIKTAR",
                     caption: "Önceki İstasyon Tamamlanan Miktar",
                     alignment: "center"
                 },
                 {
-                    width: 200,
+                    width: 50,
                     dataField: "PLANLANANROTAMIKTAR",
                     caption: "Planlanan Miktar",
                     alignment: "center"
                 },
                 {
-                    width: 200,
+                    width: 50,
                     dataField: "TAMAMLANANROTAMIKTAR",
                     caption: "Tamamlanan Miktar",
                     alignment: "center"
@@ -200,18 +200,15 @@ function Operator($scope,srv,$rootScope,$filter)
                 {
                     dataField: "STOKKODU",
                     caption: "Stok Kodu",
-                    alignment: "center"
+                    alignment: "left"
                 },
                 {
+                    width: 400,
                     dataField: "STOKADI",
                     caption: "Stok Adı",
-                    alignment: "center"
+                    alignment: "left"
                 },
-                {
-                    dataField: "CARIISMI",
-                    caption: "Cari Adı",
-                    alignment: "center"
-                },
+               
                 {
                     width: 120,
                     dataField: "MALZEMETIPI",
@@ -228,6 +225,11 @@ function Operator($scope,srv,$rootScope,$filter)
                     width: 120,
                     dataField: "SONHALI",
                     caption: "SON HALI",
+                    alignment: "center"
+                },
+                {
+                    dataField: "CARIISMI",
+                    caption: "Cari Adı",
                     alignment: "center"
                 },
                 {      
@@ -590,7 +592,7 @@ function Operator($scope,srv,$rootScope,$filter)
                 0, // NAKLİYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -617,8 +619,8 @@ function Operator($scope,srv,$rootScope,$filter)
             
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0,
                 0,
                 pSeri,
@@ -784,16 +786,17 @@ function Operator($scope,srv,$rootScope,$filter)
 
             $scope.ControlData = await UretimMalzemePlanGetir($scope.SelectedRow[0].KODU)
 
-            let TmpDrTuket = $scope.ControlData.filter(x => x.URETTUKET == 0);
+            let TmpDrTuketData = $scope.ControlData.filter(x => x.URETTUKET == 0);
 
-            if($scope.ControlData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
+            console.log(TmpDrTuketData)
+            if(TmpDrTuketData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
             {
                 let InfoTextBalsat = "";
-                for(let i = 0;i < $scope.ControlData.length;i++) //Depo Miktar Kontrol
+                for(let i = 0;i < TmpDrTuketData.length;i++) //Depo Miktar Kontrol
                 {
-                    if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
+                    if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) > TmpDrTuketData[i].DEPOMIKTAR)
                     {
-                        InfoTextBalsat = InfoTextBalsat + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' \n ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' \n ' + 'Miktar : ' + srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
+                        InfoTextBalsat = InfoTextBalsat + 'Stok Kodu : ' + TmpDrTuketData[i].KODU + ' \n ' + 'Depo Miktar : ' + TmpDrTuketData[i].DEPOMIKTAR + ' \n ' + 'Miktar : ' + srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) + "\n"
                     }
                 }
                 if(InfoTextBalsat != "")
