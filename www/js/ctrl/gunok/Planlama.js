@@ -866,24 +866,67 @@ function Planlama($scope,srv,$rootScope,$filter)
     $scope.SubeSirapisView = async function()
     {
 
-        let TmpQuery = 
-        {
-            db: "{M}." + $scope.Firma,
-            query : "SELECT upl_kodu,is_Kod,sum(upl_miktar) AS upl_miktar,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0) AS TAMAMLANAN,  " +
-                "CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
-                " FROM ISEMIRLERI AS ISM " +
-                "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
-                "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri AND  " +
-                "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 1 GROUP BY upl_kodu,is_Kod " ,
-            param : ['is_BagliOlduguIsemri'],
-            type : ['string|25'],
-            value : [$scope.IsSıparisBelgeNo]
-        }
+        // let TmpQuery = 
+        // {
+        //     db: "{M}." + $scope.Firma,
+        //     query : "SELECT upl_kodu,is_Kod,sum(upl_miktar) AS upl_miktar,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0) AS TAMAMLANAN,  " +
+        //         "CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @is_BagliOlduguIsemri AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
+        //         " FROM ISEMIRLERI AS ISM " +
+        //         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
+        //         "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri AND  " +
+        //         "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 1 GROUP BY upl_kodu,is_Kod " ,
+        //     param : ['is_BagliOlduguIsemri'],
+        //     type : ['string|25'],
+        //     value : [$scope.IsSıparisBelgeNo]
+        // }
+        // let TmpResult = await srv.Execute(TmpQuery)
+        // $scope.IlkMaddeList = TmpResult
 
-        let TmpResult = await srv.Execute(TmpQuery)
- 
-        console.log(TmpResult)
-        $scope.IlkMaddeList = TmpResult
+        let BagliIsEmriList = await srv.Execute($scope.Firma,'BagliIsEmriGet',[$scope.IsSıparisBelgeNo]); //ANA İŞ EMRİNE BAĞLI İŞ EMİRLERİ ROTA BAZINDA LİSTELENİYOR
+        let BagliIsEmriGrup = Object.keys($filter('groupBy')(BagliIsEmriList, 'KODU')); //
+        if(BagliIsEmriGrup.length > 0)
+        {
+            for (let i = 0; i < BagliIsEmriGrup.length; i++) 
+            {
+                let BasliAltIsEmri = await srv.Execute($scope.Firma,'BagliIsEmriGet',[BagliIsEmriGrup[i]]); //ALT İŞ EMRİNE BAĞLI İŞ EMİRLERİ LİSTELENİYOR
+
+                for (let x = 0; x < BasliAltIsEmri.length; x++) 
+                {
+                    BagliIsEmriList.push(BasliAltIsEmri[x]); //TUM İŞ EMİRLERİ TEK DİZİYE DOLDURULUYOR
+                } 
+            }
+            let BagliIsEmriGrupList = Object.keys($filter('groupBy')(BagliIsEmriList, 'KODU'))
+            console.log(BagliIsEmriGrupList)
+            for (let i = 0; i < BagliIsEmriGrupList.length; i++) 
+            {
+                let TmpQuery = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query : "SELECT upl_kodu,is_Kod,sum(upl_miktar) AS upl_miktar,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0) AS TAMAMLANAN,  " +
+                        "CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
+                        " FROM ISEMIRLERI AS ISM " +
+                        "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
+                        "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri AND  " +
+                        "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 1 GROUP BY upl_kodu,is_Kod " ,
+                    param : ['is_BagliOlduguIsemri'],
+                    type : ['string|25'],
+                    value : [BagliIsEmriGrupList[i]]
+                }
+                let TmpResult = await srv.Execute(TmpQuery)
+                console.log(TmpResult)
+                if(TmpResult.length > 0)
+                {
+                    for (let r = 0; r < TmpResult.length; r++)
+                    {
+                        console.log(TmpResult[r])
+                        $scope.IlkMaddeList[$scope.IlkMaddeList.length] = TmpResult[r]
+                    } 
+                }
+                
+                 
+            }
+        } 
+        console.log($scope.IlkMaddeList)
         $('#MdlSiparis').modal('show')
     }
     $scope.SubeSirapisOlustur = async function()
@@ -915,7 +958,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                     0,
                     $scope.SiparisSeri,
                     $scope.SiparisSira,
-                    $scope.IsSıparisBelgeNo,
+                    $scope.IlkMaddeList[i].is_Kod,
                     $scope.IlkMaddeList[i].upl_kodu,
                     ($scope.IlkMaddeList[i].upl_miktar - $scope.IlkMaddeList[i].TAMAMLANAN),
                     0,

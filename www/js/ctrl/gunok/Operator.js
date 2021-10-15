@@ -861,7 +861,6 @@ function Operator($scope,srv,$rootScope,$filter)
 
             $scope.ControlData = await UretimMalzemePlanGetir($scope.SelectedRow[0].KODU)
 
-            console.log($scope.ControlData)
             let TmpDrTuketData = $scope.ControlData.filter(x => x.URETTUKET == 0);
 
             if(TmpDrTuketData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
