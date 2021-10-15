@@ -259,7 +259,12 @@ function dbengine(config,io)
         });
         socket.on("DesingList",function(pParam,fn)
         {
-            fs.readdir("./printdesing/Desing/", (err, files) => 
+            let FilePath = "";
+            if(typeof process.env.APP_DIR_PATH != 'undefined')
+            {
+                FilePath = process.env.APP_DIR_PATH + "/.";
+            }
+            fs.readdir(FilePath + "./printdesing/Desing/", (err, files) => 
             {
                 fn(files)
             });

@@ -324,25 +324,25 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
                 {
-                    width: 80,
+                    width: 50,
                     dataField: "SIPARISNO",
                     caption: "Sipariş No",
-                    alignment: "center"
+                    alignment: "left"
                 },
                 {
-                    width: 150,
+                    width: 50,
                     dataField: "IS_EMRI_ACILIS_TARIH",
                     caption: "Açılış Tarihi",
-                    alignment: "center"
+                    alignment: "left"
                 }, 
                 {
-                    width: 150,
+                    width: 50,
                     dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
                     caption: "Aktifleştirme Tarihi",
-                    alignment: "center"
+                    alignment: "left"
                 },
                 {
-                    width: 150,
+                    width: 50,
                     dataField: "IS_EMRI_PLANLAMA_TARIH",
                     caption: "Planlama Tarihi",
                     alignment: "center"
@@ -485,10 +485,10 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
             {
-                width: 80,
+                width: 50,
                 dataField: "SIPARISNO",
                 caption: "Sipariş No",
-                alignment: "center"
+                alignment: "left"
             },
             {
                 width: 150,
