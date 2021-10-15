@@ -138,7 +138,7 @@ function Operator($scope,srv,$rootScope,$filter)
         $("#TblPlanlananIsEmirleri").dxDataGrid({
             height: 640,
             dataSource: pData,
-            columnMinWidth: 200,
+            columnMinWidth: 20,
             showBorders: true,
             sorting: 
             {
@@ -186,19 +186,19 @@ function Operator($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 },
                 {
-                    width: 50,
+                    width: 80,
                     dataField: "ONCEKIISTASYONTAMAMLANANMIKTAR",
                     caption: "Önceki İstasyon Tamamlanan Miktar",
                     alignment: "center"
                 },
                 {
-                    width: 50,
+                    width: 80,
                     dataField: "PLANLANANROTAMIKTAR",
                     caption: "Planlanan Miktar",
                     alignment: "center"
                 },
                 {
-                    width: 50,
+                    width: 80,
                     dataField: "TAMAMLANANROTAMIKTAR",
                     caption: "Tamamlanan Miktar",
                     alignment: "center"
@@ -861,24 +861,26 @@ function Operator($scope,srv,$rootScope,$filter)
 
             $scope.ControlData = await UretimMalzemePlanGetir($scope.SelectedRow[0].KODU)
 
+            console.log($scope.ControlData)
             let TmpDrTuketData = $scope.ControlData.filter(x => x.URETTUKET == 0);
 
-            console.log(TmpDrTuketData)
             if(TmpDrTuketData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
             {
-                let InfoTextBalsat = "";
-                for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
+                let IInfoTextBaslat = [];
+                for(let i = 0;i < TmpDrTuketData.length;i++) //Depo Miktar Kontrol
                 {
-                    if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
+                    if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) > TmpDrTuketData[i].DEPOMIKTAR)
                     {
-                        InfoTextBalsat[i] =  {STOK: TmpDrTuket[i].KODU, DEPO: TmpDrTuket[i].DEPOMIKTAR, MIKTAR: srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU)}
+                        console.log(11)
+                        IInfoTextBaslat[i] =  {STOK: TmpDrTuketData[i].KODU, DEPO: TmpDrTuketData[i].DEPOMIKTAR, MIKTAR: srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU)}
                     }
                 }
-                if(InfoTextBalsat != "")
+                
+                if(IInfoTextBaslat != "")
                 {
                     DepoMiktarGrid()
-                    $scope.DepoMiktarData = InfoTextBalsat
-                    console.log(InfoTextBalsat)
+                    $scope.DepoMiktarData = IInfoTextBaslat
+                    console.log(IInfoTextBaslat)
                     $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
                     
                     $('#MdlDepeMiktar').modal('show')

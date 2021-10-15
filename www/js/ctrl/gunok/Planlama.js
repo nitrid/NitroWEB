@@ -298,6 +298,7 @@ function Planlama($scope,srv,$rootScope,$filter)
         $("#TblTumIsEmirleri").dxDataGrid({
             height: 640,
             dataSource: pData,
+            columnMinWidth: 20,
             columnsAutoWidth: true,
             showBorders: true,
             sorting: {
@@ -323,7 +324,7 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
                 {
-                    width: 100,
+                    width: 80,
                     dataField: "SIPARISNO",
                     caption: "Sipariş No",
                     alignment: "center"
@@ -353,17 +354,19 @@ function Planlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 }, 
                 {
-                    width: 100,
+                    width: 80,
                     dataField: "PLANMIKTAR",
                     caption: "Planlanan Miktar",
                     alignment: "center"
                 },
                 {
+                    width: 200,
                     dataField: "STOKKODU",
                     caption: "Stok Kodu",
                     alignment: "center"
                 },
                 {
+                    width: 300,
                     dataField: "STOKADI",
                     caption: "Stok Adı",
                     alignment: "center"
@@ -453,6 +456,7 @@ function Planlama($scope,srv,$rootScope,$filter)
         $("#TblAcikIsEmirleri").dxDataGrid({
             height: 640,
             dataSource: pData,
+            columnMinWidth: 20,
             columnsAutoWidth: true,
             showBorders: true,
             sorting: {
@@ -481,7 +485,7 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
             {
-                width: 100,
+                width: 80,
                 dataField: "SIPARISNO",
                 caption: "Sipariş No",
                 alignment: "center"
@@ -511,20 +515,22 @@ function Planlama($scope,srv,$rootScope,$filter)
                 alignment: "center"
             }, 
             {
-                width: 100,
+                width: 80,
                 dataField: "PLANMIKTAR",
                 caption: "Planlanan Miktar",
                 alignment: "center"
             },
             {
+                width: 200,
                 dataField: "STOKKODU",
                 caption: "Stok Kodu",
-                alignment: "center"
+                alignment: "left"
             },
             {
+                width: 300,
                 dataField: "STOKADI",
                 caption: "Stok Adı",
-                alignment: "center"
+                alignment: "left"
             },
             {
                 dataField: "CARIISMI",
@@ -593,6 +599,7 @@ function Planlama($scope,srv,$rootScope,$filter)
         $("#TblPlanlananIsEmirleri").dxDataGrid({
             height: 640,
             dataSource: pData,
+            columnMinWidth: 20,
             columnsAutoWidth: true,
             showBorders: true,
             sorting: {
@@ -673,14 +680,16 @@ function Planlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 },
                 {
+                    width: 200,
                     dataField: "STOKKODU",
                     caption: "Stok Kodu",
-                    alignment: "center"
+                    alignment: "left"
                 },
                 {
+                    width: 300,
                     dataField: "STOKADI",
                     caption: "Stok Adı",
-                    alignment: "center"
+                    alignment: "left"
                 },
                 {
                     dataField: "CARIISMI",
@@ -912,8 +921,8 @@ function Planlama($scope,srv,$rootScope,$filter)
                     0,
                     0,
                     0,
-                    111,
                     112,
+                    111,
                     1,
                     0,
                     ''
