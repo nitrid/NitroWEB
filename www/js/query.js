@@ -2151,6 +2151,14 @@ var Query =
         param : ['is_BagliOlduguIsemri'],
         type : ['string|25']
     },
+    IsEmriGet : 
+    {
+        query : "SELECT ISM.is_Guid AS GUID,ISM.is_Kod AS KODU,ISM.is_BagliOlduguIsemri AS BAGLIISEMRI,ROTA.RtP_OperasyonKodu AS OPKODU FROM ISEMIRLERI AS ISM " +
+                "INNER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
+                "WHERE ISM.is_Kod = @is_BagliOlduguIsemri " ,
+        param : ['is_BagliOlduguIsemri'],
+        type : ['string|25']
+    },
     IsEmriListesiInsert : 
     {
         query : "INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] " +
@@ -2214,7 +2222,7 @@ var Query =
     },
     UpdateIsEmriDate : 
     {
-        query : "UPDATE GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH,ISEMRI_STATUS = 1 WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+        query : "UPDATE GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH,ISEMRI_STATUS = 1 WHERE ISEMRI_GUID = @ISEMRI_GUID ",
         param : ['ISEMRI_BAS_TARIH:datetime','ISEMRI_BIT_TARIH:datetime','ISEMRI_GUID:string|50','ISEMRI_ISTASYON_KOD:string|25']
     },
     GetIsEmriDate : 

@@ -56,35 +56,28 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
             {
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
-                        "CASE WHEN is_Onayli_fl = 0 THEN 'ONAYSIZ' WHEN is_Onayli_fl = 1 THEN 'ONAYLI' END AS ONAYDURUMU, " +
-                        "CASE WHEN is_Onceligi = 0 THEN 'DÜŞÜK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÜKSEK' END AS ONCELIK, " +
-                        "CONVERT(varchar,is_BaslangicTarihi,102) AS IS_EMRI_ACILIS_TARIH, " +
-                        "CONVERT(varchar,is_Emri_AktiflesmeTarihi,102) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
-                        "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,102) AS IS_EMRI_PLANLAMA_TARIH, " +
-                        "ISNULL((SELECT User_name FROM MikroDB_V16.dbo.KULLANICILAR WHERE User_no = is_create_user),'VERI BULUNAMADI') AS OLUSTURAN_KULLANICI, " +
-                        "is_Guid AS GUID, " +
+                        "CONVERT(varchar,MAX(is_BaslangicTarihi),102) AS IS_EMRI_ACILIS_TARIH," +
+                        "CONVERT(varchar,MAX(is_Emri_AktiflesmeTarihi),102) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
+                        "CONVERT(varchar,MAX(is_Emri_PlanBaslamaTarihi),102) AS IS_EMRI_PLANLAMA_TARIH, " +
+                        "ISNULL((SELECT User_name FROM MikroDB_V16.dbo.KULLANICILAR WHERE User_no = MAX(is_create_user)),'VERI BULUNAMADI') AS OLUSTURAN_KULLANICI, " +
+                        "MAX(is_Guid) AS GUID, " +
                         "is_Kod AS KODU, " +
-                        "is_Ismi AS ADI, " +
-                        "TERP.ISEMRI_ISTASYON_KOD AS ISTASYONKOD, " +
-                        "is_EmriDurumu AS DURUM, " +
-                        "TERP.ISEMRI_STATUS AS ISEMRISTATUS, " +
-                        "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
-                        "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " +
-                        "ROTA.RtP_PlanlananMiktar AS PLANLANANROTAMIKTAR, " +
-                        "ROTA.RtP_TamamlananMiktar AS TAMAMLANANROTAMIKTAR, " +
-                        "ROTA.RtP_OperasyonSafhaNo AS SAFHANO, " +
-                        "ISNULL((SELECT RT.RtP_TamamlananMiktar FROM URETIM_ROTA_PLANLARI AS RT WHERE RT.RtP_OperasyonSafhaNo = ROTA.RtP_OperasyonSafhaNo - 1 AND RT.RtP_IsEmriKodu = is_Kod),0) AS ONCEKIISTASYONTAMAMLANANMIKTAR, " +
-                        "ROTA.RtP_SonrakiSafhaNo AS SONRAKISAFHANO, " +
+                        "MAX(is_Ismi) AS ADI, " +
+                        "MAX(is_EmriDurumu) AS DURUM, " +
+                        "MAX(TERP.ISEMRI_STATUS) AS ISEMRISTATUS, " +
+                        "MAX(TERP.ISEMRI_ISTASYON_SIRA) AS ISTASYONSIRA, " +
+                        "SUM(UPL.upl_miktar) - ISNULL((SELECT TOP 1 SUM(ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " +
                         "UPL.upl_kodu AS STOKKODU, " +
+                        "SUM(ROTA.RtP_PlanlananMiktar) AS PLANLANANROTAMIKTAR, " +
+                        "SUM(ROTA.RtP_TamamlananMiktar) AS TAMAMLANANROTAMIKTAR, " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = UPL.upl_kodu),'') AS BARKOD, " + 
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
                         "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
-                        "ISM.is_Baglanti_uid AS BAGLANTIID, " +
-                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
-                        "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
-                        "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
+                        "MAX(ISM.is_Baglanti_uid) AS BAGLANTIID, " +
+                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = MAX(ISM.is_Baglanti_uid)) AS SIPARISNO, " +
+                        "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = MAX(ISM.is_Baglanti_uid))) AS CARIISMI " +
                         "FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "LEFT OUTER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
@@ -95,7 +88,7 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                         "UPL.upl_uretim_tuket = 1 AND " +
                         "TERP.ISEMRI_STATUS IN(0,1,3) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl AND " +
-                        "TERP.SPECIAL = 'ANAISEMRI' " +
+                        "TERP.SPECIAL = 'ANAISEMRI'  GROUP BY UPL.upl_kodu,is_Kod,TERP.ISEMRI_ISTASYON_SIRA " +
                         "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) " ,
                         param : ['is_Onayli_fl:string|5'],
                         value : [$rootScope.GeneralParamList.IsEmriOnayDurumu]
@@ -364,6 +357,7 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
     }
     function UretimMalzemePlanGetir(pIsEmri)
     {
+        console.log(pIsEmri)
         return new Promise(async resolve => 
         {
             let TmpQuery = 
@@ -384,9 +378,9 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                         "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @upl_isemri AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
                         "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),0) AS BMIKTAR " +
-                        "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri AND upl_safhano = @upl_safhano",
+                        "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri",
                 param : ['upl_isemri:string|50','upl_safhano:string|25'],
-                value : [pIsEmri,$scope.SelectedRow[0].SAFHANO]
+                value : [pIsEmri]
             }
 
             let TmpData = await srv.Execute(TmpQuery)
@@ -417,9 +411,9 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                         "RtP_PlanlananIsMerkezi AS ISMERKEZI, " +
                         "RtP_UrunKodu AS URUNKODU, " +
                         "ROUND(CAST((RtP_PlanlananSure / RtP_PlanlananMiktar) AS float),2) AS SURE " +
-                        "FROM URETIM_ROTA_PLANLARI WHERE RtP_IsEmriKodu = @RtP_IsEmriKodu AND RtP_OperasyonKodu = @RtP_OperasyonKodu",
+                        "FROM URETIM_ROTA_PLANLARI WHERE RtP_IsEmriKodu = @RtP_IsEmriKodu ",
                 param : ['RtP_IsEmriKodu:string|50','RtP_OperasyonKodu:string|25'],
-                value : [pIsEmri,$scope.SelectedRow[0].OPERASYONKODU]
+                value : [pIsEmri]
             }
 
             let TmpData = await srv.Execute(TmpQuery)
@@ -815,8 +809,8 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                 let TmpQuery = 
                 {
                     db: "GENDB_NITROWEB",
-                    query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '1' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD " +
-                    "update [dbo].[TERP_NITROWEB_URETIM_GECIKME] SET BASZAMAN = GETDATE() WHERE ISEMRI = @ISEMRI_KOD AND SAFHAID = @ISEMRI_ISTASYON_KOD ",
+                    query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '1' WHERE ISEMRI_KOD = @ISEMRI_KOD  " +
+                    "update [dbo].[TERP_NITROWEB_URETIM_GECIKME] SET BASZAMAN = GETDATE() WHERE ISEMRI = @ISEMRI_KOD AND SAFHAID = 'ANAISEMRI' ",
                     param : ['ISEMRI_KOD:string|50','ISEMRI_ISTASYON_KOD:string|50'],
                     value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD,]
                 }
@@ -826,29 +820,32 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                 return;
             }
 
-            if(TmpDrTuketData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
-            {
-                let IInfoTextBaslat = [];
-                for(let i = 0;i < TmpDrTuketData.length;i++) //Depo Miktar Kontrol
-                {
-                    if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) > TmpDrTuketData[i].DEPOMIKTAR)
-                    {
-                        console.log(11)
-                        IInfoTextBaslat[i] =  {STOK: TmpDrTuketData[i].KODU, DEPO: TmpDrTuketData[i].DEPOMIKTAR, MIKTAR: srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU)}
-                    }
-                }
+            $scope.ControlData = await UretimMalzemePlanGetir($scope.SelectedRow[0].KODU)
+
+            // let TmpDrTuketData = $scope.ControlData.filter(x => x.URETTUKET == 0);
+            // if(TmpDrTuketData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
+            // {
+            //     let IInfoTextBaslat = [];
+            //     for(let i = 0;i < TmpDrTuketData.length;i++) //Depo Miktar Kontrol
+            //     {
+            //         if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) > TmpDrTuketData[i].DEPOMIKTAR)
+            //         {
+            //             console.log(11)
+            //             IInfoTextBaslat[i] =  {STOK: TmpDrTuketData[i].KODU, DEPO: TmpDrTuketData[i].DEPOMIKTAR, MIKTAR: srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU)}
+            //         }
+            //     }
                 
-                if(IInfoTextBaslat != "")
-                {
-                    DepoMiktarGrid()
-                    $scope.DepoMiktarData = IInfoTextBaslat
-                    console.log(IInfoTextBaslat)
-                    $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
+            //     if(IInfoTextBaslat != "")
+            //     {
+            //         DepoMiktarGrid()
+            //         $scope.DepoMiktarData = IInfoTextBaslat
+            //         console.log(IInfoTextBaslat)
+            //         $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
                     
-                    $('#MdlDepeMiktar').modal('show')
-                    return;
-                }
-            }
+            //         $('#MdlDepeMiktar').modal('show')
+            //         return;
+            //     }
+            // }
             swal({
                 title: "Uyarı",
                 text : "İş Emrini Başlatmak İstediğinize Emin Misiniz ? ",
@@ -865,7 +862,7 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                         await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]);
                     }
                      
-                    await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
+                    await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID]);
                     await GetPlanlananIsEmrileri("#FFFF00");
                   
                     swal("Başarılı! İş Emri Başlatıldı.", 
@@ -1003,7 +1000,7 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
         [
             $rootScope.GeneralParamList.MikroId,
             $scope.SelectedRow[0].KODU,
-            $scope.SelectedRow[0].ISTASYONKOD,
+            'ANAISEMRI',
             '',
             $scope.DurdurmaAciklama
         ]
@@ -1014,7 +1011,7 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
             let TmpQuery = 
             {
                 db: "GENDB_NITROWEB",
-                query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '3' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+                query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '3' WHERE ISEMRI_KOD = @ISEMRI_KOD  ",
                 param : ['ISEMRI_KOD:string|50','ISEMRI_ISTASYON_KOD:string|50'],
                 value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD]
             }
