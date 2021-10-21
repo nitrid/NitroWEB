@@ -800,17 +800,19 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
                 db: "{M}." + $scope.Firma,
                 query : "SELECT msg_S_0078 AS KODU, msg_S_0083 AS MIKTAR,dbo.fn_DepodakiMiktar(msg_S_0078,@DEPO,GETDATE()) AS DEPOMIKTAR FROM fn_Stok_Recetesi(@STOK)", 
                 param : ['STOK:string|50','DEPO:int'],
-                value : [TmpDrUret[i].KODU,TmpDrUret[i].KODU]
+                value : [TmpDrUret[i].KODU,TmpDrUret[i].DEPO]
             }
             let Detay = await srv.Execute(TmpQuery)
+            console.log(Detay)
+            console.log(TmpDrUret[i])
             let InfoText = ''
             for (let x = 0; x < Detay.length; x++) 
             {
                
                 if((Detay[x].MIKTAR * TmpDrUret[i].PMIKTAR) >  Detay[x].DEPOMIKTAR)
                 {
-                    swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-                    InfoText = InfoText + 'Stok Kodu : ' + Detay[x].KODU + ' - ' + 'Depo Miktar : ' + "\n"
+                    // swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                    InfoText = InfoText + 'Stok Kodu : ' + Detay[x].KODU + ' - ' + 'Depo Miktar : ' + Detay[x].DEPOMIKTAR + "\n"
 
                    
                 }

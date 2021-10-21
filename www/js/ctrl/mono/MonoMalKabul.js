@@ -221,6 +221,12 @@ function MonoMalKabul($scope,srv, $rootScope)
                                 caption: "MIKTAR",
                                 dataType: "text",
                                 align: "center",
+                            },     
+                            {
+                                dataField : "KALAN",
+                                caption: "KALAN",
+                                dataType: "text",
+                                align: "center",
                             },                           
                         ],
                         
@@ -350,7 +356,7 @@ function MonoMalKabul($scope,srv, $rootScope)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query :"SELECT sip_stok_kod AS KODU, (SELECT sto_isim FROM STOKLAR WHERE sto_kod = sip_stok_kod) AS ADI,sip_miktar AS MIKTAR FROM SIPARISLER WHERE sip_evrakno_seri = @sip_evrakno_seri and sip_evrakno_sira = @sip_evrakno_sira and sip_tip = 1 ",
+            query :"SELECT sip_stok_kod AS KODU, (SELECT sto_isim FROM STOKLAR WHERE sto_kod = sip_stok_kod) AS ADI,sip_miktar AS MIKTAR,(sip_miktar - sip_teslim_miktar) AS KALAN FROM SIPARISLER WHERE sip_evrakno_seri = @sip_evrakno_seri and sip_evrakno_sira = @sip_evrakno_sira and sip_tip = 1 ",
             param : ['sip_evrakno_seri:string|50','sip_evrakno_sira:string|50'],
             value : [pData.SERI,pData.SIRA]
         }
@@ -565,6 +571,8 @@ function MonoMalKabul($scope,srv, $rootScope)
         else
         {
             $scope.SipGuid ='00000000-0000-0000-0000-000000000000'
+            swal("İşlem Başarısız!", "Seçtiğiniz Siparişde Ürün yok Doğru Siparişi Seçiniz",icon="error");
+            return
         }
         
         return new Promise(async resolve => 
@@ -656,7 +664,6 @@ function MonoMalKabul($scope,srv, $rootScope)
                 (typeof TmpIsmerkezi == 'undefined') ? '' : TmpIsmerkezi
             ];
             
-            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             console.log(TmpResult)
