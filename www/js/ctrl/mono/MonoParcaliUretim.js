@@ -944,9 +944,9 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
             
-            await InsertUrunGirisCikis(0,TmpDrUret[i].KODU,TmpDrUret[i].ISEMRI,TmpDrUret[i].MIKTAR,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,$scope.SthGSeri,$scope.SthGSira)
+            await InsertUrunGirisCikis(0,TmpDrUret[i].KODU,$scope.BteIsEmri.txt,TmpDrUret[i].MIKTAR,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,$scope.SthGSeri,$scope.SthGSira)
             //await InsertOperasyonKapama(TmpDrUret[i].ROTAREC,$scope.BteIsEmri.txt,TmpDrUret[i].KODU,0,0,'',TmpDrUret[i].MIKTAR,TmpDrUret[i].SURE,$scope.OpSeri,$scope.OpSira)
-            await TuketimInsert(TmpDrUret[i].KODU,TmpDrUret[i].ISEMRI,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,TmpDrUret[i].MIKTAR)
+            await TuketimInsert(TmpDrUret[i].KODU,$scope.BteIsEmri.txt,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,TmpDrUret[i].MIKTAR)
 
         }
             // await UpdateRotaPlani(TmpDrUretROTAREC,TmpDrUretMiktar, TmpDrUretSURE)

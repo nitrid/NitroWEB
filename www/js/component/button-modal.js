@@ -92,7 +92,7 @@ angular.module('app').component('buttonModal',
                             columns: TmpColumns,
                             paging: 
                             {
-                                pageSize: 10
+                                pageSize: 18
                             },
                             filterRow: 
                             {

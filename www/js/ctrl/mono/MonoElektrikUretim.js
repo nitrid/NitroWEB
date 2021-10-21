@@ -50,7 +50,7 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
                 showBorders: true,
                 paging: 
                 {
-                    pageSize: 10
+                    pageSize: 18
                 },
                 filterRow: 
                 {

@@ -106,7 +106,7 @@ angular.module('app').component('buttonEdit',
                             columns: TmpColumns,
                             paging: 
                             {
-                                pageSize: 10
+                                pageSize: 18
                             },
                             filterRow: 
                             {
