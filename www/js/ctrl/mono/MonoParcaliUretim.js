@@ -800,17 +800,19 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
                 db: "{M}." + $scope.Firma,
                 query : "SELECT msg_S_0078 AS KODU, msg_S_0083 AS MIKTAR,dbo.fn_DepodakiMiktar(msg_S_0078,@DEPO,GETDATE()) AS DEPOMIKTAR FROM fn_Stok_Recetesi(@STOK)", 
                 param : ['STOK:string|50','DEPO:int'],
-                value : [TmpDrUret[i].KODU,TmpDrUret[i].KODU]
+                value : [TmpDrUret[i].KODU,TmpDrUret[i].DEPO]
             }
             let Detay = await srv.Execute(TmpQuery)
+            console.log(Detay)
+            console.log(TmpDrUret[i])
             let InfoText = ''
             for (let x = 0; x < Detay.length; x++) 
             {
                
                 if((Detay[x].MIKTAR * TmpDrUret[i].PMIKTAR) >  Detay[x].DEPOMIKTAR)
                 {
-                    swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-                    InfoText = InfoText + 'Stok Kodu : ' + Detay[x].KODU + ' - ' + 'Depo Miktar : ' + "\n"
+                    // swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
+                    InfoText = InfoText + 'Stok Kodu : ' + Detay[x].KODU + ' - ' + 'Depo Miktar : ' + Detay[x].DEPOMIKTAR + "\n"
 
                    
                 }
@@ -944,9 +946,9 @@ function MonoParcaliUretim($scope, srv, $window, $rootScope)
         for (let i = 0; i < TmpDrUret.length; i++) 
         {
             
-            await InsertUrunGirisCikis(0,TmpDrUret[i].KODU,TmpDrUret[i].ISEMRI,TmpDrUret[i].MIKTAR,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,$scope.SthGSeri,$scope.SthGSira)
+            await InsertUrunGirisCikis(0,TmpDrUret[i].KODU,$scope.BteIsEmri.txt,TmpDrUret[i].MIKTAR,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,$scope.SthGSeri,$scope.SthGSira)
             //await InsertOperasyonKapama(TmpDrUret[i].ROTAREC,$scope.BteIsEmri.txt,TmpDrUret[i].KODU,0,0,'',TmpDrUret[i].MIKTAR,TmpDrUret[i].SURE,$scope.OpSeri,$scope.OpSira)
-            await TuketimInsert(TmpDrUret[i].KODU,TmpDrUret[i].ISEMRI,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,TmpDrUret[i].MIKTAR)
+            await TuketimInsert(TmpDrUret[i].KODU,$scope.BteIsEmri.txt,TmpDrUret[i].DEPO,TmpDrUret[i].ISMERKEZI,TmpDrUret[i].MIKTAR)
 
         }
             // await UpdateRotaPlani(TmpDrUretROTAREC,TmpDrUretMiktar, TmpDrUretSURE)

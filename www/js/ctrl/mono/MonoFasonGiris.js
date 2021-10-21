@@ -275,7 +275,9 @@ function MonoFasonGiris($scope,srv, $rootScope)
     {
         srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
         {
+            console.log(pData)
             $scope.LblHassasGram = pData
+            
         });
     }
     function MiktarKontrol(pMiktar)
