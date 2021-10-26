@@ -391,7 +391,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
                     $scope.SthGSira,
                     $scope.SeriBarkod,
                     $scope.Data.UMP[i].KODU,
-                    $scope.Data.UMP[i].BMIKTAR * pMiktar
+                    $scope.Data.UMP[i].BMIKTAR * pMiktar,
+                    $scope.Data.UMP[i].DEPO
                 ]
                
                 let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
@@ -415,6 +416,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
             TmpData.ISEMRI = $scope.Data.UMP[i].ISEMRI;
             TmpData.KODU = $scope.Data.UMP[i].KODU;
             TmpData.ADI = $scope.Data.UMP[i].ADI;
+
 
             // if($scope.Data.UMP[i].URETTUKET == 1)
             // {
@@ -990,7 +992,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
                     $scope.SthGSira,
                     $scope.SeriBarkod,
                     $scope.LblUrun,
-                    0
+                    0,
+                    $scope.DepoKod
                 ]
                
                 let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);

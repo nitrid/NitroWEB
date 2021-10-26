@@ -421,7 +421,8 @@ function MonoMalKabul($scope,srv, $rootScope)
                     $scope.SthGSira,
                     $scope.SeriBarkod,
                     $scope.LblStokKodu,
-                    $scope.EtiketMiktar
+                    $scope.EtiketMiktar,
+                    $scope.DepoKod
                 ]
                
                 let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);

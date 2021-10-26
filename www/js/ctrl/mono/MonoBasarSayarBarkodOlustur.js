@@ -339,7 +339,8 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
                 0,
                 $scope.SeriBarkod,
                 $scope.LblStokKodu,
-                $scope.LblKantarMiktar
+                $scope.LblKantarMiktar,
+                '1'
             ]
            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);

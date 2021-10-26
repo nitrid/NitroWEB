@@ -582,7 +582,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
                 1,
                 $scope.SeriBarkod,
                 $scope.BteStok.txt,
-                $scope.TxtMiktar
+                $scope.TxtMiktar,
+                '1'
             ]
            
             let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);

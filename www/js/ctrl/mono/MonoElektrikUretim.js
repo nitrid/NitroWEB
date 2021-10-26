@@ -122,16 +122,8 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             selection : "KODU",
             columns :
             [
-                {
-                    
-                    dataField: "ADI",
-                    width: 200
-                }, 
-                {
-                    title : "İŞ EMRİ KODU",
-                    dataField: "KODU",
-                    width: 200
-                },
+               
+               
                 {
                     title: "STOK KODU",
                     dataField: "STOKKODU",
@@ -147,11 +139,34 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
                     dataField: "PLANMIKTAR",
                     width: 200
                 },  
+                {
+                    title : "İŞ EMRİ KODU",
+                    dataField: "KODU",
+                    width: 200
+                },
             ],
             onSelected : async function(pData)
             {
                 if(typeof pData != 'undefined')
                 {                    
+                    let GetSpecial = 
+                    {
+                        db: "{M}." + $scope.Firma,
+                        query : "SELECT is_special1 AS SPECIAL FROM  ISEMIRLERI where is_kod = @is_kod ",
+                        param : ['is_kod:string|50'],
+                        value : [pData.KODU]
+                    } 
+                    let TmpSpecial = await srv.Execute(GetSpecial)
+                    console.log($rootScope.GeneralParamList.Kullanici.substring(0, 4))
+                    if(TmpSpecial[0].SPECIAL != '')
+                    {
+                        if(TmpSpecial[0].SPECIAL != $rootScope.GeneralParamList.Kullanici.substring(0, 4))
+                        {
+                            swal("Dikkat", "Bu İş Emri '" + TmpSpecial[0].SPECIAL + "' Kullanıcısında Çalışılıyor.",icon="warning");
+                            $scope.BteIsEmri.txt = ''
+                            return
+                        }
+                    }
                     $scope.Data.UMP = await UretimMalzemePlanGetir(pData.KODU);
                     $scope.Data.URP = await UretimRotaPlanGetir(pData.KODU);
                     console.log($scope.Data.URP)
@@ -179,6 +194,15 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
                         value : [pData.STOKKODU]
                     } 
                     let TmpData = await srv.Execute(TmpQuery)
+
+                    let UpdateQuery = 
+                    {
+                        db: "{M}." + $scope.Firma,
+                        query : "Update ISEMIRLERI set is_special1 = @is_special1 where is_kod = @is_kod ",
+                        param : ['is_special1:string|4','is_kod:string|50'],
+                        value : [$rootScope.GeneralParamList.Kullanici,pData.KODU]
+                    } 
+                    await srv.Execute(UpdateQuery)
                     $scope.Barkod1 = TmpData[0].BARKOD1;
                     $scope.Barkod2 = TmpData[0].BARKOD2;
                     $scope.Barkod3 = TmpData[0].BARKOD3;
@@ -479,7 +503,6 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
         ]
         
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
-        console.log(InsertData)
         if(InsertControl == "")
         {
             //swal("İşlem Başarılı!", "Etiket Yazdırma İşlemi Gerçekleştirildi.",icon="success");
@@ -817,7 +840,8 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
                 $scope.SthGSira,
                 $scope.SeriBarkod,
                 TmpDrUret[i].KODU,
-                $scope.KutuKontrolMiktar
+                $scope.KutuKontrolMiktar,
+                TmpDrUret[i].DEPO
             ]
             
             console.log(TmpInsertData)
@@ -841,7 +865,7 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             TmpData.ISEMRI = TmpDrUret[i].ISEMRI;
             TmpData.KODU = TmpDrUret[i].KODU;
             TmpData.ADI = TmpDrUret[i].ADI;
-            TmpData.MIKTAR = $scope.KutuKontrolMiktar
+            TmpData.MIKTAR = $scope.KutuKontrolMiktar;
             TmpData.DEPOMIKTAR = TmpDrUret[i].DEPOMIKTAR;
 
            
@@ -975,6 +999,14 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
         {
            $scope.IsemriKapat()
         }
+        let UpdateQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "Update ISEMIRLERI set is_special1 = '' where is_kod = @is_kod ",
+            param : ['is_kod:string|50'],
+            value : [$scope.BteIsEmri.txt]
+        } 
+        await srv.Execute(UpdateQuery)
         swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
         $scope.JsonKapat()
         $scope.Init()
@@ -1377,7 +1409,7 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
             return;
         }
     }
-    $scope.YeniEvrak = function()
+    $scope.YeniEvrak = async function()
     {
         if($scope.Data.DATA.length > 0)
         {
@@ -1385,6 +1417,14 @@ function MonoElektrikUretim($scope, srv, $window, $rootScope)
         }
         else
         {
+            let UpdateQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "Update ISEMIRLERI set is_special1 = '' where is_kod = @is_kod ",
+                param : ['is_kod:string|50'],
+                value : [$scope.BteIsEmri.txt]
+            } 
+        await srv.Execute(UpdateQuery)
             $scope.Init()
         }
     }
