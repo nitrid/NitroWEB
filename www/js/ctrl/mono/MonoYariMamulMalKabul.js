@@ -810,7 +810,8 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
                 $scope.SthGSira,
                 $scope.SeriBarkod,
                 TmpDrUret[i].KODU,
-                parseInt(TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar)
+                parseInt(TmpDrUret[i].BMIKTAR * $scope.LblKantarMiktar),
+                TmpDrUret[i].DEPO
             ]
            
             let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
