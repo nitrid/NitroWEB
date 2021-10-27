@@ -955,7 +955,6 @@ function Planlama($scope,srv,$rootScope,$filter)
                 }
 
         } 
-        console.log($scope.IlkMaddeList)
         $('#MdlSiparis').modal('show')
     }
     $scope.SubeSirapisOlustur = async function()
