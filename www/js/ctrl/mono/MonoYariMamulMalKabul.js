@@ -431,7 +431,7 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             }
         });
     }
-    async function EtiketInsert(pData)
+    async function EtiketInsert()
     {
         let InsertData = 
         [
@@ -440,16 +440,16 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             1,     //SPECIAL1
             $rootScope.GeneralParamList.YariMamulEtiketSeri,          //SERI
             $scope.EtkSira,                                 //SIRA
-            pData.ISEMRI,    
+            SelectionRow.ISEMRI,    
             ($scope.DataKantarKilo - $scope.LblKasaDara),                              //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            (pData.MIKTAR <= 32000 ? pData.MIKTAR : 32000),             //BASİMADET
+            (SelectionRow.MIKTAR <= 32000 ? SelectionRow.MIKTAR : 32000),             //BASİMADET
             1,                               //DEPONO
-            pData.KODU,                  //STOKKODU
-            pData.MIKTAR,                               //RENKKODU
+            SelectionRow.KODU,                  //STOKKODU
+            SelectionRow.MIKTAR,                               //RENKKODU
             1,                               //BEDENKODU
-            pData.URNBARKOD,                         //BARKOD
+            SelectionRow.URNBARKOD,                         //BARKOD
             $scope.TxtBasimAdet              //BASILACAKMIKTAR
         ]
 
@@ -759,23 +759,28 @@ function MonoYariMamulMalKabul($scope, srv, $rootScope)
             swal("Dikkat", "Lütfen İş emri ve parti kodu seçmeden geçmeyin.",icon="warning");
             return;
         }
+        if(SelectionRow.URNBARKOD == "")
+        {
+            swal("Dikkat", "Lütfen Satır  seçmeden geçmeyin.",icon="warning");
+            return;
+        }
         // if(MiktarKontrol())
         // {
         //     swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
         //     return;
         // }
 
-        if(TmpDr.length > 0)
-        {
-            for (let i = 0; i < TmpDr.length; i++) 
-            {
-                await EtiketInsert(TmpDr[i]);
-            }
-        }
-        else
-        {
-            swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
-        }
+        // if(TmpDr.length > 0)
+        // {
+        //     for (let i = 0; i < TmpDr.length; i++) 
+        //     {
+                await EtiketInsert();
+        //     }
+        // }
+        // else
+        // {
+        //     swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        // }
     }
     $scope.BtnEkle = async  function()
     {
