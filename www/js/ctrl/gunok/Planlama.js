@@ -157,6 +157,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "is_special3 AS SPECIAL, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
+                        "'../../upload/' +UPL.upl_kodu+ '-1.pdf' AS PDF,  " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
@@ -203,6 +204,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "MAX(is_Ismi) AS ADI, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 SUM(ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
+                        "'../../upload/' +UPL.upl_kodu+ '-1.pdf' AS PDF,  " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
@@ -256,6 +258,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
+                        "'../../upload/' +UPL.upl_kodu+ '-1.pdf' AS PDF,  " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
@@ -415,14 +418,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                                 GetDetail(e.row.data)
                             }
                         },
-                        {
-                            icon: "pdffile",
-                            text: "PDF GOSTER",
-                            onClick: function (e) 
-                            {
-                                
-                            }
-                        }
+                     
                     ]
             }],
             onSelectionChanged: function(selectedItems) 
@@ -758,6 +754,8 @@ function Planlama($scope,srv,$rootScope,$filter)
         $scope.IsEmriDetay.IS_EMRI_PLANLAMA_TARIH = pData.IS_EMRI_PLANLAMA_TARIH
         $scope.IsEmriDetay.ONAYDURUMU = pData.ONAYDURUMU
         $scope.IsEmriDetay.ONCELIK = pData.ONCELIK
+        $scope.IsEmriDetay.PDF = pData.PDF
+        console.log($scope.IsEmriDetay.PDF)
     }
     $scope.BtnPlanla = async function()
     {

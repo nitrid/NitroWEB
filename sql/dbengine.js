@@ -2,6 +2,7 @@ let fs = require('fs');
 let _sql = require("./sqllib");
 let lic = require('./license');
 let devprint = new (require('../devprint/devprint'));
+var sharp = require('sharp'); 
 
 let msql;
 let tsql;
@@ -268,6 +269,28 @@ function dbengine(config,io)
             {
                 fn(files)
             });
+        });
+        socket.on("ImgUpload",function(pParam,fn)
+        {
+            let FilePath = "";
+            if(typeof process.env.APP_DIR_PATH != 'undefined')
+            {
+                FilePath = process.env.APP_DIR_PATH + "/../";
+            }
+            let Img = pParam['Img' + 1]
+
+            let data = Img.replace(/^data:application\/\w+;base64,/, "");
+            let buf = Buffer.from(data, 'base64');
+            fs.writeFile(FilePath + "www/upload/" + pParam.Code + "-" + 1 + ".pdf", buf,function(err, result) 
+            {
+                if(err)
+                    console.log('error', err);
+                else
+                    fn(true)
+                    sharp.cache(false);
+                   
+            });
+           
         });
     });
 }
