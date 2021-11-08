@@ -2222,7 +2222,7 @@ var Query =
     },
     UpdateIsEmriDate : 
     {
-        query : "UPDATE GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH,ISEMRI_STATUS = 1 WHERE ISEMRI_GUID = @ISEMRI_GUID ",
+        query : "UPDATE GENDB_NITROWEB.[dbo].[TERP_NITROWEB_ISEMRI_LISTESI] SET ISEMRI_BAS_TARIH = @ISEMRI_BAS_TARIH,ISEMRI_BIT_TARIH = @ISEMRI_BIT_TARIH,ISEMRI_STATUS = 1 WHERE ISEMRI_GUID = @ISEMRI_GUID AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ['ISEMRI_BAS_TARIH:datetime','ISEMRI_BIT_TARIH:datetime','ISEMRI_GUID:string|50','ISEMRI_ISTASYON_KOD:string|25']
     },
     GetIsEmriDate : 
@@ -2308,7 +2308,7 @@ var Query =
                 ",@ssip_b_fiyat					--<ssip_b_fiyat, float,> \n" +
                 ",@ssip_tutar						--<ssip_tutar, float,> \n" +
                 ",@ssip_teslim_miktar					--<ssip_teslim_miktar, float,> \n" +
-                ",''							--<ssip_aciklama, varchar(50),> \n" +
+                ",@ssip_aciklama						--<ssip_aciklama, varchar(50),> \n" +
                 ",@ssip_girdepo					--<ssip_girdepo, int,> \n" +
                 ",@ssip_cikdepo					--<ssip_cikdepo, int,> \n" +
                 ",0							--<ssip_kapat_fl, bit,> \n" +
@@ -2325,7 +2325,7 @@ var Query =
                 ") " ,
             param :['ssip_create_user:int','ssip_lastup_user:int','ssip_firmano:int','ssip_subeno:int','ssip_evrakno_seri:string|25',
                     'ssip_evrakno_sira:int','ssip_belgeno:string|25','ssip_stok_kod:string|25','ssip_miktar:float','ssip_b_fiyat:float','ssip_tutar:float',
-                    'ssip_teslim_miktar:float','ssip_girdepo:int','ssip_cikdepo:int','ssip_birim_pntr:int','ssip_fiyat_liste_no:int','ssip_sormerkezi:string|25']
+                    'ssip_teslim_miktar:float','ssip_aciklama:string|50','ssip_girdepo:int','ssip_cikdepo:int','ssip_birim_pntr:int','ssip_fiyat_liste_no:int','ssip_sormerkezi:string|25']
     },
     DepoSiparisKontrol : 
     {

@@ -205,7 +205,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         {
             datasource : 
             {
-                data :  [{name: "GÖSTER", special: "true"},{name: "GÖSTERME", special: "false"}] 
+                data :  [{name: "GÖSTER", special: "-1"},{name: "GÖSTERME", special: "2"}] 
             },
             key : "special",
             value : "name",
