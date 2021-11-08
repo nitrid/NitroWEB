@@ -225,5 +225,14 @@ angular.module("app",
             templateUrl : "view/gunok/UretimTamamlama.html",
             controller:"UretimTamamlama"
         }
+    ).
+    state
+    (
+        {
+            name: 'main.UploadPage',
+            url: '/uploadpage',
+            templateUrl : "view/gunok/UploadPage.html",
+            controller:"UploadPage"
+        }
     )
 });

@@ -2230,6 +2230,30 @@ var Query =
         query : "SELECT CONVERT(VARCHAR,ISEMRI_BAS_TARIH,120) AS DATE FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ["ISEMRI_KOD:string|50","ISEMRI_ISTASYON_KOD:string|25"]
     },
+    PdfInsert : 
+    {
+
+        query :  " USE [GENDB_NITROWEB] "+
+        "GO INSERT INTO [dbo].[TERP_NITROWEB_PDF]  " +
+        "   ([GUID]  " +
+        "   ,[CREATE_DATE]  " +
+        "   ,[UPDATE_DATE]  " +
+        "   ,[STOK_KOD]  " +
+        "   ,[DOSYA_YOL]  " +
+        "   ,[DOSYA_ADI])  " +
+        "    VALUES  " +
+        "(NEWID()      --<GUID, uniqueidentifier,>   \n" +
+        ",GETDATE()      --<CREATE_DATE, datetime,>  \n" +
+        ",GETDATE()      --<UPDATE_DATE, datetime,>  \n" +
+        ",@STOK_KOD      --<STOK_KOD, nvarchar(50),>  \n" +
+        ",@DOSYA_YOL      --<DOSYA_YOL, nvarchar(50),>  \n" +
+        ",@DOSYA_ADI      --<DOSYA_ADI, nvarchar(50),>  \n" +
+        " ) ",
+        param : ["STOK_KOD:string|50","DOSYA_YOL:string|50","DOSYA_ADI:string|50"]
+
+
+
+    },
     DepoSiparisInsert :
     {
         query : 
