@@ -3,12 +3,27 @@ let _sql = require("./sqllib");
 let lic = require('./license');
 let devprint = new (require('../devprint/devprint'));
 var sharp = require('sharp'); 
+var ftpClient = require('ftp-client');
+
 
 let msql;
 let tsql;
 
 let LicKullanici = 0;
 let LicMenu = "";
+
+
+// FTP CONNECT CONFIG
+config = {
+    host: 'ftp.tone.ist',
+    port: 21,
+    user: 'metin@teknoerp.com.tr',
+    password: 'Syncmaster750s'
+}
+options = {
+    logging: 'basic'
+}
+client = new ftpClient(config, options);
 
 function dbengine(config,io)
 {    
@@ -281,16 +296,26 @@ function dbengine(config,io)
 
             let data = Img.replace(/^data:application\/\w+;base64,/, "");
             let buf = Buffer.from(data, 'base64');
-            fs.writeFile(FilePath + "www/upload/" + pParam.Code + "-" + 1 + ".pdf", buf,function(err, result) 
+            fs.writeFile(FilePath + "upload/" + pParam.Code + ".pdf", buf,function(err, result) 
             {
                 if(err)
+                {
                     console.log('error', err);
+                }
                 else
+                {
                     fn(true)
                     sharp.cache(false);
-                   
+                    client.connect(function () {
+                        client.upload(["upload/"+pParam.Code + ".pdf"], 'test', {
+                            baseDir: 'test',
+                            overwrite: 'older'
+                        }, function (result) {
+                            console.log(result);
+                        });
+                    });
+                }
             });
-           
         });
     });
 }
