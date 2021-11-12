@@ -150,7 +150,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
-                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "ISNULL((SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = (ISM.is_Baglanti_uid)),(SELECT utl_evrak_seri + CONVERT(varchar,utl_evrak_sira) FROM URETIM_TALEPLERI WHERE utl_Guid = (ISM.is_Baglanti_uid))) AS SIPARISNO, " +
                         "(SELECT sip_belgeno FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPBELGENO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "is_EmriDurumu AS DURUM, " +
@@ -263,7 +263,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
                         "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
-                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "ISNULL((SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = (ISM.is_Baglanti_uid)),(SELECT utl_evrak_seri + CONVERT(varchar,utl_evrak_sira) FROM URETIM_TALEPLERI WHERE utl_Guid = (ISM.is_Baglanti_uid))) AS SIPARISNO, " +
                         "(SELECT TOP 1 sip_belgeno FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPBELGENO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
