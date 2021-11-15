@@ -419,12 +419,12 @@ function Operator($scope,srv,$rootScope,$filter)
                         "CASE WHEN upl_uretim_tuket = 1 THEN 'ÜRETİM' ELSE 'TÜKETİM' END AS TIP, " +
                         "upl_uretim_tuket AS URETTUKET, " +
                         "upl_depno AS DEPO, " +
-                        "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @upl_isemri AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
+                        "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARISNO AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
                         "ROUND(upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),1),3) AS BMIKTAR " +
                         "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri AND upl_safhano = @upl_safhano",
-                param : ['upl_isemri:string|50','upl_safhano:string|25'],
-                value : [pIsEmri,$scope.SelectedRow[0].SAFHANO]
+                param : ['upl_isemri:string|50','upl_safhano:string|25','SIPARISNO:string|50'],
+                value : [pIsEmri,$scope.SelectedRow[0].SAFHANO,$scope.SelectedRow[0].SIPARISNO]
             }
 
             let TmpData = await srv.Execute(TmpQuery)

@@ -1017,7 +1017,6 @@ function Planlama($scope,srv,$rootScope,$filter)
            
             swal("Başarılı", " Sipariş Başarıyla Olusturuldu.",icon="success");
         }
-        $scope.IlkMaddeYazdir();
     }
     $scope.SubeSirapisYazdir = async function()
     {
@@ -1049,7 +1048,9 @@ function Planlama($scope,srv,$rootScope,$filter)
             query : "SELECT ssip_stok_kod AS upl_kodu,dbo.fn_DepodakiMiktar(ssip_stok_kod,111,GETDATE()) AS DEPOMIKTAR, " +
             "(SELECT sto_isim FROM STOKLAR WHERE sto_kod = ssip_stok_kod) AS ADI, " +
             "SUM(ssip_miktar) AS upl_miktar, " +
-            "(SELECT sip_evrakno_seri + '-' +CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = (SELECT TOP 1 is_Baglanti_uid FROM ISEMIRLERI WHERE is_Kod = MAX(ssip_belgeno)) ) AS SIPSERI  " +
+            "ssip_aciklama AS SIPSERI  " +
+            "ssip_stok_kod AS upl_kodu, " +
+            "(SELECT bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ssip_stok_kod) AS BARKOD" +
             "FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_aciklama = @ssip_aciklama " +
             "GROUP BY ssip_stok_kod " +
             "ORDER BY ssip_stok_kod " ,
@@ -1064,13 +1065,13 @@ function Planlama($scope,srv,$rootScope,$filter)
                 {
                     console.log(pResult)
                 })
-            
+                $scope.IlkMaddeYazdir(TmpResult)
        
             swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
             resolve()
         });
     }
-    $scope.IlkMaddeYazdir = async function()
+    $scope.IlkMaddeYazdir = async function(pData)
     {
         
         console.log($scope.IlkMaddeList)
@@ -1080,7 +1081,7 @@ function Planlama($scope,srv,$rootScope,$filter)
         {
             // for (let i = 0; i < $scope.IlkMaddeList.length; i++) 
             // {
-                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "IlkMadde.repx" + "',DATA:"+ JSON.stringify($scope.IlkMaddeList).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "IlkMadde.repx" + "',DATA:"+ JSON.stringify(pData).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
                 {
                  
                 })
