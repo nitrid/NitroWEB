@@ -14,6 +14,7 @@ function Operator($scope,srv,$rootScope,$filter)
         $scope.EtkSira = 1;
         $scope.MiktarGiris = 1;
         $scope.DurdurmaAciklama = ""
+        $scope.PDFDetay = "";
         
         $scope.DepoMiktarData = []
         $scope.SelectedRow = [];
@@ -97,6 +98,7 @@ function Operator($scope,srv,$rootScope,$filter)
                         "ROTA.RtP_SonrakiSafhaNo AS SONRAKISAFHANO, " +
                         "CASE  ROTA.RtP_SonrakiSafhaNo WHEN 0 THEN 'YOK' ELSE (SELECT Op_Aciklama FROM URETIM_OPERASYONLARI WHERE Op_Kodu =(SELECT URPL.RtP_OperasyonKodu FROM URETIM_ROTA_PLANLARI AS URPL WHERE URPL.RtP_IsEmriKodu = is_Kod AND URPL.RtP_OperasyonSafhaNo = ROTA.RtP_SonrakiSafhaNo)) END AS SONRAKIISTASYON, " +
                         "UPL.upl_kodu AS STOKKODU, " +
+                        "'../../upload/' +UPL.upl_kodu+ '-1.pdf' AS PDF,  " +
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = UPL.upl_kodu),'') AS BARKOD, " + 
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
@@ -120,7 +122,7 @@ function Operator($scope,srv,$rootScope,$filter)
                         "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
                         "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl   " +
-                        "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) " ,
+                        "ORDER BY CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) asc ,ISNULL((SELECT RT.RtP_TamamlananMiktar FROM URETIM_ROTA_PLANLARI AS RT WHERE RT.RtP_OperasyonSafhaNo = ROTA.RtP_OperasyonSafhaNo - 1 AND RT.RtP_IsEmriKodu = is_Kod),0) desc" ,
                         param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
                         value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
             }
@@ -260,7 +262,7 @@ function Operator($scope,srv,$rootScope,$filter)
                             text: "PDF GOSTER",
                             onClick: function (e) 
                             {
-                                
+                               $scope.PDFClick(e.row.data)
                             }
                         }
                     ]
@@ -299,6 +301,7 @@ function Operator($scope,srv,$rootScope,$filter)
             {
                 $scope.SelectedRow = selectedItems.selectedRowsData;
 
+                $scope.PDFDetay = selectedItems.selectedRowsData[0].KODU.PDF
                 $scope.Data.UMP = await UretimMalzemePlanGetir(selectedItems.selectedRowsData[0].KODU);
                 $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU);
             }
@@ -421,7 +424,7 @@ function Operator($scope,srv,$rootScope,$filter)
                         "upl_depno AS DEPO, " +
                         "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @upl_isemri AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
-                        "ROUND(upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),1),3) AS BMIKTAR " +
+                        "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),1) AS BMIKTAR " +
                         "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri AND upl_safhano = @upl_safhano",
                 param : ['upl_isemri:string|50','upl_safhano:string|25'],
                 value : [pIsEmri,$scope.SelectedRow[0].SAFHANO]
@@ -1086,5 +1089,11 @@ function Operator($scope,srv,$rootScope,$filter)
         }
 
         
+    }
+    $scope.PDFClick = function(pData)
+    {
+        console.log(pData)
+        $scope.PDFDetay = pData.PDF
+        $('#MdlIsEmriDetay').modal('show')
     }
 }

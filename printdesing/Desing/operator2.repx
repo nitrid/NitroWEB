@@ -279,7 +279,7 @@ namespace XtraReportSerialization {
             this.Font = new System.Drawing.Font("Arial", 9.75F);
             this.Margins = new System.Drawing.Printing.Margins(0, 0, 0, 0);
             this.Name = "Report";
-            this.PageHeight = 202;
+            this.PageHeight = 200;
             this.PageWidth = 400;
             this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
             this.PrinterName = "Godex 1";
