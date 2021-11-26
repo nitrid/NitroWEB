@@ -105,7 +105,7 @@ function Operator($scope,srv,$rootScope,$filter)
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
                         "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
                         "ISM.is_Baglanti_uid AS BAGLANTIID, " +
-                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "ISNULL((SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid),ISNULL((SELECT utl_evrak_seri + CONVERT(varchar,utl_evrak_sira) FROM URETIM_TALEPLERI WHERE utl_Guid = ISM.is_Baglanti_uid),(SELECT sip_evrakno_seri +  CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER where sip_Guid = (SELECT is_Baglanti_uid FROM ISEMIRLERI AS IISM WHERE IISM.is_Kod = ISM.is_BagliOlduguIsemri)))) AS SIPARISNO, " +
                         "(SELECT sip_belgeno FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPBELGENO, " +
                         "(SELECT  CONVERT(varchar,sip_tarih,104) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISTARIH, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
@@ -386,9 +386,7 @@ function Operator($scope,srv,$rootScope,$filter)
         })
     }
     async function EtiketPrint(pData)
-    {
-        console.log(pData)
-        console.log(JSON.stringify(pData))
+    {   
         return new Promise(async resolve => 
         {
             for (let i = 0; i < $scope.BasimMiktar; i++) 
@@ -422,16 +420,15 @@ function Operator($scope,srv,$rootScope,$filter)
                         "CASE WHEN upl_uretim_tuket = 1 THEN 'ÜRETİM' ELSE 'TÜKETİM' END AS TIP, " +
                         "upl_uretim_tuket AS URETTUKET, " +
                         "upl_depno AS DEPO, " +
-                        "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @upl_isemri AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
+                        "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARIS AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
                         "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),1) AS BMIKTAR " +
                         "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri AND upl_safhano = @upl_safhano",
-                param : ['upl_isemri:string|50','upl_safhano:string|25'],
-                value : [pIsEmri,$scope.SelectedRow[0].SAFHANO]
+                param : ['upl_isemri:string|50','upl_safhano:string|25','SIPARIS:string|50'],
+                value : [pIsEmri,$scope.SelectedRow[0].SAFHANO,$scope.SelectedRow[0].SIPARISNO]
             }
 
             let TmpData = await srv.Execute(TmpQuery)
-            console.log(TmpData)
             if(typeof TmpData == 'undefined')
             {
                 TmpData = []
@@ -972,7 +969,10 @@ function Operator($scope,srv,$rootScope,$filter)
             {
                 let rotacontrol = await RotaControl($scope.SelectedRow[0].KODU,$scope.SelectedRow[0].SAFHANO);
 
-                if(rotacontrol[0].TAMAMLANANMIKTAR < $scope.MiktarGiris) //BİR ÖNCEKİ İSTASYONDAKİ MİKTAR KONTROLÜ
+                console.log($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR)
+                console.log($scope.MiktarGiris)
+                console.log($scope.SelectedRow[0].ONCEKIISTASYONTAMAMLANANMIKTAR)
+                if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].ONCEKIISTASYONTAMAMLANANMIKTAR) //BİR ÖNCEKİ İSTASYONDAKİ MİKTAR KONTROLÜ
                 {
                     swal("İşlem Başarısız!","Bir Önceki (" + rotacontrol[0].OPERASYONADI + ") İstasyonda \n Tamamlanan Miktar : " + rotacontrol[0].TAMAMLANANMIKTAR ,icon="error"); 
                     return;

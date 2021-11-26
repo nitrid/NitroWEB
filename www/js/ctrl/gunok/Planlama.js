@@ -150,7 +150,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "is_Guid AS GUID, " +
                         "is_Kod AS KODU, " +
                         "is_Ismi AS ADI, " +
-                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "ISNULL((SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = (ISM.is_Baglanti_uid)),(SELECT utl_evrak_seri + CONVERT(varchar,utl_evrak_sira) FROM URETIM_TALEPLERI WHERE utl_Guid = (ISM.is_Baglanti_uid))) AS SIPARISNO, " +
                         "(SELECT sip_belgeno FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPBELGENO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "is_EmriDurumu AS DURUM, " +
@@ -263,7 +263,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
                         "ISNULL((SELECT son_hali FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SONHALI, " +
-                        "(SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPARISNO, " +
+                        "ISNULL((SELECT sip_evrakno_seri + CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = (ISM.is_Baglanti_uid)),(SELECT utl_evrak_seri + CONVERT(varchar,utl_evrak_sira) FROM URETIM_TALEPLERI WHERE utl_Guid = (ISM.is_Baglanti_uid))) AS SIPARISNO, " +
                         "(SELECT TOP 1 sip_belgeno FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid) AS SIPBELGENO, " +
                         "(SELECT cari_unvan1 + ' ' cari_unvan2 FROM CARI_HESAPLAR WHERE cari_kod = (SELECT sip_musteri_kod FROM SIPARISLER WHERE sip_Guid = ISM.is_Baglanti_uid)) AS CARIISMI, " +
                         "ISNULL(ROTA.RtP_OperasyonKodu,'') AS OPERASYONKODU " +
@@ -921,15 +921,15 @@ function Planlama($scope,srv,$rootScope,$filter)
                 let TmpQuery = 
                 {
                     db: "{M}." + $scope.Firma,
-                    query : "SELECT upl_kodu,  'DPS' +'-' + CONVERT(varchar,(SELECT ISNULL(MAX(ssip_evrakno_sira),0) + 1  FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_evrakno_seri = 'DPS' )) AS SIPNO,dbo.fn_DepodakiMiktar(upl_kodu,111,GETDATE()) AS DEPOMIKTAR,(SELECT sto_isim FROM STOKLAR WHERE sto_kod = upl_kodu) AS ADI,is_Kod,sum(upl_miktar) AS upl_miktar,(sum(upl_miktar) - ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0)) AS KALAN,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0) AS TAMAMLANAN,(SELECT sip_evrakno_seri + '-' +CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPSERI,  " +
-                    "(SELECT CONVERT(varchar,sip_tarih,104) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPTARIH,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = upl_kodu) AS BARKOD ,CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
+                    query : "SELECT upl_kodu,  'DPS' +'-' + CONVERT(varchar,(SELECT ISNULL(MAX(ssip_evrakno_sira),0) + 1  FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_evrakno_seri = 'DPS' )) AS SIPNO,dbo.fn_DepodakiMiktar(upl_kodu,111,GETDATE()) AS DEPOMIKTAR,(SELECT sto_isim FROM STOKLAR WHERE sto_kod = upl_kodu) AS ADI,is_Kod,sum(upl_miktar) AS upl_miktar,(sum(upl_miktar) - ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARIS AND sth_evraktip = 2),0)) AS KALAN,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARIS AND sth_evraktip = 2),0) AS TAMAMLANAN,(SELECT sip_evrakno_seri + '-' +CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPSERI,  " +
+                    "(SELECT CONVERT(varchar,sip_tarih,104) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPTARIH,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = upl_kodu) AS BARKOD ,CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod =  @SIPARIS AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
                         " FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri  AND  " +
                         "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 1 GROUP BY upl_kodu,is_Kod ORDER BY upl_kodu" ,
-                    param : ['is_BagliOlduguIsemri'],
-                    type : ['string|25'],
-                    value : [BagliIsEmriGrupList[i]]
+                    param : ['is_BagliOlduguIsemri','SIPARIS'],
+                    type : ['string|25','string|25'],
+                    value : [BagliIsEmriGrupList[i],$scope.SiparisNo]
                 }
                 let TmpResult = await srv.Execute(TmpQuery)
                 console.log(TmpResult)
@@ -947,15 +947,15 @@ function Planlama($scope,srv,$rootScope,$filter)
             let TmpQuery = 
                 {
                     db: "{M}." + $scope.Firma,
-                    query : "SELECT upl_kodu,  'DPS' +'-' + CONVERT(varchar,(SELECT ISNULL(MAX(ssip_evrakno_sira),0) + 1  FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_evrakno_seri = 'DPS' )) AS SIPNO,dbo.fn_DepodakiMiktar(upl_kodu,111,GETDATE()) AS DEPOMIKTAR,(SELECT sto_isim FROM STOKLAR WHERE sto_kod = upl_kodu) AS ADI,is_Kod,sum(upl_miktar) AS upl_miktar,(sum(upl_miktar) - ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0)) AS KALAN,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0) AS TAMAMLANAN,(SELECT sip_evrakno_seri + '-' +CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPSERI,  " +
-                        "(SELECT CONVERT(varchar,sip_tarih,104) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPTARIH,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = upl_kodu) AS BARKOD ,CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = is_Kod AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
+                    query : "SELECT upl_kodu,  'DPS' +'-' + CONVERT(varchar,(SELECT ISNULL(MAX(ssip_evrakno_sira),0) + 1  FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_evrakno_seri = 'DPS' )) AS SIPNO,dbo.fn_DepodakiMiktar(upl_kodu,111,GETDATE()) AS DEPOMIKTAR,(SELECT sto_isim FROM STOKLAR WHERE sto_kod = upl_kodu) AS ADI,is_Kod,sum(upl_miktar) AS upl_miktar,(sum(upl_miktar) - ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARIS AND sth_evraktip = 2),0)) AS KALAN,ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARIS AND sth_evraktip = 2),0) AS TAMAMLANAN,(SELECT sip_evrakno_seri + '-' +CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPSERI,  " +
+                        "(SELECT CONVERT(varchar,sip_tarih,104) FROM SIPARISLER WHERE sip_Guid = max(ISM.is_Baglanti_uid)) AS SIPTARIH,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = upl_kodu) AS BARKOD ,CASE WHEN ( ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARIS AND sth_evraktip = 2),0)) >= sum(upl_miktar) then 'bg-success text-white' else 'bg-secondary text-white' end as class " +
                         " FROM ISEMIRLERI AS ISM " +
                         "INNER JOIN URETIM_MALZEME_PLANLAMA AS UPL ON ISM.is_Kod =  UPL.upl_isemri " +
                         "WHERE ISM.is_Kod = @is_BagliOlduguIsemri  AND  " +
                         "(SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) = 1 GROUP BY upl_kodu,is_Kod ORDER BY upl_kodu " ,
-                    param : ['is_BagliOlduguIsemri'],
-                    type : ['string|25'],
-                    value : [$scope.IsSıparisBelgeNo]
+                    param : ['is_BagliOlduguIsemri','SIPARIS'],
+                    type : ['string|25','string|25'],
+                    value : [$scope.IsSıparisBelgeNo,$scope.SiparisNo]
                 }
                 let TmpResult = await srv.Execute(TmpQuery)
               
@@ -1017,7 +1017,7 @@ function Planlama($scope,srv,$rootScope,$filter)
            
             swal("Başarılı", " Sipariş Başarıyla Olusturuldu.",icon="success");
         }
-        $scope.IlkMaddeYazdir();
+        
     }
     $scope.SubeSirapisYazdir = async function()
     {
@@ -1048,7 +1048,9 @@ function Planlama($scope,srv,$rootScope,$filter)
             db: "{M}." + $scope.Firma,
             query : "SELECT ssip_stok_kod AS upl_kodu,dbo.fn_DepodakiMiktar(ssip_stok_kod,111,GETDATE()) AS DEPOMIKTAR, " +
             "(SELECT sto_isim FROM STOKLAR WHERE sto_kod = ssip_stok_kod) AS ADI, " +
+            "(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ssip_stok_kod) AS BARKOD, " +
             "SUM(ssip_miktar) AS upl_miktar, " +
+            "(SELECT CONVERT(VARCHAR,sip_tarih,104) FROM SIPARISLER WHERE sip_Guid = (SELECT TOP 1 is_Baglanti_uid FROM ISEMIRLERI WHERE is_Kod = MAX(ssip_belgeno)) ) AS SIPTARIH, " +
             "(SELECT sip_evrakno_seri + '-' +CONVERT(varchar,sip_evrakno_sira) FROM SIPARISLER WHERE sip_Guid = (SELECT TOP 1 is_Baglanti_uid FROM ISEMIRLERI WHERE is_Kod = MAX(ssip_belgeno)) ) AS SIPSERI  " +
             "FROM DEPOLAR_ARASI_SIPARISLER WHERE ssip_aciklama = @ssip_aciklama " +
             "GROUP BY ssip_stok_kod " +
@@ -1060,6 +1062,7 @@ function Planlama($scope,srv,$rootScope,$filter)
         let TmpResult = await srv.Execute(TmpQuery)
         return new Promise(async resolve => 
         {
+            $scope.IlkMaddeYazdir(TmpResult);
                 srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "deposiparis.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
                 {
                     console.log(pResult)
@@ -1070,17 +1073,16 @@ function Planlama($scope,srv,$rootScope,$filter)
             resolve()
         });
     }
-    $scope.IlkMaddeYazdir = async function()
+    $scope.IlkMaddeYazdir = async function(pData)
     {
         
-        console.log($scope.IlkMaddeList)
 
         
         return new Promise(async resolve => 
         {
             // for (let i = 0; i < $scope.IlkMaddeList.length; i++) 
             // {
-                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "IlkMadde.repx" + "',DATA:"+ JSON.stringify($scope.IlkMaddeList).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "IlkMadde.repx" + "',DATA:"+ JSON.stringify(pData).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
                 {
                  
                 })

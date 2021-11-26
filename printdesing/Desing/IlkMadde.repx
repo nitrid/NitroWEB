@@ -16,7 +16,6 @@ namespace XtraReportSerialization {
     public class Report : DevExpress.XtraReports.UI.XtraReport {
         private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
         private DevExpress.XtraReports.UI.DetailBand Detail;
-        private DevExpress.XtraReports.UI.XRLabel label13;
         private DevExpress.XtraReports.UI.XRBarCode barCode1;
         private DevExpress.XtraReports.UI.XRLabel label10;
         private DevExpress.XtraReports.UI.XRLabel label11;
@@ -49,7 +48,6 @@ namespace XtraReportSerialization {
             DevExpress.XtraPrinting.BarCode.Code128Generator code128Generator1 = new DevExpress.XtraPrinting.BarCode.Code128Generator();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            this.label13 = new DevExpress.XtraReports.UI.XRLabel();
             this.barCode1 = new DevExpress.XtraReports.UI.XRBarCode();
             this.label10 = new DevExpress.XtraReports.UI.XRLabel();
             this.label11 = new DevExpress.XtraReports.UI.XRLabel();
@@ -74,7 +72,6 @@ namespace XtraReportSerialization {
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-                        this.label13,
                         this.barCode1,
                         this.label10,
                         this.label11,
@@ -90,20 +87,6 @@ namespace XtraReportSerialization {
                         this.label2});
             this.Detail.HeightF = 200F;
             this.Detail.Name = "Detail";
-            // 
-            // label13
-            // 
-            this.label13.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[SIPNO]")});
-            this.label13.LocationFloat = new DevExpress.Utils.PointFloat(273.5417F, 50.79171F);
-            this.label13.Multiline = true;
-            this.label13.Name = "label13";
-            this.label13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.label13.SizeF = new System.Drawing.SizeF(94.79166F, 23F);
-            this.label13.StylePriority.UseTextAlignment = false;
-            this.label13.Text = "[upl_miktar]";
-            this.label13.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            this.label13.TextFormatString = "{0:0.00}";
             // 
             // barCode1
             // 
@@ -134,7 +117,7 @@ namespace XtraReportSerialization {
             this.label11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.label11.SizeF = new System.Drawing.SizeF(94.79166F, 23F);
             this.label11.StylePriority.UseTextAlignment = false;
-            this.label11.Text = "[KALAN]";
+            this.label11.Text = "[upl_miktar]";
             this.label11.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             this.label11.TextFormatString = "{0:0.00}";
             // 
@@ -142,7 +125,7 @@ namespace XtraReportSerialization {
             // 
             this.label12.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ADI]")});
-            this.label12.Font = new System.Drawing.Font("Arial", 8F);
+            this.label12.Font = new System.Drawing.Font("Arial", 9F);
             this.label12.LocationFloat = new DevExpress.Utils.PointFloat(94.37501F, 73.79163F);
             this.label12.Multiline = true;
             this.label12.Name = "label12";
@@ -157,11 +140,13 @@ namespace XtraReportSerialization {
             // 
             this.label9.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
                         new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[upl_kodu]")});
+            this.label9.Font = new System.Drawing.Font("Arial", 9F);
             this.label9.LocationFloat = new DevExpress.Utils.PointFloat(94.37501F, 50.79168F);
             this.label9.Multiline = true;
             this.label9.Name = "label9";
             this.label9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.label9.SizeF = new System.Drawing.SizeF(179.1667F, 23.00002F);
+            this.label9.SizeF = new System.Drawing.SizeF(247.9167F, 23.00002F);
+            this.label9.StylePriority.UseFont = false;
             this.label9.StylePriority.UseTextAlignment = false;
             this.label9.Text = "[upl_kodu]";
             this.label9.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -299,7 +284,7 @@ namespace XtraReportSerialization {
             this.PageHeight = 200;
             this.PageWidth = 400;
             this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
-            this.PrinterName = "Godex 1";
+            this.PrinterName = "Godex 2";
             this.ShowPrintMarginsWarning = false;
             this.ShowPrintStatusDialog = false;
             this.StyleSheetPath = "";

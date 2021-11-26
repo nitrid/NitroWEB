@@ -282,7 +282,7 @@ namespace XtraReportSerialization {
             this.PageHeight = 202;
             this.PageWidth = 400;
             this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
-            this.PrinterName = "Godex 2";
+            this.PrinterName = "CMT";
             this.ShowPrintMarginsWarning = false;
             this.ShowPrintStatusDialog = false;
             this.StyleSheetPath = "";
