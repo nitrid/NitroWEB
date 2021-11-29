@@ -305,7 +305,7 @@ function dbengine(config,io)
                     fn(true)
                     sharp.cache(false);
                     client.connect(function () {
-                        client.upload(['upload/**'], '/', {
+                        client.upload([FilePath +'upload/**'], '/', {
                             baseDir: 'uploadPDF',
                             overwrite: 'older'
                         }, function (result) {
