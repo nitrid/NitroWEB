@@ -872,8 +872,13 @@ function Operator($scope,srv,$rootScope,$filter)
 
             if(TmpDrTuketData.length > 0 && $rootScope.GeneralParamList.StokEksiyeDusme == "false")
             {
+<<<<<<< Updated upstream
                 let IInfoTextBaslat = [];
                 for(let i = 0;i < TmpDrTuketData.length;i++) //Depo Miktar Kontrol
+=======
+                let InfoTextBalsat = "";
+                for(let i = 0;i < $scope.TmpDrTuket.length;i++) //Depo Miktar Kontrol
+>>>>>>> Stashed changes
                 {
                     if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) > TmpDrTuketData[i].DEPOMIKTAR)
                     {
