@@ -1,0 +1,35 @@
+<div ng-controller="ResimYukleme" ng-init="Init()"> 
+
+    <div class="row mt-2 p-2 m-0">
+        <div class="card border-dark">
+            <div class="card-body text-dark py-2">
+                <div class="row py-1">
+                  <nav class="nav nav-pills flex-column flex-sm-row">
+                  </nav>
+                </div>
+            </div>
+        </div>
+            <div id="TblStokList"></div>  
+      </div>
+       <!-- Malzeme Sipariş Modal -->
+       <div class="modal fade" id="MdlDetay" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+        <div class="modal-dialog ">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="card border-dark">
+            </div>
+            <div class="row">
+                <div class="input-group mb-3 input-group-lg">
+                  <td><input type="file" id="Img1" accept="Document/*" onchange="angular.element(Img1).scope().UploadImg(Img1,'1')"></td>
+                </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

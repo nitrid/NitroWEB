@@ -25,3 +25,5 @@ angular.module('app.controller', ['angular.filter'])
 .controller('Planlama', ['$scope', 'srv','$rootScope','$filter', Planlama])
 .controller('UretimTamamlama', ['$scope', 'srv','$rootScope','$filter', UretimTamamlama])
 .controller('UploadPage', ['$scope', 'srv','$rootScope','$filter', UploadPage])
+//KÜPPELİ
+.controller('ResimYukleme', ['$scope', 'srv','$rootScope','$filter', ResimYukleme])

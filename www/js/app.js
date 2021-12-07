@@ -234,5 +234,15 @@ angular.module("app",
             templateUrl : "view/gunok/UploadPage.html",
             controller:"UploadPage"
         }
+    ).
+    //KÜPPELİ
+    state
+    (
+        {
+            name: 'main.ResimYukleme',
+            url:'/ResimYukleme',
+            templateUrl:"view/kuppeli/ResimYukleme.html",
+            controller:"ResimYukleme"
+        }
     )
 });
