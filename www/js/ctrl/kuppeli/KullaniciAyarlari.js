@@ -71,23 +71,14 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 // Kullanıcı
                 Password : srv.GetParamValue($scope.Data,"Password"),
                 // Menü
-                Planlama : srv.GetParamValue($scope.Data,"Planlama"),
-                Operator : srv.GetParamValue($scope.Data,"Operator"),
-                UretimTamamlama : srv.GetParamValue($scope.Data,"UretimTamamlama"),
-                UretimDashboard : srv.GetParamValue($scope.Data,"UretimDashboard"),
+                ResimYukleme : srv.GetParamValue($scope.Data,"ResimYukleme"),
                 // Menü Yönetim
                 KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
                 KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
                 UretimSilme : srv.GetParamValue($scope.Data,"UretimSilme"),
                 // Parametre
-                OperasyonKodu : srv.GetParamValue($scope.Data,"OperasyonKodu"),
-                IsEmriOnayDurumu : srv.GetParamValue($scope.Data,"IsEmriOnayDurumu"),
-                KapananIsEmri : srv.GetParamValue($scope.Data,"KapananIsEmri"),
                 TasarimYolu : srv.GetParamValue($scope.Data,"TasarimYolu"),
                 Tasarim : srv.GetParamValue($scope.Data,"Tasarim"),
-                OperasyonSeri : srv.GetParamValue($scope.Data,"OperasyonSeri"),
-                UrunCikisSeri : srv.GetParamValue($scope.Data,"UrunCikisSeri"),
-                UrunGirisSeri : srv.GetParamValue($scope.Data,"UrunGirisSeri"),
                 // Sistem
                 AcilisSayfasi : srv.GetParamValue($scope.Data,"AcilisSayfasi"),
                 Firma : srv.GetParamValue($scope.Data,"Firma"),
@@ -156,7 +147,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             datasource : 
             {
                 db: "GENDB_NITROWEB",
-                query : "SELECT TAG AS TAG,MAX(SPECIAL) AS SPECIAL FROM TERP_NITROWEB_PARAM_2 WHERE TYPE IN ('1','2','3') GROUP BY TAG ",
+                query : "SELECT TAG AS TAG,MAX(SPECIAL) AS SPECIAL FROM TERP_NITROWEB_PARAM_KUPPELI WHERE TYPE IN ('1','2','3') GROUP BY TAG ",
             },
             key : "TAG",
             value : "SPECIAL",
@@ -166,55 +157,6 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             onSelected : function(pSelected)
             {
                 $rootScope.GeneralParamList.AcilisSayfasi = pSelected
-            }
-        }
-        $scope.CmbOperasyon =
-        {
-            datasource : 
-            {
-                db: "MikroDB_V16_" + $scope.Firma,
-                query : "SELECT Op_Kodu AS KODU,Op_Aciklama AS ACIKLAMA FROM URETIM_OPERASYONLARI",
-            },
-            key : "KODU",
-            value : "ACIKLAMA",
-            defaultVal : $rootScope.GeneralParamList.OperasyonKodu,
-            selectionMode : "key",
-            return : $rootScope.GeneralParamList.OperasyonKodu,
-            onSelected : function(pSelected)
-            {
-                $rootScope.GeneralParamList.OperasyonKodu = pSelected
-            }
-        }
-        $scope.CmbIsEmriOnayDurumu =
-        {
-            datasource : 
-            {
-                data :  [{name: "ONAYLI", special: "true"},{name: "ONAYSIZ", special: "false"}] 
-            },
-            key : "special",
-            value : "name",
-            defaultVal : $rootScope.GeneralParamList.IsEmriOnayDurumu.toString(),
-            selectionMode : "key",
-            return : $rootScope.GeneralParamList.IsEmriOnayDurumu,
-            onSelected : function(pSelected)
-            {
-                $rootScope.GeneralParamList.IsEmriOnayDurumu = pSelected
-            }
-        }
-        $scope.CmbKapananIsEmri =
-        {
-            datasource : 
-            {
-                data :  [{name: "GÖSTER", special: "-1"},{name: "GÖSTERME", special: "2"}] 
-            },
-            key : "special",
-            value : "name",
-            defaultVal : $rootScope.GeneralParamList.KapananIsEmri.toString(),
-            selectionMode : "key",
-            return : $rootScope.GeneralParamList.KapananIsEmri,
-            onSelected : function(pSelected)
-            {
-                $rootScope.GeneralParamList.KapananIsEmri = pSelected
             }
         }
         $scope.CmbTasarimList =
@@ -255,17 +197,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             // Menü
             {
-                Planlama : $rootScope.GeneralParamList.Planlama
+                ResimYukleme : $rootScope.GeneralParamList.ResimYukleme
             },
-            {
-                Operator : $rootScope.GeneralParamList.Operator
-            },
-            {
-                UretimTamamlama : $rootScope.GeneralParamList.UretimTamamlama
-            },
-            {
-                UretimDashboard : $rootScope.GeneralParamList.UretimDashboard
-            },
+        
             // Menü Yönetim
             {
                 KullaniciAyarlari : $rootScope.GeneralParamList.KullaniciAyarlari
@@ -277,29 +211,12 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 UretimSilme : $rootScope.GeneralParamList.UretimSilme
             },
             // Parametre
-            {
-                OperasyonKodu : $rootScope.GeneralParamList.OperasyonKodu
-            },
-            {
-                IsEmriOnayDurumu : $rootScope.GeneralParamList.IsEmriOnayDurumu
-            },
-            {
-                KapananIsEmri : $rootScope.GeneralParamList.KapananIsEmri
-            },
+           
             {
                 TasarimYolu : $rootScope.GeneralParamList.TasarimYolu
             },
             {
                 Tasarim : $rootScope.GeneralParamList.Tasarim
-            },
-            {
-                OperasyonSeri : $rootScope.GeneralParamList.OperasyonSeri
-            },
-            {
-                UrunCikisSeri : $rootScope.GeneralParamList.UrunCikisSeri
-            },
-            {
-                UrunGirisSeri : $rootScope.GeneralParamList.UrunGirisSeri
             },
             // Sistem
             {
@@ -350,23 +267,14 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             ["Password",$rootScope.GeneralParamList.Password,0,""],
             ["Kullanici",$scope.GeneralParamList.Account,0,""],
             // Menü
-            ["Planlama",$rootScope.GeneralParamList.Planlama,1,"Planlama"],
-            ["Operator",$rootScope.GeneralParamList.Operator,1,"Operatör"],
-            ["UretimTamamlama",$rootScope.GeneralParamList.UretimTamamlama,1,"Üretim Tamamlama"],
-            ["UretimDashboard",$rootScope.GeneralParamList.UretimDashboard,1,"Uretim Dashboard"],
+            ["ResimYukleme",$rootScope.GeneralParamList.Planlama,1,"ResimYukleme"],
             // Menü Yönetim
             ["KullaniciAyarlari",$rootScope.GeneralParamList.KullaniciAyarlari,2,"Kullanici Ayarları"],
             ["KullaniciEkle",$rootScope.GeneralParamList.KullaniciEkle,2,"Kullanıcı Ekle"],
             ["UretimSilme",$rootScope.GeneralParamList.UretimSilme,2,"Üretim Silme"],
             // Parametre
-            ["OperasyonKodu",$rootScope.GeneralParamList.OperasyonKodu,4,""],
-            ["IsEmriOnayDurumu",$rootScope.GeneralParamList.IsEmriOnayDurumu,4,""],
-            ["KapananIsEmri",$rootScope.GeneralParamList.KapananIsEmri,4,""],
             ["TasarimYolu",$rootScope.GeneralParamList.TasarimYolu,4,""],
             ["Tasarim",$rootScope.GeneralParamList.Tasarim,4,""],
-            ["OperasyonSeri",$rootScope.GeneralParamList.OperasyonSeri,4,""],
-            ["UrunCikisSeri",$rootScope.GeneralParamList.UrunCikisSeri,4,""],
-            ["UrunGirisSeri",$rootScope.GeneralParamList.UrunGirisSeri,4,""],
             // Sistem
             ["AcilisSayfasi",$rootScope.GeneralParamList.AcilisSayfasi,5,""],
             ["Firma",$rootScope.GeneralParamList.Firma,5,""],
@@ -386,7 +294,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             let TmpQuery = 
             {
                 db: "GENDB_NITROWEB",
-                query : "SELECT TOP 1 ACCOUNT FROM TERP_NITROWEB_PARAM_2 WHERE ACCOUNT = @ACCOUNT",
+                query : "SELECT TOP 1 ACCOUNT FROM TERP_NITROWEB_PARAM_KUPPELI WHERE ACCOUNT = @ACCOUNT",
                 param : ['ACCOUNT'],
                 type :  ['string|50'],
                 value : [$rootScope.GeneralParamList.Account]
@@ -421,7 +329,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         let TmpQuery = 
         {
             db: "GENDB_NITROWEB",
-            query : "SELECT * FROM TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE AND TAG = 'Password' ",
+            query : "SELECT * FROM TERP_NITROWEB_PARAM_KUPPELI WHERE TYPE = @TYPE AND TAG = 'Password' ",
             param : ['TYPE'],
             type :  ['int'],
             value : ['0']
@@ -479,7 +387,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 datasource : 
                 {
                     db: "GENDB_NITROWEB",
-                    query : "SELECT TAG,SPECIAL,TYPE FROM TERP_NITROWEB_PARAM_2 WHERE TYPE IN ('1','2','3') GROUP BY TAG,SPECIAL,TYPE ORDER BY TYPE",
+                    query : "SELECT TAG,SPECIAL,TYPE FROM TERP_NITROWEB_PARAM_KUPPELI WHERE TYPE IN ('1','2','3') GROUP BY TAG,SPECIAL,TYPE ORDER BY TYPE",
                 },
                 key : "TAG",
                 value : "SPECIAL",

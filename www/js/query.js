@@ -2078,25 +2078,25 @@ var Query =
        5 - SISTEM */
     GetParam :
     {
-        query : "SELECT * FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_2 WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
+        query : "SELECT * FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_KUPPELI WHERE TYPE = @TYPE AND ACCOUNT = @ACCOUNT",
         param : ['TYPE','ACCOUNT'],
         type : ['int','string|50'] 
     },
     GetKullanici : 
     {
-        query : "SELECT * FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_2 WHERE ACCOUNT = @ACCOUNT",
+        query : "SELECT * FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_KUPPELI WHERE ACCOUNT = @ACCOUNT",
         param : ['ACCOUNT'],
         type : ['string|50'] 
     },
     UpdateParam : 
     {
-        query : "UPDATE GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_2 SET VALUE = @VALUE WHERE TAG = @TAG AND ACCOUNT = @ACCOUNT ",
+        query : "UPDATE GENDB_NITROWEB.dbo.TERP_NITROWEB_PARAM_KUPPELI SET VALUE = @VALUE WHERE TAG = @TAG AND ACCOUNT = @ACCOUNT ",
         param : ['VALUE','TAG','ACCOUNT'],
         type : ['string|50','string|50','string|50']
     },
     InsertParam :
     {
-        query : "INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_PARAM_2] " +
+        query : "INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_PARAM_KUPPELI] " +
                 "([ACCOUNT] " +
                 ",[TAG] " +
                 ",[VALUE] " +

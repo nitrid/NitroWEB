@@ -181,24 +181,16 @@ angular.module("app",
         }
     ).
     //GUNOK MENU
-    state
-    (
-        {
-            name: 'main.KullaniciAyarlari',
-            url: '/kullanici_ayarlari',
-            templateUrl : "view/gunok/KullaniciAyarlari.html",
-            controller:"KullaniciAyarlari"
-        }
-    ).
-    state
-    (
-        {
-            name: 'main.KullaniciEkle',
-            url: '/kullanici_ekle',
-            templateUrl : "view/gunok/KullaniciEkle.html",
-            controller:"KullaniciAyarlari"
-        }
-    ).
+  
+    // state
+    // (
+    //     {
+    //         name: 'main.KullaniciEkle',
+    //         url: '/kullanici_ekle',
+    //         templateUrl : "view/gunok/KullaniciEkle.html",
+    //         controller:"KullaniciAyarlari"
+    //     }
+    // ).
     state
     (
         {
@@ -243,6 +235,24 @@ angular.module("app",
             url:'/ResimYukleme',
             templateUrl:"view/kuppeli/ResimYukleme.html",
             controller:"ResimYukleme"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.KullaniciEkle',
+            url: '/kullanici_ekle',
+            templateUrl : "view/kuppeli/KullaniciEkle.html",
+            controller:"KullaniciAyarlari"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.KullaniciAyarlari',
+            url: '/kullanici_ayarlari',
+            templateUrl : "view/kuppeli/KullaniciAyarlari.html",
+            controller:"KullaniciAyarlari"
         }
     )
 });

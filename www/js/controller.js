@@ -20,10 +20,10 @@ angular.module('app.controller', ['angular.filter'])
 .controller('MonoStokDepoGirisCikisRaporu', ['$scope', 'srv','$rootScope', MonoStokDepoGirisCikisRaporu])
 .controller('MonoUretimSilme', ['$scope', 'srv','$rootScope', MonoUretimSilme])
 // GUNOK
-.controller('KullaniciAyarlari', ['$scope', 'srv','$rootScope','$state', KullaniciAyarlari])
 .controller('Operator', ['$scope', 'srv','$rootScope','$filter', Operator])
 .controller('Planlama', ['$scope', 'srv','$rootScope','$filter', Planlama])
 .controller('UretimTamamlama', ['$scope', 'srv','$rootScope','$filter', UretimTamamlama])
 .controller('UploadPage', ['$scope', 'srv','$rootScope','$filter', UploadPage])
 //KÜPPELİ
-.controller('ResimYukleme', ['$scope', 'srv','$rootScope','$filter', ResimYukleme])
+.controller('ResimYukleme', ['$scope','srv','$rootScope','$filter', ResimYukleme])
+.controller('KullaniciAyarlari', ['$scope', 'srv','$rootScope','$state', KullaniciAyarlari])
