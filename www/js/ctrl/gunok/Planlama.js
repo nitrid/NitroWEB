@@ -871,6 +871,7 @@ function Planlama($scope,srv,$rootScope,$filter)
     }
     $scope.BtnSiralamaKaydet = async function()
     {
+        console.log($scope.SiralamaList)
         if($scope.SiralamaList.length == 0 && $scope.PlanlananList.length > 0)
         {   
             $scope.SiralamaList = $scope.PlanlananList;
