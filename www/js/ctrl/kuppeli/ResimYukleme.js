@@ -1,5 +1,79 @@
 function ResimYukleme($scope,srv,$rootScope,$filter)
 {
+    $(() => {
+        $('#file-uploader').dxFileUploader({
+          name: 'file',
+          accept: 'image/*',
+          uploadUrl: 'https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/ChunkUpload',
+          chunkSize: 200000,
+          onUploadStarted,
+          onProgress: onUploadProgress,
+        });
+      });
+      
+      function onUploadStarted() {
+        getChunkPanel().innerHTML = '';
+      }
+      function onUploadProgress(e) {
+        getChunkPanel().appendChild(addChunkInfo(e.segmentSize, e.bytesLoaded, e.bytesTotal));
+      }
+      
+      function addChunkInfo(segmentSize, loaded, total) {
+        const result = document.createElement('DIV');
+      
+        result.appendChild(createSpan('Chunk size:'));
+        result.appendChild(createSpan(getValueInKb(segmentSize), 'segment-size'));
+        result.appendChild(createSpan(', Uploaded:'));
+        result.appendChild(createSpan(getValueInKb(loaded), 'loaded-size'));
+        result.appendChild(createSpan('/'));
+        result.appendChild(createSpan(getValueInKb(total), 'total-size'));
+      
+        return result;
+      }
+      function getValueInKb(value) {
+        return `${(value / 1024).toFixed(0)}kb`;
+      }
+      function createSpan(text, className) {
+        const result = document.createElement('SPAN');
+        if (className) { result.className = `${className} dx-theme-accent-as-text-color`; }
+        result.innerText = text;
+        return result;
+      }
+      function getChunkPanel() {
+        return document.querySelector('.chunk-panel');
+      }
+      
+    $(() => {
+        $('#file-uploader').dxFileUploader({
+          selectButtonText: 'Fotoğrafı Seç',
+          labelText: '',
+          accept: 'image/*',
+          uploadMode: 'useForm',
+        });
+      
+        $('#button').dxButton({
+          text: 'Resmi Kaydet',
+          type: 'success',
+          onClick() {
+            DevExpress.ui.dialog.alert('Uncomment the line to enable sending a form to the server.', 'Click Handler');
+          },
+        });
+      });
+      $(() => {
+        $('#file-uploader-images').dxFileUploader({
+          multiple: true,
+          uploadMode: 'useButtons',
+          uploadUrl: 'https://js.devexpress.com/Demos/NetCore/FileUploader/Upload',
+          allowedFileExtensions: ['.jpg', '.jpeg', '.gif', '.png'],
+        });
+        $('#file-uploader-max-size').dxFileUploader({
+          multiple: true,
+          uploadMode: 'useButtons',
+          uploadUrl: 'https://js.devexpress.com/Demos/NetCore/FileUploader/Upload',
+          maxFileSize: 4000000,
+        });
+      });
+      
     $scope.Init = async function () 
     {
         $scope.Firma = localStorage.getItem('firm');
@@ -9,9 +83,12 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         $scope.ImgSource = {}
         $scope.Code = ''
         $scope.FilePath = "";
-      
+        $scope.StokDetay = []
+
         InitStokListe()
         $scope.StokListeGetir()
+        $("#TbStok").addClass('active');
+        $("#TbResim").removeClass('active');
     }
     function InitStokListe()
     {
@@ -54,7 +131,7 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                         icon: "edit",
                         onClick: function (e) {
                             $scope.Code = e.row.data.KODU
-                            $scope.DetayClick()
+                            $scope.DetayClick(e.row.data)
                         }
                     }]
                 },
@@ -96,9 +173,11 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         console.log($scope.StokListe)
         $("#TblStokList").dxDataGrid("instance").option("dataSource", $scope.StokListe); 
     }
-    $scope.DetayClick = function()
+    $scope.DetayClick = function(e)
     {
-        $('#MdlDetay').modal('show')
+       $scope.StokDetay  = e
+       $("#TbResim").addClass('active');
+       $("#TbStok"). removeClass('active');
     }
     $scope.UploadImg = async function(pImg,pSira) 
     {
@@ -169,4 +248,36 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         }
         reader.readAsDataURL(pImg.files[0]);
     }
-}
+    $scope.BtnGeri = function()
+    {
+        $("#TbStok").addClass('active');
+        $("#TbResim").removeClass('active');
+    }
+    $scope.BtnFotografKaydet= async function()
+    {   
+        let TmpQuery = 
+                {
+                    db: "GENDB_NITROWEB",
+                    query : "SELECT ISNULL(MAX(SHORT),0)+1 AS SHORT_ID FROM TERP_NITROWEB_IMAGE WHERE CODE= @CODE",
+                    param :["CODE:string|50"],
+                    value : [$scope.Code]
+                }
+                
+                let TmpResult = await srv.Execute(TmpQuery)
+                console.log(TmpResult)
+        let TmpInsertData = 
+        [
+            $rootScope.GeneralParamList.MikroId,
+            $rootScope.GeneralParamList.MikroId,
+            $scope.StokDetay.KODU,
+            '',
+            TmpResult[0].SHORT_ID,
+            $scope.StokDetay.KODU+'-'+TmpResult[0].SHORT_ID
+           
+        ]
+        console.log(TmpInsertData)
+
+        let InsertKontrol = await srv.Execute($scope.Firma,'FotografInsert',TmpInsertData); //ALT İŞ EMİRLERİ LİSTE TABLOSUNA KAYIT EDİLİYOR.                 
+    }
+    
+  }

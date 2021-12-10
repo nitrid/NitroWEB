@@ -2380,5 +2380,30 @@ var Query =
                 ",@ACIKLAMA       --       <ACIKLAMA, nvarchar(50),>   \n " +
                 " ) ",
                 param : ["CUSER:string|50","ISEMRI:string|50","SAFHAID:string|50","STOKKODU:string|50","ACIKLAMA:string|50"]
-    }
+    },
+    FotografInsert:
+    {
+        query:"INSERT INTO GENDB_NITROWEB.[dbo].[TERP_NITROWEB_IMAGE]   " +
+               "([GUID]   " +
+               ",[CDATE]   " +
+               ",[CUSER]   " +
+               ",[LDATE]   " +
+               ",[LUSER]   " +
+               ",[CODE]   " +
+               ",[URL]   " +
+               ",[SHORT]   " +
+               ",[DOC_NAME])   " +
+               "VALUES   " +
+               "(newid()               --<GUID, uniqueidentifier,>     \n " +
+               ",getdate()             --<CDATE, datetime,>     \n " +
+               ",@CUSER                --<CUSER, nvarchar(50),>     \n " +
+               ",getdate()                --<LDATE, datetime,>     \n " +
+               ",@LUSER                --<LUSER, nvarchar(50),>     \n " +
+               ",@CODE                 --<CODE, nvarchar(50),>     \n " +
+               ",@URL                  --<URL, nvarchar(150),>     \n " +
+               ",@SHORT                --<SHORT, int,>     \n " +
+               ",@DOC_NAME             --<DOC_NAME, nvarchar(50),>     \n " + 
+               ") ",
+               param : ["CUSER:string|50","LUSER:string|50","CODE:string|50","URL:string|150","SHORT:int","DOC_NAME:string|50"]
+    },
 };
