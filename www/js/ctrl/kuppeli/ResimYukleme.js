@@ -1,84 +1,10 @@
 function ResimYukleme($scope,srv,$rootScope,$filter)
-{
-    $(() => {
-        $('#file-uploader').dxFileUploader({
-          name: 'file',
-          accept: 'image/*',
-          uploadUrl: 'https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/ChunkUpload',
-          chunkSize: 200000,
-          onUploadStarted,
-          onProgress: onUploadProgress,
-        });
-      });
-      
-      function onUploadStarted() {
-        getChunkPanel().innerHTML = '';
-      }
-      function onUploadProgress(e) {
-        getChunkPanel().appendChild(addChunkInfo(e.segmentSize, e.bytesLoaded, e.bytesTotal));
-      }
-      
-      function addChunkInfo(segmentSize, loaded, total) {
-        const result = document.createElement('DIV');
-      
-        result.appendChild(createSpan('Chunk size:'));
-        result.appendChild(createSpan(getValueInKb(segmentSize), 'segment-size'));
-        result.appendChild(createSpan(', Uploaded:'));
-        result.appendChild(createSpan(getValueInKb(loaded), 'loaded-size'));
-        result.appendChild(createSpan('/'));
-        result.appendChild(createSpan(getValueInKb(total), 'total-size'));
-      
-        return result;
-      }
-      function getValueInKb(value) {
-        return `${(value / 1024).toFixed(0)}kb`;
-      }
-      function createSpan(text, className) {
-        const result = document.createElement('SPAN');
-        if (className) { result.className = `${className} dx-theme-accent-as-text-color`; }
-        result.innerText = text;
-        return result;
-      }
-      function getChunkPanel() {
-        return document.querySelector('.chunk-panel');
-      }
-      
-    $(() => {
-        $('#file-uploader').dxFileUploader({
-          selectButtonText: 'Fotoğrafı Seç',
-          labelText: '',
-          accept: 'image/*',
-          uploadMode: 'useForm',
-        });
-      
-        $('#button').dxButton({
-          text: 'Resmi Kaydet',
-          type: 'success',
-          onClick() {
-            DevExpress.ui.dialog.alert('Uncomment the line to enable sending a form to the server.', 'Click Handler');
-          },
-        });
-      });
-      $(() => {
-        $('#file-uploader-images').dxFileUploader({
-          multiple: true,
-          uploadMode: 'useButtons',
-          uploadUrl: 'https://js.devexpress.com/Demos/NetCore/FileUploader/Upload',
-          allowedFileExtensions: ['.jpg', '.jpeg', '.gif', '.png'],
-        });
-        $('#file-uploader-max-size').dxFileUploader({
-          multiple: true,
-          uploadMode: 'useButtons',
-          uploadUrl: 'https://js.devexpress.com/Demos/NetCore/FileUploader/Upload',
-          maxFileSize: 4000000,
-        });
-      });
-      
+{      
     $scope.Init = async function () 
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "PDF YUKLEME";
+        $rootScope.PageName = "RESIM YUKLEME";
 
         $scope.ImgSource = {}
         $scope.Code = ''
@@ -86,6 +12,8 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         $scope.StokDetay = []
 
         InitStokListe()
+        InitImageGrid()
+
         $scope.StokListeGetir()
         $("#TbStok").addClass('active');
         $("#TbResim").removeClass('active');
@@ -160,6 +88,57 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
           
         });
     }
+    function InitImageGrid()
+    {
+        $("#TblImageGrid").dxDataGrid
+        ({
+            dataSource: $scope.ImageList,
+            columnMinWidth: 50,
+            columnAutoWidth: true,
+            showBorders: true,
+            filtering: true,
+            sorting: true,
+            summary: true,
+            grouping: true,
+            groupPaging : true,
+            filterRow: 
+            {
+                visible: true,
+                applyFilter: "auto"
+            },
+            selection: 
+            {
+                mode: "single"
+            },
+            headerFilter: 
+            {
+                visible: true
+            },
+            scrolling: 
+            {
+                columnRenderingMode: "horizontal"
+            },
+            columns: 
+            [
+                {
+                    dataField : "SHORT",
+                    caption: "SIRA",
+                    align: "center",
+                    width: 200,
+                },
+                {
+                  caption: 'RESIM',
+                  cellTemplate: function(cellElement, cellInfo) {   
+                      $("<div>")
+                      .append($("<img>", { "src": "../../../../upload/product/" + cellInfo.row.data.DOC_NAME + ".jpg", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'", "width": "100", "height": "120"}))
+                      .appendTo(cellElement);
+                  },
+                  width : "120",
+                },
+            ],
+          
+        });
+    }
     $scope.StokListeGetir = async function()
     {
         let TmpQuery = 
@@ -173,77 +152,39 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         console.log($scope.StokListe)
         $("#TblStokList").dxDataGrid("instance").option("dataSource", $scope.StokListe); 
     }
-    $scope.DetayClick = function(e)
+    $scope.DetayClick = async function(e)
     {
+       let TmpQuery = 
+      {
+          db: "GENDB_NITROWEB",
+          query : "SELECT CODE AS CODE ,SHORT AS SHORT, DOC_NAME AS DOC_NAME,URL AS URL, GUID AS GUID FROM  TERP_NITROWEB_IMAGE WHERE CODE =@CODE ",
+          param :["CODE:string|50"],
+          value : [$scope.Code]
+      }
+      let TmpResult = await srv.Execute(TmpQuery)
+      $scope.ImageList = TmpResult
+      InitImageGrid()
        $scope.StokDetay  = e
        $("#TbResim").addClass('active');
        $("#TbStok"). removeClass('active');
     }
-    $scope.UploadImg = async function(pImg,pSira) 
+    $scope.UploadImg = function(pImg,pSira) 
     {
         var reader = new FileReader();
 
         reader.onload = function(event) 
         {
-            console.log(12313)
             $scope.ImgSource.Code = $scope.Code
+            $scope.ImgSource.Short = pSira
             $scope.ImgSource[pImg.id] = event.target.result
             $scope.$apply(function($scope) {
                 $scope.files = pImg.files;
-                console.log(13213)
             });
-            srv.Emit("ImgUpload",$scope.ImgSource,async function(pData)
-            { let TmpQuery = 
-                {
-                    db: "GENDB_NITROWEB",
-                    query : "SELECT * FROM [TERP_NITROWEB_PDF] WHERE STOK_KOD = @STOK_KOD",
-                    param :["STOK_KOD:string|50"],
-                    value : [$scope.Code]
-                }
-                let TmpResult = await srv.Execute(TmpQuery)
-                console.log(TmpResult)
-                if(TmpResult.length > 0 )
-                {
-                    let updateQuery = 
-                    {
-                        db: "GENDB_NITROWEB",
-                        query : "UPDATE [TERP_NITROWEB_PDF] SET [UPDATE_DATE] = GETDATE() WHERE [STOK_KOD] = @STOK_KOD ",
-                        param :["STOK_KOD:string|50"],
-                        value : [$scope.Code]
-                    }
-                    await srv.Execute(updateQuery)
-                    $('#MdlDetay').modal('hide')
-                    swal("Başarılı", "PDF başarıyla Güncellendi.",icon="success");
-                }
-                else
-                {
-                    
-                    let updateQuery = 
-                    {
-                        db: "GENDB_NITROWEB",
-                    query : "INSERT INTO [dbo].[TERP_NITROWEB_PDF] " +
-                    "   ([GUID]  " +
-                    "   ,[CREATE_DATE]  " +
-                    "   ,[UPDATE_DATE]  " +
-                    "   ,[STOK_KOD]  " +
-                    "   ,[DOSYA_YOL]  " +
-                    "   ,[DOSYA_ADI])  " +
-                    "    VALUES  " +
-                    "(NEWID()      --<GUID, uniqueidentifier,>   \n" +
-                    ",GETDATE()      --<CREATE_DATE, datetime,>  \n" +
-                    ",GETDATE()      --<UPDATE_DATE, datetime,>  \n" +
-                    ",@STOK_KOD      --<STOK_KOD, nvarchar(50),>  \n" +
-                    ",@DOSYA_YOL      --<DOSYA_YOL, nvarchar(50),>  \n" +
-                    ",@DOSYA_ADI      --<DOSYA_ADI, nvarchar(50),>  \n" +
-                    " ) ",
-                    param : ["STOK_KOD:string|50","DOSYA_YOL:string|50","DOSYA_ADI:string|50"],
-                    value : [$scope.Code,'www/upload/',$scope.Code + "-" + 1 + ".pdf"]
-                    }
-                    await srv.Execute(updateQuery)
-                  //  let InsertKontrol = await srv.Execute($scope.Firma,'PdfInsert',[$scope.Code,'www/upload/',$scope.Code + "-" + 1 + ".pdf"]); //ANA İŞ EMRİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
-                    $('#MdlDetay').modal('hide')
-                    swal("Başarılı", "PDF başarıyla Kayıt Edildi.",icon="success");
-                }
+
+            console.log($scope.ImgSource)
+            srv.Emit("ImgUpload",$scope.ImgSource,function(pData)
+            {
+               
             }) 
         }
         reader.readAsDataURL(pImg.files[0]);
@@ -256,15 +197,14 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
     $scope.BtnFotografKaydet= async function()
     {   
         let TmpQuery = 
-                {
-                    db: "GENDB_NITROWEB",
-                    query : "SELECT ISNULL(MAX(SHORT),0)+1 AS SHORT_ID FROM TERP_NITROWEB_IMAGE WHERE CODE= @CODE",
-                    param :["CODE:string|50"],
-                    value : [$scope.Code]
-                }
-                
-                let TmpResult = await srv.Execute(TmpQuery)
-                console.log(TmpResult)
+        {
+            db: "GENDB_NITROWEB",
+            query : "SELECT ISNULL(MAX(SHORT),0)+1 AS SHORT_ID FROM TERP_NITROWEB_IMAGE WHERE CODE= @CODE",
+            param :["CODE:string|50"],
+            value : [$scope.Code]
+        }
+          
+        let TmpResult = await srv.Execute(TmpQuery)
         let TmpInsertData = 
         [
             $rootScope.GeneralParamList.MikroId,
@@ -275,9 +215,13 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
             $scope.StokDetay.KODU+'-'+TmpResult[0].SHORT_ID
            
         ]
-        console.log(TmpInsertData)
-
-        let InsertKontrol = await srv.Execute($scope.Firma,'FotografInsert',TmpInsertData); //ALT İŞ EMİRLERİ LİSTE TABLOSUNA KAYIT EDİLİYOR.                 
+        let InsertKontrol = await srv.Execute($scope.Firma,'FotografInsert',TmpInsertData); //ALT İŞ EMİRLERİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
+        console.log(TmpResult[0].SHORT_ID)
+        $scope.UploadImg($scope.ImageDetail,TmpResult[0].SHORT_ID)
+                         
     }
-    
+    $scope.ImageGet = function(pImage)
+    {
+      $scope.ImageDetail = pImage
+    }    
   }
