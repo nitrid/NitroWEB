@@ -173,13 +173,17 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
     ResimDelete = async function(pData)
     {
         let TmpQuery = 
-      {
+        {
           db: "GENDB_NITROWEB",
           query : "DELETE FROM  TERP_NITROWEB_IMAGE WHERE GUID =@GUID ",
           param :["GUID:string|50"],
           value : [pData.GUID]
-      }
+        }
       let TmpResult = await srv.Execute(TmpQuery)
+      srv.Emit("ImgDelete",pData.DOC_NAME,function(pData)
+        {
+            swal("Uyarı", "Silme İşlemi Gerçekleştirildi..",icon="warning");
+        }) 
     }
     $scope.StokListeGetir = async function()
     {

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "basic-ftp": "^4.6.6",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "ftp-client": "^0.2.2",
