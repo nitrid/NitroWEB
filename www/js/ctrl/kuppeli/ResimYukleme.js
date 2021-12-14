@@ -94,6 +94,12 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
             summary: true,
             grouping: true,
             groupPaging : true,
+            editing: {
+                mode: "row",
+                allowUpdating: true,
+                allowDeleting: true,
+                useIcons: true
+            },
             filterRow: 
             {
                 visible: true,
@@ -110,6 +116,10 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
             scrolling: 
             {
                 columnRenderingMode: "horizontal"
+            },
+            onRowRemoved: async function(e) 
+            {
+                await ResimDelete(e.data)
             },
             rowDragging: 
             {
@@ -142,9 +152,34 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                   },
                   width : "120",
                 },
+                {
+                    type: "buttons",
+                    width: 110,
+                    buttons: [ "delete",{
+                        onClick: function(e) {
+                            var clonedItem = angular.copy(e.row.data);
+    
+                            clonedItem.ID = ++maxID;
+                            employees.splice(e.row.rowIndex, 0, clonedItem);
+                            e.component.refresh(true);
+                            e.event.preventDefault();
+                        }
+                    }]
+                },
             ],
           
         });
+    }
+    ResimDelete = async function(pData)
+    {
+        let TmpQuery = 
+      {
+          db: "GENDB_NITROWEB",
+          query : "DELETE FROM  TERP_NITROWEB_IMAGE WHERE GUID =@GUID ",
+          param :["GUID:string|50"],
+          value : [pData.GUID]
+      }
+      let TmpResult = await srv.Execute(TmpQuery)
     }
     $scope.StokListeGetir = async function()
     {
