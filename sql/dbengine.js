@@ -330,9 +330,9 @@ function dbengine(config,io)
                     let Img = pParam['Img'  + 1]
                     let data = Img.replace(/^data:image\/\w+;base64,/, "");
                     let buf = Buffer.from(data, 'base64');
-                    let inputFile  = FilePath + "upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg";
-                    let outputFile = FilePath + "upload/product/" + pParam.Code + "-"  + pParam.Short + "_thumb.jpg";
-                    fs.writeFile(FilePath + "upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg", buf,function(err, result) 
+                    let inputFile  = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg";
+                    let outputFile = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + "_thumb.jpg";
+                    fs.writeFile(FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg", buf,function(err, result) 
                     {
                         if(err)
                             console.log('error', err);

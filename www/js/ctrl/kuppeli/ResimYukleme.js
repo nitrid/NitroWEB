@@ -10,6 +10,8 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         $scope.Code = ''
         $scope.FilePath = "";
         $scope.StokDetay = []
+        $scope.SiralamaList = []
+        $scope.ImageDetail = ''
 
         InitStokListe()
         InitImageGrid()
@@ -59,7 +61,8 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                         icon: "edit",
                         onClick: function (e) {
                             $scope.Code = e.row.data.KODU
-                            $scope.DetayClick(e.row.data)
+                            $scope.StokDetay  = e.row.data
+                            $scope.DetayClick()
                         }
                     }]
                 },
@@ -72,16 +75,6 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                 {
                     dataField : "KODU",
                     caption: "KODU",
-                    align: "center"
-                },
-                {
-                    dataField : "PDF",
-                    caption: "PDF",
-                    align: "center"
-                },
-                {
-                    dataField : "TARIH",
-                    caption: "TARIH",
                     align: "center"
                 },
             ],
@@ -118,6 +111,20 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
             {
                 columnRenderingMode: "horizontal"
             },
+            rowDragging: 
+            {
+                allowReordering: true,
+                onReorder: function(e) 
+                {
+                    var visibleRows = e.component.getVisibleRows(),
+                    toIndex = $scope.ImageList.indexOf(visibleRows[e.toIndex].data),
+                    fromIndex = $scope.ImageList.indexOf(e.itemData);
+                    $scope.ImageList.splice(fromIndex, 1);
+                    $scope.ImageList.splice(toIndex, 0, e.itemData);
+                    e.component.refresh();
+                    $scope.SiralamaList = $scope.ImageList;
+                }
+            },
             columns: 
             [
                 {
@@ -144,27 +151,27 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "SELECT sto_isim AS ADI, sto_kod AS KODU,ISNULL((SELECT 'VAR' FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_PDF where STOK_KOD = sto_kod COLLATE Turkish_CI_AS),'YOK') AS PDF, " +
-            " (SELECT CONVERT(varchar,UPDATE_DATE,104) FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_PDF where STOK_KOD = sto_kod COLLATE Turkish_CI_AS) AS TARIH FROM STOKLAR " ,
+            query : "SELECT sto_isim AS ADI, sto_kod AS KODU " +
+            " FROM STOKLAR " ,
         }
         let TmpResult = await srv.Execute(TmpQuery)
         $scope.StokListe = TmpResult
         console.log($scope.StokListe)
         $("#TblStokList").dxDataGrid("instance").option("dataSource", $scope.StokListe); 
     }
-    $scope.DetayClick = async function(e)
+    $scope.DetayClick = async function()
     {
        let TmpQuery = 
       {
           db: "GENDB_NITROWEB",
-          query : "SELECT CODE AS CODE ,SHORT AS SHORT, DOC_NAME AS DOC_NAME,URL AS URL, GUID AS GUID FROM  TERP_NITROWEB_IMAGE WHERE CODE =@CODE ",
+          query : "SELECT CODE AS CODE ,SHORT AS SHORT, DOC_NAME AS DOC_NAME,URL AS URL, GUID AS GUID FROM  TERP_NITROWEB_IMAGE WHERE CODE =@CODE ORDER BY SHORT",
           param :["CODE:string|50"],
           value : [$scope.Code]
       }
       let TmpResult = await srv.Execute(TmpQuery)
       $scope.ImageList = TmpResult
       InitImageGrid()
-       $scope.StokDetay  = e
+
        $("#TbResim").addClass('active');
        $("#TbStok"). removeClass('active');
     }
@@ -181,10 +188,10 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                 $scope.files = pImg.files;
             });
 
-            console.log($scope.ImgSource)
             srv.Emit("ImgUpload",$scope.ImgSource,function(pData)
             {
-               
+                $scope.ImageDetail = ''
+                $scope.DetayClick()
             }) 
         }
         reader.readAsDataURL(pImg.files[0]);
@@ -196,6 +203,11 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
     }
     $scope.BtnFotografKaydet= async function()
     {   
+        if($scope.ImageDetail == '')
+        {
+            swal("Uyarı", "Lütfen Resim Seçiniz.",icon="warning");
+            return
+        }
         let TmpQuery = 
         {
             db: "GENDB_NITROWEB",
@@ -216,12 +228,28 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
            
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'FotografInsert',TmpInsertData); //ALT İŞ EMİRLERİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
-        console.log(TmpResult[0].SHORT_ID)
         $scope.UploadImg($scope.ImageDetail,TmpResult[0].SHORT_ID)
                          
     }
     $scope.ImageGet = function(pImage)
     {
       $scope.ImageDetail = pImage
+      $scope.BtnFotografKaydet()
+    }
+    $scope.SiralamaKaydet = async  function()
+    {
+        for (let i = 0; i < $scope.SiralamaList.length; i++)
+        {
+            let TmpQuery = 
+            {
+                db: "GENDB_NITROWEB",
+                query : "UPDATE TERP_NITROWEB_IMAGE SET SHORT = @SHORT WHERE GUID = @GUID",
+                param :['SHORT:int','GUID:string|50'],
+                value : [(i+1),$scope.SiralamaList[i].GUID]
+            }
+              
+            let TmpResult = await srv.Execute(TmpQuery)
+        }
+       
     }    
   }
