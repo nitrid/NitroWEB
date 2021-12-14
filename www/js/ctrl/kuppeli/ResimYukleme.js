@@ -135,6 +135,16 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                     $scope.SiralamaList = $scope.ImageList;
                 }
             },
+            onCellClick: function(e) 
+            {  
+                if(e.columnIndex == 2)
+                {
+                   
+                   $scope.PreviewImage = "../../../../upload/product/" + e.key.DOC_NAME + ".jpg";
+                   $('#PreviewImg').modal('show');
+                   $rootScope.$apply()
+                }
+            },
             columns: 
             [
                 {
