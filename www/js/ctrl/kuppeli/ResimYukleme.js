@@ -77,6 +77,20 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                     caption: "KODU",
                     align: "center"
                 },
+                {
+                    dataField : "RESIMVAR",
+                    caption: "RESMI",
+                    align: "center"
+                },
+                {
+                    caption: 'RESIM',
+                    cellTemplate: function(cellElement, cellInfo) {   
+                        $("<div>")
+                        .append($("<img>", { "src": "../../../../upload/product/" + cellInfo.row.data.DOC_NAME + ".jpg", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'", "width": "100", "height": "120"}))
+                        .appendTo(cellElement);
+                    },
+                    width : "200",
+                  },
             ],
           
         });
@@ -160,7 +174,7 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                       .append($("<img>", { "src": "../../../../upload/product/" + cellInfo.row.data.DOC_NAME + ".jpg", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'", "width": "100", "height": "120"}))
                       .appendTo(cellElement);
                   },
-                  width : "120",
+                  width : "200",
                 },
                 {
                     type: "buttons",
@@ -200,8 +214,8 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "SELECT sto_isim AS ADI, sto_kod AS KODU " +
-            " FROM STOKLAR " ,
+            query : "SELECT sto_isim AS ADI, sto_kod AS KODU,(SELECT TOP 1 DOC_NAME FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod ORDER BY SHORT) AS DOC_NAME, " +
+            "ISNULL((SELECT TOP 1 'VAR' FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod),'YOK') AS RESIMVAR FROM STOKLAR " ,
         }
         let TmpResult = await srv.Execute(TmpQuery)
         $scope.StokListe = TmpResult
