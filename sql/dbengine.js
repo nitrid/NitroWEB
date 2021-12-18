@@ -3,9 +3,8 @@ let _sql = require("./sqllib");
 let lic = require('./license');
 let devprint = new (require('../devprint/devprint'));
 var sharp = require('sharp'); 
-var ftpClient = require('ftp-client');
+//var ftpClient = require('ftp-client');
 const ftp = require("basic-ftp")
-
 
 let msql;
 let tsql;
@@ -14,19 +13,19 @@ let LicKullanici = 0;
 let LicMenu = "";
 
 // FTP CONNECT CONFIG
-config = {
-    host: 'ftp.tone.ist',
-    port: 21,
-    user: 'metin@teknoerp.com.tr',
-    password: 'Syncmaster750s'
-}
-options = {
-    logging: 'basic'
-}
-client = new ftpClient(config, options);
+// config = {
+//     host: 'ftp.tone.ist',
+//     port: 21,
+//     user: 'metin@teknoerp.com.tr',
+//     password: 'Syncmaster750s'
+// }
+// options = {
+//     logging: 'basic'
+// }
+// client = new ftpClient(config, options);
 
 // BASIC FTP
-const clients = new ftp.Client()
+
 
 function dbengine(config,io)
 {    
@@ -325,53 +324,62 @@ function dbengine(config,io)
         });
         socket.on("ImgUpload",function(pParam,fn)
         {
-           
+
             let FilePath = "";
             if(typeof process.env.APP_DIR_PATH != 'undefined')
             {
                 FilePath = process.env.APP_DIR_PATH + "/../";
             }
-                if(typeof pParam['Img' + 1] != 'undefined')
+            if(typeof pParam['Img' + 1] != 'undefined')
+            {
+                let Img = pParam['Img'  + 1]
+                let data = Img.replace(/^data:image\/\w+;base64,/, "");
+                let buf = Buffer.from(data, 'base64');
+                let inputFile  = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg";
+                let outputFile = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + "_thumb.jpg";
+                fs.writeFile(FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg", buf,async function(err, result) 
                 {
-                    let Img = pParam['Img'  + 1]
-                    let data = Img.replace(/^data:image\/\w+;base64,/, "");
-                    let buf = Buffer.from(data, 'base64');
-                    let inputFile  = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg";
-                    let outputFile = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + "_thumb.jpg";
-                    fs.writeFile(FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg", buf,async function(err, result) 
+                    if(err)
+                        console.log('error', err);
+                    else
                     {
-                        if(err)
-                            console.log('error', err);
-                        else
-                            fn(true)
-                            sharp.cache(false);
-                            sharp(inputFile).resize({ height: 200, width: 200, fit: 'contain' }).toFile(outputFile)
-                            .then(function(newFileInfo) {
-                                //console.log(newFileInfo);
-                            })
-                            .catch(function(err) 
-                            {
-                                console.log(err);
-                            });
-                            clients.ftp.verbose = true
-                            try {
-                                await clients.access({
-                                    host: "ftp.tone.ist",
-                                    user: "metin@teknoerp.com.tr",
-                                    password: "Syncmaster750s",
-                                })
-                                await clients.uploadFrom(FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg", "picture/" + pParam.Code + "-"  + pParam.Short + ".jpg")
-                            }
-                            catch(err) {
-                                console.log(err)
-                            }
-                            clients.close()
-                    });
-                }
-            
+                        fn(true)
+                        sharp.cache(false);
+                        sharp(inputFile).resize({ height: 323, width: 215, fit: 'contain' }).toFile(outputFile)
+                        .then(function(newFileInfo) {
+                            //console.log(newFileInfo);
+                        })
+                        .catch(function(err) 
+                        {
+                            console.log(err);
+                        });
+                        // const clients = new ftp.Client()
+
+                        // clients.ftp.verbose = true
+                        
+                        // try 
+                        // {
+                        //     await clients.access({
+                        //         host: "ftp.tone.ist",
+                        //         user: "metin@teknoerp.com.tr",
+                        //         password: "Syncmaster750s",
+                        //     })
+                        //     await clients.uploadFrom(FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg", "picture/" + pParam.Code + "-"  + pParam.Short + ".jpg")
+                        //     clients.close()
+                        //     fs.unlinkSync(inputFile);
+                        // }
+                        // catch(err) 
+                        // {
+                        //     console.log(err)
+                        // }
+                    }
+                });
+            }
         });
         socket.on("ImgDelete",async function(pParam,fn)
         {
+            const clients = new ftp.Client()
+
             let FilePath = "";
             if(typeof process.env.APP_DIR_PATH != 'undefined')
             {

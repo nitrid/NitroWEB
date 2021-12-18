@@ -86,13 +86,12 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                     caption: 'RESIM',
                     cellTemplate: function(cellElement, cellInfo) {   
                         $("<div>")
-                        .append($("<img>", { "src": "../../../../upload/product/" + cellInfo.row.data.DOC_NAME + ".jpg", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'", "width": "100", "height": "120"}))
+                        .append($("<img>", { "src": "../../../../upload/product/" + cellInfo.row.data.DOC_NAME + ".jpg", "class":"img-fluid", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'"}))
                         .appendTo(cellElement);
                     },
                     width : "200",
-                  },
+                },
             ],
-          
         });
     }
     function InitImageGrid()
@@ -219,7 +218,6 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         }
         let TmpResult = await srv.Execute(TmpQuery)
         $scope.StokListe = TmpResult
-        console.log($scope.StokListe)
         $("#TblStokList").dxDataGrid("instance").option("dataSource", $scope.StokListe); 
     }
     $scope.DetayClick = async function()
@@ -240,24 +238,27 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
     }
     $scope.UploadImg = function(pImg,pSira) 
     {
-        var reader = new FileReader();
-
-        reader.onload = function(event) 
+        for(let i = 0; i < pImg.files.length; i++)
         {
-            $scope.ImgSource.Code = $scope.Code
-            $scope.ImgSource.Short = pSira
-            $scope.ImgSource[pImg.id] = event.target.result
-            $scope.$apply(function($scope) {
-                $scope.files = pImg.files;
-            });
+            var reader = new FileReader();
 
-            srv.Emit("ImgUpload",$scope.ImgSource,function(pData)
+            reader.onload = function(event) 
             {
-                $scope.ImageDetail = ''
-                $scope.DetayClick()
-            }) 
+                $scope.ImgSource = {}
+
+                $scope.ImgSource.Code = $scope.Code
+                $scope.ImgSource.Short = pSira + i
+
+                $scope.ImgSource[pImg.id] = event.target.result
+                
+                srv.Emit("ImgUpload",$scope.ImgSource,function(pData)
+                {
+                    $scope.ImageDetail = ''
+                    $scope.DetayClick()
+                }) 
+            }
+            reader.readAsDataURL(pImg.files[i]);
         }
-        reader.readAsDataURL(pImg.files[0]);
     }
     $scope.BtnGeri = function()
     {
@@ -280,24 +281,27 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         }
           
         let TmpResult = await srv.Execute(TmpQuery)
-        let TmpInsertData = 
-        [
-            $rootScope.GeneralParamList.MikroId,
-            $rootScope.GeneralParamList.MikroId,
-            $scope.StokDetay.KODU,
-            '',
-            TmpResult[0].SHORT_ID,
-            $scope.StokDetay.KODU+'-'+TmpResult[0].SHORT_ID
-           
-        ]
-        let InsertKontrol = await srv.Execute($scope.Firma,'FotografInsert',TmpInsertData); //ALT İŞ EMİRLERİ LİSTE TABLOSUNA KAYIT EDİLİYOR.
+        for(let i = 0; i < $scope.ImageDetail.files.length; i++)
+        {
+            TmpSort = TmpResult[0].SHORT_ID + i
+            let TmpInsertData = 
+            [
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $scope.StokDetay.KODU,
+                '',
+                TmpSort,
+                $scope.StokDetay.KODU+'-'+TmpSort
+                
+            ]
+            let InsertKontrol = await srv.Execute($scope.Firma,'FotografInsert',TmpInsertData);
+        }
         $scope.UploadImg($scope.ImageDetail,TmpResult[0].SHORT_ID)
-                         
     }
     $scope.ImageGet = function(pImage)
     {
-      $scope.ImageDetail = pImage
-      $scope.BtnFotografKaydet()
+        $scope.ImageDetail = pImage
+        $scope.BtnFotografKaydet()
     }
     $scope.SiralamaKaydet = async  function()
     {
