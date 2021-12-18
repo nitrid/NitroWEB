@@ -14,7 +14,7 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         $scope.ImageDetail = ''
 
         InitStokListe()
-        InitImageGrid()
+        // InitImageGrid()
 
         $scope.StokListeGetir()
         $("#TbStok").addClass('active');
@@ -50,6 +50,16 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
             {
                 columnRenderingMode: "horizontal"
             },
+            onCellClick: function(e) 
+            {  
+                if(e.columnIndex == 4)
+                {
+                   
+                   $scope.PreviewImage = "http://kuppeli.shop/upload/product/picture/" + e.key.DOC_NAME + ".jpg";
+                   $('#PreviewImg').modal('show');
+                   $rootScope.$apply()
+                }
+            },
             columns: 
             [
                 {      
@@ -70,26 +80,27 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                     dataField : "ADI",
                     caption: "ADI",
                     align: "center",
-                    width: 200,
                 },
                 {
                     dataField : "KODU",
                     caption: "KODU",
-                    align: "center"
+                    align: "center",
+                    width: 120,
                 },
                 {
                     dataField : "RESIMVAR",
-                    caption: "RESMI",
-                    align: "center"
+                    caption: "RESIM",
+                    align: "center",
+                    width: 90,
                 },
                 {
                     caption: 'RESIM',
                     cellTemplate: function(cellElement, cellInfo) {   
                         $("<div>")
-                        .append($("<img>", { "src": "../../../../upload/product/" + cellInfo.row.data.DOC_NAME + ".jpg", "class":"img-fluid", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'"}))
+                        .append($("<img>", { "src": "http://kuppeli.shop/upload/product/picture/" + cellInfo.row.data.DOC_NAME + ".jpg", "class":"img-fluid", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'"}))
                         .appendTo(cellElement);
                     },
-                    width : "200",
+                    width : "150",
                 },
             ],
         });
@@ -100,7 +111,7 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         ({
             dataSource: $scope.ImageList,
             columnMinWidth: 50,
-            columnAutoWidth: true,
+            columnAutoWidth: false,
             showBorders: true,
             filtering: true,
             sorting: true,
@@ -153,7 +164,7 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                 if(e.columnIndex == 2)
                 {
                    
-                   $scope.PreviewImage = "../../../../upload/product/" + e.key.DOC_NAME + ".jpg";
+                   $scope.PreviewImage = "http://kuppeli.shop/upload/product/picture/" + e.key.DOC_NAME + ".jpg";
                    $('#PreviewImg').modal('show');
                    $rootScope.$apply()
                 }
@@ -164,18 +175,18 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
                     dataField : "SHORT",
                     caption: "SIRA",
                     align: "center",
-                    width: 200,
                 },
                 {
-                  caption: 'RESIM',
-                  cellTemplate: function(cellElement, cellInfo) {   
-                      $("<div>")
-                      .append($("<img>", { "src": "../../../../upload/product/" + cellInfo.row.data.DOC_NAME + ".jpg", "onerror":"this.onerror=null; this.src='../../../../upload/resim_yok.jpg'", "width": "100", "height": "120"}))
-                      .appendTo(cellElement);
-                  },
-                  width : "200",
+                    caption: 'RESİM',
+                    cellTemplate: function(cellElement, cellInfo) {   
+                        $("<div>")
+                        .append($("<img>", { "src": "http://kuppeli.shop/upload/product/picture/" + cellInfo.row.data.DOC_NAME + ".jpg", "class":"img-fluid", "onerror":"this.onerror=null; this.src='../../../../../../www/upload/resim_yok.jpg'"}))
+                        .appendTo(cellElement);
+                    },
+                    width : "150",
                 },
                 {
+                    caption: 'RESMİ SİL',
                     type: "buttons",
                     width: 110,
                     buttons: [ "delete",{
@@ -202,8 +213,8 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
           param :["GUID:string|50"],
           value : [pData.GUID]
         }
-      let TmpResult = await srv.Execute(TmpQuery)
-      srv.Emit("ImgDelete",pData.DOC_NAME,function(pData)
+        let TmpResult = await srv.Execute(TmpQuery)
+        srv.Emit("ImgDelete",pData.DOC_NAME,function(pData)
         {
             swal("Uyarı", "Silme İşlemi Gerçekleştirildi..",icon="warning");
         }) 
@@ -213,28 +224,29 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "SELECT sto_isim AS ADI, sto_kod AS KODU,(SELECT TOP 1 DOC_NAME FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod ORDER BY SHORT) AS DOC_NAME, " +
-            "ISNULL((SELECT TOP 1 'VAR' FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod),'YOK') AS RESIMVAR FROM STOKLAR " ,
+            query : "SELECT sto_isim AS ADI, sto_kod AS KODU, ISNULL((SELECT TOP 1 DOC_NAME FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod COLLATE Turkish_CI_AS ORDER BY SHORT),'image-not-found') AS DOC_NAME, " +
+            "ISNULL((SELECT TOP 1 'VAR' FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod COLLATE Turkish_CI_AS),'YOK') AS RESIMVAR FROM STOKLAR " ,
         }
         let TmpResult = await srv.Execute(TmpQuery)
+        console.log()
         $scope.StokListe = TmpResult
         $("#TblStokList").dxDataGrid("instance").option("dataSource", $scope.StokListe); 
     }
     $scope.DetayClick = async function()
     {
-       let TmpQuery = 
-      {
-          db: "GENDB_NITROWEB",
-          query : "SELECT CODE AS CODE ,SHORT AS SHORT, DOC_NAME AS DOC_NAME,URL AS URL, GUID AS GUID FROM  TERP_NITROWEB_IMAGE WHERE CODE =@CODE ORDER BY SHORT",
-          param :["CODE:string|50"],
-          value : [$scope.Code]
-      }
-      let TmpResult = await srv.Execute(TmpQuery)
-      $scope.ImageList = TmpResult
-      InitImageGrid()
+        let TmpQuery = 
+        {
+            db: "GENDB_NITROWEB",
+            query : "SELECT CODE AS CODE ,SHORT AS SHORT, DOC_NAME AS DOC_NAME,URL AS URL, GUID AS GUID FROM  TERP_NITROWEB_IMAGE WHERE CODE =@CODE ORDER BY SHORT",
+            param :["CODE:string|50"],
+            value : [$scope.Code]
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+        $scope.ImageList = TmpResult
+        InitImageGrid()
 
-       $("#TbResim").addClass('active');
-       $("#TbStok"). removeClass('active');
+        $("#TbResim").addClass('active');
+        $("#TbStok"). removeClass('active');
     }
     $scope.UploadImg = function(pImg,pSira) 
     {
@@ -318,5 +330,28 @@ function ResimYukleme($scope,srv,$rootScope,$filter)
             let TmpResult = await srv.Execute(TmpQuery)
         }
        
-    }    
-  }
+    } 
+    $scope.UrunAra = async function(keyEvent)
+    {
+        if(keyEvent.which === 13)
+        {
+            let TmpQuery = 
+            {
+                db: "{M}." + $scope.Firma,
+                query : "SELECT sto_isim AS ADI, sto_kod AS KODU, " +
+                        "sto_model_kodu AS MODEL_KODU, " +
+                        "ISNULL((SELECT TOP 1 DOC_NAME FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod COLLATE Turkish_CI_AS ORDER BY SHORT),'image-not-found') AS DOC_NAME, " +
+                        "ISNULL((SELECT TOP 1 'VAR' FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_IMAGE WHERE CODE = sto_kod COLLATE Turkish_CI_AS),'YOK') AS RESIMVAR FROM STOKLAR " +
+                        "WHERE " +
+                        "( ((UPPER(sto_isim) LIKE UPPER('%' + @TXT_SEARCH + '%')) OR (UPPER(@TXT_SEARCH) = '')) OR " +
+                        "((UPPER(sto_kod) LIKE UPPER('%' + @TXT_SEARCH + '%')) OR (UPPER(@TXT_SEARCH) = '')) OR " +
+                        "((UPPER(sto_model_kodu) LIKE UPPER('%' + @TXT_SEARCH + '%')) OR (UPPER(@TXT_SEARCH) = '')) ) ",
+                param :["TXT_SEARCH:string|150"],
+                value : [$scope.TxtSearch]
+            }
+            let TmpResult = await srv.Execute(TmpQuery)
+            $scope.StokListe = TmpResult
+            $("#TblStokList").dxDataGrid("instance").option("dataSource", $scope.StokListe); 
+        }
+    }   
+}

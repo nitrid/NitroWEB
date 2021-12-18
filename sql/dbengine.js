@@ -324,7 +324,6 @@ function dbengine(config,io)
         });
         socket.on("ImgUpload",function(pParam,fn)
         {
-
             let FilePath = "";
             if(typeof process.env.APP_DIR_PATH != 'undefined')
             {
@@ -335,9 +334,9 @@ function dbengine(config,io)
                 let Img = pParam['Img'  + 1]
                 let data = Img.replace(/^data:image\/\w+;base64,/, "");
                 let buf = Buffer.from(data, 'base64');
-                let inputFile  = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg";
-                let outputFile = FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + "_thumb.jpg";
-                fs.writeFile(FilePath + "www/upload/product/" + pParam.Code + "-"  + pParam.Short + ".jpg", buf,async function(err, result) 
+                let inputFile  = FilePath + "../NitrogenB2B/www/upload/product/picture/" + pParam.Code + "-"  + pParam.Short + ".jpg";
+                let outputFile = FilePath + "../NitrogenB2B/www/upload/product/picture/thumb/" + pParam.Code + "-"  + pParam.Short + ".jpg";
+                fs.writeFile(FilePath + "../NitrogenB2B/www/upload/product/picture/" + pParam.Code + "-"  + pParam.Short + ".jpg", buf,async function(err, result) 
                 {
                     if(err)
                         console.log('error', err);
@@ -385,21 +384,24 @@ function dbengine(config,io)
             {
                 FilePath = process.env.APP_DIR_PATH + "/../";
             }
-            let DeleteFile  = FilePath + "www/upload/product/" +pParam+ ".jpg";
-            clients.ftp.verbose = true
-            try {
-                await clients.access({
-                    host: "ftp.tone.ist",
-                    user: "metin@teknoerp.com.tr",
-                    password: "Syncmaster750s",
-                })
-                await clients.remove("picture/"+pParam+ ".jpg")
-            }
-            catch(err) {
-                console.log(err)
-            }
-            clients.close()
+            let DeleteFile  = FilePath + "../NitrogenB2B/www/upload/product/picture/" +pParam+ ".jpg";
+            let DeleteFileThumb  = FilePath + "../NitrogenB2B/www/upload/product/picture/thumb/" +pParam+ ".jpg";
+
+            // clients.ftp.verbose = true
+            // try {
+            //     await clients.access({
+            //         host: "ftp.tone.ist",
+            //         user: "metin@teknoerp.com.tr",
+            //         password: "Syncmaster750s",
+            //     })
+            //     await clients.remove("picture/"+pParam+ ".jpg")
+            // }
+            // catch(err) {
+            //     console.log(err)
+            // }
+            // clients.close()
             fs.unlinkSync(DeleteFile);
+            fs.unlinkSync(DeleteFileThumb);
             
         });
     });

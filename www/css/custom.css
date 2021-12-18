@@ -71,3 +71,29 @@ body {
 #pie {
   height: 500px;
 }
+
+.dx-datagrid-borders > .dx-datagrid-filter-panel, .dx-datagrid-borders > .dx-datagrid-headers, .dx-datagrid-borders > .dx-datagrid-pager
+{
+	font-weight: 700 !important;
+	color: rgb(7, 127, 182)
+
+}
+.dx-datagrid .dx-column-lines > td 
+{
+	border-left: 1px rgb(40, 77, 87);
+	border-right: 1px rgb(40, 77, 87);
+	border-color: rgb(40, 77, 87);
+	border-style: solid;
+	border-width: 1px;
+	font-weight: 700;
+}
+  
+.dx-datagrid-rowsview .dx-row > td,
+.dx-datagrid-rowsview .dx-row > tr > td 
+{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border-color: rgb(40, 77, 87);
+	border-style: solid;
+	border-width: 1px;
+}
