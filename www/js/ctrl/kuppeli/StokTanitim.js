@@ -35,7 +35,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "StokTanitim"
-        $scope.BasimAdet = 9
+        $scope.BasimAdet,
+        
         
         InitObj();
     }
