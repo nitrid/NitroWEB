@@ -254,5 +254,332 @@ angular.module("app",
             templateUrl : "view/kuppeli/KullaniciAyarlari.html",
             controller:"KullaniciAyarlari"
         }
+    ).
+    state
+    (
+        {
+            name: 'main.AltGrup',
+            url: '/AltGrup',
+            templateUrl : "view/kuppeli/AltGrup.html",
+            controller:"AltGrup"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.AltGrup_2',
+            url: '/AltGrup_2',
+            templateUrl : "view/kuppeli/AltGrup_2.html",
+            controller:"AltGrup_2"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.AnaGrup',
+            url: '/AnaGrup',
+            templateUrl : "view/kuppeli/AnaGrup.html",
+            controller:"AnaGrup"
+        }
     )
+    .
+    state
+    (
+        {
+            name: 'main.ModelKodOlustur',
+            url: '/ModelKodOlustur',
+            templateUrl : "view/kuppeli/ModelKodOlustur.html",
+            controller:"ModelKodOlustur"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.StokTanitim',
+            url: '/StokTanitim',
+            templateUrl : "view/kuppeli/StokTanitim.html",
+            controller:"StokTanitim"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.Stoktanitim2',
+            url: '/Stoktanitim2',
+            templateUrl : "view/kuppeli/Stoktanitim2.html",
+            controller:"Stoktanitim2"
+        }
+        
+        )
+
+    //AKİNCİ
+    .
+    state
+    (
+        {
+            name: 'main.yilkoduolustur',
+            url: '/yilkoduolustur',
+            templateUrl : "view/akinlar/yilkoduolustur.html",
+            controller:"yilkoductrl"
+        }
+ ).
+ state
+ (
+     {
+         name: 'main.Tabancinsikoduolustur',
+         url: '/Tabancinsikoduolustur',
+         templateUrl : "view/akinlar/Tabancinsikoduolustur.html",
+         controller:"Tabancinsictrl"
+     }
+ )       
+ .
+ state
+ (
+     {
+         name: 'main.Astarkoduolustur',
+         url: '/Astarkoduolustur',
+         templateUrl : "view/akinlar/Astarkoduolustur.html",
+         controller:"Astarkoductrl"
+     }
+ ) .
+ state
+ (
+     {
+         name: 'main.Topukboyukoduolustur',
+         url: '/Topukboyukoduolustur',
+         templateUrl : "view/akinlar/Topukboyukoduolustur.html",
+         controller:"Topukboyuctrl"
+     }
+ ) .
+ state
+ (
+     {
+         name: 'main.AltgrupAkinlar',
+         url: '/AltgrupAkinlar',
+         templateUrl : "view/akinlar/AltgrupAkinlar.html",
+         controller:"AltgrupAkinlar"
+     }
+ ).
+ state
+ (
+     {
+         name: 'main.Anagrup_a',
+         url: '/Anagrup_a',
+         templateUrl : "view/akinlar/Anagrup_a.html",
+         controller:"Anagrupctrl"
+     }
+ )  .
+ state
+ (
+     {
+         name: 'main.Materyal',
+         url: '/Materyal',
+         templateUrl : "view/akinlar/Materyal.html",
+         controller:"MateryalCtrl"
+     }
+ )     .
+ state
+ (
+     {
+         name: 'main.Renk',
+         url: '/Renk',
+         templateUrl : "view/akinlar/Renk.html",
+         controller:"Renk"
+     }
+ )  .
+ state
+ (
+     {
+         name: 'main.Kalite',
+         url: '/Kalite',
+         templateUrl : "view/akinlar/Kalite.html",
+         controller:"KaliteCtrl"
+     }
+ )                                                 
+ .
+ state
+ (
+     {
+         name: 'main.Model',
+         url: '/Model',
+         templateUrl : "view/akinlar/Model.html",
+         controller:"Modelctrl"
+     }
+ )   .
+ state
+ (
+     {
+         name: 'main.Uretici',
+         url: '/Uretici',
+         templateUrl : "view/akinlar/Uretici.html",
+         controller:"Ureticictrl"
+     }
+ )  .
+ state
+ (
+     {
+         name: 'main.Stokeimage',
+         url: '/Stokeimage',
+         templateUrl : "view/akinlar/Stokeimage.html",
+         controller:"Stokeimage"
+     }
+ ) .
+ state
+ (
+     {
+         name: 'main.Siparisyazdir',
+         url: '/Siparisyazdir',
+         templateUrl : "view/akinlar/Siparisyazdir.html",
+         controller:"Siparisyazdir"
+     }
+ ).
+ state
+ (
+     {
+         name: 'main.Siparisstokkontrol',
+         url: '/Siparisstokkontrol',
+         templateUrl : "view/akinlar/Siparisstokkontrol.html",
+         controller:"Siparisstokkontrol"
+     }
+ ) .
+ state
+ (
+     {
+         name: 'main.Stoktanitimi',
+         url: '/Stoktanitimi',
+         templateUrl : "view/akinlar/Stoktanitimi.html",
+         controller:"Stoktanitimi"
+     }
+     
+ )
+ //Rovigo 
+ .state
+ (
+     {
+         name: 'main.Yilkodu',
+         url: '/Yilkodu',
+         templateUrl : "view/Rovigo/Yilkodu.html",
+         controller:"Yilkodu"
+     }
+ ) .state
+
+ (
+     {
+         name: 'main.Tabancinsikodu',
+         url: '/Tabancinsikodu',
+         templateUrl : "view/Rovigo/Tabancinsikodu.html",
+         controller:"Tabancinsikodu"
+     }
+ ) .state
+
+ (
+     {
+         name: 'main.Astarkodu',
+         url: '/Astarkodu',
+         templateUrl : "view/Rovigo/Astarkodu.html",
+         controller:"Astarkodu"
+     }
+ )   .state
+
+ (
+     {
+         name: 'main.Topukboyu',
+         url: '/Topukboyu',
+         templateUrl : "view/Rovigo/Topukboyu.html",
+         controller:"Topukboyu"
+     }
+ )  
+ .state
+
+ (
+     {
+         name: 'main.Altgrup_1',
+         url: '/Altgrup_1',
+         templateUrl : "view/Rovigo/Altgrup_1.html",
+         controller:"Altgrup_1"
+     }
+ ) .state
+
+ (
+     {
+         name: 'main.Anagrup1',
+         url: '/Anagrup1',
+         templateUrl : "view/Rovigo/Anagrup1.html",
+         controller:"Anagrupctrl"
+     } 
+     )
+      .state
+
+     (
+         {
+             name: 'main.Renkkodu',
+             url: '/Renkkodu',
+             templateUrl : "view/Rovigo/Renkkodu.html",
+             controller:"Renkkodu"
+         }
+     ) 
+     .state
+
+     (
+         {
+             name: 'main.Materyal_R',
+             url: '/Materyal_R',
+             templateUrl : "view/Rovigo/Materyal_R.html",
+             controller:"Materyal_R"
+         }
+     ).state
+
+     (
+         {
+             name: 'main.Renkmodel',
+             url: '/Renkmodel',
+             templateUrl : "view/Rovigo/Renkmodel.html",
+             controller:"Renkmodel"
+         }
+     )  .state
+
+     (
+         {
+             name: 'main.Kalitekodu',
+             url: '/Kalitekodu',
+             templateUrl : "view/Rovigo/Kalitekodu.html",
+             controller:"Kalitekodu"
+         }
+     ).state
+
+     (
+         {
+             name: 'main.Uretici_R',
+             url: '/Uretici_R',
+             templateUrl : "view/Rovigo/Uretici_R.html",
+             controller:"Uretici_R"
+         }
+     ) .state
+
+     (
+         {
+             name: 'main.Stimage',
+             url: '/Stimage',
+             templateUrl : "view/Rovigo/Stimage.html",
+             controller:"Stimage"
+         }
+     )      
+                
+           
+     
+      
+     
+      
+
 });
+
+
+
+
+
+
+
+
+
+
+
