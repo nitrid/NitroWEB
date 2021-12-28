@@ -416,7 +416,15 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $rootScope.PageName = "StokTanitim"
         $scope.BasimAdet,
         $scope.Barkod,
+        $scope.paket,
+        $scope.Maliyet,
+        $scope.BayiPsf,
+        $scope.Subepsf,
+        $scope.BayiAlış,
+        $scope,BayiAlış%50,
         
+
+
         
         
         InitObj();
