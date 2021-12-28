@@ -8,4 +8,5 @@ npm install moment
 npm install node-machine-id
 npm install node-windows
 npm install sockjs
-
+npm install sharp
+npm install basic-ftp
