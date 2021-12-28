@@ -27,27 +27,25 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             {                                
                 pCallback(true)
             }
-        }     
-       
-    }
-    $scope.BteAnagrup = 
+        }
+        $scope.BteAnagrup = 
         {
-            title : "Ana Grup",
+           title : "Ana Grup Kodu",
             
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "SELECT [msg_S_0135] AS KODU,[msg_S_0136] AS ADI FROM [dbo].[STOK_ANA_GRUPLARI_CHOOSE_2] ORDER BY [msg_S_0135] ASC",
             },
-            selection : "",
+            selection : "KODU",
             columns :
             [
                 {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
                 {
-                    dataField: "",
+                    dataField: "ADI",
                     width: 200
                 }, 
             ],
@@ -404,7 +402,9 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             {                                
                 pCallback(true)
             }
-        }
+        }  
+    }
+
 
 
 
