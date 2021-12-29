@@ -12,6 +12,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : "SELECT sto_kod AS KODU, sto_isim AS ADI FROM STOKLAR",
             },
             selection : "KODU",
+            
+           txt: "",
             columns :
             [
                 {
@@ -19,7 +21,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                     width: 200
                 }, 
                 {
-                    dataField: "KODU",
+                    dataField: "ADI",
                     width: 200
                 }, 
             ],
@@ -28,7 +30,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 pCallback(true)
             }
         }
-        $scope.BteAnagrup = 
+        $scope.BteAnaGrup = 
         {
            title : "Ana Grup Kodu",
             
@@ -38,6 +40,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : "SELECT [msg_S_0135] AS KODU,[msg_S_0136] AS ADI FROM [dbo].[STOK_ANA_GRUPLARI_CHOOSE_2] ORDER BY [msg_S_0135] ASC",
             },
             selection : "KODU",
+           
+           txt: "",
             columns :
             [
                 {
@@ -52,10 +56,16 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             onClick : function(pCallback)
             {                                
                 pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                console.log(pData)
+                $scope.AnaGrup= pData.KODU;
+                $scope.StokKodOlustur()
             }
         }
 
-        $scope.Btealtgrup = 
+        $scope.BteAltGrup = 
         {
             title : "Alt Grup",
             
@@ -65,6 +75,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : "SELECT [msg_S_0135] AS KODU ,[msg_S_0136] AS ADI,[msg_S_0013] AS ANAGRUP FROM [dbo].[STOK_ALT_GRUPLARI_CHOOSE_2]",
             },
             selection : "KODU",
+           
+           txt: "",
             columns :
             [
                 {
@@ -82,7 +94,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btealtgrup2 = 
+        $scope.BteAltGrup2 = 
         {
             title : "Alt Grup2",
             
@@ -91,7 +103,71 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 db : "{M}." + $scope.Firma,
                 query : "SELECT [msg_S_0022] AS KODU ,[msg_S_0023] AS ADI FROM [dbo].[STOK_SEKTORLERI_CHOOSE_2] ",
             },
-            selection : "",
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            },
+            
+        }
+
+        $scope.BteModel = 
+        {
+            title : "Model Kodu",
+            
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "Select [msg_S_0078] As KODU, [msg_S_0070] As ADI FROM STOK_MODEL_TANIMLARI_CHOOSE_2  ORDER BY  [msg_S_0078] ASC",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                console.log(pData)
+                $scope.StokAdi = pData.ADI;
+            }
+        } 
+        $scope.BteTedarikci = 
+        {
+            title : "Tedarikci",
+            
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [cari_kod] AS KODU,[cari_unvan1] AS ADI FROM [dbo].[CARI_HESAPLAR] ORDER BY [cari_kod] ASC",
+            },
+            selection : "KODU",
+            txt: "",
             columns :
             [
                 {
@@ -109,60 +185,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btemodel = 
-        {
-            title : "model",
-            
-            datasource : 
-            {
-                db : "{M}." + $scope.Firma,
-                query : "Select [msg_S_0078] As KODU, [msg_S_0070] As ADI FROM STOK_MODEL_TANIMLARI_CHOOSE_2  ORDER BY  [msg_S_0078] ASC",
-            },
-            selection : "KODU",
-            columns :
-            [
-                {
-                    dataField: "ADI",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
-                    width: 200
-                }, 
-            ],
-            onClick : function(pCallback)
-            {                                
-                pCallback(true)
-            }
-        } 
-        $scope.Btetedarikci = 
-        {
-            title : "Tedarikci",
-            
-            datasource : 
-            {
-                db : "{M}." + $scope.Firma,
-                query : " ",
-            },
-            selection : "",
-            columns :
-            [
-                {
-                    dataField: "",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
-                    width: 200
-                }, 
-            ],
-            onClick : function(pCallback)
-            {                                
-                pCallback(true)
-            }
-        }
-
-        $scope.Bteraf = 
+        $scope.BteRaf = 
         {
             title : "Raf",
             
@@ -172,6 +195,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           txt: "",
             columns :
             [
                 {
@@ -189,7 +213,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btemateryal = 
+        $scope.BteMateryal = 
         {
             title : "Materyal",
             
@@ -199,6 +223,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           
+           txt: "",
             columns :
             [
                 {
@@ -226,6 +252,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           txt: "",
             columns :
             [
                 {
@@ -243,7 +270,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btetasrengi = 
+        $scope.BteTasrengi = 
         {
             title : "Tas Rengi",
             
@@ -253,6 +280,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           txt: "",
             columns :
             [
                 {
@@ -270,7 +298,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btezincirsayisi = 
+        $scope.BteZincirSayisi = 
         {
             title : "Zincir Sayisi",
             
@@ -280,6 +308,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           txt: "",
             columns :
             [
                 {
@@ -297,7 +326,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btezincirengi = 
+        $scope.BteZinciRengi = 
         {
             title : "Zincir Rengi",
             
@@ -307,6 +336,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           
+           txt: "",
             columns :
             [
                 {
@@ -324,7 +355,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btefigur = 
+        $scope.BteFigur = 
         {
             title : "Figür",
             
@@ -334,6 +365,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           
+           txt: "",
             columns :
             [
                 {
@@ -351,7 +384,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
-        $scope.Btefigursekli = 
+        $scope.BteFigurSekli = 
         {
             title : "Figür Sekli",
             
@@ -361,6 +394,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           
+           txt: "",
             columns :
             [
                 {
@@ -377,7 +412,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 pCallback(true)
             }
         }
-        $scope.Btefigurrengi = 
+        $scope.BteFigurRengi = 
         {
             title : "Figür Rengi",
             
@@ -387,6 +422,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 query : " ",
             },
             selection : "",
+           
+           txt: "",
             columns :
             [
                 {
@@ -458,4 +495,19 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         console.log(1)
         $('#ModelModal').modal("show");
     } 
+    $scope.StokKodOlustur =async function()
+    {
+        console.log($scope.BteStokKodu)
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query :  "SELECT ISNULL(REPLACE(STR(MAX(SUBSTRING(sto_kod,0,8)) + 1, 7), SPACE(1), '0'), @BASKODU + '000001') AS KODU FROM STOKLAR WHERE sto_kod LIKE @BASKODU + '%' AND sto_anagrup_kod = @BASKODU",
+            param :["BASKODU:string|50"],
+            value : [$scope.AnaGrup]
+        }
+          
+        let TmpResult = await srv.Execute(TmpQuery)
+        $scope.BteStokKodu.txt = TmpResult[0].KODU
+    
+    }
 }
