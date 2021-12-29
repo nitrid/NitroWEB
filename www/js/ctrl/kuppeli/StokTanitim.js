@@ -62,17 +62,17 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "SELECT [msg_S_0135] AS KODU ,[msg_S_0136] AS ADI,[msg_S_0013] AS ANAGRUP FROM [dbo].[STOK_ALT_GRUPLARI_CHOOSE_2]",
             },
-            selection : "",
+            selection : "KODU",
             columns :
             [
                 {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
                 {
-                    dataField: "",
+                    dataField: "ADI",
                     width: 200
                 }, 
             ],
@@ -89,17 +89,17 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "SELECT [msg_S_0022] AS KODU ,[msg_S_0023] AS ADI FROM [dbo].[STOK_SEKTORLERI_CHOOSE_2] ",
             },
             selection : "",
             columns :
             [
                 {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
                 {
-                    dataField: "",
+                    dataField: "ADI",
                     width: 200
                 }, 
             ],
@@ -116,13 +116,13 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "Select [msg_S_0078] As KODU, [msg_S_0070] As ADI FROM STOK_MODEL_TANIMLARI_CHOOSE_2  ORDER BY  [msg_S_0078] ASC",
             },
-            selection : "",
+            selection : "KODU",
             columns :
             [
                 {
-                    dataField: "",
+                    dataField: "ADI",
                     width: 200
                 }, 
                 {
@@ -421,8 +421,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.BayiPsf,
         $scope.Subepsf,
         $scope.BayiAlış,
-        $scope,BayiAlış%50,
-        
+        $scope.BayiAlış2
+
 
 
         
