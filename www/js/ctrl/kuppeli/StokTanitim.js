@@ -404,11 +404,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }  
     }
-
-
-
-
-    
     $scope.Init = async function()
     {        
         $scope.Firma = localStorage.getItem('firm');
@@ -420,13 +415,47 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.Maliyet,
         $scope.BayiPsf,
         $scope.Subepsf,
-        $scope.BayiAlış,
-        $scope.BayiAlış2
+        $scope.BayiAlis,
+        $scope.BayiAlis50,
+        $scope.YeniAnagrupKodu="",
+        $scope.YeniAltGrupKodu="",
+        $scope.AltGrupKodu="",
+        $scope.AltGrupAdi="",
+        $scope.AnaGrupAdi="",
+        $scope.AnaGrupAdiV2="",
+        $scope.AltGrupKoduv2="",
+        $scope.KoduV2="",
+        $scope.Adıv2="",
+        $scope.ModelKodu="",
+        $scope.ModelAdi="",
 
 
+
+
+        console.log(123)
 
         
         
         InitObj();
     }
+    $scope.AnaGrupModal = function()
+    {
+        console.log(1)
+        $('#AnaGrupModal').modal("show");
+    } 
+    $scope.AltGrupModal = function()
+    {
+        console.log(1)
+        $('#AltGrupModal').modal("show");
+    } 
+    $scope.AltGrupV2Modal = function()
+    {
+        console.log(1)
+        $('#AltGrupV2Modal').modal("show");
+    } 
+    $scope.ModelModal = function()
+    {
+        console.log(1)
+        $('#ModelModal').modal("show");
+    } 
 }
