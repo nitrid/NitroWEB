@@ -511,24 +511,40 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             $scope.Maliyet,          
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
+        $scope.StokUserInsert()
     }
 
     $scope.StokUserInsert = async function()
-    {
-        let TmpInsertData = 
-        [
-            $scope.BteMateryal.txt,
-            $scope.BteKaplama.txt,
-            $scope.BteTas,
-            $scope.BteTasrengi,
-            $scope.BteZincirSayisi,
-            $scope.BteZinciRengi,
-            $scope.BteFigur,
-            $scope.BteFigurSekli,
-            $scope.BteFigurRengi,
-            ''            
-        ]
-        let InsertKontrol = await srv.Execute($scope.Firma,'StokUserInsert',TmpInsertData);
+    {   
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query :  "SELECT sto_Guid AS GUID FROM STOKLAR WHERE sto_kod = @sto_kod",
+            param :["sto_kod:string|50"],
+            value : [$scope.BteStokKodu.txt]
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+
+        if(TmpResult.length > 0)
+        {
+            let TmpInsertData = 
+            [
+                TmpResult[0].GUID,
+                $scope.BteMateryal.txt,
+                $scope.BteKaplama.txt,
+                $scope.BteTas,
+                $scope.BteTasrengi,
+                $scope.BteZincirSayisi,
+                $scope.BteZinciRengi,
+                $scope.BteFigur,
+                $scope.BteFigurSekli,
+                $scope.BteFigurRengi,
+                ''            
+            ]
+            let InsertKontrol = await srv.Execute($scope.Firma,'StokUserInsert',TmpInsertData);
+            $scope.BarkodInsert()
+        }
+       
     }
 
     $scope.BarkodInsert = async function()
@@ -536,18 +552,18 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         let TmpInsertData = 
         [
             $scope.Barkod,
-                       
+            0
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'BarkodInsert',TmpInsertData);
     }
 
-    $scope.SatisInsert = async function()
+    $scope.SatisInsert = async function(pFiyat,pListe)
     {
         let TmpInsertData = 
         [
             $scope.BteStokKodu,
-            $scope.Maliyet,
-            $scope.BayiPsf
+            pFiyat,
+            pListe
                        
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'SatisInsert',TmpInsertData);

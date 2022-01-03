@@ -2853,7 +2853,7 @@ var Query =
         ",[Q9]"+
         ",[Yeni_Alan_10])"+
     "VALUES"  +
-        "(<Record_uid, uniqueidentifier,>     \n " +
+        "(@Record_uid          --<Record_uid, uniqueidentifier,>     \n " +
         ",@Q1    --<Q1, nvarchar(50),> \n"+
         ",@Q2     --<Q2, nvarchar(50),> \n"+
         ",@Q3    --<Q3, nvarchar(50),> \n"+
@@ -2865,7 +2865,7 @@ var Query =
         ",@Q9     --<Q9, nvarchar(50),> \n"+
         ",@Yeni_Alan_10   --<Yeni_Alan_10, nvarchar(50),>)"+
         " ) ",
-        param:['Q1:string|50','Q2:string|50','Q3:string|50','Q4:string|50','Q5:float','Q6:string|50','Q7:string|50','Q8:string|50'
+        param:['Record_uid:string|50','Q1:string|50','Q2:string|50','Q3:string|50','Q4:string|50','Q5:float','Q6:string|50','Q7:string|50','Q8:string|50'
         ,'Q9:string|50','Yeni_Alan_10:string|50']
     },
     BarkodInsert :
@@ -2932,9 +2932,9 @@ var Query =
         ",00000000-0000-0000-0000-000000000000    --<bar_har_uid, uniqueidentifier,> \n"+
         ",''     --<bar_asortitanimkodu, nvarchar(25),>) \n"+
         " ) ",
-        param:['bar_kodu :int','bar_barkodtipi:int']
+        param:['bar_kodu:string|50','bar_barkodtipi:int']
     },
-    SatisInsert:
+    SatisFiyatInsert:
     {
         query : "INSERT INTO [dbo].[STOK_SATIS_FIYAT_LISTELERI]"+
         "([sfiyat_Guid]"+
@@ -2966,7 +2966,7 @@ var Query =
         ",[sfiyat_kampanyakod]"+
         ",[sfiyat_doviz_kuru])"+
   "VALUES"+
-        "(<sfiyat_Guid, uniqueidentifier,> \n"+
+        "(newid()       --<sfiyat_Guid, uniqueidentifier,> \n"+
         ",0  --<sfiyat_DBCno, smallint,> \n"+
         ",0  --<sfiyat_SpecRECno, int,> \n"+
         ",0  --<sfiyat_iptal, bit,> \n"+
@@ -2987,7 +2987,7 @@ var Query =
         ",0  --<sfiyat_deposirano, int,> \n"+
         ",0  --<sfiyat_odemeplan, int,> \n"+
         ",1  --<sfiyat_birim_pntr, tinyint,> \n"+
-        ",sfiyat_fiyati  --<sfiyat_fiyati, float,> \n"+
+        ",@sfiyat_fiyati  --<sfiyat_fiyati, float,> \n"+
         ",0  --<sfiyat_doviz, tinyint,> \n"+
         ",''  --<sfiyat_iskontokod, nvarchar(4),> \n"+
         ",0  --<sfiyat_deg_nedeni, tinyint,> \n"+
@@ -2998,20 +2998,3 @@ var Query =
         param:['sfiyat_stokkod :int','sfiyat_fiyati:float','sfiyat_listesirano:int']
     }
 };
-
-
-
-                   // "(<bar_Guid, uniqueidentifier,>     \n " +
-        // ",0       --<bar_DBCno, smallint,> \n"+
-        // ",0       --<bar_SpecRECno, int,> \n"+
-        // ",0       --<<bar_iptal, bit,> \n"+
-        // ",15        --<bar_fileid, smallint,> \n"+
-        // ",0         --<bar_kilitli, bit,> \n"+
-        // ",0         --<bar_degisti, bit,> \n"+
-        // ",@Q7       --<<bar_checksum, int,> \n"+
-        // ",@Q8    --<Q8, nvarchar(50),> \n"+
-        // ",@Q9     --<Q9, nvarchar(50),> \n"+
-        // ",@Yeni_Alan_10   --<Yeni_Alan_10, nvarchar(50),>)"+
-        // " ) ",
-        // param:['Q1:string|50','Q2:string|50','Q3:string|50','Q4:string|50','Q5:float','Q6:string|50','Q7:string|50','Q8:string|50'
-        // ,'Q9:string|50','Yeni_Alan_10:string|50']
