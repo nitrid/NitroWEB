@@ -487,15 +487,69 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             value : [$scope.AnaGrup]
         }
         let TmpResult = await srv.Execute(TmpQuery)
-        $scope.BteStokKodu.txt = TmpResult[0].KODU
+
+        $scope.BteStokKodu.txt = TmpResult[0].KODU 
     }
     $scope.StokInsert = async function()
     {
         let TmpInsertData = 
         [
             $scope.BteStokKodu.txt,
-            
+            $scope.StokAdi,
+            $scope.BteTedarikci,
+            'Paket',
+            $scope.Paket,
+            $scope.BteAltGrup.txt,
+            $scope.BteAnaGrup.txt,
+            '',     //üreticikod
+            $scope.BteAltGrup2,
+            $scope.BteRaf.txt,
+            $scope.BteAnaGrup.txt,
+            $scope.BteModel.txt,
+            $scope.BteModel.txt,
+            '',
+            $scope.Maliyet,          
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
+    }
+
+    $scope.StokUserInsert = async function()
+    {
+        let TmpInsertData = 
+        [
+            $scope.BteMateryal.txt,
+            $scope.BteKaplama.txt,
+            $scope.BteTas,
+            $scope.BteTasrengi,
+            $scope.BteZincirSayisi,
+            $scope.BteZinciRengi,
+            $scope.BteFigur,
+            $scope.BteFigurSekli,
+            $scope.BteFigurRengi,
+            ''            
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'StokUserInsert',TmpInsertData);
+    }
+
+    $scope.BarkodInsert = async function()
+    {
+        let TmpInsertData = 
+        [
+            $scope.Barkod,
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'BarkodInsert',TmpInsertData);
+    }
+
+    $scope.SatisInsert = async function()
+    {
+        let TmpInsertData = 
+        [
+            $scope.BteStokKodu,
+            $scope.Maliyet,
+            $scope.BayiPsf
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'SatisInsert',TmpInsertData);
     }
 }

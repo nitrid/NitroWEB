@@ -2837,6 +2837,181 @@ var Query =
         " ) ",
         param:['sto_kod:string|50','sto_isim:string|127','sto_sat_cari_kod:string|50','sto_birim2_ad:string|50','sto_birim2_katsayi:float','sto_altgrup_kod:string|50','sto_anagrup_kod:string|50','sto_uretici_kodu:string|50'
         ,'sto_sektor_kodu:string|50','sto_reyon_kodu:string|50','sto_muhgrup_kodu:string|50','sto_renk_kodu:string|50','sto_model_kodu:string|50','sto_sezon_kodu:string|50','sto_standartmaliyet:float']
+    },
+    StokUserInsert :
+    {
+        query :"INSERT INTO [dbo].[STOKLAR_USER]"+
+        "([Record_uid]"+
+        ",[Q1]"+
+        ",[Q2]"+
+        ",[Q3]"+
+        ",[Q4]"+
+        ",[Q5]"+
+        ",[Q6]"+
+        ",[Q7]"+
+        ",[Q8]"+
+        ",[Q9]"+
+        ",[Yeni_Alan_10])"+
+    "VALUES"  +
+        "(<Record_uid, uniqueidentifier,>     \n " +
+        ",@Q1    --<Q1, nvarchar(50),> \n"+
+        ",@Q2     --<Q2, nvarchar(50),> \n"+
+        ",@Q3    --<Q3, nvarchar(50),> \n"+
+        ",@Q4    --<Q4, nvarchar(50),> \n"+
+        ",@Q5     --<Q5, nvarchar(50),> \n"+
+        ",@Q6     --<Q6, nvarchar(50),> \n"+
+        ",@Q7     --<Q7, nvarchar(50),> \n"+
+        ",@Q8    --<Q8, nvarchar(50),> \n"+
+        ",@Q9     --<Q9, nvarchar(50),> \n"+
+        ",@Yeni_Alan_10   --<Yeni_Alan_10, nvarchar(50),>)"+
+        " ) ",
+        param:['Q1:string|50','Q2:string|50','Q3:string|50','Q4:string|50','Q5:float','Q6:string|50','Q7:string|50','Q8:string|50'
+        ,'Q9:string|50','Yeni_Alan_10:string|50']
+    },
+    BarkodInsert :
+    {
+        query :"INSERT INTO [dbo].[BARKOD_TANIMLARI]"+
+        "([bar_Guid]"+
+        ",[bar_DBCno]"+
+        ",[bar_SpecRECno]"+
+        ",[bar_iptal]"+
+        ",[bar_fileid]"+
+        ",[bar_hidden]"+
+        ",[bar_kilitli]"+
+        ",[bar_degisti]"+
+        ",[bar_checksum]"+
+        ",[bar_create_user]"+
+        ",[bar_lastup_user]"+
+        ",[bar_lastup_date]"+
+        ",[bar_special1]"+
+        ",[bar_special2]"+
+        ",[bar_special3]"+
+        ",[bar_kodu]"+
+        ",[bar_stokkodu]"+
+        ",[bar_partikodu]"+
+        ",[bar_lotno]"+
+        ",[bar_serino_veya_bagkodu]"+
+        ",[bar_barkodtipi]"+
+        ",[bar_icerigi]"+
+        ",[bar_birimpntr]"+
+        ",[bar_master]"+
+        ",[bar_bedenpntr]"+
+        ",[bar_renkpntr]"+
+        ",[bar_baglantitipi]"+
+        ",[bar_har_uid]"+
+        ",[bar_asortitanimkodu]"+
+    "VALUES"  +
+    "(<bar_Guid, uniqueidentifier,> \n" +
+        ",0     --<bar_DBCno, smallint,> \n"+
+        ",0     --<bar_SpecRECno, int,> \n"+
+        ",0     --<bar_iptal, bit,> \n"+
+        ",15     --<bar_fileid, smallint,> \n"+
+        ",0     --<bar_hidden, bit,> \n"+
+        ",0     --<bar_kilitli, bit,> \n"+
+        ",0     --<bar_degisti, bit,> \n"+
+        ",0     --<bar_checksum, int,> \n"+
+        ",1     --<bar_create_user, smallint,> \n"+
+        ",GETDATE()      --<bar_create_date, datetime,> \n"+
+        ",1     --<bar_lastup_user, smallint,> \n"+
+        ",GETDATE()      --<bar_lastup_date, datetime,> \n"+
+        ",''     --<bar_special1, nvarchar(4),> \n"+
+        ",''     --<bar_special2, nvarchar(4),> \n"+
+        ",''    --<bar_special3, nvarchar(4),> \n"+
+        ",@bar_kodu     --<bar_kodu, [dbo].[barkod_str],> \n"+
+        ",@bar_kodu     --<bar_stokkodu, nvarchar(25),> \n"+
+        ",''     --<bar_partikodu, nvarchar(25),> \n"+
+        ",0     --<bar_lotno, int,> \n"+
+        ",''     --<bar_serino_veya_bagkodu, nvarchar(25),> \n"+
+        ",@bar_barkodtipi     --<bar_barkodtipi, tinyint,> \n"+
+        ",0     --<bar_icerigi, tinyint,> \n"+
+        ",1     --<bar_birimpntr, tinyint,> \n"+
+        ",0     --<bar_master, bit,> \n"+
+        ",0     --<bar_bedenpntr, tinyint,> \n"+
+        ",0     --<bar_renkpntr, tinyint,> \n"+
+        ",0     --<bar_baglantitipi, tinyint,> \n"+
+        ",00000000-0000-0000-0000-000000000000    --<bar_har_uid, uniqueidentifier,> \n"+
+        ",''     --<bar_asortitanimkodu, nvarchar(25),>) \n"+
+        " ) ",
+        param:['bar_kodu :int','bar_barkodtipi:int']
+    },
+    SatisInsert:
+    {
+        query : "INSERT INTO [dbo].[STOK_SATIS_FIYAT_LISTELERI]"+
+        "([sfiyat_Guid]"+
+        ",[sfiyat_DBCno]"+
+        ",[sfiyat_SpecRECno]"+
+        ",[sfiyat_iptal]"+
+        ",[sfiyat_fileid]"+
+        ",[sfiyat_hidden]"+
+        ",[sfiyat_kilitli]"+
+        ",[sfiyat_degisti]"+
+        ",[sfiyat_checksum]"+
+        ",[sfiyat_create_user]"+
+        ",[sfiyat_create_date]"+
+        ",[sfiyat_lastup_user]"+
+        ",[sfiyat_lastup_date]"+
+        ",[sfiyat_special1]"+
+        ",[sfiyat_special2]"+
+        ",[sfiyat_special3]"+
+        ",[sfiyat_stokkod]"+
+        ",[sfiyat_listesirano]"+
+        ",[sfiyat_deposirano]"+
+        ",[sfiyat_odemeplan]"+
+        ",[sfiyat_birim_pntr]"+
+        ",[sfiyat_fiyati]"+
+        ",[sfiyat_doviz]"+
+        ",[sfiyat_iskontokod]"+
+        ",[sfiyat_deg_nedeni]"+
+        ",[sfiyat_primyuzdesi]"+
+        ",[sfiyat_kampanyakod]"+
+        ",[sfiyat_doviz_kuru])"+
+  "VALUES"+
+        "(<sfiyat_Guid, uniqueidentifier,> \n"+
+        ",0  --<sfiyat_DBCno, smallint,> \n"+
+        ",0  --<sfiyat_SpecRECno, int,> \n"+
+        ",0  --<sfiyat_iptal, bit,> \n"+
+        ",228  --<sfiyat_fileid, smallint,> \n"+
+        ",0  --<sfiyat_hidden, bit,> \n"+
+        ",0  --<sfiyat_kilitli, bit,> \n"+
+        ",0  --<sfiyat_degisti, bit,> \n"+
+        ",0  --<sfiyat_checksum, int,> \n"+
+        ",1  --<sfiyat_create_user, smallint,> \n"+
+        ",GETDATE()  --<sfiyat_create_date, datetime,> \n"+
+        ",1  --<sfiyat_lastup_user, smallint,> \n"+
+        ",GETDATE()  --<sfiyat_lastup_date, datetime,> \n"+
+        ",''  --<sfiyat_special1, nvarchar(4),> \n"+
+        ",''  --<sfiyat_special2, nvarchar(4),> \n"+
+        ",''  --<sfiyat_special3, nvarchar(4),> \n"+
+        ",@sfiyat_stokkod  --<sfiyat_stokkod, nvarchar(25),> \n"+
+        ",@sfiyat_listesirano  --<sfiyat_listesirano, int,> \n"+
+        ",0  --<sfiyat_deposirano, int,> \n"+
+        ",0  --<sfiyat_odemeplan, int,> \n"+
+        ",1  --<sfiyat_birim_pntr, tinyint,> \n"+
+        ",sfiyat_fiyati  --<sfiyat_fiyati, float,> \n"+
+        ",0  --<sfiyat_doviz, tinyint,> \n"+
+        ",''  --<sfiyat_iskontokod, nvarchar(4),> \n"+
+        ",0  --<sfiyat_deg_nedeni, tinyint,> \n"+
+        ",0  --<sfiyat_primyuzdesi, float,> \n"+
+        ",''  --<sfiyat_kampanyakod, nvarchar(4),> \n"+
+        ",0  --<sfiyat_doviz_kuru, float,>)"+
+        " ) ",
+        param:['sfiyat_stokkod :int','sfiyat_fiyati:float','sfiyat_listesirano:int']
     }
 };
 
+
+
+                   // "(<bar_Guid, uniqueidentifier,>     \n " +
+        // ",0       --<bar_DBCno, smallint,> \n"+
+        // ",0       --<bar_SpecRECno, int,> \n"+
+        // ",0       --<<bar_iptal, bit,> \n"+
+        // ",15        --<bar_fileid, smallint,> \n"+
+        // ",0         --<bar_kilitli, bit,> \n"+
+        // ",0         --<bar_degisti, bit,> \n"+
+        // ",@Q7       --<<bar_checksum, int,> \n"+
+        // ",@Q8    --<Q8, nvarchar(50),> \n"+
+        // ",@Q9     --<Q9, nvarchar(50),> \n"+
+        // ",@Yeni_Alan_10   --<Yeni_Alan_10, nvarchar(50),>)"+
+        // " ) ",
+        // param:['Q1:string|50','Q2:string|50','Q3:string|50','Q4:string|50','Q5:float','Q6:string|50','Q7:string|50','Q8:string|50'
+        // ,'Q9:string|50','Yeni_Alan_10:string|50']
