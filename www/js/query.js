@@ -2406,4 +2406,437 @@ var Query =
                ") ",
                param : ["CUSER:string|50","LUSER:string|50","CODE:string|50","URL:string|150","SHORT:int","DOC_NAME:string|50"]
     },
+    StokInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOKLAR] " +
+        "([sto_Guid]  " +
+        ",[sto_DBCno]  " +
+        ",[sto_SpecRECno]  " +
+        ",[sto_iptal]  " +
+        ",[sto_fileid]  " +
+        ",[sto_hidden]  " +
+        ",[sto_kilitli]  " +
+        ",[sto_degisti]  " +
+        ",[sto_checksum]  " +
+        ",[sto_create_user]  " +
+        ",[sto_create_date]  " +
+        ",[sto_lastup_user]  " +
+        ",[sto_lastup_date]  " +
+        ",[sto_special1]  " +
+        ",[sto_special2]  " +
+        ",[sto_special3]  " +
+        ",[sto_kod]  " +
+        ",[sto_isim]  " +
+        ",[sto_kisa_ismi]  " +
+        ",[sto_yabanci_isim]  " +
+        ",[sto_sat_cari_kod]  " +
+        ",[sto_cins]  " +
+        ",[sto_doviz_cinsi]  " +
+        ",[sto_detay_takip]  " +
+        ",[sto_birim1_ad]  " +
+        ",[sto_birim1_katsayi]  " +
+        ",[sto_birim1_agirlik]  " +
+        ",[sto_birim1_en]  " +
+        ",[sto_birim1_boy]  " +
+        ",[sto_birim1_yukseklik]  " +
+        ",[sto_birim1_dara]  " +
+        ",[sto_birim2_ad]  " +
+        ",[sto_birim2_katsayi]  " +
+        ",[sto_birim2_agirlik]  " +
+        ",[sto_birim2_en]  " +
+        ",[sto_birim2_boy]  " +
+        ",[sto_birim2_yukseklik]  " +
+        ",[sto_birim2_dara]  " +
+        ",[sto_birim3_ad]  " +
+        ",[sto_birim3_katsayi]  " +
+        ",[sto_birim3_agirlik]  " +
+        ",[sto_birim3_en]  " +
+        ",[sto_birim3_boy]  " +
+        ",[sto_birim3_yukseklik]  " +
+        ",[sto_birim3_dara]  " +
+        ",[sto_birim4_ad]  " +
+        ",[sto_birim4_katsayi]  " +
+        ",[sto_birim4_agirlik]  " +
+        ",[sto_birim4_en]  " +
+        ",[sto_birim4_boy]  " +
+        ",[sto_birim4_yukseklik]  " +
+        ",[sto_birim4_dara]  " +
+        ",[sto_muh_kod]  " +
+        ",[sto_muh_Iade_kod]  " +
+        ",[sto_muh_sat_muh_kod]  " +
+        ",[sto_muh_satIadmuhkod]  " +
+        ",[sto_muh_sat_isk_kod]  " +
+        ",[sto_muh_aIiskmuhkod]  " +
+        ",[sto_muh_satmalmuhkod]  " +
+        ",[sto_yurtdisi_satmuhk]  " +
+        ",[sto_ilavemasmuhkod]  " +
+        ",[sto_yatirimtesmuhkod]  " +
+        ",[sto_depsatmuhkod]  " +
+        ",[sto_depsatmalmuhkod]  " +
+        ",[sto_bagortsatmuhkod]  " +
+        ",[sto_bagortsatIadmuhkod]  " +
+        ",[sto_bagortsatIskmuhkod]  " +
+        ",[sto_satfiyfarkmuhkod]  " +
+        ",[sto_yurtdisisatmalmuhkod]  " +
+        ",[sto_bagortsatmalmuhkod]  " +
+        ",[sto_sifirbedsatmalmuhkod]  " +
+        ",[sto_ihrackayitlisatismuhkod]  " +
+        ",[sto_ihrackayitlisatismaliyetimuhkod]  " +
+        ",[sto_karorani]  " +
+        ",[sto_min_stok]  " +
+        ",[sto_siparis_stok]  " +
+        ",[sto_max_stok]  " +
+        ",[sto_ver_sip_birim]  " +
+        ",[sto_al_sip_birim]  " +
+        ",[sto_siparis_sure]  " +
+        ",[sto_perakende_vergi]  " +
+        ",[sto_toptan_vergi]  " +
+        ",[sto_yer_kod]  " +
+        ",[sto_elk_etk_tipi]  " +
+        ",[sto_raf_etiketli]  " +
+        ",[sto_etiket_bas]  " +
+        ",[sto_satis_dursun]  " +
+        ",[sto_siparis_dursun]  " +
+        ",[sto_malkabul_dursun]  " +
+        ",[sto_malkabul_gun1]  " +
+        ",[sto_malkabul_gun2]  " +
+        ",[sto_malkabul_gun3]  " +
+        ",[sto_malkabul_gun4]  " +
+        ",[sto_malkabul_gun5]  " +
+        ",[sto_malkabul_gun6]  " +
+        ",[sto_malkabul_gun7]  " +
+        ",[sto_siparis_gun1]  " +
+        ",[sto_siparis_gun2]  " +
+        ",[sto_siparis_gun3]  " +
+        ",[sto_siparis_gun4]  " +
+        ",[sto_siparis_gun5]  " +
+        ",[sto_siparis_gun6]  " +
+        ",[sto_siparis_gun7]  " +
+        ",[sto_iskon_yapilamaz]  " +
+        ",[sto_tasfiyede]  " +
+        ",[sto_alt_grup_no]  " +
+        ",[sto_kategori_kodu]  " +
+        ",[sto_urun_sorkod]  " +
+        ",[sto_altgrup_kod]  " +
+        ",[sto_anagrup_kod]  " +
+        ",[sto_uretici_kodu]  " +
+        ",[sto_sektor_kodu]  " +
+        ",[sto_reyon_kodu]  " +
+        ",[sto_muhgrup_kodu]  " +
+        ",[sto_ambalaj_kodu]  " +
+        ",[sto_marka_kodu]  " +
+        ",[sto_beden_kodu]  " +
+        ",[sto_renk_kodu]  " +
+        ",[sto_model_kodu]  " +
+        ",[sto_sezon_kodu]  " +
+        ",[sto_hammadde_kodu]  " +
+        ",[sto_prim_kodu]  " +
+        ",[sto_kalkon_kodu]  " +
+        ",[sto_paket_kodu]  " +
+        ",[sto_pozisyonbayrak_kodu]  " +
+        ",[sto_mkod_artik]  " +
+        ",[sto_kasa_tarti_fl]  " +
+        ",[sto_bedenli_takip]  " +
+        ",[sto_renkDetayli]  " +
+        ",[sto_miktarondalikli_fl]  " +
+        ",[sto_pasif_fl]  " +
+        ",[sto_eksiyedusebilir_fl]  " +
+        ",[sto_GtipNo]  " +
+        ",[sto_puan]  " +
+        ",[sto_komisyon_hzmkodu]  " +
+        ",[sto_komisyon_orani]  " +
+        ",[sto_otvuygulama]  " +
+        ",[sto_otvtutar]  " +
+        ",[sto_otvliste]  " +
+        ",[sto_otvbirimi]  " +
+        ",[sto_prim_orani]  " +
+        ",[sto_garanti_sure]  " +
+        ",[sto_garanti_sure_tipi]  " +
+        ",[sto_iplik_Ne_no]  " +
+        ",[sto_standartmaliyet]  " +
+        ",[sto_kanban_kasa_miktari]  " +
+        ",[sto_oivuygulama]  " +
+        ",[sto_zraporu_stoku_fl]  " +
+        ",[sto_maxiskonto_orani]  " +
+        ",[sto_detay_takibinde_depo_kontrolu_fl]  " +
+        ",[sto_tamamlayici_kodu]  " +
+        ",[sto_oto_barkod_acma_sekli]  " +
+        ",[sto_oto_barkod_kod_yapisi]  " +
+        ",[sto_KasaIskontoOrani]  " +
+        ",[sto_KasaIskontoTutari]  " +
+        ",[sto_gelirpayi]  " +
+        ",[sto_oivtutar]  " +
+        ",[sto_oivturu]  " +
+        ",[sto_giderkodu]  " +
+        ",[sto_oivvergipntr]  " +
+        ",[sto_Tevkifat_turu]  " +
+        ",[sto_SKT_fl]  " +
+        ",[sto_terazi_SKT]  " +
+        ",[sto_RafOmru]  " +
+        ",[sto_KasadaTaksitlenebilir_fl]  " +
+        ",[sto_ufrsfark_kod]  " +
+        ",[sto_iade_ufrsfark_kod]  " +
+        ",[sto_yurticisat_ufrsfark_kod]  " +
+        ",[sto_satiade_ufrsfark_kod]  " +
+        ",[sto_satisk_ufrsfark_kod]  " +
+        ",[sto_alisk_ufrsfark_kod]  " +
+        ",[sto_satmal_ufrsfark_kod]  " +
+        ",[sto_yurtdisisat_ufrsfark_kod]  " +
+        ",[sto_ilavemas_ufrsfark_kod]  " +
+        ",[sto_yatirimtes_ufrsfark_kod]  " +
+        ",[sto_depsat_ufrsfark_kod]  " +
+        ",[sto_depsatmal_ufrsfark_kod]  " +
+        ",[sto_bagortsat_ufrsfark_kod]  " +
+        ",[sto_bagortsatiade_ufrsfark_kod]  " +
+        ",[sto_bagortsatisk_ufrsfark_kod]  " +
+        ",[sto_satfiyfark_ufrsfark_kod]  " +
+        ",[sto_yurtdisisatmal_ufrsfark_kod]  " +
+        ",[sto_bagortsatmal_ufrsfark_kod]  " +
+        ",[sto_sifirbedsatmal_ufrsfark_kod]  " +
+        ",[sto_uretimmaliyet_ufrsfark_kod]  " +
+        ",[sto_uretimkapasite_ufrsfark_kod]  " +
+        ",[sto_degerdusuklugu_ufrs_kod]  " +
+        ",[sto_halrusumyudesi]  " +
+        ",[sto_webe_gonderilecek_fl]  " +
+        ",[sto_min_stok_belirleme_gun]  " +
+        ",[sto_sip_stok_belirleme_gun]  " +
+        ",[sto_max_stok_belirleme_gun]  " +
+        ",[sto_sev_bel_opr_degerlendime_fl]  " +
+        ",[sto_otv_tevkifat_turu]  " +
+        ",[sto_kay_plan_degerlendir]  " +
+        ",[sto_CRM_sistemine_aktar_fl]  " +
+        ",[sto_yerli_yabanci]  " +
+        ",[sto_mensei]  " +
+        ",[sto_oto_parti_lot_kod_fl]  " +
+        ",[sto_efat_sinif_kodu]  " +
+        ",[sto_efat_sinif_listesi]  " +
+        ",[sto_efat_sinif_versiyonu]  " +
+        ",[sto_utssisteminegonderilsin_fl]  " +
+        ",[sto_posetbeyannamekonusu_fl]  " +
+        ",[sto_STT_oncesi_kaldirma]  " +
+        ",[sto_toplam_rafomru]  " +
+        ",[sto_fiyat_kasada_belirlenir_fl]  " +
+        ",[sto_franchise_siparis_dursun]  " +
+        ",[sto_GEKAP]  " +
+        ",[sto_GEKAP_birim]  " +
+        ",[sto_resim_url]  " +
+        ",[sto_GEKAP_depozitoonaykodu])  " +
+        "VALUES  " +
+        "(NEWID()              --<sto_Guid, uniqueidentifier,>     \n " + 
+        ",0              --<sto_DBCno, smallint,>     \n " + 
+        ",0              --<sto_SpecRECno, int,>     \n " + 
+        ",0              --<sto_iptal, bit,>     \n " + 
+        ",13              --<sto_fileid, smallint,>     \n " + 
+        ",0              --<sto_hidden, bit,>     \n " + 
+        ",0              --<sto_kilitli, bit,>     \n " + 
+        ",0              --<sto_degisti, bit,>     \n " + 
+        ",0              --<sto_checksum, int,>     \n " + 
+        ",1              --<sto_create_user, smallint,>     \n " + 
+        ",GETDATE()              --<sto_create_date, datetime,>     \n " + 
+        ",1              --<sto_lastup_user, smallint,>     \n " + 
+        ",GETDATE()              --<sto_lastup_date, datetime,>     \n " + 
+        ",''              --<sto_special1, nvarchar(4),>     \n " + 
+        ",''              --<sto_special2, nvarchar(4),>     \n " + 
+        ",''              --<sto_special3, nvarchar(4),>     \n " + 
+        ",@sto_kod              --<sto_kod, nvarchar(25),>     \n " + 
+        ",@sto_isim              --<sto_isim, nvarchar(127),>     \n " + 
+        ",''              --<sto_kisa_ismi, nvarchar(50),>     \n " + 
+        ",''              --<sto_yabanci_isim, nvarchar(127),>     \n " + 
+        ",@sto_sat_cari_kod              --<sto_sat_cari_kod, nvarchar(25),>     \n " + 
+        ",0              --<sto_cins, tinyint,>     \n " + 
+        ",0              --<sto_doviz_cinsi, tinyint,>     \n " + 
+        ",0              --<sto_detay_takip, tinyint,>     \n " + 
+        ",'ADET'              --<sto_birim1_ad, nvarchar(10),>     \n " + 
+        ",1              --<sto_birim1_katsayi, float,>     \n " + 
+        ",0              --<sto_birim1_agirlik, float,>     \n " + 
+        ",0              --<sto_birim1_en, float,>     \n " + 
+        ",0              --<sto_birim1_boy, float,>     \n " + 
+        ",0              --<sto_birim1_yukseklik, float,>     \n " + 
+        ",0              --<sto_birim1_dara, float,>     \n " + 
+        ",@sto_birim2_ad              --<sto_birim2_ad, nvarchar(10),>     \n " + 
+        ",@sto_birim2_katsayi              --<sto_birim2_katsayi, float,>     \n " + 
+        ",0              --<sto_birim2_agirlik, float,>     \n " + 
+        ",0              --<sto_birim2_en, float,>     \n " + 
+        ",0              --<sto_birim2_boy, float,>     \n " + 
+        ",0              --<sto_birim2_yukseklik, float,>     \n " + 
+        ",0              --<sto_birim2_dara, float,>     \n " + 
+        ",''              --<sto_birim3_ad, nvarchar(10),>     \n " + 
+        ",0              --<sto_birim3_katsayi, float,>     \n " + 
+        ",0              --<sto_birim3_agirlik, float,>     \n " + 
+        ",0              --<sto_birim3_en, float,>     \n " + 
+        ",0              --<sto_birim3_boy, float,>     \n " + 
+        ",0              --<sto_birim3_yukseklik, float,>     \n " + 
+        ",0              --<sto_birim3_dara, float,>     \n " + 
+        ",''             --<sto_birim4_ad, nvarchar(10),>     \n " + 
+        ",0             --<sto_birim4_katsayi, float,>     \n " + 
+        ",0             --<sto_birim4_agirlik, float,>     \n " + 
+        ",0             --<sto_birim4_en, float,>     \n " + 
+        ",0             --<sto_birim4_boy, float,>     \n " + 
+        ",0             --<sto_birim4_yukseklik, float,>     \n " + 
+        ",0             --<sto_birim4_dara, float,>     \n " + 
+        ",''              --<sto_muh_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_muh_Iade_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_muh_sat_muh_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_muh_satIadmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_muh_sat_isk_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_muh_aIiskmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_muh_satmalmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_yurtdisi_satmuhk, nvarchar(40),>     \n " + 
+        ",''              --<sto_ilavemasmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_yatirimtesmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_depsatmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_depsatmalmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsatmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsatIadmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsatIskmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_satfiyfarkmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_yurtdisisatmalmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsatmalmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_sifirbedsatmalmuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_ihrackayitlisatismuhkod, nvarchar(40),>     \n " + 
+        ",''              --<sto_ihrackayitlisatismaliyetimuhkod, nvarchar(40),>     \n " + 
+        ",0              --<sto_karorani, float,>     \n " + 
+        ",0              --<sto_min_stok, float,>     \n " + 
+        ",0              --<sto_siparis_stok, float,>     \n " + 
+        ",0              --<sto_max_stok, float,>     \n " + 
+        ",0              --<sto_ver_sip_birim, tinyint,>     \n " + 
+        ",0              --<sto_al_sip_birim, tinyint,>     \n " + 
+        ",0              --<sto_siparis_sure, smallint,>     \n " + 
+        ",6              --<sto_perakende_vergi, tinyint,>     \n " + 
+        ",6              --<sto_toptan_vergi, tinyint,>     \n " + 
+        ",''              --<sto_yer_kod, nvarchar(25),>     \n " + 
+        ",0              --<sto_elk_etk_tipi, tinyint,>     \n " + 
+        ",0              --<sto_raf_etiketli, tinyint,>     \n " + 
+        ",0              --<sto_etiket_bas, tinyint,>     \n " + 
+        ",0              --<sto_satis_dursun, tinyint,>     \n " + 
+        ",0              --<sto_siparis_dursun, tinyint,>     \n " + 
+        ",0              --<sto_malkabul_dursun, tinyint,>     \n " + 
+        ",0              --<sto_malkabul_gun1, bit,>     \n " + 
+        ",0              --<sto_malkabul_gun2, bit,>     \n " + 
+        ",0              --<sto_malkabul_gun3, bit,>     \n " + 
+        ",0              --<sto_malkabul_gun4, bit,>     \n " + 
+        ",0              --<sto_malkabul_gun5, bit,>     \n " + 
+        ",0              --<sto_malkabul_gun6, bit,>     \n " + 
+        ",0              --<sto_malkabul_gun7, bit,>     \n " + 
+        ",0              --<sto_siparis_gun1, bit,>     \n " + 
+        ",0              --<sto_siparis_gun2, bit,>     \n " + 
+        ",0              --<sto_siparis_gun3, bit,>     \n " + 
+        ",0              --<sto_siparis_gun4, bit,>     \n " + 
+        ",0              --<sto_siparis_gun5, bit,>     \n " + 
+        ",0              --<sto_siparis_gun6, bit,>     \n " + 
+        ",0              --<sto_siparis_gun7, bit,>     \n " + 
+        ",0              --<sto_iskon_yapilamaz, bit,>     \n " + 
+        ",0              --<sto_tasfiyede, bit,>     \n " + 
+        ",0              --<sto_alt_grup_no, smallint,>     \n " + 
+        ",''              --<sto_kategori_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_urun_sorkod, nvarchar(25),>     \n " + 
+        ",@sto_altgrup_kod              --<sto_altgrup_kod, nvarchar(25),>     \n " + 
+        ",@sto_anagrup_kod              --<sto_anagrup_kod, nvarchar(25),>     \n " + 
+        ",@sto_uretici_kodu              --<sto_uretici_kodu, nvarchar(25),>     \n " + 
+        ",@sto_sektor_kodu              --<sto_sektor_kodu, nvarchar(25),>     \n " + 
+        ",@sto_reyon_kodu              --<sto_reyon_kodu, nvarchar(25),>     \n " + 
+        ",@sto_muhgrup_kodu              --<sto_muhgrup_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_ambalaj_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_marka_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_beden_kodu, nvarchar(25),>     \n " + 
+        ",@sto_renk_kodu              --<sto_renk_kodu, nvarchar(25),>     \n " + 
+        ",@sto_model_kodu              --<sto_model_kodu, nvarchar(25),>     \n " + 
+        ",@sto_sezon_kodu              --<sto_sezon_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_hammadde_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_prim_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_kalkon_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_paket_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_pozisyonbayrak_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_mkod_artik, nvarchar(10),>     \n " + 
+        ",0              --<sto_kasa_tarti_fl, bit,>     \n " + 
+        ",0              --<sto_bedenli_takip, bit,>     \n " + 
+        ",0              --<sto_renkDetayli, bit,>     \n " + 
+        ",0              --<sto_miktarondalikli_fl, bit,>     \n " + 
+        ",0              --<sto_pasif_fl, bit,>     \n " + 
+        ",0              --<sto_eksiyedusebilir_fl, bit,>     \n " + 
+        ",''              --<sto_GtipNo, nvarchar(25),>     \n " + 
+        ",0              --<sto_puan, float,>     \n " + 
+        ",0              --<sto_komisyon_hzmkodu, nvarchar(25),>     \n " + 
+        ",0              --<sto_komisyon_orani, float,>     \n " + 
+        ",0              --<sto_otvuygulama, tinyint,>     \n " + 
+        ",0              --<sto_otvtutar, float,>     \n " + 
+        ",0              --<sto_otvliste, tinyint,>     \n " + 
+        ",0              --<sto_otvbirimi, tinyint,>     \n " + 
+        ",0              --<sto_prim_orani, float,>     \n " + 
+        ",0              --<sto_garanti_sure, smallint,>     \n " + 
+        ",0              --<sto_garanti_sure_tipi, tinyint,>     \n " + 
+        ",0              --<sto_iplik_Ne_no, float,>     \n " + 
+        ",@sto_standartmaliyet              --<sto_standartmaliyet, float,>     \n " + 
+        ",0              --<sto_kanban_kasa_miktari, float,>     \n " + 
+        ",0              --<sto_oivuygulama, tinyint,>     \n " + 
+        ",0              --<sto_zraporu_stoku_fl, bit,>     \n " + 
+        ",0              --<sto_maxiskonto_orani, float,>     \n " + 
+        ",0              --<sto_detay_takibinde_depo_kontrolu_fl, bit,>     \n " + 
+        ",''              --<sto_tamamlayici_kodu, nvarchar(25),>     \n " + 
+        ",0              --<sto_oto_barkod_acma_sekli, tinyint,>     \n " + 
+        ",''              --<sto_oto_barkod_kod_yapisi, [dbo].[barkod_str],>     \n " + 
+        ",0              --<sto_KasaIskontoOrani, float,>     \n " + 
+        ",0              --<sto_KasaIskontoTutari, float,>     \n " + 
+        ",0              --<sto_gelirpayi, float,>     \n " + 
+        ",0              --<sto_oivtutar, float,>     \n " + 
+        ",0              --<sto_oivturu, tinyint,>     \n " + 
+        ",''              --<sto_giderkodu, nvarchar(25),>     \n " + 
+        ",0              --<sto_oivvergipntr, tinyint,>     \n " + 
+        ",0              --<sto_Tevkifat_turu, tinyint,>     \n " + 
+        ",0              --<sto_SKT_fl, bit,>     \n " + 
+        ",0              --<sto_terazi_SKT, smallint,>     \n " + 
+        ",0              --<sto_RafOmru, smallint,>     \n " + 
+        ",0              --<sto_KasadaTaksitlenebilir_fl, bit,>     \n " + 
+        ",''              --<sto_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_iade_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_yurticisat_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_satiade_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_satisk_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_alisk_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_satmal_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_yurtdisisat_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_ilavemas_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_yatirimtes_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_depsat_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_depsatmal_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsat_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsatiade_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsatisk_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_satfiyfark_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_yurtdisisatmal_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_bagortsatmal_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_sifirbedsatmal_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_uretimmaliyet_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_uretimkapasite_ufrsfark_kod, nvarchar(40),>     \n " + 
+        ",''              --<sto_degerdusuklugu_ufrs_kod, nvarchar(40),>     \n " + 
+        ",0             --<sto_halrusumyudesi, float,>     \n " + 
+        ",0             --<sto_webe_gonderilecek_fl, bit,>     \n " + 
+        ",0             --<sto_min_stok_belirleme_gun, smallint,>     \n " + 
+        ",0             --<sto_sip_stok_belirleme_gun, smallint,>     \n " + 
+        ",0             --<sto_max_stok_belirleme_gun, smallint,>     \n " + 
+        ",0             --<sto_sev_bel_opr_degerlendime_fl, bit,>     \n " + 
+        ",0             --<sto_otv_tevkifat_turu, tinyint,>     \n " + 
+        ",0             --<sto_kay_plan_degerlendir, tinyint,>     \n " + 
+        ",0             --<sto_CRM_sistemine_aktar_fl, bit,>     \n " + 
+        ",0             --<sto_yerli_yabanci, tinyint,>     \n " + 
+        ",0             --<sto_mensei, nvarchar(30),>     \n " + 
+        ",0             --<sto_oto_parti_lot_kod_fl, bit,>     \n " + 
+        ",''              --<sto_efat_sinif_kodu, nvarchar(20),>     \n " + 
+        ",''              --<sto_efat_sinif_listesi, nvarchar(15),>     \n " + 
+        ",''              --<sto_efat_sinif_versiyonu, nvarchar(15),>     \n " + 
+        ",0              --<sto_utssisteminegonderilsin_fl, bit,>     \n " + 
+        ",0              --<sto_posetbeyannamekonusu_fl, bit,>     \n " + 
+        ",0              --<sto_STT_oncesi_kaldirma, smallint,>     \n " + 
+        ",0              --<sto_toplam_rafomru, smallint,>     \n " + 
+        ",0              --<sto_fiyat_kasada_belirlenir_fl, bit,>     \n " + 
+        ",0              --<sto_franchise_siparis_dursun, tinyint,>     \n " + 
+        ",''              --<sto_GEKAP, nvarchar(5),>     \n " + 
+        ",0              --<sto_GEKAP_birim, tinyint,>     \n " + 
+        ",''              --<sto_resim_url, nvarchar(127),>     \n " + 
+        ",''              --<sto_GEKAP_depozitoonaykodu, nvarchar(10),>     \n " + 
+        " ) ",
+        param:['sto_kod:string|50','sto_isim:string|127','sto_sat_cari_kod:string|50','sto_birim2_ad:string|50','sto_birim2_katsayi:float','sto_altgrup_kod:string|50','sto_anagrup_kod:string|50','sto_uretici_kodu:string|50'
+        ,'sto_sektor_kodu:string|50','sto_reyon_kodu:string|50','sto_muhgrup_kodu:string|50','sto_renk_kodu:string|50','sto_model_kodu:string|50','sto_sezon_kodu:string|50','sto_standartmaliyet:float']
+    }
 };
+

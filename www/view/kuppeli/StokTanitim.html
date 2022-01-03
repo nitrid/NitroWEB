@@ -15,7 +15,7 @@
           <p class="text-md-right"><dt>Ana Grup:</dt> </p>
       </div>    
       <div class="col-6 px-4">
-          <button-edit id="3" class="form-control form-control-sm border-0" option="BteAnagrup"></button-edit>        
+          <button-edit id="3" class="form-control form-control-sm border-0" option="BteAnaGrup"></button-edit>        
       </div>
       <div class="col-2 px-2">
         <button type="button" ng-click="AnaGrupModal()" class="btn btn-primary btn-sm  mt-1">+</button>
@@ -59,7 +59,7 @@
         <p class="text-md-right"><dt>Tedarikçi:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteTedarikci"></button-edit>
+        <button-edit id="7" class="form-control form-control-sm border-0" option="BteTedarikci"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -67,7 +67,7 @@
         <p class="text-md-right"><dt>Raf:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteRaf"></button-edit>
+        <button-edit id="8" class="form-control form-control-sm border-0" option="BteRaf"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -75,7 +75,7 @@
           <p class="text-md-right"><dt>Materyal:</dt></p>
         </div>    
         <div class="col-6 px-4">
-          <button-edit id="2" class="form-control form-control-sm border-0" option="BteMateryal"></button-edit>
+          <button-edit id="9" class="form-control form-control-sm border-0" option="BteMateryal"></button-edit>
         </div>
     </div>
     <div class="row ">
@@ -83,7 +83,15 @@
         <p class="text-md-right"><dt>Kaplama:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteKaplama"></button-edit>
+        <button-edit id="10" class="form-control form-control-sm border-0" option="BteKaplama"></button-edit>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-2 px-1">
+        <p class="text-md-right"><dt>Taş :</dt></p>
+      </div>    
+      <div class="col-6 px-4">
+        <button-edit id="11" class="form-control form-control-sm border-0" option="BteTas"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -91,7 +99,7 @@
         <p class="text-md-right"><dt>Tas Rengi:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteTasrengi"></button-edit>
+        <button-edit id="12" class="form-control form-control-sm border-0" option="BteTasrengi"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -99,7 +107,7 @@
         <p class="text-md-right"><dt>Zincir Sayısı:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteZincirSayisi"></button-edit>
+        <button-edit id="13" class="form-control form-control-sm border-0" option="BteZincirSayisi"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -107,7 +115,7 @@
         <p class="text-md-right"><dt>Zincir Rengi:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteZinciRengi"></button-edit>
+        <button-edit id="14" class="form-control form-control-sm border-0" option="BteZinciRengi"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -115,7 +123,7 @@
         <p class="text-md-right"><dt>Figür:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteFigur"></button-edit>
+        <button-edit id="15" class="form-control form-control-sm border-0" option="BteFigur"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -123,7 +131,7 @@
         <p class="text-md-right"><dt>Figür Şekli:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteFigurSekli"></button-edit>
+        <button-edit id="16" class="form-control form-control-sm border-0" option="BteFigurSekli"></button-edit>
       </div>
     </div>
     <div class="row ">
@@ -131,7 +139,7 @@
         <p class="text-md-right"><dt>Figür Rengi:</dt></p>
       </div>    
       <div class="col-6 px-4">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteFigurRengi"></button-edit>
+        <button-edit id="17" class="form-control form-control-sm border-0" option="BteFigurRengi"></button-edit>
       </div>
     </div>  
     
@@ -186,7 +194,7 @@
      
   
   <div class="col-2 px-4">
-    <input class="form-control" ng-model="paket" type="text"> 
+    <input class="form-control" ng-model="Paket" type="text"> 
    </div>
   <div class="col-2 px-1">
     <div class="form-check">
@@ -251,11 +259,7 @@
       <p class="text-md-right"><dt>Bayi Alış %50:</dt></p>
     </div>    
     <div class="col-2 px-4">
-<<<<<<< HEAD
       <input class="form-control" ng-model="BayiAlis50"  type="text"> 
-=======
-      <input class="form-control" ng-model="BayiAlış50"  type="text"> 
->>>>>>> 59b63872a34cec3b537699d2197eb6f99763eec9
      </div>
     <div class="col-2 px-1">
       <div class="form-check">

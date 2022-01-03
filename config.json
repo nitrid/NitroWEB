@@ -1,7 +1,7 @@
 {
-    "server":"172.16.132.250",
+    "server":"192.168.100.12",
     "database":"MikroDB_V16",
-    "uid":"nitro",
+    "uid":"nitrogen",
     "pwd":"lp8462+",
     "trustedConnection" : false,
     "port" : "8088"

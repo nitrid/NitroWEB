@@ -33,7 +33,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.BteAnaGrup = 
         {
            title : "Ana Grup Kodu",
-            
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
@@ -184,7 +183,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 pCallback(true)
             }
         }
-
         $scope.BteRaf = 
         {
             title : "Raf",
@@ -192,18 +190,18 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "SELECT msg_S_0020 AS KODU,msg_S_1080 AS ADI from STOK_REYONLARI_CHOOSE_2  ",
             },
-            selection : "",
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
                 {
-                    dataField: "",
+                    dataField: "ADI",
                     width: 200
                 }, 
             ],
@@ -220,21 +218,17 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "select Q1 AS KODU from STOKLAR_USER Group BY Q1 ",
             },
-            selection : "",
-           
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
-                {
-                    dataField: "",
-                    width: 200
-                }, 
+               
             ],
             onClick : function(pCallback)
             {                                
@@ -249,18 +243,14 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "select Q2 AS KODU from STOKLAR_USER Group BY Q2 ",
             },
-            selection : "",
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
             ],
@@ -269,26 +259,45 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 pCallback(true)
             }
         }
-
-        $scope.BteTasrengi = 
+        $scope.BteTas = 
         {
-            title : "Tas Rengi",
+            title : "Tas ",
             
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : " select Q3 AS KODU from STOKLAR_USER Group BY Q3",
             },
-            selection : "",
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            }
+        }
+        $scope.BteTasrengi = 
+        {
+            title : "Tas Rengi",
+            
+             
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : " select Q4 AS KODU from STOKLAR_USER Group BY Q4",
+            },
+            selection : "KODU",
+           txt: "",
+            columns :
+            [
                 {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
             ],
@@ -301,22 +310,18 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.BteZincirSayisi = 
         {
             title : "Zincir Sayisi",
-            
+             
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : " select Q5 AS KODU from STOKLAR_USER Group BY Q5",
             },
-            selection : "",
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
             ],
@@ -330,22 +335,18 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         {
             title : "Zincir Rengi",
             
+             
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : " select Q6 AS KODU from STOKLAR_USER Group BY Q6",
             },
-            selection : "",
-           
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
             ],
@@ -359,22 +360,18 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         {
             title : "Figür",
             
+             
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : " select Q7 AS KODU from STOKLAR_USER Group BY Q7",
             },
-            selection : "",
-           
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
             ],
@@ -388,22 +385,18 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         {
             title : "Figür Sekli",
             
+            
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : " select Q8 AS KODU from STOKLAR_USER Group BY Q8",
             },
-            selection : "",
-           
+            selection : "KODU",
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
             ],
@@ -419,19 +412,15 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " ",
+                query : "select Q9 AS KODU from STOKLAR_USER Group BY Q9",
             },
-            selection : "",
+            selection : "KODU",
            
            txt: "",
             columns :
             [
                 {
-                    dataField: "",
-                    width: 200
-                }, 
-                {
-                    dataField: "",
+                    dataField: "KODU",
                     width: 200
                 }, 
             ],
@@ -446,33 +435,26 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "StokTanitim"
-        $scope.BasimAdet,
-        $scope.Barkod,
-        $scope.paket,
-        $scope.Maliyet,
-        $scope.BayiPsf,
-        $scope.Subepsf,
-        $scope.BayiAlis,
-        $scope.BayiAlis50,
-        $scope.YeniAnagrupKodu="",
-        $scope.YeniAltGrupKodu="",
-        $scope.AltGrupKodu="",
-        $scope.AltGrupAdi="",
-        $scope.AnaGrupAdi="",
-        $scope.AnaGrupAdiV2="",
-        $scope.AltGrupKoduv2="",
-        $scope.KoduV2="",
-        $scope.Adıv2="",
-        $scope.ModelKodu="",
-        $scope.ModelAdi="",
+        $scope.BasimAdet = 1;
+        $scope.Barkod = "";
+        $scope.Paket = 1;
+        $scope.Maliyet = 0;
+        $scope.BayiPsf = 0;
+        $scope.Subepsf = 0;
+        $scope.BayiAlis = 0;
+        $scope.BayiAlis50 = 0;
+        $scope.YeniAnagrupKodu="";
+        $scope.YeniAltGrupKodu="";
+        $scope.AltGrupKodu="";
+        $scope.AltGrupAdi="";
+        $scope.AnaGrupAdi="";
+        $scope.AnaGrupAdiV2="";
+        $scope.AltGrupKoduv2="";
+        $scope.KoduV2="";
+        $scope.Adıv2="";
+        $scope.ModelKodu="";
+        $scope.ModelAdi="";
 
-
-
-
-        console.log(123)
-
-        
-        
         InitObj();
     }
     $scope.AnaGrupModal = function()
@@ -497,7 +479,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
     } 
     $scope.StokKodOlustur =async function()
     {
-        console.log($scope.BteStokKodu)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
@@ -505,9 +486,16 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             param :["BASKODU:string|50"],
             value : [$scope.AnaGrup]
         }
-          
         let TmpResult = await srv.Execute(TmpQuery)
         $scope.BteStokKodu.txt = TmpResult[0].KODU
-    
+    }
+    $scope.StokInsert = async function()
+    {
+        let TmpInsertData = 
+        [
+            $scope.BteStokKodu.txt,
+            
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
     }
 }
