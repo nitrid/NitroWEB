@@ -51,7 +51,7 @@
         <button-edit id="6" class="form-control form-control-sm border-0" option="BteModel"></button-edit>
       </div>
       <div class="col-2 px-2">
-        <button type="button" ng-click="AltGrupModal()" class="btn btn-primary btn-sm">+</button>
+        <button type="button" ng-click="ModelModal()" class="btn btn-primary btn-sm mt-1">+</button>
       </div>
     </div>
     <div class="row ">
@@ -194,11 +194,11 @@
      
   
   <div class="col-2 px-4">
-    <input class="form-control" ng-model="Paket" type="text"> 
+    <input class="form-control" ng-model="Paket" type="text" ng-disabled="PaketDisable"> 
    </div>
   <div class="col-2 px-1">
     <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+    <input class="form-check-input" type="checkbox" ng-change="PaketDuzenle()" value=""  ng-model="PaketAktif" id="flexCheckIndeterminate">
       <label class="form-check-label" for="flexCheckIndeterminate">
          Aktif
      </label>
@@ -235,7 +235,7 @@
       <p class="text-md-right"><dt>Bayi PSF:</dt></p>
     </div>    
     <div class="col-2 px-4">
-      <input class="form-control" ng-model="BayiPsf"  type="text"> 
+      <input class="form-control" ng-model="BayiPsf" ng-change="AlisFiyatHesap()" type="text"> 
     </div>
   </div>
   <div class="row ">
@@ -246,34 +246,36 @@
       <input class="form-control" ng-model="SubePsf"  type="text"> 
     </div>
   </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" ng-model="FiyatAktif" ng-change="FiyatDuzenle()" id="flexCheckIndeterminate">
+      <label class="form-check-label" for="flexCheckIndeterminate">
+        Fiyat düzenle
+     </label>
+       </div>
   <div class="row ">
     <div class="col-2 px-1">
       <p class="text-md-right"><dt>Bayi Alış %60:</dt></p>
     </div>    
     <div class="col-2 px-4">
-      <input class="form-control" ng-model="BayiAlis" type="text"> 
+      <input class="form-control" ng-model="BayiAlis" type="text"  ng-disabled="FiyatDisable"> 
     </div>
   </div>
+  
   <div class="row ">
     <div class="col-2 px-1  ">
       <p class="text-md-right"><dt>Bayi Alış %50:</dt></p>
     </div>    
     <div class="col-2 px-4">
-      <input class="form-control" ng-model="BayiAlis50"  type="text"> 
+      <input class="form-control" ng-model="BayiAlis50"   type="text" ng-disabled="FiyatDisable" > 
      </div>
     <div class="col-2 px-1">
-      <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
-        <label class="form-check-label" for="flexCheckIndeterminate">
-          Fiyat düzenle
-       </label>
-         </div>
+
          
     </div>
   <div class="row  d-flex align-items-center flex-column justify-content-center">
     <div class="col-3 px-6">
-    <button type="button" class="btn btn-primary btn-lg">Yeni</button>
-    <button type="button" class="btn btn-primary btn-lg active">Kaydet</button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="Init()">Yeni</button>
+    <button type="button" class="btn btn-primary btn-lg active" ng-click="StokKaydet()">Kaydet</button>
       
     </div>    
   </div>   
@@ -301,20 +303,78 @@
             </div>
             <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
               <div class="col-2 px-6">
-                <p class="text-md-right my-0 py-1 "> <dt>Alt Grup Kodu:</dt></p>
+                <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Adı:</dt></p>
               </div> 
                <div class="col-3 px-6">
-                <input class="form-control" ng-model="YeniAltGrupKodu" id="inputdefault" type="text"> 
+                <input class="form-control" ng-model="YeniAnaGrupAdi" id="inputdefault" type="text"> 
                </div>
               </div>
-          <form ng-submit="AnaGrupModal()">
+         
               <div class="modal-body">
               </div>
               <div class="modal-footer">
-              
-                  <button type="submit" class="btn btn-primary" >Kaydet</button>
+                  <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()"  >Kaydet</button>
               </div>
-          </form>
+
+      </div>
+  </div>
+</div>
+
+<!-- MODEL GRUBU -->
+<div id="ModelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-2 px-6">
+              <p class="text-md-right my-0 py-1 "> <dt>Model Kodu:</dt></p>
+            </div> 
+            <div class="col-3 px-6">
+              <input class="form-control" ng-model="ModelKodu" id="inputdefault" type="text"> 
+            </div>
+            </div>
+            <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+              <div class="col-2 px-6">
+                <p class="text-md-right my-0 py-1 "> <dt>Model Adı:</dt></p>
+              </div> 
+              <div class="col-3 px-6">
+                <input class="form-control " ng-model="ModelAdi" id="inputdefault" type="text"> 
+              </div>
+              </div>
+              <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                <div class="col-2 px-6">
+                  <p class="text-md-right my-0 py-1 "> <dt>Ana Grup</dt></p>
+                </div> 
+                <div class="col-3 px-6">
+                  <Button-edit  class="form-control form-control-sm border-0" option="BteAnaGrupModel" id="19"> 
+                </div>
+                </div>
+                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                  <div class="col-2 px-6">
+                    <p class="text-md-right my-0 py-1 "> <dt>Alt Grup</dt></p>
+                  </div> 
+                  <div class="col-3 px-6">
+                    <Button-edit  class="form-control form-control-sm border-0" option="BteAltGrupModel" id="20"> 
+                  </div>
+                  </div>
+
+                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                    <div class="col-2 px-6">
+                      <p class="text-md-right my-0 py-1 "> <dt>Alt Grup 2</dt></p>
+                    </div> 
+                    <div class="col-3 px-6">
+                      <Button-edit  class="form-control form-control-sm border-0" option="BteAltGrup2Model" id="21"> 
+                    </div>
+                    </div>
+        
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" ng-click="Modelkayit()"  >Kaydet</button>
+              </div>
+
       </div>
   </div>
 </div>
@@ -331,7 +391,7 @@
               <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Kodu:</dt></p>
             </div> 
              <div class="col-3 px-6">
-              <input class="form-control" ng-model="AnaGrupAdi" id="inputdefault" type="text"> 
+              <Button-edit  class="form-control form-control-sm border-0" option="BteAnaGrupAlt" id="23"> 
              </div>
             </div>
             <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
@@ -355,14 +415,12 @@
               </div>
               <div class="modal-footer">
               
-                  <button type="submit" class="btn btn-primary" >Kaydet</button>
+                  <button type="submit" class="btn btn-primary" ng-click="AltGruplarKaydet()">Kaydet</button>
               </div>
           </form>
       </div>
   </div>
 </div>
-
-<!--ALT GRUP V2 MODAL-->
 <div id="AltGrupV2Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
@@ -398,7 +456,7 @@
                     <p class="text-md-right my-0 py-1 "> <dt> Adı:</dt></p>
                   </div> 
                    <div class="col-3 px-6">
-                    <input class="form-control" ng-model="Adıv2" id="inputdefault" type="text"> 
+                    <input class="form-control" ng-model="Adiv2" id="inputdefault" type="text"> 
                    </div>
                   </div>
           <form ng-submit="AltGrupV2Modal()">
@@ -406,45 +464,17 @@
               </div>
               <div class="modal-footer">
               
-                  <button type="submit" class="btn btn-primary" >Kaydet</button>
+                  <button type="submit" class="btn btn-primary" ng-click="AltGruplar2Kaydet()" >Kaydet</button>
               </div>
           </form>
       </div>
   </div>
+
+<!--ALT GRUP V2 MODAL-->
+
 </div>
 
-<!--MODEL MODAL-->
-<div id="ModelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-            <div class="col-2 px-6">
-              <p class="text-md-right my-0 py-1 "> <dt>Model Kodu:</dt></p>
-            </div> 
-             <div class="col-3 px-6">
-              <input class="form-control" ng-model="ModelKodu" id="inputdefault" type="text"> 
-             </div>
-            </div>
-            <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-              <div class="col-2 px-6">
-                <p class="text-md-right my-0 py-1 "> <dt>Model Adı:</dt></p>
-              </div> 
-               <div class="col-3 px-6">
-                <input class="form-control" ng-model="ModelAdi" id="inputdefault" type="text"> 
-               </div>
-              </div>
-          <form ng-submit="ModelModal()">
-              <div class="modal-body">
-              </div>
-              <div class="modal-footer">
-              
-                  <button type="submit" class="btn btn-primary" >Kaydet</button>
-              </div>
-          </form>
-      </div>
-  </div>
 </div>
+</div>
+
 

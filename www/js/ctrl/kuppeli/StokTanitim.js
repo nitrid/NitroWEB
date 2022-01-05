@@ -64,6 +64,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
+
+
         $scope.BteAltGrup = 
         {
             title : "Alt Grup",
@@ -428,7 +430,100 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             {                                
                 pCallback(true)
             }
-        }  
+        }
+        
+        $scope.BteAnaGrupModel = 
+        {
+           title : "Ana Grup Kodu",
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [msg_S_0135] AS KODU,[msg_S_0136] AS ADI FROM [dbo].[STOK_ANA_GRUPLARI_CHOOSE_2] ORDER BY [msg_S_0135] ASC",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                console.log(pData)
+                $scope.AnaGrup= pData.KODU;
+                $scope.ModelOlustur()
+            }
+        }
+
+        $scope.BteAltGrupModel = 
+        {
+            title : "Alt Grup",
+            
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [msg_S_0135] AS KODU ,[msg_S_0136] AS ADI,[msg_S_0013] AS ANAGRUP FROM [dbo].[STOK_ALT_GRUPLARI_CHOOSE_2]",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            }
+        }
+
+        $scope.BteAltGrup2Model = 
+        {
+            title : "Alt Grup2",
+            
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [msg_S_0022] AS KODU ,[msg_S_0023] AS ADI FROM [dbo].[STOK_SEKTORLERI_CHOOSE_2] ",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            },
+            
+        }
     }
     $scope.Init = async function()
     {        
@@ -451,30 +546,60 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.AnaGrupAdiV2="";
         $scope.AltGrupKoduv2="";
         $scope.KoduV2="";
-        $scope.Adıv2="";
+        $scope.Adiv2="";
         $scope.ModelKodu="";
         $scope.ModelAdi="";
+        $scope.PaketBarkod = '';
+        $scope.PaketAktif = false;
+        $scope.FiyatDisable = true;
+        $scope.FiyatAktif = false;
+        $scope.PaketAktif = false;
+        $scope.PaketDisable =true;
+        $scope.SubePsf=0;
+        $scope.ModelAdi='';
+        $scope.ModelKodu='';
+        $scope.YeniAnagrupKodu='';
+        $scope.AltGrupKodu='';
+        $scope.AltGrupAdi='';
+        
+       
 
         InitObj();
+
+        $scope.BteMateryal.txt = "YOK"
+        $scope.BteKaplama.txt = "YOK"
+        $scope.BteTas.txt = "YOK"
+        $scope.BteTasrengi.txt = "YOK"
+        $scope.BteZincirSayisi.txt = "YOK"
+        $scope.BteZinciRengi.txt = "YOK"
+        $scope.BteFigur.txt = "YOK"
+        $scope.BteFigurSekli.txt = "YOK"
+        $scope.BteFigurRengi.txt = "YOK"
     }
-    $scope.AnaGrupModal = function()
+    $scope.AnaGrupModal = async  function()
     {
-        console.log(1)
+        
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            
+            query :  "SELECT (MAX(san_kod) + 1) AS KODU FROM STOK_ANA_GRUPLARI ",
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+        $scope.YeniAnagrupKodu = TmpResult[0].KODU
         $('#AnaGrupModal').modal("show");
     } 
     $scope.AltGrupModal = function()
     {
-        console.log(1)
         $('#AltGrupModal').modal("show");
     } 
     $scope.AltGrupV2Modal = function()
     {
-        console.log(1)
         $('#AltGrupV2Modal').modal("show");
     } 
     $scope.ModelModal = function()
     {
-        console.log(1)
+        
         $('#ModelModal').modal("show");
     } 
     $scope.StokKodOlustur =async function()
@@ -488,7 +613,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         }
         let TmpResult = await srv.Execute(TmpQuery)
 
-        $scope.BteStokKodu.txt = TmpResult[0].KODU 
+        await $scope.StokHesap(TmpResult[0].KODU)
+        await $scope.StokPaketHesap(TmpResult[0].KODU)
     }
     $scope.StokInsert = async function()
     {
@@ -496,13 +622,13 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         [
             $scope.BteStokKodu.txt,
             $scope.StokAdi,
-            $scope.BteTedarikci,
+            $scope.BteTedarikci.txt,
             'Paket',
-            $scope.Paket,
+            ($scope.Paket * -1),
             $scope.BteAltGrup.txt,
             $scope.BteAnaGrup.txt,
             '',     //üreticikod
-            $scope.BteAltGrup2,
+            $scope.BteAltGrup2.txt,
             $scope.BteRaf.txt,
             $scope.BteAnaGrup.txt,
             $scope.BteModel.txt,
@@ -511,9 +637,58 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             $scope.Maliyet,          
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
-        $scope.StokUserInsert()
+        await $scope.StokUserInsert()
+       await $scope.SatisFiyatInsert(1,$scope.BayiPsf)
+       await $scope.SatisFiyatInsert(2,$scope.SubePsf)
+       await $scope.SatisFiyatInsert(3,$scope.BayiAlis50)
+       await $scope.SatisFiyatInsert(6,$scope.BayiAlis)
+       swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
+       $scope.Init()
+      
+        
     }
 
+
+
+    $scope.AlisFiyatHesap =  function()
+    {
+        $scope.BayiAlis = ($scope.BayiPsf * 60)  / 100
+        $scope.BayiAlis50 = ($scope.BayiPsf * 50)  / 100
+    }
+    $scope.FiyatDuzenle =  function()
+    {
+        if($scope.FiyatAktif == true)
+        {
+            $scope.FiyatDisable = false
+        }
+        else
+        {
+            $scope.FiyatDisable = true
+        }
+    }
+    $scope.PaketDuzenle =  function()
+    {
+        if($scope.PaketAktif == true)
+        {
+            $scope.PaketDisable = false
+        }
+        else
+        {
+            $scope.PaketDisable = true
+        }
+    }
+    $scope.StokKaydet =  function()
+    {
+        if($scope.BteStokKodu.txt == '' || $scope.BteAltGrup.txt == '' || $scope.BteAltGrup2.txt == '' || $scope.BteAnaGrup.txt == '' ||  $scope.BteModel.txt == '' || $scope.BteTedarikci.txt == '' || $scope.BteRaf.txt == '')
+            {
+                swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
+            }else{
+                $scope.StokInsert()
+            }
+
+
+
+    }
     $scope.StokUserInsert = async function()
     {   
         let TmpQuery = 
@@ -524,7 +699,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             value : [$scope.BteStokKodu.txt]
         }
         let TmpResult = await srv.Execute(TmpQuery)
-
         if(TmpResult.length > 0)
         {
             let TmpInsertData = 
@@ -532,40 +706,176 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 TmpResult[0].GUID,
                 $scope.BteMateryal.txt,
                 $scope.BteKaplama.txt,
-                $scope.BteTas,
-                $scope.BteTasrengi,
-                $scope.BteZincirSayisi,
-                $scope.BteZinciRengi,
-                $scope.BteFigur,
-                $scope.BteFigurSekli,
-                $scope.BteFigurRengi,
+                $scope.BteTas.txt,
+                $scope.BteTasrengi.txt,
+                $scope.BteZincirSayisi.txt,
+                $scope.BteZinciRengi.txt,
+                $scope.BteFigur.txt,
+                $scope.BteFigurSekli.txt,
+                $scope.BteFigurRengi.txt,
                 ''            
             ]
+            console.log(TmpInsertData)
             let InsertKontrol = await srv.Execute($scope.Firma,'StokUserInsert',TmpInsertData);
-            $scope.BarkodInsert()
+            await $scope.BarkodInsert($scope.BteStokKodu.txt,1)
+            if($scope.PaketAktif == true)
+            {
+               
+
+                await $scope.BarkodInsert($scope.PaketBarkod,2)
+            }
         }
        
     }
 
-    $scope.BarkodInsert = async function()
+    $scope.BarkodInsert = async function(pbarkod,pbirim)
     {
         let TmpInsertData = 
         [
-            $scope.Barkod,
-            0
+            pbarkod,
+            $scope.BteStokKodu.txt,
+            pbirim
         ]
-        let InsertKontrol = await srv.Execute($scope.Firma,'BarkodInsert',TmpInsertData);
+        console.log(TmpInsertData)
+        let InsertKontrol = await srv.Execute($scope.Firma,'StokBarkodInsert',TmpInsertData);
     }
 
-    $scope.SatisInsert = async function(pFiyat,pListe)
+    $scope.SatisFiyatInsert = async function(pFiyat,pListe)
     {
         let TmpInsertData = 
         [
-            $scope.BteStokKodu,
-            pFiyat,
-            pListe
+            $scope.BteStokKodu.txt,
+            pListe,
+            pFiyat
                        
         ]
-        let InsertKontrol = await srv.Execute($scope.Firma,'SatisInsert',TmpInsertData);
+        console.log(TmpInsertData)
+        let InsertKontrol = await srv.Execute($scope.Firma,'SatisFiyatInsert',TmpInsertData);
     }
+    $scope.StokHesap=async function(number)
+    {
+        
+        output = [],
+        sNumber = number.toString();
+    
+        for (var i = 0, len = sNumber.length; i < len; i += 1) {
+            output.push(+sNumber.charAt(i));
+        }
+
+        var tek=(output[0]+output[2]+output[4]+output[6])*3
+        var cift=output[1]+output[3]+output[5]
+        var say = tek+cift
+        let sonuc = (10 - (say %= 10))
+     
+       $scope.BteStokKodu.txt = sNumber + sonuc.toString();
+    }
+    $scope.StokPaketHesap=async function(number)
+    {
+        number = parseFloat(number) + 100000
+        output = [],
+        sNumber = number.toString();
+    
+        for (var i = 0, len = sNumber.length; i < len; i += 1) {
+            output.push(+sNumber.charAt(i));
+        }
+
+        var tek=(output[0]+output[2]+output[4]+output[6])*3
+        var cift=output[1]+output[3]+output[5]
+        var say = tek+cift
+        let sonuc = (10 - (say %= 10))
+        if(sonuc == 10)
+        {
+            sonuc = 0
+        }
+       $scope.PaketBarkod = sNumber + sonuc.toString();
+      
+    }
+    $scope.AnaGruplarInsert=async function()
+    {
+        let TmpInsertData=
+        [
+            $scope.YeniAnagrupKodu,
+            $scope.YeniAnaGrupAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'AnaGruplarInsert',TmpInsertData);
+        swal("Başarılı", "Kayıt Başarılı",icon="success");
+        $('#AnaGrupModal').modal("hide");
+    }
+
+
+
+    $scope.AltGruplarInsert=async function()
+    {
+        let TmpInsertData = 
+        [
+            $scope.AnaGrupAdi,
+            $scope.AltGrupKodu,
+            $scope.AltGrupAdi,
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'AltGruplarInsert',TmpInsertData);
+    }
+
+
+
+    $scope.ModelInsert=async function()
+    {
+
+        let TmpInsertData = 
+        [
+            $scope.ModelKodu,
+            $scope.ModelAdi
+                       
+        ]
+        console.log(TmpInsertData)
+        let InsertKontrol = await srv.Execute($scope.Firma,'ModelInsert',TmpInsertData);
+    }
+    
+
+
+
+
+
+    $scope.AnaGruplarKaydet = async function()
+    {
+        if($scope.YeniAnagrupKodu == '' || $scope.YeniAnaGrupAdi == '')
+        {
+            swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
+        }else{
+            $scope.AnaGruplarInsert()  }
+    }
+
+    $scope.AltGruplarKaydet = async function()
+    {
+        if($scope.AnaGrupAdi == '' || $scope.AltGrupKodu == '' || $scope.AltGrupAdi == '')
+        {
+            swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
+        }else{
+            $scope.AltGruplarInsert() } 
+    }
+    $scope.AltGruplar2Kaydet = async function()
+    {
+        if($scope.AnaGrupAdiV2 == '' || $scope.AltGrupKoduv2 == ''  || $scope.KoduV2 == ''  || $scope.Adiv2 == '')
+        {
+            swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
+        }else{
+            $scope.AltGruplar2Kaydet()
+        } 
+    }
+
+
+
+    $scope.Modelkayit = async function()
+    {
+        if($scope.ModelKodu == '' || $scope.ModelAdi == '' )
+        {
+            swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
+        }else{
+            $scope.ModelInsert()
+        } 
+    }
+
 }
+
+
