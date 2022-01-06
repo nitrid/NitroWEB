@@ -2642,7 +2642,7 @@ var Query =
         ",@sto_isim              --<sto_isim, nvarchar(127),>     \n " + 
         ",''              --<sto_kisa_ismi, nvarchar(50),>     \n " + 
         ",''              --<sto_yabanci_isim, nvarchar(127),>     \n " + 
-        ",@sto_sat_cari_kod              --<sto_sat_cari_kod, nvarchar(25),>     \n " + 
+        ",''              --<sto_sat_cari_kod, nvarchar(25),>     \n " + 
         ",0              --<sto_cins, tinyint,>     \n " + 
         ",0              --<sto_doviz_cinsi, tinyint,>     \n " + 
         ",0              --<sto_detay_takip, tinyint,>     \n " + 
@@ -2653,8 +2653,8 @@ var Query =
         ",0              --<sto_birim1_boy, float,>     \n " + 
         ",0              --<sto_birim1_yukseklik, float,>     \n " + 
         ",0              --<sto_birim1_dara, float,>     \n " + 
-        ",@sto_birim2_ad              --<sto_birim2_ad, nvarchar(10),>     \n " + 
-        ",@sto_birim2_katsayi              --<sto_birim2_katsayi, float,>     \n " + 
+        ",''              --<sto_birim2_ad, nvarchar(10),>     \n " + 
+        ",0              --<sto_birim2_katsayi, float,>     \n " + 
         ",0              --<sto_birim2_agirlik, float,>     \n " + 
         ",0              --<sto_birim2_en, float,>     \n " + 
         ",0              --<sto_birim2_boy, float,>     \n " + 
@@ -2735,16 +2735,16 @@ var Query =
         ",@sto_uretici_kodu              --<sto_uretici_kodu, nvarchar(25),>     \n " + 
         ",@sto_sektor_kodu              --<sto_sektor_kodu, nvarchar(25),>     \n " + 
         ",@sto_reyon_kodu              --<sto_reyon_kodu, nvarchar(25),>     \n " + 
-        ",@sto_muhgrup_kodu              --<sto_muhgrup_kodu, nvarchar(25),>     \n " + 
-        ",''              --<sto_ambalaj_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_muhgrup_kodu, nvarchar(25),>     \n " + 
+        ",@sto_ambalaj_kodu              --<sto_ambalaj_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_marka_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_beden_kodu, nvarchar(25),>     \n " + 
-        ",@sto_renk_kodu              --<sto_renk_kodu, nvarchar(25),>     \n " + 
+        ",''              --<sto_renk_kodu, nvarchar(25),>     \n " + 
         ",@sto_model_kodu              --<sto_model_kodu, nvarchar(25),>     \n " + 
         ",@sto_sezon_kodu              --<sto_sezon_kodu, nvarchar(25),>     \n " + 
-        ",''              --<sto_hammadde_kodu, nvarchar(25),>     \n " + 
+        ",@sto_hammadde_kodu              --<sto_hammadde_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_prim_kodu, nvarchar(25),>     \n " + 
-        ",''              --<sto_kalkon_kodu, nvarchar(25),>     \n " + 
+        ",@sto_kalkon_kodu              --<sto_kalkon_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_paket_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_pozisyonbayrak_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_mkod_artik, nvarchar(10),>     \n " + 
@@ -2835,8 +2835,9 @@ var Query =
         ",''              --<sto_resim_url, nvarchar(127),>     \n " + 
         ",''              --<sto_GEKAP_depozitoonaykodu, nvarchar(10),>     \n " + 
         " ) ",
-        param:['sto_kod:string|50','sto_isim:string|127','sto_sat_cari_kod:string|50','sto_birim2_ad:string|50','sto_birim2_katsayi:float','sto_altgrup_kod:string|50','sto_anagrup_kod:string|50','sto_uretici_kodu:string|50'
-        ,'sto_sektor_kodu:string|50','sto_reyon_kodu:string|50','sto_muhgrup_kodu:string|50','sto_renk_kodu:string|50','sto_model_kodu:string|50','sto_sezon_kodu:string|50','sto_standartmaliyet:float']
+        param:['sto_kod:string|50','sto_isim:string|127','sto_altgrup_kod:string|50','sto_anagrup_kod:string|50','sto_uretici_kodu:string|50'
+        ,'sto_sektor_kodu:string|50','sto_reyon_kodu:string|50','sto_ambalaj_kodu:string|50','sto_model_kodu:string|50','sto_kalkon_kodu:string|50'
+        ,'sto_sezon_kodu:string|50','sto_hammadde_kodu:string|50','sto_standartmaliyet:float']
     },
     StokUserInsert :
     {
