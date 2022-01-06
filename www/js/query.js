@@ -3131,16 +3131,18 @@ var Query =
         " ) ",
         param:['mdl_kodu:string|50','mdl_ismi:string|50']
     },
-    AltGrup2:
+
+    
+    AltGruplar2Insert:
     {
         query:"INSERT INTO [dbo].[STOK_SEKTORLERI_CHOOSE_2]"+
         "([#msg_S_0088]"+
         ",[msg_S_0022]"+
         ",[msg_S_0023])"+
   "VALUES"+
-        "(newid() --,uniqueidentifier,>"+
-        ",@msg_S_0022        --<msg_S_0022, nvarchar(25),>"+
-        ",@msg_S_0023         --<msg_S_0023, [dbo].[nvarchar_maxhesapisimno],>)"+
+        "(newid() --,uniqueidentifier,> \n"+
+        ",@msg_S_0022        --<msg_S_0022, nvarchar(25),> \n"+
+        ",@msg_S_0023         --<msg_S_0023, [dbo].[nvarchar_maxhesapisimno],>) \n"+
         " ) ",
         param:['msg_S_0022:string|50','msg_S_0023:string|50']
     }

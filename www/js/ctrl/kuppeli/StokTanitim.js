@@ -64,7 +64,96 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
+        $scope.BteAnaGrupAlt = 
+        {
+           title : "Ana Grup Kodu",
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [msg_S_0135] AS KODU,[msg_S_0136] AS ADI FROM [dbo].[STOK_ANA_GRUPLARI_CHOOSE_2] ORDER BY [msg_S_0135] ASC",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                console.log(pData)
+                $scope.AnaGrup= pData.KODU;
+            }
+        }
 
+
+        // $scope.BteAltGrupAlt2 = 
+        // {
+        //     title : "Alt Grup",
+            
+        //     datasource : 
+        //     {
+        //         db : "{M}." + $scope.Firma,
+        //         query : "SELECT [msg_S_0135] AS KODU ,[msg_S_0136] AS ADI,[msg_S_0013] AS ANAGRUP FROM [dbo].[STOK_ALT_GRUPLARI_CHOOSE_2]",
+        //     },
+        //     selection : "KODU",
+           
+        //    txt: "",
+        //     columns :
+        //     [
+        //         {
+        //             dataField: "KODU",
+        //             width: 200
+        //         }, 
+        //         {
+        //             dataField: "ADI",
+        //             width: 200
+        //         }, 
+        //     ],
+        //     onClick : function(pCallback)
+        //     {                                
+        //         pCallback(true)
+        //     }
+        // }
+        $scope.YeniAnaGrupAlt2 = 
+        {
+            title : "Alt Grup",
+            
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [msg_S_0135] AS KODU ,[msg_S_0136] AS ADI,[msg_S_0013] AS ANAGRUP FROM [dbo].[STOK_ALT_GRUPLARI_CHOOSE_2]",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            }
+        }
 
         $scope.BteAltGrup = 
         {
@@ -95,6 +184,66 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             }
         }
 
+        $scope.YeniAltGrupAlt2 = 
+        {
+            title : "Alt Grup",
+            
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [msg_S_0135] AS KODU ,[msg_S_0136] AS ADI,[msg_S_0013] AS ANAGRUP FROM [dbo].[STOK_ALT_GRUPLARI_CHOOSE_2]",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            }
+        }
+
+        $scope.BteAnaGrupAlt2 = 
+        {
+           title : "Ana Grup Kodu",
+            datasource : 
+            {
+                db : "{M}." + $scope.Firma,
+                query : "SELECT [msg_S_0135] AS KODU,[msg_S_0136] AS ADI FROM [dbo].[STOK_ANA_GRUPLARI_CHOOSE_2] ORDER BY [msg_S_0135] ASC",
+            },
+            selection : "KODU",
+           
+           txt: "",
+            columns :
+            [
+                {
+                    dataField: "KODU",
+                    width: 200
+                }, 
+                {
+                    dataField: "ADI",
+                    width: 200
+                }, 
+            ],
+            onClick : function(pCallback)
+            {                                
+                pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                console.log(pData)
+            }
+        }
         $scope.BteAltGrup2 = 
         {
             title : "Alt Grup2",
@@ -522,6 +671,12 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             {                                
                 pCallback(true)
             },
+            onSelected : async function(pData)
+            {
+                console.log(pData)
+                $scope.AltGrup2Model = pData.KODU;
+                $scope.ModelKodOlustur()
+            }
             
         }
     }
@@ -561,6 +716,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.YeniAnagrupKodu='';
         $scope.AltGrupKodu='';
         $scope.AltGrupAdi='';
+        $scope.ModelDisable=true;
         
        
 
@@ -589,8 +745,16 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.YeniAnagrupKodu = TmpResult[0].KODU
         $('#AnaGrupModal').modal("show");
     } 
-    $scope.AltGrupModal = function()
+    $scope.AltGrupModal = async function()
     {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            
+            query :  "SELECT (MAX(sta_kod) + 1) AS KODU FROM STOK_ALT_GRUPLARI ",
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+        $scope.AltGrupKodu = TmpResult[0].KODU
         $('#AltGrupModal').modal("show");
     } 
     $scope.AltGrupV2Modal = function()
@@ -615,6 +779,20 @@ function StokTanitim($scope,srv,$rootScope,$filter)
 
         await $scope.StokHesap(TmpResult[0].KODU)
         await $scope.StokPaketHesap(TmpResult[0].KODU)
+    }
+    $scope.ModelKodOlustur =async function()
+    {
+        let TmpQuery = {
+            db: "{M}." + $scope.Firma,
+            query :  "SELECT ISNULL(REPLACE(STR(MAX([msg_S_0078]) + 1, 9), SPACE(1), '0'),@mdl_Guid + '001') AS KODU " +
+            "FROM [dbo].[STOK_MODEL_TANIMLARI_CHOOSE_2] WHERE [msg_S_0078] LIKE @mdl_Guid + '%' ",
+            param :["mdl_Guid:string|50"],
+            value : [$scope.AltGrup2Model]
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+        console.log(TmpResult)
+        $scope.YeniModelKodu = TmpResult[0].KODU
+
     }
     $scope.StokInsert = async function()
     {
@@ -790,6 +968,9 @@ function StokTanitim($scope,srv,$rootScope,$filter)
        $scope.PaketBarkod = sNumber + sonuc.toString();
       
     }
+
+
+
     $scope.AnaGruplarInsert=async function()
     {
         let TmpInsertData=
@@ -803,26 +984,34 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $('#AnaGrupModal').modal("hide");
     }
 
-
-
     $scope.AltGruplarInsert=async function()
     {
         let TmpInsertData = 
         [
-            $scope.AnaGrupAdi,
             $scope.AltGrupKodu,
-            $scope.AltGrupAdi,
+            $scope.YeniAltGrupAdi,
+            $scope.BteAnaGrupAlt.txt
                        
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'AltGruplarInsert',TmpInsertData);
     }
 
 
+    $scope.AltGruplar2Insert=async function()
+    {
+        let TmpInsertData = 
+        [
+            $scope.KoduV2,
+            $scope.Adiv2
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'AltGruplar2Insert',TmpInsertData);
+    }
 
     $scope.ModelInsert=async function()
     {
-
-        let TmpInsertData = 
+       
+        $scope.ModelAdi = TmpResult[0].KODU
         [
             $scope.ModelKodu,
             $scope.ModelAdi
@@ -835,7 +1024,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
 
 
 
-
+//BUTONLAR
 
     $scope.AnaGruplarKaydet = async function()
     {
@@ -848,7 +1037,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
 
     $scope.AltGruplarKaydet = async function()
     {
-        if($scope.AnaGrupAdi == '' || $scope.AltGrupKodu == '' || $scope.AltGrupAdi == '')
+        if($scope.AltGrupKodu == '' || $scope.YeniAltGrupAdi == '' || $scope.BteAnaGrupAlt.txt == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
         }else{
@@ -856,19 +1045,18 @@ function StokTanitim($scope,srv,$rootScope,$filter)
     }
     $scope.AltGruplar2Kaydet = async function()
     {
-        if($scope.AnaGrupAdiV2 == '' || $scope.AltGrupKoduv2 == ''  || $scope.KoduV2 == ''  || $scope.Adiv2 == '')
+        if($scope.YeniAnaGrupAlt2.txt == '' || $scope.YeniAltGrupAlt2 == ''  || $scope.KoduV2 == ''  || $scope.Adiv2 == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
         }else{
-            $scope.AltGruplar2Kaydet()
+            $scope.AltGruplar2Insert()
         } 
     }
 
 
-
     $scope.Modelkayit = async function()
     {
-        if($scope.ModelKodu == '' || $scope.ModelAdi == '' )
+        if($scope.ModelKodu == '' || $scope.BteAltGrupAlt2 == '' || $scope.BteAltGrupModel.txt == '' || $scope.BteAnaGrupModel.txt == '' || $scope.BteAltGrup2Model.txt == '' || $scope.ModelRenk == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
         }else{

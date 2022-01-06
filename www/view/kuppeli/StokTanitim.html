@@ -332,7 +332,7 @@
               <p class="text-md-right my-0 py-1 "> <dt>Model Kodu:</dt></p>
             </div> 
             <div class="col-3 px-6">
-              <input class="form-control" ng-model="ModelKodu" id="inputdefault" type="text"> 
+              <input class="form-control" ng-model="YeniModelKodu" ng-disabled="ModelDisable" id="inputdefault" type="text"> 
             </div>
             </div>
             <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
@@ -340,12 +340,12 @@
                 <p class="text-md-right my-0 py-1 "> <dt>Model Adı:</dt></p>
               </div> 
               <div class="col-3 px-6">
-                <input class="form-control " ng-model="ModelAdi" id="inputdefault" type="text"> 
+                <input class="form-control " ng-model="YeniModelAdi" id="inputdefault" type="text"> 
               </div>
               </div>
               <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
                 <div class="col-2 px-6">
-                  <p class="text-md-right my-0 py-1 "> <dt>Ana Grup</dt></p>
+                  <p class="text-md-right my-0 py-1 "> <dt>Ana Grup:</dt></p>
                 </div> 
                 <div class="col-3 px-6">
                   <Button-edit  class="form-control form-control-sm border-0" option="BteAnaGrupModel" id="19"> 
@@ -353,7 +353,7 @@
                 </div>
                 <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
                   <div class="col-2 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Alt Grup</dt></p>
+                    <p class="text-md-right my-0 py-1 "> <dt>Alt Grup:</dt></p>
                   </div> 
                   <div class="col-3 px-6">
                     <Button-edit  class="form-control form-control-sm border-0" option="BteAltGrupModel" id="20"> 
@@ -362,17 +362,25 @@
 
                   <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
                     <div class="col-2 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Alt Grup 2</dt></p>
+                      <p class="text-md-right my-0 py-1 "> <dt>Alt Grup 2:</dt></p>
                     </div> 
                     <div class="col-3 px-6">
                       <Button-edit  class="form-control form-control-sm border-0" option="BteAltGrup2Model" id="21"> 
                     </div>
                     </div>
+                    <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                      <div class="col-2 px-6">
+                        <p class="text-md-right my-0 py-1 "> <dt>Renk</dt></p>
+                      </div> 
+                      <div class="col-3 px-6">
+                        <input cols="40" rows="5" class="form-control " ng-model="ModelRenk" id="inputdefault" > 
+                      </div>
+                      </div>
         
               <div class="modal-body">
               </div>
               <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="Modelkayit()"  >Kaydet</button>
+                  <button type="submit" class="btn btn-primary" ng-click="Modelkayit()">Kaydet</button>
               </div>
 
       </div>
@@ -407,7 +415,7 @@
                   <p class="text-md-right my-0 py-1 "> <dt>Alt Grup adı:</dt></p>
                 </div> 
                  <div class="col-3 px-6">
-                  <input class="form-control" ng-model="AltGrupAdi" id="inputdefault" type="text"> 
+                  <input class="form-control" ng-model="YeniAltGrupAdi" id="inputdefault" type="text"> 
                  </div>
                 </div>
           <form ng-submit="AltGrupModall()">
@@ -421,6 +429,9 @@
       </div>
   </div>
 </div>
+
+
+<!-- AltGrupV2Modal -->
 <div id="AltGrupV2Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
@@ -432,7 +443,7 @@
               <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Kodu:</dt></p>
             </div> 
              <div class="col-3 px-6">
-              <input class="form-control" ng-model="AnaGrupAdiV2" id="inputdefault" type="text"> 
+              <Button-edit  class="form-control form-control-sm border-0" option="YeniAnaGrupAlt2" id="24"> 
              </div>
             </div>
             <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
@@ -440,7 +451,7 @@
                 <p class="text-md-right my-0 py-1 "> <dt>Alt Grup Kodu:</dt></p>
               </div> 
                <div class="col-3 px-6">
-                <input class="form-control" ng-model="AltGrupKoduv2" id="inputdefault" type="text"> 
+                <Button-edit  class="form-control form-control-sm border-0" option="YeniAltGrupAlt2" id="25"> 
                </div>
               </div>
               <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
@@ -471,8 +482,6 @@
   </div>
 
 <!--ALT GRUP V2 MODAL-->
-
-</div>
 
 </div>
 </div>
