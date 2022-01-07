@@ -456,45 +456,11 @@ function Stoktanitimi($scope,srv,$rootScope,$filter)
             $scope.Maliyet,
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
-    //     await $scope.StokUserInsert()
-    //    await $scope.SatisFiyatInsert(1,$scope.BayiPsf)
-    //    await $scope.SatisFiyatInsert(2,$scope.SubePsf)
-    //    await $scope.SatisFiyatInsert(3,$scope.BayiAlis50)
-    //    await $scope.SatisFiyatInsert(6,$scope.BayiAlis)
+    
        swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
        $scope.Init()
       
         
-    }
-
-
-
-    $scope.AlisFiyatHesap =  function()
-    {
-        $scope.BayiAlis = ($scope.BayiPsf * 60)  / 100
-        $scope.BayiAlis50 = ($scope.BayiPsf * 50)  / 100
-    }
-    $scope.FiyatDuzenle =  function()
-    {
-        if($scope.FiyatAktif == true)
-        {
-            $scope.FiyatDisable = false
-        }
-        else
-        {
-            $scope.FiyatDisable = true
-        }
-    }
-    $scope.PaketDuzenle =  function()
-    {
-        if($scope.PaketAktif == true)
-        {
-            $scope.PaketDisable = false
-        }
-        else
-        {
-            $scope.PaketDisable = true
-        }
     }
     $scope.StokKaydet =  function()
     {
@@ -504,49 +470,7 @@ function Stoktanitimi($scope,srv,$rootScope,$filter)
             }else{
                 $scope.StokInsert()
             }
-
-
-
     }
-    $scope.StokUserInsert = async function()
-    {   
-        let TmpQuery = 
-        {
-            db: "{M}." + $scope.Firma,
-            query :  "SELECT sto_Guid AS GUID FROM STOKLAR WHERE sto_kod = @sto_kod",
-            param :["sto_kod:string|50"],
-            value : [$scope.BteStokKodu.txt]
-        }
-        let TmpResult = await srv.Execute(TmpQuery)
-        if(TmpResult.length > 0)
-        {
-            let TmpInsertData = 
-            [
-                TmpResult[0].GUID,
-                $scope.BteMateryal.txt,
-                $scope.BteKaplama.txt,
-                $scope.BteTas.txt,
-                $scope.BteTasrengi.txt,
-                $scope.BteZincirSayisi.txt,
-                $scope.BteZinciRengi.txt,
-                $scope.BteFigur.txt,
-                $scope.BteFigurSekli.txt,
-                $scope.BteFigurRengi.txt,
-                ''            
-            ]
-            console.log(TmpInsertData)
-            let InsertKontrol = await srv.Execute($scope.Firma,'StokUserInsert',TmpInsertData);
-            await $scope.BarkodInsert($scope.BteStokKodu.txt,1)
-            if($scope.PaketAktif == true)
-            {
-               
-
-                await $scope.BarkodInsert($scope.PaketBarkod,2)
-            }
-        }
-       
-    }
-
     $scope.BarkodInsert = async function(pbarkod,pbirim)
     {
         let TmpInsertData = 
