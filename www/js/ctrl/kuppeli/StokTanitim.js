@@ -716,7 +716,25 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.YeniAnagrupKodu='';
         $scope.AltGrupKodu='';
         $scope.AltGrupAdi='';
+        $scope.Modelrenk1='';
+        $scope.Modelrenk2='';
+        $scope.Modelrenk3='';
+        $scope.Modelrenk4='';
+        $scope.Modelrenk5='';
+        $scope.Modelrenk6='';
+        $scope.Modelrenk7='';
+        $scope.Modelrenk8='';
+
+        
         $scope.ModelDisable=true;
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            
+            query :  "select sfl_aciklama,sfl_sirano, 0 AS MODEL from STOK_SATIS_FIYAT_LISTE_TANIMLARI ",
+        }
+        $scope.FiyatList = await srv.Execute(TmpQuery)
+       
         
        
 
@@ -766,6 +784,11 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         
         $('#ModelModal').modal("show");
     } 
+
+    $scope.MaliyetDuzenModal=function() {
+        $('#MaliyetDuzenModal').modal("show");
+        
+    }
     $scope.StokKodOlustur =async function()
     {
         let TmpQuery = 
@@ -1021,6 +1044,19 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         let InsertKontrol = await srv.Execute($scope.Firma,'ModelInsert',TmpInsertData);
     }
     
+    $scope.ModelRenkInsert=async function() 
+    {
+        $scope.Modelrenk1,
+        $scope.Modelrenk2,
+        $scope.Modelrenk3,
+        $scope.Modelrenk4,
+        $scope.Modelrenk5,
+        $scope.Modelrenk6,
+        $scope.Modelrenk7,
+        $scope.Modelrenk8
+
+        
+    }
 
 
 

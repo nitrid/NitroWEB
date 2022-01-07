@@ -3145,7 +3145,172 @@ var Query =
         ",@msg_S_0023         --<msg_S_0023, [dbo].[nvarchar_maxhesapisimno],>) \n"+
         " ) ",
         param:['msg_S_0022:string|50','msg_S_0023:string|50']
+    },
+
+    RenkGruplarInsert:
+    {
+        query:"INSERT INTO [dbo].[STOK_RENK_TANIMLARI]"+
+        "([rnk_Guid]"+
+        ",[rnk_DBCno]"+
+        ",[rnk_SpecRECNo]"+
+        ",[rnk_iptal]"+
+        ",[rnk_fileid]"+
+        ",[rnk_hidden]"+
+        ",[rnk_kilitli]"+
+        ",[rnk_degisti]"+
+        ",[rnk_CheckSum]"+
+        ",[rnk_create_user]"+
+        ",[rnk_create_date]"+
+        ",[rnk_lastup_user]"+
+        ",[rnk_lastup_date]"+
+        ",[rnk_special1]"+
+        ",[rnk_special2]"+
+        ",[rnk_special3]"+
+        ",[rnk_kodu]"+
+        ",[rnk_ismi]"+
+        ",[rnk_kirilim_1]"+
+        ",[rnk_kirilim_2]"+
+        ",[rnk_kirilim_3]"+
+        ",[rnk_kirilim_4]"+
+        ",[rnk_kirilim_5]"+
+        ",[rnk_kirilim_6]"+
+        ",[rnk_kirilim_7]"+
+        ",[rnk_kirilim_8]"+
+        ",[rnk_kirilim_9]"+
+        ",[rnk_kirilim_10]"+
+        ",[rnk_kirilim_11]"+
+        ",[rnk_kirilim_12]"+
+        ",[rnk_kirilim_13]"+
+        ",[rnk_kirilim_14]"+
+        ",[rnk_kirilim_15]"+
+        ",[rnk_kirilim_16]"+
+        ",[rnk_kirilim_17]"+
+        ",[rnk_kirilim_18]"+
+        ",[rnk_kirilim_19]"+
+        ",[rnk_kirilim_20]"+
+        ",[rnk_kirilim_21]"+
+        ",[rnk_kirilim_22]"+
+        ",[rnk_kirilim_23]"+
+        ",[rnk_kirilim_24]"+
+        ",[rnk_kirilim_25]"+
+        ",[rnk_kirilim_26]"+
+        ",[rnk_kirilim_27]"+
+        ",[rnk_kirilim_28]"+
+        ",[rnk_kirilim_29]"+
+        ",[rnk_kirilim_30]"+
+        ",[rnk_kirilim_31]"+
+        ",[rnk_kirilim_32]"+
+        ",[rnk_kirilim_33]"+
+        ",[rnk_kirilim_34]"+
+        ",[rnk_kirilim_35]"+
+        ",[rnk_kirilim_36]"+
+        ",[rnk_kirilim_37]"+
+        ",[rnk_kirilim_38]"+
+        ",[rnk_kirilim_39]"+
+        ",[rnk_kirilim_40]"+
+        ",[rnk_kirilim_41]"+
+        ",[rnk_kirilim_42]"+
+        ",[rnk_kirilim_43]"+
+        ",[rnk_kirilim_44]"+
+        ",[rnk_kirilim_45]"+
+        ",[rnk_kirilim_46]"+
+        ",[rnk_kirilim_47]"+
+        ",[rnk_kirilim_48]"+
+        ",[rnk_kirilim_49]"+
+        ",[rnk_kirilim_50]"+
+        ",[rnk_kirilim_51]"+
+        ",[rnk_kirilim_52]"+
+        ",[rnk_kirilim_53]"+
+        ",[rnk_kirilim_54]"+
+        ",[rnk_kirilim_55]"+
+        ",[rnk_kirilim_56]"+
+        ",[rnk_kirilim_57]"+
+        ",[rnk_kirilim_58]"+
+        ",[rnk_kirilim_59]"+
+        ",[rnk_kirilim_60])"+
+  "VALUES"+
+        "(newid()) --, uniqueidentifier,> \n" +
+        ",0  --<rnk_DBCno, smallint,> \n" +
+        ",0  --<rnk_SpecRECNo, int,> \n"+
+        ",0  --<rnk_iptal, bit,> \n"+
+        ",157  --<rnk_fileid, smallint,> \n"+
+        ",0  --<rnk_hidden, bit,> \n"+
+        ",0  --<rnk_kilitli, bit,> \n"+
+        ",0  --<rnk_degisti, bit,> \n"+
+        ",0  --<rnk_CheckSum, int,> \n"+
+        ",1  --<rnk_create_user, smallint,> \n"+
+        ",GETDATE()  --<rnk_create_date, datetime,> \n"+
+        ",1  --<rnk_lastup_user, smallint,> \n"+
+        ",GETDATE()  --<rnk_lastup_date, datetime,> \n"+
+        ",''  --<rnk_special1, nvarchar(4),> \n"+
+        ",''  --<rnk_special2, nvarchar(4),> \n"+
+        ",''  --<rnk_special3, nvarchar(4),> \n"+
+        ",@mk_kodu  --<rnk_kodu, nvarchar(25),> \n"+
+        ",@mk_ismi  --<rnk_ismi, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",@rnk_kirilim_1  --<rnk_kirilim_1, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_2  --<rnk_kirilim_2, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_3  --<rnk_kirilim_3, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_4  --<rnk_kirilim_4, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_5  --<rnk_kirilim_5, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_6  --<rnk_kirilim_6, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_7  --<rnk_kirilim_7, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_8  --<rnk_kirilim_8, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_9  --<rnk_kirilim_9, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",@rnk_kirilim_10  --<rnk_kirilim_10, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_11, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_12, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_13, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_14, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_15, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_16, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_17, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_18, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_19, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_20, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_21, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_22, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_23, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_24, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_25, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_26, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_27, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_28, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_29, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_30, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_31, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_32, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_33, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_34, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_35, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_36, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_37, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_38, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_39, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_40, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_41, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_42, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_43, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_44, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_45, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_46, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_47, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_48, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_49, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_50, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_51, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_52, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_53, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_54, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_55, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_56, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_57, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_58, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_59, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_60, [dbo].[nvarchar_maxhesapisimno],>) \n"+
+        " ) ",
+        param:['mk_kodu:string|50','mk_ismi:string|50',"rnk_kirilim_1:string|50","rnk_kirilim_2:string|50","rnk_kirilim_2:string|50","rnk_kirilim_4:string|50","rnk_kirilim_5:string|50","rnk_kirilim_6:string|50","rnk_kirilim_7:string|50","rnk_kirilim_8:string|50","rnk_kirilim_9:string|50","rnk_kirilim_10:string|50",]
     }
+    
 
 
 };

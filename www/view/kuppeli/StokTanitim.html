@@ -206,7 +206,7 @@
   </div>
 </div>
 <div class="row ">
-  <div class="col-2 px-1">
+  <!-- <div class="col-2 px-1">
     <p class="text-md-right"><dt>Renk:</dt></p>
   </div> 
   <div class="col-3">
@@ -221,7 +221,7 @@
         <label class="form-check-label" for="check1">Option 2</label>
       </div>
   </div>
-</div> 
+</div>  -->
   <div class="row ">
     <div class="col-2 px-1">
       <p class="text-md-right"><dt>Maliyet:</dt></p>
@@ -229,49 +229,21 @@
     <div class="col-2 px-4">
       <input class="form-control" ng-model="Maliyet"  type="text"> 
     </div>
-  </div>
-  <div class="row ">
-    <div class="col-2 px-1">
-      <p class="text-md-right"><dt>Bayi PSF:</dt></p>
-    </div>    
-    <div class="col-2 px-4">
-      <input class="form-control" ng-model="BayiPsf" ng-change="AlisFiyatHesap()" type="text"> 
+    <div class="col-2 px-2">
+      <button type="button" ng-click="MaliyetDuzenModal()" class="btn btn-primary btn-sm mt-1">Düzenle</button>
     </div>
   </div>
-  <div class="row ">
+  <div class="row" ng-repeat="option in FiyatList" >
     <div class="col-2 px-1">
-      <p class="text-md-right"><dt>Şube PSF:</dt></p>
+      <p class="text-md-right"><dt>{{option.sfl_aciklama}}:</dt></p>
     </div>    
     <div class="col-2 px-4">
-      <input class="form-control" ng-model="SubePsf"  type="text"> 
+      <input class="form-control" ng-model="option.MODEL" type="text"> 
     </div>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" ng-model="FiyatAktif" ng-change="FiyatDuzenle()" id="flexCheckIndeterminate">
-      <label class="form-check-label" for="flexCheckIndeterminate">
-        Fiyat düzenle
-     </label>
-       </div>
-  <div class="row ">
-    <div class="col-2 px-1">
-      <p class="text-md-right"><dt>Bayi Alış %60:</dt></p>
-    </div>    
-    <div class="col-2 px-4">
-      <input class="form-control" ng-model="BayiAlis" type="text"  ng-disabled="FiyatDisable"> 
-    </div>
-  </div>
-  
-  <div class="row ">
-    <div class="col-2 px-1  ">
-      <p class="text-md-right"><dt>Bayi Alış %50:</dt></p>
-    </div>    
-    <div class="col-2 px-4">
-      <input class="form-control" ng-model="BayiAlis50"   type="text" ng-disabled="FiyatDisable" > 
-     </div>
-    <div class="col-2 px-1">
+  </div>      
 
-         
-    </div>
+
+ 
   <div class="row  d-flex align-items-center flex-column justify-content-center">
     <div class="col-3 px-6">
     <button type="button" class="btn btn-primary btn-lg" ng-click="Init()">Yeni</button>
@@ -327,7 +299,7 @@
           <div class="modal-header">
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+          <div class="row py-0 justify-content-center align-items-center border-dark mb-3 p-2 m-1">
             <div class="col-2 px-6">
               <p class="text-md-right my-0 py-1 "> <dt>Model Kodu:</dt></p>
             </div> 
@@ -335,7 +307,7 @@
               <input class="form-control" ng-model="YeniModelKodu" ng-disabled="ModelDisable" id="inputdefault" type="text"> 
             </div>
             </div>
-            <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="row py-0 justify-content-center align-items-center border-dark mb-3 p-2 m-1">
               <div class="col-2 px-6">
                 <p class="text-md-right my-0 py-1 "> <dt>Model Adı:</dt></p>
               </div> 
@@ -343,7 +315,7 @@
                 <input class="form-control " ng-model="YeniModelAdi" id="inputdefault" type="text"> 
               </div>
               </div>
-              <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+              <div class="row py-0 justify-content-center align-items-center border-dark mb-3 p-2 m-1">
                 <div class="col-2 px-6">
                   <p class="text-md-right my-0 py-1 "> <dt>Ana Grup:</dt></p>
                 </div> 
@@ -351,7 +323,7 @@
                   <Button-edit  class="form-control form-control-sm border-0" option="BteAnaGrupModel" id="19"> 
                 </div>
                 </div>
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                <div class="row py-0 justify-content-center align-items-center border-dark mb-3 p-2 m-1">
                   <div class="col-2 px-6">
                     <p class="text-md-right my-0 py-1 "> <dt>Alt Grup:</dt></p>
                   </div> 
@@ -360,7 +332,7 @@
                   </div>
                   </div>
 
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-1">
                     <div class="col-2 px-6">
                       <p class="text-md-right my-0 py-1 "> <dt>Alt Grup 2:</dt></p>
                     </div> 
@@ -368,24 +340,87 @@
                       <Button-edit  class="form-control form-control-sm border-0" option="BteAltGrup2Model" id="21"> 
                     </div>
                     </div>
-                    <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+
+
+
+
+                    <div class="row py-0 justify-content-center align-items-center border-dark mt-0 mb-0 p-2 m-1">
                       <div class="col-2 px-6">
-                        <p class="text-md-right my-0 py-1 "> <dt>Renk</dt></p>
+                        <p class="text-md-right my-0 py-1 "> <dt>Renk 1</dt></p>
                       </div> 
                       <div class="col-3 px-6">
-                        <input cols="40" rows="5" class="form-control " ng-model="ModelRenk" id="inputdefault" > 
+                        <input cols="40" rows="5" class="form-control " ng-model="Modelrenk1" id="inputdefault" > 
                       </div>
                       </div>
+                      <div class="row py-0 justify-content-center align-items-center border-dark mb-0 p-2 m-1">
+                        <div class="col-2 px-6">
+                          <p class="text-md-right my-0 py-1 "> <dt>Renk 2</dt></p>
+                        </div> 
+                        <div class="col-3 px-6">
+                          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk2" id="inputdefault" > 
+                        </div>
+                        </div>
+                        <div class="row py-0 justify-content-center align-items-center border-dark mb-0 p-2 m-1">
+                          <div class="col-2 px-6">
+                            <p class="text-md-right my-0 py-1 "> <dt>Renk 3</dt></p>
+                          </div> 
+                          <div class="col-3 px-6">
+                            <input cols="40" rows="5" class="form-control " ng-model="Modelrenk3" id="inputdefault" > 
+                          </div>
+                          </div>
+                          <div class="row py-0 justify-content-center align-items-center border-dark mb-0 p-2 m-1">
+                            <div class="col-2 px-6">
+                              <p class="text-md-right my-0 py-1 "> <dt>Renk 4</dt></p>
+                            </div> 
+                            <div class="col-3 px-6">
+                              <input cols="40" rows="5" class="form-control " ng-model="Modelrenk4" id="inputdefault" > 
+                            </div>
+                            </div>
+                            <div class="row py-0 justify-content-center align-items-center border-dark mb-0 p-2 m-1">
+                              <div class="col-2 px-6">
+                                <p class="text-md-right my-0 py-1 "> <dt>Renk 5</dt></p>
+                              </div> 
+                              <div class="col-3 px-6">
+                                <input cols="40" rows="5" class="form-control " ng-model="Modelrenk5" id="inputdefault" > 
+                              </div>
+                              </div>
+                              <div class="row py-0 justify-content-center align-items-center border-dark mb-0 p-2 m-1">
+                                <div class="col-2 px-6">
+                                  <p class="text-md-right my-0 py-1 "> <dt>Renk 6</dt></p>
+                                </div> 
+                                <div class="col-3 px-6">
+                                  <input cols="40" rows="5" class="form-control " ng-model="Modelrenk6" id="inputdefault" > 
+                                </div>
+                                </div>
+                                <div class="row py-0 justify-content-center align-items-center border-dark mb-0 p-2 m-1">
+                                  <div class="col-2 px-6">
+                                    <p class="text-md-right my-0 py-1 "> <dt>Renk 7</dt></p>
+                                  </div> 
+                                  <div class="col-3 px-6">
+                                    <input cols="40" rows="5" class="form-control " ng-model="Modelrenk7" id="inputdefault" > 
+                                  </div>
+                                  </div>
+                                  <div class="row py-0 justify-content-center align-items-center border-dark mb-0 p-2 m-1">
+                                    <div class="col-2 px-6">
+                                      <p class="text-md-right my-0 py-1 "> <dt>Renk 8</dt></p>
+                                    </div> 
+                                    <div class="col-3 px-6">
+                                      <input cols="40" rows="5" class="form-control " ng-model="Modelrenk8" id="inputdefault" > 
+                                    </div>
+                                    </div>
+                          
         
               <div class="modal-body">
               </div>
               <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="Modelkayit()">Kaydet</button>
+                  <button type="submit" class="btn btn-primary"  ng-click="Modelkayit()">Kaydet</button>
               </div>
 
       </div>
   </div>
 </div>
+
+
 
 <!--ALT GRUP MODAL-->
 <div id="AltGrupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
@@ -429,6 +464,41 @@
       </div>
   </div>
 </div>
+
+
+
+
+<div id="MaliyetDuzenModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="row" ng-repeat="option in FiyatList">
+            <div class="col-4 px-1">
+              <p class="text-md-right"><dt>{{option.sfl_aciklama}}:</dt></p>
+            </div>    
+            <div class="col-2 px-4">
+              
+              <input class="form-check-input" type="checkbox" ng-change="" value=""  ng-model="ModelDuzen" id="flexCheckIndeterminate">
+              <label class="form-check-label" for="flexCheckIndeterminate">
+                
+            </label>
+            </div>
+          </div> 
+
+
+         
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()"  >Kaydet</button>
+              </div>
+
+      </div>
+  </div>
+</div>
+
 
 
 <!-- AltGrupV2Modal -->
