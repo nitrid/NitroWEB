@@ -3131,8 +3131,6 @@ var Query =
         " ) ",
         param:['mdl_kodu:string|50','mdl_ismi:string|50']
     },
-
-    
     AltGruplar2Insert:
     {
         query:"INSERT INTO [dbo].[STOK_SEKTORLERI_CHOOSE_2]"+
@@ -3146,7 +3144,6 @@ var Query =
         " ) ",
         param:['msg_S_0022:string|50','msg_S_0023:string|50']
     },
-
     RenkGruplarInsert:
     {
         query:"INSERT INTO [dbo].[STOK_RENK_TANIMLARI]"+
@@ -3229,7 +3226,7 @@ var Query =
         ",[rnk_kirilim_59]"+
         ",[rnk_kirilim_60])"+
   "VALUES"+
-        "(newid()) --, uniqueidentifier,> \n" +
+        "(newid() --, uniqueidentifier,> \n" +
         ",0  --<rnk_DBCno, smallint,> \n" +
         ",0  --<rnk_SpecRECNo, int,> \n"+
         ",0  --<rnk_iptal, bit,> \n"+
@@ -3255,8 +3252,8 @@ var Query =
         ",@rnk_kirilim_6  --<rnk_kirilim_6, [dbo].[nvarchar_maxhesapisimno],>  \n"+
         ",@rnk_kirilim_7  --<rnk_kirilim_7, [dbo].[nvarchar_maxhesapisimno],>  \n"+
         ",@rnk_kirilim_8  --<rnk_kirilim_8, [dbo].[nvarchar_maxhesapisimno],>  \n"+
-        ",@rnk_kirilim_9  --<rnk_kirilim_9, [dbo].[nvarchar_maxhesapisimno],>  \n"+
-        ",@rnk_kirilim_10  --<rnk_kirilim_10, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        ",'' --<rnk_kirilim_9, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",''  --<rnk_kirilim_10, [dbo].[nvarchar_maxhesapisimno],> \n"+
         ",'' --<rnk_kirilim_11, [dbo].[nvarchar_maxhesapisimno],> \n"+
         ",'' --<rnk_kirilim_12, [dbo].[nvarchar_maxhesapisimno],> \n"+
         ",'' --<rnk_kirilim_13, [dbo].[nvarchar_maxhesapisimno],> \n"+
@@ -3308,7 +3305,7 @@ var Query =
         ",'' --<rnk_kirilim_59, [dbo].[nvarchar_maxhesapisimno],> \n"+
         ",'' --<rnk_kirilim_60, [dbo].[nvarchar_maxhesapisimno],>) \n"+
         " ) ",
-        param:['mk_kodu:string|50','mk_ismi:string|50',"rnk_kirilim_1:string|50","rnk_kirilim_2:string|50","rnk_kirilim_2:string|50","rnk_kirilim_4:string|50","rnk_kirilim_5:string|50","rnk_kirilim_6:string|50","rnk_kirilim_7:string|50","rnk_kirilim_8:string|50","rnk_kirilim_9:string|50","rnk_kirilim_10:string|50",]
+        param:['mk_kodu:string|50','mk_ismi:string|50',"rnk_kirilim_1:string|50","rnk_kirilim_2:string|50","rnk_kirilim_3:string|50","rnk_kirilim_4:string|50","rnk_kirilim_5:string|50","rnk_kirilim_6:string|50","rnk_kirilim_7:string|50","rnk_kirilim_8:string|50"]
     }
     
 

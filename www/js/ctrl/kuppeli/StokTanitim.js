@@ -28,6 +28,10 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             onClick : function(pCallback)
             {                                
                 pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+               $scope.StokGetir(pData.KODU)
             }
         }
         $scope.BteAnaGrup = 
@@ -60,6 +64,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             {
                 console.log(pData)
                 $scope.AnaGrup= pData.KODU;
+                $scope.AnaGrupAdi = pData.ADI;
                 $scope.StokKodOlustur()
             }
         }
@@ -92,8 +97,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-                console.log(pData)
-                $scope.AnaGrup= pData.KODU;
+                $scope.AltGrupAdi = pData.ADI
             }
         }
 
@@ -271,6 +275,10 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             {                                
                 pCallback(true)
             },
+            onSelected : async function(pData)
+            {
+                $scope.AltGrupAdi2= pData.ADI
+            }
             
         }
 
@@ -303,8 +311,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-                console.log(pData)
                 $scope.StokAdi = pData.ADI;
+                $scope.RenkGetir(pData.KODU)
             }
         } 
         $scope.BteTedarikci = 
@@ -332,6 +340,10 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             onClick : function(pCallback)
             {                                
                 pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                $scope.TedarikciAdi = pData.ADI;
             }
         }
         $scope.BteRaf = 
@@ -359,6 +371,10 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             onClick : function(pCallback)
             {                                
                 pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                $scope.RafAdi = pData.ADI;
             }
         }
 
@@ -609,9 +625,10 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-                console.log(pData)
-                $scope.AnaGrup= pData.KODU;
-                $scope.ModelOlustur()
+                setTimeout(() => {
+                    $('#ModelModal').modal("show");
+                }, 500);
+                
             }
         }
 
@@ -641,6 +658,13 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             onClick : function(pCallback)
             {                                
                 pCallback(true)
+            },
+            onSelected : async function(pData)
+            {
+                
+                setTimeout(() => {
+                    $('#ModelModal').modal("show");
+                }, 500);
             }
         }
 
@@ -673,9 +697,9 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-                console.log(pData)
                 $scope.AltGrup2Model = pData.KODU;
                 $scope.ModelKodOlustur()
+                $('#ModelModal').modal("show");
             }
             
         }
@@ -727,15 +751,10 @@ function StokTanitim($scope,srv,$rootScope,$filter)
 
         
         $scope.ModelDisable=true;
-        let TmpQuery = 
-        {
-            db: "{M}." + $scope.Firma,
-            
-            query :  "select sfl_aciklama,sfl_sirano, 0 AS MODEL from STOK_SATIS_FIYAT_LISTE_TANIMLARI ",
-        }
-        $scope.FiyatList = await srv.Execute(TmpQuery)
+      
        
-        
+        $scope.FiyatListGetir()
+        $scope.RenkGetir('')
        
 
         InitObj();
@@ -785,10 +804,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $('#ModelModal').modal("show");
     } 
 
-    $scope.MaliyetDuzenModal=function() {
-        $('#MaliyetDuzenModal').modal("show");
-        
-    }
+   
     $scope.StokKodOlustur =async function()
     {
         let TmpQuery = 
@@ -813,16 +829,30 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             value : [$scope.AltGrup2Model]
         }
         let TmpResult = await srv.Execute(TmpQuery)
-        console.log(TmpResult)
         $scope.YeniModelKodu = TmpResult[0].KODU
+        setTimeout(() => {
+            $('#ModelModal').modal("show");
+        }, 500);
+       
 
     }
-    $scope.StokInsert = async function()
+    $scope.StokInsert = async function(pName)
     {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query :  "SELECT ISNULL(REPLACE(STR(MAX(SUBSTRING(sto_kod,0,8)) + 1, 7), SPACE(1), '0'), @BASKODU + '000001') AS KODU FROM STOKLAR WHERE sto_kod LIKE @BASKODU + '%' AND sto_anagrup_kod = @BASKODU",
+            param :["BASKODU:string|50"],
+            value : [$scope.AnaGrup]
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+
+        await $scope.StokHesap(TmpResult[0].KODU)
+        await $scope.StokPaketHesap(TmpResult[0].KODU)
         let TmpInsertData = 
         [
             $scope.BteStokKodu.txt,
-            $scope.StokAdi,
+            pName + ' ' + $scope.StokAdi,
             $scope.BteTedarikci.txt,
             'Paket',
             ($scope.Paket * -1),
@@ -839,14 +869,12 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
         await $scope.StokUserInsert()
-       await $scope.SatisFiyatInsert(1,$scope.BayiPsf)
-       await $scope.SatisFiyatInsert(2,$scope.SubePsf)
-       await $scope.SatisFiyatInsert(3,$scope.BayiAlis50)
-       await $scope.SatisFiyatInsert(6,$scope.BayiAlis)
-       swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
-       $scope.Init()
+        for (let i = 0; i < $scope.FiyatListeleri.length; i++) 
+        {
+            $scope.SatisFiyatInsert($scope.FiyatListeleri[i].sfl_sirano,$scope.FiyatListeleri[i].MODEL)
+        }
       
-        
+       swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
     }
 
 
@@ -878,14 +906,39 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             $scope.PaketDisable = true
         }
     }
-    $scope.StokKaydet =  function()
+    $scope.StokKaydet =  async function()
     {
         if($scope.BteStokKodu.txt == '' || $scope.BteAltGrup.txt == '' || $scope.BteAltGrup2.txt == '' || $scope.BteAnaGrup.txt == '' ||  $scope.BteModel.txt == '' || $scope.BteTedarikci.txt == '' || $scope.BteRaf.txt == '')
+        {
+            swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
+        }
+        else
+        {
+            console.log($scope.RenkList)
+            if($scope.RenkList.length > 0)
             {
-                swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
-            }else{
-                $scope.StokInsert()
+                let sayac = 0
+                for (let i = 0; i < $scope.RenkList.length; i++) 
+                {
+                    
+                    if($scope.RenkList[i].VALUE == true)
+                    {
+                        console.log($scope.RenkList[i].KIRILIM)
+                     await $scope.StokInsert($scope.RenkList[i].KIRILIM)
+                     sayac = sayac + 1
+                    }
+                }
+                swal("Başarılı", sayac + ' ' +  "Renk Kaydı Gönderildi ",icon="success");
+                $scope.Init()
             }
+            else
+            {
+                await $scope.StokInsert('')
+                swal("Başarılı", "Stok Kaydı Gönderildi ",icon="success");
+                $scope.Init()
+            }
+           
+        }
 
 
 
@@ -928,7 +981,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         }
        
     }
-
     $scope.BarkodInsert = async function(pbarkod,pbirim)
     {
         let TmpInsertData = 
@@ -991,9 +1043,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
        $scope.PaketBarkod = sNumber + sonuc.toString();
       
     }
-
-
-
     $scope.AnaGruplarInsert=async function()
     {
         let TmpInsertData=
@@ -1014,9 +1063,9 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             $scope.AltGrupKodu,
             $scope.YeniAltGrupAdi,
             $scope.BteAnaGrupAlt.txt
-                       
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'AltGruplarInsert',TmpInsertData);
+        $('#AltGrupModal').modal("hide");
     }
 
 
@@ -1025,41 +1074,28 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         let TmpInsertData = 
         [
             $scope.KoduV2,
-            $scope.Adiv2
-                       
+            $scope.Adiv2            
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'AltGruplar2Insert',TmpInsertData);
+        $('#AltGrupV2Modal').modal("hide");
     }
 
     $scope.ModelInsert=async function()
     {
-       
-        $scope.ModelAdi = TmpResult[0].KODU
+        let TmpInsertData = 
         [
-            $scope.ModelKodu,
-            $scope.ModelAdi
-                       
+            $scope.YeniModelKodu,
+            $scope.YeniModelAdi              
         ]
-        console.log(TmpInsertData)
         let InsertKontrol = await srv.Execute($scope.Firma,'ModelInsert',TmpInsertData);
+        swal("Başarılı", "Model Kodu Oluşturuldu..",icon="success");
+        $('#ModelModal').modal("hide");
+        if($scope.Modelrenk1 != '')
+        {
+            $scope.ModelRenkInsert()
+        }
     }
     
-    $scope.ModelRenkInsert=async function() 
-    {
-        $scope.Modelrenk1,
-        $scope.Modelrenk2,
-        $scope.Modelrenk3,
-        $scope.Modelrenk4,
-        $scope.Modelrenk5,
-        $scope.Modelrenk6,
-        $scope.Modelrenk7,
-        $scope.Modelrenk8
-
-        
-    }
-
-
-
 //BUTONLAR
 
     $scope.AnaGruplarKaydet = async function()
@@ -1088,18 +1124,123 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             $scope.AltGruplar2Insert()
         } 
     }
-
-
     $scope.Modelkayit = async function()
     {
-        if($scope.ModelKodu == '' || $scope.BteAltGrupAlt2 == '' || $scope.BteAltGrupModel.txt == '' || $scope.BteAnaGrupModel.txt == '' || $scope.BteAltGrup2Model.txt == '' || $scope.ModelRenk == '')
+        if($scope.YeniModelKodu == ''  || $scope.YeniModelAdi == ''  || $scope.BteAltGrupModel.txt == '' || $scope.BteAnaGrupModel.txt == '' || $scope.BteAltGrup2Model.txt == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
         }else{
             $scope.ModelInsert()
         } 
     }
-
+    $scope.FiyatListGetir = async function()
+    {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            
+            query :  "select sfl_aciklama,sfl_sirano, 0 AS MODEL from STOK_SATIS_FIYAT_LISTE_TANIMLARI WHERE sfl_special1 = '1' ",
+        }
+        $scope.FiyatListeleri = await srv.Execute(TmpQuery)
+    }
+    $scope.ModelRenkInsert = async function() 
+    {
+        let TmpInsertData = 
+        [
+        $scope.YeniModelKodu,
+        $scope.YeniModelKodu,
+        $scope.Modelrenk1,
+        $scope.Modelrenk2,
+        $scope.Modelrenk3,
+        $scope.Modelrenk4,
+        $scope.Modelrenk5,
+        $scope.Modelrenk6,
+        $scope.Modelrenk7,
+        $scope.Modelrenk8
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'RenkGruplarInsert',TmpInsertData);
+        swal("Başarılı", "Renkler Oluşturuldu..",icon="success");
+    }
+    $scope.RenkGetir = async function(pKodu)
+    {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query :  "SELECT rnk_kirilim_1 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_1 <> '' " +
+            "UNION ALL  " +
+            "SELECT rnk_kirilim_2 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_2 <> '' " +
+            "UNION ALL  " +
+            "SELECT rnk_kirilim_3 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_3 <> '' " +
+            "UNION ALL  " +
+            "SELECT rnk_kirilim_4 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_4 <> '' " +
+            "UNION ALL  " +
+            "SELECT rnk_kirilim_5 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_5 <> '' " +
+            "UNION ALL  " +
+            "SELECT rnk_kirilim_6 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_6 <> '' " +
+            "UNION ALL  " +
+            "SELECT rnk_kirilim_7 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_7 <> '' " +
+            "UNION ALL  " +
+            "SELECT rnk_kirilim_8 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_8 <> '' " ,
+            param :["rnk_kodu:string|50"],
+            value : [pKodu]
+        }
+        $scope.RenkList = await srv.Execute(TmpQuery)
+    }
+    $scope.StokGetir = async function(pKodu)
+    {
+        console.log(pKodu)
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query :  "SELECT sto_anagrup_kod as ANAGRUP, " +
+            "sto_altgrup_kod as ALTGRUP, " +
+            "sto_isim AS STOKADI, " +
+            "sto_model_kodu as MODEL, " +
+            "sto_sektor_kodu as ALTGRUP2, " +
+            "sto_reyon_kodu as REYON_KODU, " +
+            "sto_muhgrup_kodu as ANA_GRUP, " +
+            "sto_renk_kodu AS RENK_KODU, " +
+            "sto_standartmaliyet AS MALIYET, " +
+            "sto_sat_cari_kod AS TEDARIKCI, " +
+            "Q1 AS MATERYAL, " +
+            "Q2 AS KAPLAMA, " +
+            "Q3 AS TAS, " +
+            "Q4 AS TAS_RENGI, " +
+            "Q5 AS ZINCIR_SAYISI, " +
+            "Q6 AS ZINCIR_RENGI, " +
+            "Q7 AS FIGUR, " +
+            "Q8 AS FIGUR_SEKLI, " +
+            "Q9 AS FIGUR_RENGI, " +
+            "(SELECT TOP 1 bar_kodu from BARKOD_TANIMLARI WHERE bar_stokkodu=sto_kod and bar_birimpntr = 1) AS BARKOD, " +
+            "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 1) AS BAYIPSF, " +
+            "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 2) AS SUBEPSF, " +
+            "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 6) AS YUZDE60 " +
+            " FROM STOKLAR LEFT JOIN STOKLAR_USER ON sto_Guid = Record_uid where sto_kod=@STOKKODU" ,
+            param :["STOKKODU:string|50"],
+            value : [pKodu]
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+        console.log(TmpResult)
+        $scope.BteMateryal.txt = TmpResult[0].MATERYAL
+        $scope.BteKaplama.txt = TmpResult[0].KAPLAMA
+        $scope.BteTas.txt = TmpResult[0].TAS
+        $scope.BteTasrengi.txt = TmpResult[0].TAS_RENGI
+        $scope.BteZincirSayisi.txt = TmpResult[0].ZINCIR_SAYISI
+        $scope.BteZinciRengi.txt = TmpResult[0].ZINCIR_RENGI
+        $scope.BteFigur.txt = TmpResult[0].FIGUR
+        $scope.BteFigurSekli.txt = TmpResult[0].FIGUR_SEKLI
+        $scope.BteFigurRengi.txt = TmpResult[0].FIGUR_RENGI
+        $scope.StokAdi =  TmpResult[0].STOKADI
+        $scope.BteTedarikci.txt  = TmpResult[0].TEDARIKCI
+        $scope.BteAltGrup.txt = TmpResult[0].ALTGRUP
+        $scope.BteAnaGrup.txt = TmpResult[0].ANAGRUP
+        $scope.BteAltGrup2.txt = TmpResult[0].ALTGRUP2
+        $scope.BteRaf.txt = TmpResult[0].REYON_KODU
+        $scope.Maliyet    = TmpResult[0].MALIYET
+        $scope.BteModel.txt =TmpResult[0].MODEL
+        $scope.Barkod = TmpResult[0].BARKOD
+    }
+  
 }
 
 
