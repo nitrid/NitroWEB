@@ -614,7 +614,9 @@ function Stoktanitimi($scope,srv,$rootScope,$filter)
         if($scope.ModelKodu == '' || $scope.ModelAdi == '' )
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
-        }else{
+        }
+        else
+        {
             $scope.ModelInsert()
         } 
     }
