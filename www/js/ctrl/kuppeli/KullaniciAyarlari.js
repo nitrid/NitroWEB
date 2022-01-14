@@ -72,6 +72,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 Password : srv.GetParamValue($scope.Data,"Password"),
                 // Menü
                 ResimYukleme : srv.GetParamValue($scope.Data,"ResimYukleme"),
+                StokTanitim : srv.GetParamValue($scope.Data,"StokTanitim"),
                 // Menü Yönetim
                 KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
                 KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
@@ -108,6 +109,48 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         let UpdateControl = await srv.Execute($scope.Firma,'UpdateParam',UpdateData);
 
         UpdateControl == "" ? true : console.log(UpdateControl)
+    }
+    $scope.MaliyetDuzenModal= async function() 
+    {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            
+            query :  "select sfl_aciklama,sfl_sirano, 0 AS MODEL,CASE sfl_special1 WHEN 1 THEN 'true' else 'false' end  AS DURUM from STOK_SATIS_FIYAT_LISTE_TANIMLARI ",
+        }
+        $scope.FiyatList = await srv.Execute(TmpQuery)
+        $('#MaliyetDuzenModal').modal("show");
+    }
+    $scope.FiyatListeKayit = async function()
+    {
+        for (let i = 0; i < $scope.FiyatList.length; i++)
+        {
+            if($scope.FiyatList[i].DURUM == true)
+            {
+                let TmpQuery = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query :  "UPDATE STOK_SATIS_FIYAT_LISTE_TANIMLARI SET sfl_special1 = @sfl_special1 where sfl_sirano =  @sfl_sirano",
+                    param :["sfl_special1:string|50",'sfl_sirano:int'],
+                    value : [1,$scope.FiyatList[i].sfl_sirano]
+                }
+            let TmpResult = await srv.Execute(TmpQuery)
+            $scope.Init()
+            }
+            else
+            {
+                let TmpQuery = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query :  "UPDATE STOK_SATIS_FIYAT_LISTE_TANIMLARI SET sfl_special1 = @sfl_special1 where sfl_sirano =  @sfl_sirano",
+                    param :["sfl_special1:string|50",'sfl_sirano:int'],
+                    value : [0,$scope.FiyatList[i].sfl_sirano]
+                }
+                let TmpResult = await srv.Execute(TmpQuery)
+                $scope.Init()
+            }
+        }
+        $('#MaliyetDuzenModal').modal("hide");
     }
     async function ParamInsert(pData)
     {
@@ -199,6 +242,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             {
                 ResimYukleme : $rootScope.GeneralParamList.ResimYukleme
             },
+            {
+                StokTanitim : $rootScope.GeneralParamList.StokTanitim
+            },
         
             // Menü Yönetim
             {
@@ -268,6 +314,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             ["Kullanici",$scope.GeneralParamList.Account,0,""],
             // Menü
             ["ResimYukleme",$rootScope.GeneralParamList.Planlama,1,"ResimYukleme"],
+            ["StokTanitim",$rootScope.GeneralParamList.Planlama,1,"StokTanitim"],
             // Menü Yönetim
             ["KullaniciAyarlari",$rootScope.GeneralParamList.KullaniciAyarlari,2,"Kullanici Ayarları"],
             ["KullaniciEkle",$rootScope.GeneralParamList.KullaniciEkle,2,"Kullanıcı Ekle"],

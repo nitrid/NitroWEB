@@ -116,29 +116,22 @@
     <!-- SAĞ TARAF-->
   <div class="col-4 ">
     <div class="row "> 
-    <div class="col-12 px-1">
-      <p class="text-md-right"><h2>Stok Adı: {{StokAdi}}</h2></p>
+      <img class="rounded float-left" style="max-width:400px;width:100%" ng-src="{{PreviewImage}}">
+    </div>
+  <div class="row ">
+    <div class="row ">
+      <div class="col-3 ">
+        <p class="text-sm-right"><dt>Tasarım :</dt></p>
+      </div> 
+    <div class="col-6 mb-1">
+        <div class="form-group">
+            <combobox option="CmbTasarimList" ng-model="TasarimValue"></combobox>
+        </div>  
+    </div>
     </div>
   </div>
   <div class="row ">
-    <div class="col-2 px-1">
-    <p class="text-md-right"><dt>Etiket Tasarim:</dt></p>
-    </div>    
- 
-    <div class="col-4 px-6 ">
-                   
-      <select class="form-select" aria-label="Default select example">
-        <option selected></option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-        <option value="3">Three</option>
-      </select>
-
-       </div>
-  </div>
-  <div class="row ">
-    <div class="col-2 px-1">
+    <div class="col-4 px-1">
       <p class="text-md-right"><dt>Basım Adeti:</dt></p>
     </div>    
     <div class="col-2 px-4">
@@ -146,18 +139,18 @@
     </div>
   </div>
   <div class="row ">
-    <div class="col-2 px-1">
+    <div class="col-4 px-1">
       <p class="text-md-right"><dt>Barkod:</dt></p>
     </div>    
     <div class="col-4 px-4">
-      <input class="form-control" ng-model="Barkod"  type="text"> 
+      <input class="form-control" ng-keypress = "BarkodGetirKey($event)" ng-model="Barkod"  type="text"> 
     </div>
   </div>  
   
 
 <div class="row ">
   <div class="row ">
-    <div class="col-2 px-1">
+    <div class="col-4 px-1">
       <p class="text-md-right"><dt>Maliyet:</dt></p>
     </div>    
     <div class="col-2 px-4">
@@ -165,7 +158,7 @@
     </div>
   </div>
   <div class="row" ng-repeat="option in FiyatList">
-    <div class="col-2 px-1">
+    <div class="col-4 px-1">
       <p class="text-md-right"><dt>{{option.sfl_aciklama}}:</dt></p>
     </div>    
     <div class="col-2 px-4">
@@ -173,20 +166,79 @@
     </div>
   </div>      
 </div>
-<div class="row  d-flex align-items-center flex-column justify-content-center">
-  <div class="col-3 px-6">
-  <button type="button" class="btn btn-primary btn-lg" ng-click="Init()">Yeni</button>
-  <button type="button" class="btn btn-primary btn-lg active" ng-click="StokKaydet()">Kaydet</button>
-    
-  </div>    
+<div class="row  d-flex align-items-center flex-column justify-content-center"> 
 </div>   
 </div>
     <!-- SAĞ TARAF-->
-    <div class="col-4 ">
-      <div class="modal-body p-1">
-        <img class="img-fluid" ng-src="{{PreviewImage}}">
-    </div> 
-  </div>
+    <div class="col-4  ">
+      <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Stok Adı: {{StokAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Üretici : {{UreticiAdi}}</h5></p>
+      </div>
+    </div>      
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Kalite: {{KaliteAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Materyal: {{MateryalAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Renk: {{RenkAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Topuk Boyu: {{TopukAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Astar: {{AstarAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Taban Cinsi: {{TabanAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Yıl Adı: {{YilAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Model: {{ModelAd}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Ana Grup: {{AnaGrupAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row "> 
+      <div class="col-12 ">
+        <p class="text-sm-right"><h5>Alt Grup: {{AltGrupAdi}}</h5></p>
+      </div>
+    </div>
+    <div class="row  d-flex align-items-center flex-column justify-content-center">
+      <div class="col-12">
+        <button type="button" class="btn btn-primary btn-lg " ng-click="StokKaydet()">Kaydet</button>
+        <button type="button" class="btn btn-primary btn-lg " ng-click="EtiketYazdir()">Yazdır</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="Init()">Yeni</button>
+      </div>    
+    </div>   
+    </div>
 </div>
 </div> 
 
