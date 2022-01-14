@@ -1,4 +1,4 @@
-function Stoktanitimi($scope,srv,$rootScope,$filter)
+function StokTanitimi($scope,srv,$rootScope,$filter)
 {
     function InitObj()
     {

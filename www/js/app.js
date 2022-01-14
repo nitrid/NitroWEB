@@ -445,10 +445,10 @@ angular.module("app",
  state
  (
      {
-         name: 'main.Stoktanitimi',
-         url: '/Stoktanitimi',
-         templateUrl : "view/akinlar/Stoktanitimi.html",
-         controller:"Stoktanitimi"
+         name: 'main.StokTanitimi',
+         url: '/StokTanitimi',
+         templateUrl : "view/akinlar/StokTanitimi.html",
+         controller:"StokTanitimi"
      }
      
  )

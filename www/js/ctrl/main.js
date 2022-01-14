@@ -66,7 +66,7 @@ function Main($scope,$state,srv,$rootScope)
 
             let TmpHtml = "";
             TmpHtml += '<li class="nav-item dropdown">'
-            TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> KUPPELI </a>'
+            TmpHtml += '<a class="nav-link dropdown-toggle yaziayari" data-bs-toggle="dropdown"> AKINLAR </a>'
             
             TmpHtml += '<ul class="dropdown-menu">'
             for (let i = 0; i < $scope.Menu.length; i++) 

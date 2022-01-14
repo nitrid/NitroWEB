@@ -72,6 +72,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 Password : srv.GetParamValue($scope.Data,"Password"),
                 // Menü
                 ResimYukleme : srv.GetParamValue($scope.Data,"ResimYukleme"),
+                StokTanitimi : srv.GetParamValue($scope.Data,"StokTanitimi"),
                 // Menü Yönetim
                 KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
                 KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
@@ -199,6 +200,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             {
                 ResimYukleme : $rootScope.GeneralParamList.ResimYukleme
             },
+            {
+                StokTanitimi : $rootScope.GeneralParamList.StokTanitimi
+            },
         
             // Menü Yönetim
             {
@@ -268,6 +272,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             ["Kullanici",$scope.GeneralParamList.Account,0,""],
             // Menü
             ["ResimYukleme",$rootScope.GeneralParamList.Planlama,1,"ResimYukleme"],
+            ["StokTanitimi",$rootScope.GeneralParamList.Planlama,1,"StokTanitimi"],
             // Menü Yönetim
             ["KullaniciAyarlari",$rootScope.GeneralParamList.KullaniciAyarlari,2,"Kullanici Ayarları"],
             ["KullaniciEkle",$rootScope.GeneralParamList.KullaniciEkle,2,"Kullanıcı Ekle"],
