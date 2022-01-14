@@ -2737,7 +2737,7 @@ var Query =
         ",@sto_reyon_kodu              --<sto_reyon_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_muhgrup_kodu, nvarchar(25),>     \n " + 
         ",@sto_ambalaj_kodu              --<sto_ambalaj_kodu, nvarchar(25),>     \n " + 
-        ",''              --<sto_marka_kodu, nvarchar(25),>     \n " + 
+        ",@sto_marka_kodu              --<sto_marka_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_beden_kodu, nvarchar(25),>     \n " + 
         ",''              --<sto_renk_kodu, nvarchar(25),>     \n " + 
         ",@sto_model_kodu              --<sto_model_kodu, nvarchar(25),>     \n " + 
@@ -2836,7 +2836,7 @@ var Query =
         ",''              --<sto_GEKAP_depozitoonaykodu, nvarchar(10),>     \n " + 
         " ) ",
         param:['sto_kod:string|50','sto_isim:string|127','sto_altgrup_kod:string|50','sto_anagrup_kod:string|50','sto_uretici_kodu:string|50'
-        ,'sto_sektor_kodu:string|50','sto_reyon_kodu:string|50','sto_ambalaj_kodu:string|50','sto_model_kodu:string|50','sto_kalkon_kodu:string|50'
+        ,'sto_sektor_kodu:string|50','sto_reyon_kodu:string|50','sto_ambalaj_kodu:string|50','sto_marka_kodu:string|50','sto_model_kodu:string|50','sto_kalkon_kodu:string|50'
         ,'sto_sezon_kodu:string|50','sto_hammadde_kodu:string|50','sto_standartmaliyet:float']
     },
     StokUserInsert :

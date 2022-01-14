@@ -110,6 +110,48 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
 
         UpdateControl == "" ? true : console.log(UpdateControl)
     }
+    $scope.MaliyetDuzenModal= async function() 
+    {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            
+            query :  "select sfl_aciklama,sfl_sirano, 0 AS MODEL,CASE sfl_special1 WHEN 1 THEN 'true' else 'false' end  AS DURUM from STOK_SATIS_FIYAT_LISTE_TANIMLARI ",
+        }
+        $scope.FiyatList = await srv.Execute(TmpQuery)
+        $('#MaliyetDuzenModal').modal("show");
+    }
+    $scope.FiyatListeKayit = async function()
+    {
+        for (let i = 0; i < $scope.FiyatList.length; i++)
+        {
+            if($scope.FiyatList[i].DURUM == true)
+            {
+                let TmpQuery = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query :  "UPDATE STOK_SATIS_FIYAT_LISTE_TANIMLARI SET sfl_special1 = @sfl_special1 where sfl_sirano =  @sfl_sirano",
+                    param :["sfl_special1:string|50",'sfl_sirano:int'],
+                    value : [1,$scope.FiyatList[i].sfl_sirano]
+                }
+            let TmpResult = await srv.Execute(TmpQuery)
+            $scope.Init()
+            }
+            else
+            {
+                let TmpQuery = 
+                {
+                    db: "{M}." + $scope.Firma,
+                    query :  "UPDATE STOK_SATIS_FIYAT_LISTE_TANIMLARI SET sfl_special1 = @sfl_special1 where sfl_sirano =  @sfl_sirano",
+                    param :["sfl_special1:string|50",'sfl_sirano:int'],
+                    value : [0,$scope.FiyatList[i].sfl_sirano]
+                }
+                let TmpResult = await srv.Execute(TmpQuery)
+                $scope.Init()
+            }
+        }
+        $('#MaliyetDuzenModal').modal("hide");
+    }
     async function ParamInsert(pData)
     {
         let InsertData = 
