@@ -482,16 +482,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         $scope.FiyatListGetir()
     }
     $scope.AnaGrupModal = async  function()
-    {
-        
-        let TmpQuery = 
-        {
-            db: "{M}." + $scope.Firma,
-            
-            query :  "SELECT (MAX(san_kod) + 1) AS KODU FROM STOK_ANA_GRUPLARI ",
-        }
-        let TmpResult = await srv.Execute(TmpQuery)
-        $scope.YeniAnagrupKodu = TmpResult[0].KODU
+    {      
         $('#AnaGrupModal').modal("show");
     } 
     $scope.AltGrupModal = function()

@@ -17,9 +17,9 @@
       <div class="col-6 px-4">
           <button-edit id="3" class="form-control form-control-sm border-0" option="BteUretici"></button-edit>        
       </div>
-      <!-- <div class="col-2 px-2">
-        <button type="button" ng-click="AnaGrupModal()" class="btn btn-primary btn-sm  mt-1">+</button>
-      </div> -->
+      <div class="col-2 px-2">
+        <button type="button" ng-click="UreticiModal()" class="btn btn-primary btn-sm  mt-1">+</button>
+      </div>
     </div>
     <div class="row ">
       <div class="col-2 px-1">
@@ -28,9 +28,9 @@
       <div class="col-6 px-4">
               <button-edit id="4" class="form-control form-control-sm border-0"  option="BteKalite"></button-edit>
       </div>
-      <!-- <div class="col-2 px-2 ">
-        <button type="button" ng-click="AltGrupModal()"  class="btn btn-primary btn-sm  mt-1 ">+</button>
-      </div> -->
+      <div class="col-3 py-1">
+        <button type="button" ng-click="KaliteModal()"  class="btn btn-primary btn-m  mt-1 ">+</button>
+      </div>
     </div>
     <div class="row">
       <div class="col-2 px-1">
@@ -39,9 +39,9 @@
       <div class="col-6 px-4">
         <button-edit id="5" class="form-control form-control-sm border-0" option="BteMateryal"></button-edit>
       </div>
-      <!-- <div class="col-2 px-2">
-        <button type="button"  ng-click="AltGrupV2Modal()" class="btn btn-primary btn-sm">+</button>
-      </div> -->
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="MateryalModal()" class="btn btn-primary btn-sm">+</button>
+      </div>
     </div>
     <div class="row ">
       <div class="col-2 px-1">
@@ -50,9 +50,9 @@
       <div class="col-6 px-4">
         <button-edit id="6" class="form-control form-control-sm border-0" option="BteRenk"></button-edit>
       </div>
-      <!-- <div class="col-2 px-2">
-        <button type="button" ng-click="ModelModal()" class="btn btn-primary btn-sm mt-1">+</button>
-      </div> -->
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="RenkModal()" class="btn btn-primary btn-sm">+</button>
+      </div>
     </div>
     <div class="row ">
       <div class="col-2 px-1">
@@ -60,6 +60,9 @@
       </div>    
       <div class="col-6 px-4">
         <button-edit id="7" class="form-control form-control-sm border-0" option="BteTopukBoyu"></button-edit>
+      </div>
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="TopukBoyuModal()" class="btn btn-primary btn-sm">+</button>
       </div>
     </div>
     <div class="row ">
@@ -69,6 +72,9 @@
       <div class="col-6 px-4">
         <button-edit id="8" class="form-control form-control-sm border-0" option="BteAstar"></button-edit>
       </div>
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="AstarModal()" class="btn btn-primary btn-sm">+</button>
+      </div>
     </div>
     <div class="row ">
         <div class="col-2 px-1">
@@ -76,6 +82,9 @@
         </div>    
         <div class="col-6 px-4">
           <button-edit id="9" class="form-control form-control-sm border-0" option="BteTaban"></button-edit>
+        </div>
+        <div class="col-2 px-2">
+          <button type="button"  ng-click="TabanModal()" class="btn btn-primary btn-sm">+</button>
         </div>
     </div>
     <div class="row ">
@@ -85,6 +94,9 @@
       <div class="col-6 px-4">
         <button-edit id="10" class="form-control form-control-sm border-0" option="BteYilAdi"></button-edit>
       </div>
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="YilModal()" class="btn btn-primary btn-sm">+</button>
+      </div>
     </div>
     <div class="row ">
       <div class="col-2 px-1">
@@ -92,6 +104,9 @@
       </div>    
       <div class="col-6 px-4">
         <button-edit id="11" class="form-control form-control-sm border-0" option="BteModel"></button-edit>
+      </div>
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="ModelModal()" class="btn btn-primary btn-sm">+</button>
       </div>
     </div>
     <div class="row ">
@@ -101,6 +116,9 @@
       <div class="col-6 px-4">
         <button-edit id="12" class="form-control form-control-sm border-0" option="BteAnaGrup"></button-edit>
       </div>
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="AnaGrupModal()" class="btn btn-primary btn-sm">+</button>
+      </div>
     </div>
     <div class="row ">
       <div class="col-2 px-1">
@@ -108,6 +126,9 @@
       </div>    
       <div class="col-6 px-4">
         <button-edit id="13" class="form-control form-control-sm border-0" option="BteAltGrup"></button-edit>
+      </div>
+      <div class="col-2 px-2">
+        <button type="button"  ng-click="AltGrupModal()" class="btn btn-primary btn-sm">+</button>
       </div>
     </div>
     
@@ -251,24 +272,25 @@
           <div class="modal-header">
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-            <div class="col-2 px-6">
-              <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Kodu:</dt></p>
-            </div> 
-             <div class="col-3 px-6">
-              <input class="form-control" ng-model="YeniAnagrupKodu" id="inputdefault" type="text"> 
-             </div>
-            </div>
-            <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-              <div class="col-2 px-6">
-                <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Adı:</dt></p>
-              </div> 
-               <div class="col-3 px-6">
-                <input class="form-control" ng-model="YeniAnaGrupAdi" id="inputdefault" type="text"> 
-               </div>
-              </div>
+  
          
               <div class="modal-body">
+                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                  <div class="col-2 px-6">
+                    <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Kodu:</dt></p>
+                  </div> 
+                   <div class="col-3 px-6">
+                    <input class="form-control" ng-model="YeniAnagrupKodu" id="inputdefault" type="text"> 
+                   </div>
+                  </div>
+                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+                    <div class="col-2 px-6">
+                      <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Adı:</dt></p>
+                    </div> 
+                     <div class="col-3 px-6">
+                      <input class="form-control" ng-model="YeniAnaGrupAdi" id="inputdefault" type="text"> 
+                     </div>
+                    </div>
               </div>
               <div class="modal-footer">
                   <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()"  >Kaydet</button>
@@ -285,49 +307,23 @@
           <div class="modal-header">
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-            <div class="col-2 px-6">
-              <p class="text-md-right my-0 py-1 "> <dt>Model Kodu:</dt></p>
-            </div> 
-            <div class="col-3 px-6">
-              <input class="form-control" ng-model="ModelKodu" id="inputdefault" type="text"> 
-            </div>
-            </div>
-            <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-              <div class="col-2 px-6">
-                <p class="text-md-right my-0 py-1 "> <dt>Model Adı:</dt></p>
-              </div> 
-              <div class="col-3 px-6">
-                <input class="form-control " ng-model="ModelAdi" id="inputdefault" type="text"> 
-              </div>
-              </div>
-              <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                <div class="col-2 px-6">
-                  <p class="text-md-right my-0 py-1 "> <dt>Ana Grup</dt></p>
-                </div> 
-                <div class="col-3 px-6">
-                  <Button-edit  class="form-control form-control-sm border-0" option="BteAnaGrupModel" id="19"> 
-                </div>
-                </div>
+              <div class="modal-body">
                 <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
                   <div class="col-2 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Alt Grup</dt></p>
+                    <p class="text-md-right my-0 py-1 "> <dt>Model Kodu:</dt></p>
                   </div> 
                   <div class="col-3 px-6">
-                    <Button-edit  class="form-control form-control-sm border-0" option="BteAltGrupModel" id="20"> 
+                    <input class="form-control" ng-model="ModelKodu" id="inputdefault" type="text"> 
                   </div>
                   </div>
-
                   <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
                     <div class="col-2 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Alt Grup 2</dt></p>
+                      <p class="text-md-right my-0 py-1 "> <dt>Model Adı:</dt></p>
                     </div> 
                     <div class="col-3 px-6">
-                      <Button-edit  class="form-control form-control-sm border-0" option="BteAltGrup2Model" id="21"> 
+                      <input class="form-control " ng-model="ModelAdi" id="inputdefault" type="text"> 
                     </div>
                     </div>
-        
-              <div class="modal-body">
               </div>
               <div class="modal-footer">
                   <button type="submit" class="btn btn-primary" ng-click="Modelkayit()"  >Kaydet</button>
