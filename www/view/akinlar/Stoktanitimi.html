@@ -116,7 +116,7 @@
     <!-- SAĞ TARAF-->
   <div class="col-4 ">
     <div class="row "> 
-      <img class="rounded float-left" style="max-width:400px;width:100%" ng-src="{{PreviewImage}}">
+      <img class="rounded float-left" style="max-width:200px;width:100%" ng-src="{{PreviewImage}}">
     </div>
   <div class="row ">
     <div class="row ">
@@ -153,15 +153,15 @@
     <div class="col-4 px-1">
       <p class="text-md-right"><dt>Maliyet:</dt></p>
     </div>    
-    <div class="col-2 px-4">
+    <div class="col-3 px-4">
       <input class="form-control" ng-model="Maliyet"  type="text"> 
     </div>
   </div>
-  <div class="row" ng-repeat="option in FiyatList">
+  <div class="row" ng-repeat="option in FiyatListeleri">
     <div class="col-4 px-1">
       <p class="text-md-right"><dt>{{option.sfl_aciklama}}:</dt></p>
     </div>    
-    <div class="col-2 px-4">
+    <div class="col-3 px-4">
       <input class="form-control" ng-model="option.MODEL" type="text"> 
     </div>
   </div>      

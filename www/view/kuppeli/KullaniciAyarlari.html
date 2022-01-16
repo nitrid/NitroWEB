@@ -221,73 +221,27 @@
           </div>
         </div>
     </div>
-    <!-- modal -->
-    <div id="MaliyetDuzenModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-                  <div class="modal-body">
-                    <div class="row" ng-repeat="option in FiyatList">
-                      <div class="col-12 ">
-                        <p class="text-sm-right"><dt>{{option.sfl_aciklama}}:<input class="form-check-input" type="checkbox"  ng-model="option.DURUM" id="option.sfl_aciklama"></dt></p>
-                        
-                    </div>
-                </div> -->
+      <!-- modal -->
+  <div id="MaliyetDuzenModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="col-md-4">
-                <div class="card border-dark mb-3">
-                    <div class="card-header bg-transparent border-dark py-1 fw-bolder">Ana Menü Ayarları</div>
-                    <div class="card-body text-dark py-2">
-                        <div class="row py-1">
-                            <div class="col-9 px-2">
-                                <p class="text-md-right my-0 py-1" >Resim Yukleme:</p>
-                            </div>
-                            <div class="col-3 mt-2">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.ResimYukleme">
-                                </div>
-                            </div>
-                        </div>
+                <div class="modal-body">
+                  <div class="row" ng-repeat="option in FiyatList">
+                    <div class="col-12 ">
+                      <p class="text-sm-right"><dt>{{option.sfl_aciklama}}:<input class="form-check-input" type="checkbox"  ng-model="option.DURUM" id="option.sfl_aciklama"></dt></p>
+                      
+                    </div>    
                     </div>
-                    <div class="card-body text-dark py-2">
-                        <div class="row py-1">
-                            <div class="col-9 px-2">
-                                <p class="text-md-right my-0 py-1" >Stok Tanıtımı:</p>
-                            </div>
-                            <div class="col-3 mt-2">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.StokTanitimi">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div> 
+              
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" ng-click="FiyatListeKayit()" >Kaydet</button>
                 </div>
-                <div class="card border-dark mb-3">
-                    <div class="card-header bg-transparent border-dark py-1 fw-bolder">Yönetim Menü Ayarları</div>
-                    <div class="card-body text-dark py-2">
-                        <div class="row py-1">
-                            <div class="col-9 px-2">
-                                <p class="text-md-right my-0 py-1" >Kullanıcı Ayarları:</p>
-                            </div>
-                            <div class="col-3 mt-2">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.KullaniciAyarlari">
-                                </div>
-                            </div>
-                            <div class="col-9 px-2">
-                                <p class="text-md-right my-0 py-1" >Kullanıcı Ekle:</p>
-                            </div>
-                            <div class="col-3 mt-2">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.KullaniciEkle">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-          </div>
-      </div>
+              </div>
+  
+        </div>
+    </div>
   </div>

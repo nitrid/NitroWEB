@@ -32,7 +32,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             onSelected : async function(pData)
             {
                 $scope.StokGetir(pData.KODU)
-                $scope.PreviewImage = "http://kuppeli.shop/upload/product/picture/" + pData.KODU + "-1.jpg";
+                $scope.PreviewImage = 'http://picture.altinayak.com/upload/product/' + pData.KODU + "-1.jpg";
             }
         }
         $scope.BteAnaGrup = 
@@ -451,15 +451,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         $scope.UreticiAdi = '';
         $scope.TabanAdi = '';
         $scope.AstarAdi = '';
+        $scope.PreviewImage = ''
 
 
-        let TmpQuery = 
-        {
-            db: "{M}." + $scope.Firma,
-            
-            query :  "select sfl_aciklama,sfl_sirano, 0 AS MODEL from STOK_SATIS_FIYAT_LISTE_TANIMLARI ",
-        }
-        $scope.FiyatList = await srv.Execute(TmpQuery)
+       
        
         InitObj();
         $scope.CmbTasarimList =
@@ -470,16 +465,13 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             },
             key : "key",
             value : "value",
-            defaultVal : $scope.TasarimValue,
+            defaultVal : 'Toptan_kutu_Tasarım.repx',
             selectionMode : "key",
-            return : $scope.TasarimValue,
-            onSelected : function(pSelected)
-            {
-                $scope.TasarimValue = pSelected
-            }
+            return : 'Toptan_kutu_Tasarım.repx',
+            
         }
         $scope.StokHesap();
-        $scope.FiyatListGetir()
+        $scope.FiyatListGetir('')
     }
     $scope.AnaGrupModal = async  function()
     {
@@ -558,35 +550,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.StokGetir(SeriKontrol[0].bar_stokkodu);
         }
     }
-    $scope.EtiketYazdir = async function()
-    {
-        if($scope.BteStokKodu.txt == '')
-        {
-            swal("Dikkat!", "Stok Kodu Seçmeden Yazdırma İşlemi Yapılamaz.",icon="warning");
-            return
-        }
-        let TmpQuery = 
-        {
-            db: "{M}." + $scope.Firma,
-            query : "SELECT sto_isim AS ADI,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod and bar_birimpntr = 1) AS BARKOD,(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 1 ) AS FIYAT1 FROM STOKLAR WHERE sto_kod = @sto_kod " ,
-            param : ['sto_kod'],
-            type : ['string|25'],
-            value : [$scope.BteStokKodu.txt]
-        }
-        let TmpResult = await srv.Execute(TmpQuery)
 
-        return new Promise(async resolve => 
-        {
-                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "3LU.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
-                {
-                    console.log(pResult)
-                })
-            
-        
-            swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
-            resolve()
-        });
-    }
     $scope.StokKaydet =  async function()
     {
         let TmpQuery = 
@@ -652,7 +616,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         console.log(TmpInsertData)
         let InsertKontrol = await srv.Execute($scope.Firma,'StokBarkodInsert',TmpInsertData);
     }
-    $scope.FiyatListGetir = async function()
+    $scope.FiyatListGetir = async function(pValue)
     {
         let TmpQuery = 
         {
@@ -660,7 +624,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             
             query :  "select sfl_aciklama,sfl_sirano, ISNULL((SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_listesirano = sfl_sirano and sfiyat_stokkod = @sfiyat_stokkod  ),0) AS MODEL from STOK_SATIS_FIYAT_LISTE_TANIMLARI WHERE sfl_special1 = '1' ",
             param :["sfiyat_stokkod:string|50"],
-            value : [$scope.BteStokKodu.txt]
+            value : [pValue]
         }
         $scope.FiyatListeleri = await srv.Execute(TmpQuery)
     }
@@ -806,13 +770,18 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             "sto_model_kodu as MODEL, " +
             "sto_sektor_kodu as TABAN, " +
             "sto_sezon_kodu AS RENK , " + 
+            "sto_hammadde_kodu AS YIL , " +
+            "(SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu = sto_sezon_kodu) AS RENKADI, " +
             "sto_reyon_kodu as TOPUK, " +
             "sto_standartmaliyet AS MALIYET, " +
             "sto_sat_cari_kod AS TEDARIKCI, " +
             "sto_ambalaj_kodu AS ASTAR, " +
             "sto_uretici_kodu AS URETICI, " +
+            "(SELECT TOP 1 urt_ismi FROM STOK_URETICILERI WHERE urt_kod = sto_uretici_kodu) AS URETICIADI, " +
             "sto_kalkon_kodu AS KALITE , " +
+            "(SELECT TOP 1 KKon_ismi FROM STOK_KALITE_KONTROL_TANIMLARI WHERE KKon_kod = sto_kalkon_kodu) AS KALITEADI, " +
             "sto_marka_kodu AS MATERYAL, " +
+            "(SELECT TOP 1 mrk_ismi FROM STOK_MARKALARI WHERE mrk_kod = sto_marka_kodu) AS MATERYALADI, " +
             "(SELECT TOP 1 bar_kodu from BARKOD_TANIMLARI WHERE bar_stokkodu=sto_kod and bar_birimpntr = 1) AS BARKOD " +
             "FROM STOKLAR WHERE sto_kod = @STOKKODU ",
             param :["STOKKODU:string|50"],
@@ -825,6 +794,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.BteTaban.txt = TmpResult[0].TABAN;
             $scope.BteTopukBoyu.txt = TmpResult[0].TOPUK;
             $scope.BteAstar.txt = TmpResult[0].ASTAR;
+            $scope.BteYilAdi.txt = TmpResult[0].YIL
             $scope.BteUretici.txt = TmpResult[0].URETICI;
             $scope.BteKalite.txt = TmpResult[0].KALITE;
             $scope.StokAdi =  TmpResult[0].STOKADI;
@@ -835,7 +805,19 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.Barkod = TmpResult[0].BARKOD;
             $scope.BteRenk.txt = TmpResult[0].RENK;
             $scope.BteStokKodu.txt = TmpResult[0].STOKKOD;
-            $scope.FiyatListGetir()
+            $scope.TabanAdi =TmpResult[0].TABAN;
+            $scope.RenkAdi = TmpResult[0].RENKADI;
+            $scope.UreticiAdi = TmpResult[0].URETICIADI;
+            $scope.MateryalAdi = TmpResult[0].MATERYALADI;
+            $scope.KaliteAdi = TmpResult[0].KALITEADI;
+            $scope.YilAdi = TmpResult[0].YIL
+            $scope.AstarAdi = TmpResult[0].ASTAR;
+            $scope.ModelAd = TmpResult[0].MODEL;
+            $scope.AnaGrupAdi =  TmpResult[0].ANAGRUP;
+            $scope.AltGrupAdi = TmpResult[0].ALTGRUP;
+            $scope.AstarAdi = TmpResult[0].ASTAR;
+            $scope.TopukAdi = TmpResult[0].TOPUK;
+            $scope.FiyatListGetir($scope.BteStokKodu.txt)
         }
         else
         {
@@ -857,6 +839,35 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
                 }
             })
             resolve(TasarimList);
+        });
+    }
+    $scope.EtiketYazdir = async function()
+    {
+        if($scope.BteStokKodu.txt == '')
+        {
+            swal("Dikkat!", "Stok Kodu Seçmeden Yazdırma İşlemi Yapılamaz.",icon="warning");
+            return
+        }
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "select sto_kalkon_kodu AS KALITE , sto_sezon_kodu AS RENK,sto_marka_kodu AS MATERYAL,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod and bar_birimpntr = 1) AS BARKOD from STOKLAR WHERE sto_kod = @sto_kod " ,
+            param : ['sto_kod'],
+            type : ['string|25'],
+            value : [$scope.BteStokKodu.txt]
+        }
+        let TmpResult = await srv.Execute(TmpQuery)
+
+        return new Promise(async resolve => 
+        {
+                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "Toptan_kutu_Tasarım.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+                {
+                    console.log(pResult)
+                })
+            
+        
+            swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+            resolve()
         });
     }
 
