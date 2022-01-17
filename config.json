@@ -1,7 +1,7 @@
 {
-    "server":"192.168.2.240",
+    "server":"192.168.100.12",
     "database":"MikroDB_V16",
-    "uid":"teknoerp",
+    "uid":"nitrogen",
     "pwd":"lp8462+",
     "trustedConnection" : false,
     "port" : "80"
