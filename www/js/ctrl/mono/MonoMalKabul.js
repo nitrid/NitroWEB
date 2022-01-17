@@ -1,4 +1,4 @@
-function MonoFasonGiris($scope,srv, $rootScope)
+function MonoMalKabul($scope,srv, $rootScope)
 {
     let SelectionRow;
     function InitGrd(pData)
@@ -78,20 +78,13 @@ function MonoFasonGiris($scope,srv, $rootScope)
     {
         $scope.BteIsEmri = 
         {
-            title : "İş Emri Seçim",
+            title : "Stok Seçimi",
             txt : "",
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT " +
-                        "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
-                        "is_Kod AS KODU,is_Ismi AS ADI, " +
-                        "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AS STOKKODU, " +
-                        "ISNULL((SELECT TOP 1 (upl_miktar - upl_uret_miktar) FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'') AS MIKTAR, " +
-                        "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1 and upl_satirno = 0),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%F%' "
+                query : "SELECT sto_kod AS KODU, sto_isim AS ADI, sto_birim1_ad AS BIRIM FROM STOKLAR"
             },
-            selection : "KODU",
             columns :
             [
                 {
@@ -101,39 +94,20 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 {
                     dataField: "ADI",
                     width: 200
-                },
+                }, 
                 {
-                    dataField: "STOKKODU",
-                    width: 400
-                },
-                {
-                    dataField: "STOKADI",
-                    width: 400
-                },
-                {
-                    dataField: "MIKTAR",
-                    width: 200
-                },
-                {
-                    dataField: "BARKOD",
-                    width: 200
+                    dataField: "BIRIM",
+                    width: 100
                 }, 
             ],
             onSelected : async function(pData)
             {
-                $scope.Miktar = pData.MIKTAR
-                $scope.Data.UMP = await UretimMalzemePlanGetir(pData.KODU);
-                    
-                if($scope.Data.UMP.length > 0)
+                if(typeof pData != 'undefined')
                 {
-                    let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
-                    if(TmpDr.length > 0)
-                    {
-                        $scope.LblDepo = TmpDr[0].DEPOADI
-                        $scope.DepoKod = TmpDr[0].DEPO
-                        $scope.LblUrun = TmpDr[0].KODU
-                        
-                    }
+                    $scope.BteIsEmri.txt = pData.KODU
+                    $scope.LblBarkod = pData.BARKOD;
+                    $scope.LblStokKodu = pData.KODU;
+                    $scope.LblStokAdi = pData.ADI;
                 }
             }
         }
@@ -169,32 +143,104 @@ function MonoFasonGiris($scope,srv, $rootScope)
         }
         $scope.BteFasoncu = 
         {
-            title : "Fasoncu Seçim",
+            title : "SIPARIS Seçim",
             txt : "",
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT " +
-                        "cari_kod AS KODU,cari_unvan1 AS ADI " +
-                        "FROM CARI_HESAPLAR"
+                query : "select sip_evrakno_seri AS SERI , sip_evrakno_sira AS SIRA , sip_musteri_kod AS CARI, " +
+                        "(SELECT cari_unvan1 FROM CARI_HESAPLAR WHERE cari_kod = sip_musteri_kod) AS CARIADI  " +
+                        "from SIPARISLER WHERE sip_tip = 1 and sip_kapat_fl = 0 " +
+                        "GROUP BY sip_evrakno_seri,sip_evrakno_sira,sip_musteri_kod " +
+                        "HAVING SUM(sip_miktar) > SUM(sip_teslim_miktar) ",
             },
-            selection : "KODU",
+            showBorders: true,
+            filtering: true,
+            selection : "CARIADI",
             columns :
             [
                 {
-                    dataField: "KODU",
+                    dataField: "SERI",
                     width: 200
                 }, 
                 {
-                    dataField: "ADI",
-                    width: 500
+                    dataField: "SIRA",
+                    width: 200
+                }, 
+                {
+                    dataField: "CARIADI",
+                    width: 400
+                }, 
+                {
+                    dataField: "CARI",
+                    width: 200
                 }, 
             ],
+            masterDetail: 
+            {
+                enabled: true,
+                template: async function(container, options) 
+                {
+                    let Detail = await DetayGetir(options.data)
+
+                $("<div>")
+                    .addClass("master-detail-caption")
+                    .appendTo(container);
+
+                $("<div>")
+                    .dxDataGrid({
+                        columnAutoWidth: false,
+                        showBorders: true,
+                        dataSource: Detail,
+                        filtering: true,
+                        filterRow: 
+                        {
+                            visible: true,
+                            applyFilter: "auto"
+                        },
+                        headerFilter: 
+                        {
+                            visible: true
+                        },
+                        columns: 
+                        [ 
+                            {
+                                dataField : "KODU",
+                                caption: "KODU",
+                                dataType: "text",
+                                align: "center",
+                            },
+                            {
+                                dataField : "ADI",
+                                caption: "ADI",
+                                dataType: "text",
+                                align: "center",
+                            }, 
+                            {
+                                dataField : "MIKTAR",
+                                caption: "MIKTAR",
+                                dataType: "text",
+                                align: "center",
+                            },     
+                            {
+                                dataField : "KALAN",
+                                caption: "KALAN",
+                                dataType: "text",
+                                align: "center",
+                            },                           
+                        ],
+                        
+                    }).appendTo(container);
+                }
+            },
             onSelected : async function(pData)
             {
                 if(typeof pData != 'undefined')
                 {                    
-                    
+                    $scope.CariKodu = pData.CARI
+                    $scope.CariAdı = pData.CARIADI;
+                    $scope.SipSeri = pData.SERI
+                    $scope.SipSira = pData.SIRA
                 }
             }
         }
@@ -236,7 +282,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
         {
             datasource : 
             {
-                data :  [{name: "Fason Giris Etiket - 1", special: $rootScope.GeneralParamList.FasonGirisEtiket}] 
+                data :  [{name: "Mal Giris Etiket - 1", special: $rootScope.GeneralParamList.FasonGirisEtiket}] 
             },
             key : "special",
             value : "name",
@@ -259,42 +305,13 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 }
             }
         }
-        $scope.BtnSeriEkle =
-        {
-            title: "Seri No Oluştur",
-            onSelected: async function (pData) 
-            {
-                if (typeof pData != 'undefined') 
-                {
-                   $scope.TopluSeriBarkodOlustur(pData)
-                }
-            }
-        }
     }
     function Scale()
     {
         srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
         {
-            console.log(pData)
             $scope.LblHassasGram = pData
-            
         });
-    }
-    function MiktarKontrol(pMiktar)
-    {
-        if($scope.Data.UMP.length > 0)
-        {
-            let TmpDr = $scope.Data.UMP.filter(x => x.URETTUKET == 1);
-            if(TmpDr.length > 0)
-            {
-
-                if(parseInt(srv.SumColumn($scope.Data.DATA,"MIKTAR","URETTUKET = 1"))+parseInt(pMiktar) > TmpDr[0].PMIKTAR)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
     function KantarVeriGetir() 
     {
@@ -331,6 +348,22 @@ function MonoFasonGiris($scope,srv, $rootScope)
             $scope.LblKantarKilo = pData.split(",").join("");
            // $scope.LblKantarKilo =  $scope.LblKantarKilo - $scope.LblKasaDara;
         }
+    }
+    async function DetayGetir(pData)
+    {
+        return new Promise(async resolve => 
+            {
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query :"SELECT sip_stok_kod AS KODU, (SELECT sto_isim FROM STOKLAR WHERE sto_kod = sip_stok_kod) AS ADI,sip_miktar AS MIKTAR,(sip_miktar - sip_teslim_miktar) AS KALAN FROM SIPARISLER WHERE sip_evrakno_seri = @sip_evrakno_seri and sip_evrakno_sira = @sip_evrakno_sira and sip_tip = 1 ",
+            param : ['sip_evrakno_seri:string|50','sip_evrakno_sira:string|50'],
+            value : [pData.SERI,pData.SIRA]
+        }
+        let TmpData = await srv.Execute(TmpQuery)
+        resolve(TmpData)
+        });
+        
     }
     function HassasTeraziVeriGetir() 
     {
@@ -372,16 +405,13 @@ function MonoFasonGiris($scope,srv, $rootScope)
     {
         let TmpUretRec = 0;
 
-        for(let i = 0;i < $scope.Data.UMP.length;i++)
-        {
+        
             let TmpRec = 0;
             if($scope.Data.DATA.length > 0)
             {
                 TmpRec = srv.Max($scope.Data.DATA,'REC');
             }
-            if($scope.Data.UMP[i].URETTUKET == 1)
-            {
-
+           
                 await $scope.SeriBarkodOlustur()
             
 
@@ -390,33 +420,30 @@ function MonoFasonGiris($scope,srv, $rootScope)
                     $scope.SthGSeri,
                     $scope.SthGSira,
                     $scope.SeriBarkod,
-                    $scope.Data.UMP[i].KODU,
-                    $scope.Data.UMP[i].BMIKTAR * pMiktar,
-                    $scope.Data.UMP[i].DEPO
+                    $scope.LblStokKodu,
+                    $scope.EtiketMiktar,
+                    $scope.DepoKod
                 ]
                
                 let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
                 console.log(TmpResult)  
-            }
-
-            
+                
             let TmpData = {};
             TmpData.REC = TmpRec + 1;
             TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
-            TmpData.TIP = $scope.Data.UMP[i].TIP;
-            TmpData.URETTUKET = $scope.Data.UMP[i].URETTUKET;
+            TmpData.TIP = 1;
+            TmpData.URETTUKET = 1;
             TmpData.PARTIBARKOD = $scope.SeriBarkod;
-            TmpData.URNBARKOD = $scope.Data.UMP[i].BARKOD;
-            TmpData.ADITR = $scope.Data.UMP[i].ADITR;
-            TmpData.ADIENG = $scope.Data.UMP[i].ADIENG;
-            TmpData.ADIRU = $scope.Data.UMP[i].ADIRU;
-            TmpData.ADIRO = $scope.Data.UMP[i].ADIRO;
-            TmpData.DESI = $scope.Data.UMP[i].DESI;
-            TmpData.AGIRLIK = $scope.Data.UMP[i].AGIRLIK;
-            TmpData.ISEMRI = $scope.Data.UMP[i].ISEMRI;
-            TmpData.KODU = $scope.Data.UMP[i].KODU;
-            TmpData.ADI = $scope.Data.UMP[i].ADI;
-
+            TmpData.URNBARKOD = $scope.SeriBarkod;
+            TmpData.ADITR = ''
+            TmpData.ADIENG =''
+            TmpData.ADIRU = ''
+            TmpData.ADIRO = ''
+            TmpData.DESI = ''
+            TmpData.AGIRLIK = ''
+            TmpData.ISEMRI = ''
+            TmpData.KODU =$scope.LblStokKodu;
+            TmpData.ADI = $scope.LblStokAdi;
 
             // if($scope.Data.UMP[i].URETTUKET == 1)
             // {
@@ -424,29 +451,20 @@ function MonoFasonGiris($scope,srv, $rootScope)
             // }
             // else
             // {
-                TmpData.DEPO = $scope.Data.UMP[i].DEPO;
+                TmpData.DEPO = $rootScope.GeneralParamList.FasonDepo;
             //}
             
-            TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * pMiktar;
-            TmpData.DEPOMIKTAR = $scope.Data.UMP[i].DEPOMIKTAR;
+            TmpData.MIKTAR = $scope.EtiketMiktar
+           
             TmpData.PARTI = pParti;
             TmpData.LOT = pLot;
             
-            if($scope.Data.UMP[i].URETTUKET == 1)
-            {
-                TmpUretRec = TmpData.REC
-                TmpData.URETREC = TmpUretRec 
-            }
-            else
-            {
-                TmpData.URETREC = TmpUretRec
-            }
-
             $scope.Data.DATA.push(TmpData);
-        }
         
-        InitGrd($scope.Data.DATA.filter(x => x.URETTUKET == 1))
+        
+        InitGrd($scope.Data.DATA)
     }
+   
      $scope.Ekle = async function(pMiktar)
     {
 
@@ -455,17 +473,17 @@ function MonoFasonGiris($scope,srv, $rootScope)
             pMiktar = $scope.LblKantarMiktar
         }
         let TmpBarkod = "";
-        if($scope.BteIsEmri.txt == "" || document.getElementById("Tarih").value == "" || $scope.BteFasoncu.txt == "")
+        if( document.getElementById("Tarih").value == "" || $scope.BteFasoncu.txt == "")
         {
-            swal("Dikkat", "Lütfen İş emri,fasoncu ve tarih seçmeden geçmeyin.",icon="warning");
+            swal("Dikkat", "Lütfen Cari ve tarih seçmeden geçmeyin.",icon="warning");
             return;
         }
         $scope.EtiketMiktar = pMiktar.toString().padStart(5, '0');
-        if(MiktarKontrol($scope.EtiketMiktar))
-        {
-            swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
-            return;
-        }
+        // if(MiktarKontrol($scope.EtiketMiktar))
+        // {
+        //     swal("Dikkat", "Lütfen başka bir iş emri seçiniz.",icon="warning");
+        //     return;
+        // }
 
         
         // if($scope.Data.UMP.filter(x => x.URETTUKET == 1)[0].BARKOD.substring(0,2) == "27")
@@ -522,7 +540,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                         "dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
                         "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),0) AS BMIKTAR " +
-                        "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri order by upl_kodu desc",
+                        "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri",
                 param : ['upl_isemri:string|50'],
                 value : [pIsEmri]
             }
@@ -537,19 +555,29 @@ function MonoFasonGiris($scope,srv, $rootScope)
             return;
         });
     }
-    function InsertUrunGirisCikis(pGirisCikis,TmpKodu,TmpIsemrı,TmpMiktar,TmpDepo,TmpParti,TmpLot,TmpIsmerkezi,pSeri,pSira)
+    async function InsertUrunGirisCikis(TmpKodu,TmpIsemrı,TmpMiktar,TmpDepo,TmpParti,TmpLot,TmpIsmerkezi,pSeri,pSira)
     {
+        let TmpSipQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT sip_Guid FROM  SIPARISLER WHERE sip_evrakno_seri = @sip_evrakno_seri AND sip_evrakno_sira = @sip_evrakno_sira and sip_stok_kod = @sip_stok_kod and sip_tip = 1  ",
+            param : ['sip_evrakno_seri:string|25','sip_evrakno_sira:int','sip_stok_kod:string|50'],
+            value : [$scope.SipSeri,$scope.SipSira,TmpKodu]
+        }
+        let TmpResults = await srv.Execute(TmpSipQuery)
+        if(TmpResults.length > 0)
+        {
+            $scope.SipGuid = TmpResults[0].sip_Guid
+        }
+        else
+        {
+            $scope.SipGuid ='00000000-0000-0000-0000-000000000000'
+            swal("İşlem Başarısız!", "Seçtiğiniz Siparişde Ürün yok Doğru Siparişi Seçiniz",icon="error");
+            return
+        }
+        
         return new Promise(async resolve => 
         {
-            let TmpEvrTip = 12;
-            let TmpTip = 0;
-
-            if(pGirisCikis == 1)
-            {
-                TmpEvrTip = 0
-                TmpTip = 1
-            }
-
             let TmpInsertData = 
             [
                 $rootScope.GeneralParamList.MikroId,
@@ -557,10 +585,10 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(document.getElementById("Tarih").value).format("DD.MM.YYYY"),
-                TmpTip,
-                8,
                 0,
-                TmpEvrTip,
+                0,
+                0,
+                13,
                 pSeri,
                 pSira,
                 $scope.TxtEvrakno, //BELGE NO
@@ -587,7 +615,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 0, //SATIR ISKONTO TİP 9
                 0, //SATIR ISKONTO TİP 10
                 0, //CARİCİNSİ
-                $scope.BteFasoncu.txt, //CARI KODU,
+                $scope.CariKodu, //CARI KODU,
                 TmpIsemrı, //İŞEMRİKODU
                 "", //PERSONEL KODU
                 0, //HARDOVİZCİNSİ
@@ -615,7 +643,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 0, // MASRAFVERGİ
                 0, // ODEME NO                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                 '',// AÇIKLAMA
-                '00000000-0000-0000-0000-000000000000', //sth_sip_uid
+                $scope.SipGuid, //sth_sip_uid
                 '00000000-0000-0000-0000-000000000000', //sth_fat_uid,
                 TmpDepo, //GİRİSDEPONO
                 TmpDepo, //CİKİSDEPONO
@@ -637,12 +665,25 @@ function MonoFasonGiris($scope,srv, $rootScope)
                 (typeof TmpIsmerkezi == 'undefined') ? '' : TmpIsmerkezi
             ];
             
-            console.log(TmpInsertData)
-
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
+            console.log(TmpResult)
             if(typeof TmpResult != 'undefined')
             {
+                if($scope.SipGuid != '00000000-0000-0000-0000-000000000000')
+                {
+                    let TmpSipQuery = 
+                    {
+                        db: "{M}." + $scope.Firma,
+                        query : "UPDATE SIPARISLER SET sip_teslim_miktar = sip_teslim_miktar + @MIKTAR WHERE sip_Guid = @sip_Guid  ",
+                        param : ['MIKTAR:float','sip_Guid:string|50'],
+                        value : [TmpMiktar,$scope.SipGuid]
+                    }
+                    console.log(TmpSipQuery)
+                    let TmpResults = await srv.Execute(TmpSipQuery)
+                    console.log(TmpResults)
+                }
+                
                 resolve(true);
                 return
             }
@@ -758,7 +799,7 @@ function MonoFasonGiris($scope,srv, $rootScope)
     {        
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "FASON GİRİŞ"
+        $rootScope.PageName = "MAL KABUL"
 
         $scope.Data = {};
         $scope.Data.UMP = [];
@@ -767,11 +808,14 @@ function MonoFasonGiris($scope,srv, $rootScope)
         $scope.Data.BARKODLIST = [];
         document.getElementById("Tarih").value = "";
 
-        $scope.LblDepo = "";
+        $scope.LblDepo = "Merkez Depo";
         $scope.LblUrun = "";
         $scope.TxtBasimAdet = 1;
         $scope.EtiketMiktar = 0;
         $scope.TxtEvrakno = "";
+        $scope.LblBarkod = '';
+        $scope.LblStokKodu = '';
+        $scope.LblStokAdi = '';
 
         $scope.LblKasaDara = 0;
         $scope.TxtSpRefMiktar = 0;
@@ -786,16 +830,16 @@ function MonoFasonGiris($scope,srv, $rootScope)
         $scope.SthGSeri = $rootScope.GeneralParamList.FasonGirisSeri;
         $scope.SthCSeri = $rootScope.GeneralParamList.FasonCikisSeri;
 
-        $scope.SthGSira = await MaxSthSira($scope.SthGSeri,12)
+        $scope.SthGSira = await MaxSthSira($scope.SthGSeri,1)
         $scope.SthCSira = await MaxSthSira($scope.SthCSeri,0)
 
-        if($rootScope.GeneralParamList.MonoFasonGiris != "true")
-        {
-            swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
-            var url = "index.html";
-            window.location.href = url;
-            event.preventDefault();        
-        }
+        // if($rootScope.GeneralParamList.MonoMalKabul != "true")
+        // {
+        //     swal("Dikkat", "Bu Sayfaya Giriş Yetkiniz Bulunmamaktadır..",icon="warning");
+        //     var url = "index.html";
+        //     window.location.href = url;
+        //     event.preventDefault();        
+        // }
 
         InitObj();
         InitGrd([]);
@@ -855,56 +899,22 @@ function MonoFasonGiris($scope,srv, $rootScope)
             swal("Dikkat", "Kayıt Girilmeden Bu İşlemi Yapamazsınız !",icon="warning");
             return;
         }
-        //* DEPO MİKTAR KONTROL */     
-        let InfoText = "";   
-        for(let i = 0;i < TmpDrTuket.length;i++) //Depo Miktar Kontrol
-        {
-            if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
-            {
-                InfoText = InfoText + 'Stok Kodu : ' + TmpDrTuket[i].KODU + ' - ' + 'Depo Miktar : ' + TmpDrTuket[i].DEPOMIKTAR + ' - ' + 'Miktar : ' + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + "\n"
-            }
-        }
+      
 
-        if(InfoText != "")
+        var TmpUretMiktar = 0
+        for (let i = 0; i < TmpDrUret.length; i++) 
         {
-            swal("Dikkat", "Depo Miktarı Eksiye Düşemez. " + "\n" + InfoText,icon="warning");
-            return;
-        }
+           var TmpUretKodu = TmpDrUret[i].KODU
+           var TmpUretIsemrı = TmpDrUret[i].ISEMRI
+           TmpUretMiktar = parseFloat(TmpUretMiktar) + parseFloat(TmpDrUret[i].MIKTAR)
+           var TmpUretDepo = TmpDrUret[i].DEPO
+           var TmpUretParti = TmpDrUret[i].PARTI
+           var TmpUretLot = TmpDrUret[i].LOT
+           var TmpUretIsmerkezi = TmpDrUret[i].ISMERKEZI
 
-        let UretData = ToGroupBy(TmpDrUret,'KODU')
+        }
+        await InsertUrunGirisCikis(TmpUretKodu,TmpUretIsemrı,TmpUretMiktar,TmpUretDepo,TmpUretParti,TmpUretLot,TmpUretIsmerkezi,$scope.SthGSeri,$scope.SthGSira)
 
-        for (let x = 0; x < Object.values(UretData).length; x++) 
-        {
-            var TmpUretMiktar = 0
-            TmpUretMiktar = srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = "+Object.values(UretData)[x][0].KODU+"")
-            var TmpUretKodu = Object.values(UretData)[x][0].KODU
-            for (let i = 0; i < TmpDrUret.length; i++) 
-            {
-               
-                var TmpUretIsemrı = TmpDrUret[i].ISEMRI
-                var TmpUretDepo = TmpDrUret[i].DEPO
-                var TmpUretParti = TmpDrUret[i].PARTI
-                var TmpUretLot = TmpDrUret[i].LOT
-                var TmpUretIsmerkezi = TmpDrUret[i].ISMERKEZI
-            }
-            console.log(TmpUretMiktar)
-            console.log(TmpUretKodu)
-            await InsertUrunGirisCikis(0,TmpUretKodu,TmpUretIsemrı,TmpUretMiktar,TmpUretDepo,TmpUretParti,TmpUretLot,TmpUretIsmerkezi,$scope.SthGSeri,$scope.SthGSira)
-            await UpdateMalzemePlani(TmpUretIsemrı, TmpUretKodu, TmpUretMiktar, true)
-        }
-        
-       
-       
-        let TuketData = ToGroupBy(TmpDrTuket,'KODU')
-        console.log(TmpDrTuket)
-        console.log(TuketData)
-            
-        for (let i = 0; i < Object.values(TuketData).length; i++) 
-        {
-            let TmpMiktar = srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = "+Object.values(TuketData)[i][0].KODU+"")
-            await InsertUrunGirisCikis(1,Object.values(TuketData)[i][0].KODU,Object.values(TuketData)[i][0].ISEMRI,TmpMiktar,Object.values(TuketData)[i][0].DEPO,'',0,TmpUretIsmerkezi,$scope.SthCSeri,$scope.SthCSira)
-            await UpdateMalzemePlani(Object.values(TuketData)[i][0].ISEMRI,Object.values(TuketData)[i][0].KODU, (Object.values(TuketData)[i][0].MIKTAR *TmpDrUret.length), false)
-        }
        // await InsertUrunGirisCikis(1,TmpTuketKodu,TmpTuketIsemrı,TmpTuketMiktar,TmpTuketDepo,TmpTuketParti,TmpTuketLot,TmpTuketIsmerkezi,$scope.SthCSeri,$scope.SthCSira)
        // await UpdateMalzemePlani(TmpTuketIsemrı, TmpTuketKodu,TmpTuketMiktar, false)
 
@@ -913,18 +923,18 @@ function MonoFasonGiris($scope,srv, $rootScope)
     }
     $scope.BtnBarkodBas = async function()
     {
-        // if($scope.LblUrun != '')
-        // {
+        if($scope.LblUrun != '')
+        {
             let TmpSira = await MaxEtiketSira($rootScope.GeneralParamList.FasonEtiketSeri)
             console.log($rootScope.GeneralParamList.FasonEtiketSeri)
             console.log(TmpSira)
             console.log(SelectionRow)
             await EtiketInsert(TmpSira,$scope.Data.DATA[0].PARTIBARKOD);
-        // }
-        // else
-        // {
-        //     swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
-        // }
+        }
+        else
+        {
+            swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
+        }
     }
     $scope.YeniEvrak = function()
     {
@@ -975,51 +985,8 @@ function MonoFasonGiris($scope,srv, $rootScope)
         let SeriKontrol = await srv.Execute(TmpQuery)
         if(SeriKontrol.length > 0)
          {
-            $scope.SeriBarkodOlustur()
+            $scope.PartiBarkod()
             console.log(11123)
          }
-    }
-    $scope.TopluSeriBarkodOlustur = async function(pLength)
-    {
-        for (let i = 0; i < pLength; i++) 
-        {
-            await $scope.SeriBarkodOlustur()
-            
-
-                let TmpInsertData =
-                [
-                    $scope.SthGSeri,
-                    $scope.SthGSira,
-                    $scope.SeriBarkod,
-                    $scope.LblUrun,
-                    0,
-                    $scope.DepoKod
-                ]
-               
-                let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
-                
-                let InsertData = 
-                [
-                    1,                               //CREATE_USER
-                    1,                               //LASTUP_USER
-                    2,     //SPECIAL1
-                    $rootScope.GeneralParamList.FasonEtiketSeri,//SERI
-                    1,                          //SIRA
-                    0,                              //AÇIKLAMA
-                    0,                              //BELGENO
-                    0,                               //ETİKETTİP
-                    0,                               //BASİMTİPİ
-                    0,             //BASİMADET
-                    $scope.DepoKod,                               //DEPONO
-                    $scope.LblUrun,                  //STOKKODU
-                    0,                               //RENKKODU
-                    1,                               //BEDENKODU
-                    $scope.SeriBarkod,                         //BARKOD
-                    1              //BASILACAKMIKTAR
-                ]
-        
-                let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
-                console.log(TmpResult)
-        }
     }
 }

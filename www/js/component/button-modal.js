@@ -3,6 +3,7 @@ angular.module('app').component('buttonModal',
     templateUrl: 'js/component/button-modal.html',
     controller: function ButtonModal($scope,$attrs,srv) 
     {
+        console.log($attrs.id)
         let SelectionRow;
         var ctrl = this
         ctrl.Txt = ""
@@ -73,6 +74,7 @@ angular.module('app').component('buttonModal',
                         TmpColumns = ctrl.option.columns
                     }
                     //**************************************** */
+                    console.log(TmpData)
                     $("#Grd"  + ctrl.Id).dxDataGrid
                     (
                         {
@@ -80,6 +82,7 @@ angular.module('app').component('buttonModal',
                             allowColumnResizing: true,
                             width: "100%",
                             columnWidth: 100,
+                            
                             selection: 
                             {
                                 mode: "single"
@@ -89,7 +92,7 @@ angular.module('app').component('buttonModal',
                             columns: TmpColumns,
                             paging: 
                             {
-                                pageSize: 10
+                                pageSize: 18
                             },
                             filterRow: 
                             {

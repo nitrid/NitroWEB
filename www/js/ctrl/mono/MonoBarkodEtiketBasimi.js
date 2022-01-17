@@ -390,8 +390,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pBarkod,
                 pStokKodu,
                 pParti,
@@ -452,8 +452,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pParti,
                 pLot,
                 pStok,
@@ -501,7 +501,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         [
             1,                               //CREATE_USER
             1,                               //LASTUP_USER
-            $scope.CmbEtiketTasarim.return,     //SPECIAL1
+            "1",     //SPECIAL1
             $rootScope.GeneralParamList.BarkodEtiketSeri ,//SERI
             $scope.EtkSira,                    //SIRA
             '',                              //AÇIKLAMA
@@ -544,6 +544,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         $scope.TxtMiktar = 0;
         $scope.TxtBMiktar = 1;
         $scope.StokAdi = "";
+        $scope.BteBarkodText = ""
         document.getElementById("Skt").value = "";
 
         $scope.Data = {};
@@ -573,7 +574,25 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         }
         if($scope.BteParti.txt == '')
         {
-            $scope.BteBarkod.txt =  ($scope.BteBarkod.txt +$scope.TxtMiktar.toString().padStart(5, '0'));
+            await $scope.SeriBarkodOlustur()
+            
+            let TmpInsertData =
+            [
+                'BEB',
+                1,
+                $scope.SeriBarkod,
+                $scope.BteStok.txt,
+                $scope.TxtMiktar,
+                '1'
+            ]
+           
+            let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
+            console.log(TmpResult)  
+            $scope.BteBarkodText = $scope.SeriBarkod
+        }
+        else
+        {
+            $scope.BteBarkodText =  $scope.BteBarkod.txt 
         }
 
         if ($scope.TxtLot == "")
@@ -589,9 +608,11 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
                         TmpBarkod = $scope.BteParti.txt.padStart(10, "0") + TmpLot.ToString().padStart(6, "0");
                         if(await BarkodOlustur(TmpBarkod,$scope.BteStok.txt,$scope.BteParti.txt,$scope.TxtLot))
                         {
-                            $scope.BteBarkod.txt = TmpBarkod;
+                            $scope.BteBarkodText = TmpBarkod;
                         }
                     }
+                    else
+                    
                     swal("Başarılı", "Parti lot Ve Barkod Oluşturuldu.",icon="success");
                 }
             }
@@ -606,8 +627,8 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
 
         let TmpData = {};
         TmpData.TARIH = moment(new Date()).format("DD.MM.YYYY");
-        TmpData.BARKOD = $scope.BteBarkod.txt;
-        TmpData.PARTIBARKOD = $scope.BteBarkod.txt;
+        TmpData.BARKOD = $scope.BteBarkodText;
+        TmpData.PARTIBARKOD = $scope.BteBarkodText;
         TmpData.URNBARKOD = $scope.Data.BARKODLIST[0].URNBARKOD;
         TmpData.KODU = $scope.BteStok.txt;
         TmpData.ADI = $scope.StokAdi;
@@ -641,5 +662,36 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         {
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
+    }
+    $scope.SeriBarkodOlustur = async function()
+    {
+        $scope.SeriBarkod = ''
+        let length = 7;
+        let chars = '0123456789'.split('');
+        let AutoStr = "";
+        
+        if (! length) 
+        {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        for (let i = 0; i < length; i++) 
+        {
+            AutoStr += chars[Math.floor(Math.random() * chars.length)];
+        }
+        $scope.Tarih = moment(new Date()).format("YYYYMMGG")
+        $scope.SeriBarkod = $scope.Tarih.padStart(8, "0")   + AutoStr
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT chz_serino FROM STOK_SERINO_TANIMLARI WHERE chz_serino = @chz_serino ",
+            param : ['chz_serino:string|50'],
+            value : [$scope.SeriBarkod]
+        }
+        let SeriKontrol = await srv.Execute(TmpQuery)
+        if(SeriKontrol.length > 0)
+         {
+            $scope.SeriBarkodOlustur()
+            console.log(11123)
+         }
     }
 }

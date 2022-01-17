@@ -57,7 +57,9 @@ function MonoStokDepoGirisCikisRaporu($scope, srv, $rootScope)
         }
 
         InitDatePicker()
-        InitGrd()
+        InitGrd();
+
+        
     }
     function InitGrd(pData)
     {
@@ -66,7 +68,7 @@ function MonoStokDepoGirisCikisRaporu($scope, srv, $rootScope)
             {
                 dataSource: pData,
                 allowColumnResizing: true,
-                height: 1000,
+                height: 600,
                 width: "100%",
                 columnWidth: 100,
                 columns :
@@ -132,11 +134,7 @@ function MonoStokDepoGirisCikisRaporu($scope, srv, $rootScope)
         )
     }
     $scope.BtnGetir = async function()
-    {
-
-        $scope.deneme  = await srv.Scale.Send("COM7");
-        console.log($scope.deneme)
-        console.log($scope.BaslangicData)
+    {        
         if($scope.BaslangicData == '' || $scope.BitisData == '')
         {
             swal("Dikkat", "Lütfen Tarih Saat Seçimi Yapınız.",icon="warning");

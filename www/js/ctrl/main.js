@@ -133,6 +133,7 @@ function Main($scope,$state,srv,$rootScope)
                 MonoFasonGiris : srv.GetParamValue($scope.Data,"MonoFasonGiris"),
                 MonoElektrikUretim : srv.GetParamValue($scope.Data,"MonoElektrikUretim"),
                 MonoBasarSayarBarkodOlustur : srv.GetParamValue($scope.Data,"MonoBasarSayarBarkodOlustur"),
+                MonoUretimParcalama : srv.GetParamValue($scope.Data,"MonoUretimParcalama"),
                 // Menü Yönetim
                 MonoKullaniciAyarlari : srv.GetParamValue($scope.Data,"MonoKullaniciAyarlari"),
                 MonoKullaniciEkle : srv.GetParamValue($scope.Data,"MonoKullaniciEkle"),

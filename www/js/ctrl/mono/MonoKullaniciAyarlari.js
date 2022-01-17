@@ -86,6 +86,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoDepoTransferRaporu : srv.GetParamValue($scope.Data,"MonoDepoTransferRaporu"),
                 MonoStokSeviyeleriRaporu : srv.GetParamValue($scope.Data,"MonoStokSeviyeleriRaporu"),
                 MonoStokDepoGirisCikisRaporu : srv.GetParamValue($scope.Data,"MonoStokDepoGirisCikisRaporu"),
+                MonoSeriNoKontrol : srv.GetParamValue($scope.Data,"MonoSeriNoKontrol"),
                 // Parametre
                 BarkodEtiketSeri : srv.GetParamValue($scope.Data,"BarkodEtiketSeri"),
                 BasarSayarHasasTeraziIP : srv.GetParamValue($scope.Data,"BasarSayarHasasTeraziIP"),
@@ -198,6 +199,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
     }
     $scope.BtnParamUpdate = async function()
     {
+        console.log( $scope.Kullanici)
         let Param =
         [
             // Kullanıcı
@@ -205,7 +207,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 Password : $rootScope.GeneralParamList.Password
             },
             {
-                Kullanici : $rootScope.GeneralParamList.Kullanici
+                Kullanici : $scope.Kullanici
             },
             // Menü
             {
@@ -225,6 +227,15 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             {
                 MonoElektrikUretim : $rootScope.GeneralParamList.MonoElektrikUretim
+            },
+            {
+                MonoMalKabul : $rootScope.GeneralParamList.MonoMalKabul
+            },
+            {
+                MonoParcaliUretim : $rootScope.GeneralParamList.MonoParcaliUretim
+            },
+            {
+                MonoUretimParcalama : $rootScope.GeneralParamList.MonoUretimParcalama
             },
             {
                 MonoBasarSayarBarkodOlustur : $rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur
@@ -251,6 +262,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             {
                 MonoStokDepoGirisCikisRaporu : $rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu
+            },
+            {
+                MonoSeriNoKontrol : $rootScope.GeneralParamList.MonoSeriNoKontrol
             },
             // Parametre
             {
@@ -414,7 +428,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
         [
             // Kullanıcı
             ["Password",$rootScope.GeneralParamList.Password,0,""],
-            ["Kullanici",$rootScope.GeneralParamList.Kullanici,0,""],
+            ["Kullanici",$scope.GeneralParamList.Account,0,""],
             // Menü
             ["MonoMamulMalKabul",$rootScope.GeneralParamList.MonoMamulMalKabul,1,"Mamül Mal Kabul"],
             ["MonoYariMamulMalKabul",$rootScope.GeneralParamList.MonoYariMamulMalKabul,1,"Yarı Mamül Mal Kabul"],
@@ -422,7 +436,10 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoKasaBarkodOlustur",$rootScope.GeneralParamList.MonoKasaBarkodOlustur,1,"Kasa Barkodu Oluştur"],
             ["MonoFasonGiris",$rootScope.GeneralParamList.MonoFasonGiris,1,"Fason Giriş"],
             ["MonoElektrikUretim",$rootScope.GeneralParamList.MonoElektrikUretim,1,"Elektrik Uretim"],
-            ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1,"Basar Sayar Barkod Oluştur"],
+            ["MonoMalKabul",$rootScope.GeneralParamList.MonoMalKabul,1,"Mal Kabul"],
+            ["MonoParcaliUretim",$rootScope.GeneralParamList.MonoParcaliUretim,1,"Parcali Uretim"],
+            ["MonoUretimParcalama",$rootScope.GeneralParamList.MonoUretimParcalama,1,"Üretim Parçalama"],
+            ["MonoBasarSayarBarkodOlustur",$rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur,1," Sayar Tartar Barkod Oluştur"],
             ["MonoUretimDashboard",$rootScope.GeneralParamList.MonoUretimDashboard,1,"Üretim Dashboard"],
             // Menü Yönetim
             ["MonoKullaniciAyarlari",$rootScope.GeneralParamList.MonoKullaniciAyarlari,2,"Kullanici Ayarları"],
@@ -432,6 +449,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
             ["MonoDepoTransferRaporu",$rootScope.GeneralParamList.MonoDepoTransferRaporu,3,"Depo Transfer Raporu"],
             ["MonoStokSeviyeleriRaporu",$rootScope.GeneralParamList.MonoStokSeviyeleriRaporu,3,"Stok Seviyeleri Raporu"],
             ["MonoStokDepoGirisCikisRaporu",$rootScope.GeneralParamList.MonoStokDepoGirisCikisRaporu,3,"Depo Giriş Çıkış Raporu"],
+            ["MonoSeriNoKontrol",$rootScope.GeneralParamList.MonoSeriNoKontrol,3,"Seri No Kontrol"],
             // Parametre
             ["BarkodEtiketSeri",$rootScope.GeneralParamList.BarkodEtiketSeri,4,""],
             ["BasarSayarHasasTeraziIP",$rootScope.GeneralParamList.BasarSayarHasasTeraziIP,4,""],
@@ -555,6 +573,9 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoKasaBarkodOlustur : false,
                 MonoFasonGiris : false,
                 MonoElektrikUretim : false,
+                MonoMalKabul : false,
+                MonoParcaliUretim : false,
+                MonoUretimParcalama : false,
                 MonoBasarSayarBarkodOlustur : false,
                 MonoUretimDashboard : false,
                 // Menü Yönetim
@@ -565,6 +586,7 @@ function MonoKullaniciAyarlari($scope, srv, $rootScope, $state)
                 MonoDepoTransferRaporu : false,
                 MonoStokSeviyeleriRaporu : false,
                 MonoStokDepoGirisCikisRaporu : false,
+                MonoSeriNoKontrol : false,
                 // Parametre
                 BarkodEtiketSeri : "",
                 BasarSayarHasasTeraziIP : "",

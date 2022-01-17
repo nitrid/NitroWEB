@@ -179,6 +179,42 @@ angular.module("app",
             controller:"MonoUretimSilme"
         }
     ).
+    state
+    (
+        {
+            name: 'main.MonoMalKabul',
+            url: '/mono_mal_kabul',
+            templateUrl : "view/mono/MonoMalKabul.html",
+            controller:"MonoMalKabul"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoUretimParcalama',
+            url: '/mono_uretim_parcalama',
+            templateUrl : "view/mono/MonoUretimParcalama.html",
+            controller:"MonoUretimParcalama"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoParcaliUretim',
+            url: '/mono_parcali_uretim',
+            templateUrl : "view/mono/MonoParcaliUretim.html",
+            controller:"MonoParcaliUretim"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.MonoSeriNoKontrol',
+            url: '/mono_seri_no_kontrol',
+            templateUrl : "view/mono/MonoSeriNoKontrol.html",
+            controller:"MonoSeriNoKontrol"
+        }
+    ).
 
     //DIAN MENU
     state

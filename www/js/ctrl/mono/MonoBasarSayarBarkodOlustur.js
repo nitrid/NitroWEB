@@ -122,6 +122,44 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
                 $scope.CmbEtiketList.return = pSelected
             }
         }
+        $scope.BtnManuelKasaDaraAl =
+        {
+            title: "Kasa Darası Elle Giriş",
+            onSelected: async function (pData) 
+            {
+                if (typeof pData != 'undefined') 
+                {
+                    if($scope.ManuelGirisHide ==  true)
+                    {
+                        $scope.LblKasaDara = parseFloat($scope.LblKasaDara) + parseFloat(pData)
+                        console.log($scope.LblKasaDara)
+                    }
+                    else
+                    {
+                        $scope.LblKasaDara = pData
+                    }
+                }
+            }
+        }
+        $scope.BtnManuelMiktarGiris =
+        {
+            title: "Manuel Miktar Giriş",
+            onSelected: async function (pData) 
+            {
+                if(typeof pData != 'undefined') 
+                {
+                    $scope.LblKantarMiktar = pData;
+                }
+            }
+        }
+    }
+    function Scale()
+    {
+        srv.Scale.Start($rootScope.GeneralParamList.BasarSayarHasasTeraziPORT,pData =>
+        {
+            console.log(pData)
+            $scope.LblHassasGram = pData
+        });
     }
     function KantarVeriGetir() 
     {
@@ -196,6 +234,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
     }
     async function EtiketInsert()
     {
+        $scope.YazdirilacakBarkod = $scope.LblBarkod + (parseInt($scope.LblKantarMiktar)).toString().padStart(5, '0');
         let InsertData = 
         [
             1,                               //CREATE_USER
@@ -204,17 +243,18 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
             $scope.EtkSeri,                  //SERI
             $scope.EtkSira,                  //SIRA
             '',                              //AÇIKLAMA
-            '',                              //BELGENO
+            ($scope.LblKantarKilo - $scope.LblKasaDara),            //BELGENO
             0,                               //ETİKETTİP
             0,                               //BASİMTİPİ
-            $scope.LblKantarMiktar,          //BASİMADET
+            0,          //BASİMADET
             1,                               //DEPONO
             $scope.LblStokKodu,              //STOKKODU
-            1,                               //RENKKODU
+            $scope.LblKantarMiktar,          //RENKKODU
             1,                               //BEDENKODU
-            $scope.LblBarkod,                //BARKOD
+            $scope.SeriBarkod,                //BARKOD
             $scope.TxtEtiketMiktar           //BASILACAKMIKTAR
         ]
+        console.log(InsertData)
 
         let InsertControl = await srv.Execute($scope.Firma,'EtiketInsert',InsertData);
 
@@ -235,7 +275,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
     {
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "BASAR SAYAR BARKOD OLUŞTUR"
+        $rootScope.PageName = "SAYAR TARTAR BARKOD OLUŞTUR"
 
         $scope.EtkSeri = $rootScope.GeneralParamList.BasarSayarSeri;
         $scope.EtkSira = 1;
@@ -243,6 +283,7 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         $scope.TxtSpRefMiktar = 0;
         $scope.LblHassasGram = 0;
         $scope.LblKantarKilo = 0;
+        $scope.LblKasaDara = 0;
         $scope.LblKantarMiktar = 0;
         $scope.DataKantarKilo = 0;
         $scope.DataHassasTeraziGram = 0;
@@ -252,6 +293,8 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         $scope.LblBarkod = "";
         $scope.LblStokKodu = "";
         $scope.LblStokAdi = "";
+
+        $scope.ManuelGirisHide = false;
         
         $scope.TxtEtiketMiktar = 1;
         if($rootScope.GeneralParamList.MonoBasarSayarBarkodOlustur != "true")
@@ -266,23 +309,78 @@ function MonoBasarSayarBarkodOlustur($scope,srv, $rootScope)
         MaxEtiketSira();
         KantarVeriGetir();
         HassasTeraziVeriGetir();
+        Scale()
     }
-    $scope.BtnTartimOnayla = function()
+    $scope.BtnTartimOnayla = async function()
     {
+        
+        
         $scope.DataHassasTeraziGram = $scope.LblHassasGram;
         $scope.DataKantarKilo = $scope.LblKantarKilo;
 
-        $scope.LblKantarMiktar = (($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * $scope.DataKantarKilo).toFixed(2);
+        $scope.LblKantarMiktar = parseInt((($scope.TxtSpRefMiktar / ($scope.DataHassasTeraziGram / 1000)) * ($scope.DataKantarKilo - $scope.LblKasaDara)));
+    }
+    $scope.BtnKantarVerisiGetir = async function()
+    {
+        console.log($rootScope.GeneralParamList.BasarSayarKantarPORT)
+        $scope.LblKantarKilo  = await srv.Scale.Send($rootScope.GeneralParamList.BasarSayarKantarPORT);
+        console.log($scope.LblKantarKilo)
     }
     $scope.BtnBarkodBas = async function()
     {
         if($scope.LblStokKodu != '')
         {
+            
+            
+            await $scope.SeriBarkodOlustur()
+            let TmpInsertData =
+            [
+                'SYM',
+                0,
+                $scope.SeriBarkod,
+                $scope.LblStokKodu,
+                $scope.LblKantarMiktar,
+                '1'
+            ]
+           console.log(TmpInsertData)
+            let TmpResult = await srv.Execute($scope.Firma,'SeriNoInsert',TmpInsertData);
             await EtiketInsert();
+            
         }
         else
         {
             swal("Hatalı İşlem!", "Lütfen Stok Seçimi Yapınız",icon="error");
         }
+    }
+    $scope.SeriBarkodOlustur = async function()
+    {
+        $scope.SeriBarkod = ''
+        let length = 7;
+        let chars = '0123456789'.split('');
+        let AutoStr = "";
+        
+        if (! length) 
+        {
+            length = Math.floor(Math.random() * chars.length);
+        }
+        for (let i = 0; i < length; i++) 
+        {
+            AutoStr += chars[Math.floor(Math.random() * chars.length)];
+        }
+        $scope.BteParti = moment(new Date()).format("YYYYMMGG"),
+        $scope.SeriBarkod = $scope.BteParti.padStart(8, "0")   + AutoStr
+        let TmpQuery = 
+        {
+            db: "{M}." + $scope.Firma,
+            query : "SELECT chz_serino FROM STOK_SERINO_TANIMLARI WHERE chz_serino = @chz_serino ",
+            param : ['chz_serino:string|50'],
+            value : [$scope.SeriBarkod]
+        }
+        let SeriKontrol = await srv.Execute(TmpQuery)
+        if(SeriKontrol.length > 0)
+         {
+            $scope.SeriBarkodOlustur()
+           
+         }
     }
 }

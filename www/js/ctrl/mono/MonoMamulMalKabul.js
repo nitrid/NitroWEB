@@ -8,7 +8,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             {
                 dataSource: pData,
                 allowColumnResizing: true,
-                height: 400,
+                height: 350,
                 width: "100%",
                 columnWidth: 100,
                 selection: 
@@ -87,8 +87,9 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
                         "ISNULL((SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AND bar_birimpntr = 1 AND bar_partikodu = '' AND bar_lotno = 0),'') AS BARKOD, " +
                         "is_Kod AS KODU,is_Ismi AS ADI, " +
                         "ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'') AS STOKKODU, " +
+                        "ISNULL((SELECT sto_detay_takip  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS DETAY, " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod = ISNULL((SELECT TOP 1 upl_kodu FROM URETIM_MALZEME_PLANLAMA WHERE upl_isemri = is_Kod AND upl_uretim_tuket = 1),'')),'') AS STOKADI " +
-                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE '%AYD-%'"
+                        "FROM ISEMIRLERI WHERE is_EmriDurumu = 1 AND is_Kod LIKE  '" +$rootScope.GeneralParamList.ElektrikUretimIsEmriFlag+ "%'"
             },
             selection : "KODU",
             columns :
@@ -130,6 +131,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
                         if(TmpDr.length > 0)
                         {
                             $scope.LblUrun = TmpDr[0].KODU
+                            console.log(pData.DETAY)
+                            $scope.DetayTakip = pData.DETAY
                             $scope.BteParti.datasource.value.push($scope.LblUrun)     
                         }
                     }
@@ -310,8 +313,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pParti,
                 pLot,
                 pStok,
@@ -366,8 +369,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
 
             let TmpParam =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 pBarkod,
                 pStokKodu,
                 pParti,
@@ -464,14 +467,30 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             else
                 TmpData.DEPO = $scope.Data.UMP[i].DEPO;
 
-            if(TmpData.URETTUKET == 1)
+                console.log($scope.DetayTakip)
+            if($scope.DetayTakip == 0)
             {
-                TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * $scope.Data.UMP[i].KATSAYI;
+                if(TmpData.URETTUKET == 1)
+                {
+                    TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * $scope.TxtMiktar;
+                }
+                else
+                {
+                    TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * (TmpDrUret[0].BMIKTAR * $scope.TxtMiktar)
+                }
             }
             else
             {
-                TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * (TmpDrUret[0].BMIKTAR * TmpDrUret[0].KATSAYI)
+                if(TmpData.URETTUKET == 1)
+                {
+                    TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * $scope.Data.UMP[i].KATSAYI;
+                }
+                else
+                {
+                    TmpData.MIKTAR = $scope.Data.UMP[i].BMIKTAR * (TmpDrUret[0].BMIKTAR * TmpDrUret[0].KATSAYI)
+                }
             }
+            
             
             TmpData.DEPOMIKTAR = $scope.Data.UMP[i].DEPOMIKTAR;
             TmpData.PARTI = pParti;
@@ -543,8 +562,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
 
             let TmpInsertData = 
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0, //FİRMA NO
                 0, //ŞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
@@ -627,7 +646,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
                 0, // NAKLİYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-            
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -652,8 +671,8 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             
             let TmpInsertData =
             [
-                $scope.Param.MikroId,
-                $scope.Param.MikroId,
+                $rootScope.GeneralParamList.MikroId,
+                $rootScope.GeneralParamList.MikroId,
                 0,
                 0,
                 pSeri,
@@ -672,7 +691,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
                 pDr.MIKTAR,
                 TmpSure
             ]
-            
+            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'OperasyonHareketInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -826,6 +845,7 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
         $scope.LblUrun = "";
         $scope.TxtBarkod = "";
         $scope.TxtMiktar = 0;
+        $scope.DetayTakip = 0;
         
         $scope.SthGSeri = $rootScope.GeneralParamList.UrunGirisSeri;
         $scope.SthCSeri = $rootScope.GeneralParamList.UrunCikisSeri;
@@ -873,15 +893,44 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
 
         let TmpLot = await MaxLot();
 
-        if(await PartiLotOlustur($scope.BteParti.txt,TmpLot,$scope.LblUrun))
+        if($scope.DetayTakip == 0)
         {
-            TmpBarkod = $scope.BteParti.txt.padStart(8, "0") + TmpLot.toString().padStart(4, "0")
-            if(await BarkodOlustur(TmpBarkod,$scope.LblUrun,$scope.BteParti.txt,TmpLot))
+            let TmpQuery = 
             {
-                Ekle(TmpBarkod,$scope.BteParti.txt,TmpLot);
-                await EtiketInsert(TmpBarkod);
+                db: "{M}." + $scope.Firma,
+                query : "SELECT bar_kodu AS BARKOD FROM BARKOD_TANIMLARI WHERE bar_stokkodu = @bar_stokkodu ",
+                param : ['bar_stokkodu:string|50'],
+                value : [$scope.LblUrun]
+            } 
+            let TmpData = await srv.Execute(TmpQuery)
+            if(TmpData.length > 0)
+            {
+                $scope.Barkod = TmpData[0].BARKOD;
+                Ekle($scope.Barkod,'',0);
+                await EtiketInsert($scope.Barkod);
+            }
+            else
+            {
+                $scope.Barkod = '';
+                Ekle($scope.Barkod,'',0);
+                await EtiketInsert($scope.Barkod);
+            }
+            
+
+        }
+        else
+        {
+            if(await PartiLotOlustur($scope.BteParti.txt,TmpLot,$scope.LblUrun))
+            {
+                TmpBarkod = $scope.BteParti.txt.padStart(8, "0") + TmpLot.toString().padStart(4, "0")
+                if(await BarkodOlustur(TmpBarkod,$scope.LblUrun,$scope.BteParti.txt,TmpLot))
+                {
+                    Ekle(TmpBarkod,$scope.BteParti.txt,TmpLot);
+                    await EtiketInsert(TmpBarkod);
+                }
             }
         }
+       
     }
     $scope.BtnKaydet = async function()
     {
@@ -894,8 +943,12 @@ function MonoMamulMalKabul($scope,srv, $rootScope)
             return;
         }
         //* DEPO MİKTAR KONTROL */        
+        console.log()
         for(let i = 0;i < TmpDrTuket.length;i++)
         {
+            console.log(TmpDrTuket[i])
+            console.log(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU))
+            console.log(TmpDrTuket[i].DEPOMIKTAR)
             if(srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) > TmpDrTuket[i].DEPOMIKTAR)
             {
                 swal("Dikkat", "Depo miktarı eksiye düşemez ! (" + TmpDrTuket[i].KODU + " - " + TmpDrTuket[i].DEPOMIKTAR + " - " + srv.SumColumn($scope.Data.DATA,"MIKTAR","KODU = " + TmpDrTuket[i].KODU) + ")",icon="warning");
