@@ -332,7 +332,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             onSelected : async function(pData)
             {
                 $scope.TopukAdi = pData.ADI;
-               
+            },
+            rowDblClick : async function(pData)
+            {
+                
             }
         }
         $scope.BteTaban = 
@@ -481,10 +484,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     {
         $('#AltGrupModal').modal("show");
     } 
-    $scope.AltGrupV2Modal = function()
-    {
-        $('#AltGrupV2Modal').modal("show");
-    } 
     $scope.ModelModal = function()
     {
         
@@ -492,6 +491,18 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     } 
     $scope.StokKodOlustur =async function()
     {
+        if($scope.KaliteKodu  == '')
+        {
+            $scope.KaliteKodu = $scope.BteKalite.txt
+        }
+        if($scope.MateryalKodu == '')
+        {
+            $scope.MateryalKodu = $scope.BteMateryal.txt
+        }
+        if($scope.RenkKodu == '')
+        {
+            $scope.RenkKodu = $scope.BteRenk.txt
+        }
         $scope.BteStokKodu.txt = $scope.KaliteKodu+'.'+$scope.MateryalKodu+'.'+$scope.RenkKodu
        
     }
@@ -555,6 +566,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         if(tmpdata.length > 0 )
         {
             $scope.StokUpdate()
+            console.log(11)
         }
         else
         {
@@ -565,6 +577,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             else
             {
                 $scope.StokInsert()
+                console.log(22)
             }
         }
         

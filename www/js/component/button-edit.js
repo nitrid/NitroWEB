@@ -118,7 +118,16 @@ angular.module('app').component('buttonEdit',
                             onSelectionChanged: function (selectedItems) 
                             {
                                 SelectionRow = selectedItems.selectedRowsData[0];
+                            },
+                            onRowDblClick : function()
+                            {
+                                $scope.DoubleClick()
+                            },
+                            enterKey : function()
+                            {
+                                console.log(123)
                             }
+                            
                         }
                     )
 
@@ -169,6 +178,18 @@ angular.module('app').component('buttonEdit',
         $scope.KeyPress = function(pKey)
         {
             ctrl.option.onKeyPress(pKey);
+        }
+        $scope.DoubleClick = function()
+        {
+            $('#Mdl' + ctrl.Id).modal("hide");
+            if(typeof SelectionRow != 'undefined')
+            {
+                ctrl.Txt = SelectionRow[ctrl.option.selection]
+                if(typeof ctrl.option.onSelected != 'undefined')
+                {
+                    ctrl.option.onSelected(SelectionRow);
+                }
+            }
         }
     },
     bindings : 
