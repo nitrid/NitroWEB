@@ -2990,14 +2990,14 @@ var Query =
         ",0  --<sfiyat_odemeplan, int,> \n"+
         ",1  --<sfiyat_birim_pntr, tinyint,> \n"+
         ",@sfiyat_fiyati  --<sfiyat_fiyati, float,> \n"+
-        ",0  --<sfiyat_doviz, tinyint,> \n"+
+        ",@sfiyat_doviz  --<sfiyat_doviz, tinyint,> \n"+
         ",''  --<sfiyat_iskontokod, nvarchar(4),> \n"+
         ",0  --<sfiyat_deg_nedeni, tinyint,> \n"+
         ",0  --<sfiyat_primyuzdesi, float,> \n"+
         ",''  --<sfiyat_kampanyakod, nvarchar(4),> \n"+
         ",0  --<sfiyat_doviz_kuru, float,>) \n"+
         " ) ",
-        param:['sfiyat_stokkod:string|50','sfiyat_fiyati:float','sfiyat_listesirano:int']
+        param:['sfiyat_stokkod:string|50','sfiyat_fiyati:float','sfiyat_listesirano:int','sfiyat_doviz:int']
     },
     AnaGruplarInsert:
     {

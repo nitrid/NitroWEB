@@ -244,7 +244,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 ResimYukleme : $rootScope.GeneralParamList.ResimYukleme
             },
             {
-                StokTanitimi : $rootScope.GeneralParamList.SiparisYazdir
+                StokTanitimi : $rootScope.GeneralParamList.StokTanitimi
             },
             {
                 SiparisYazdir : $rootScope.GeneralParamList.SiparisYazdir

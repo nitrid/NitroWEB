@@ -32,7 +32,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             onSelected : async function(pData)
             {
                 $scope.StokGetir(pData.KODU)
-                $scope.PreviewImage = 'http://picture.altinayak.com/upload/product/' + pData.KODU + "-1.jpg";
+                $scope.PreviewImage = 'https://altinayak.com.tr/upload/product/' + pData.KODU + "-1.jpg";
             }
         }
         $scope.BteAnaGrup = 
@@ -669,7 +669,8 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         [
             $scope.BteStokKodu.txt,
             pListe,
-            pFiyat
+            pFiyat,
+            pListe
         ]
         console.log(TmpInsertData)
         let InsertKontrol = await srv.Execute($scope.Firma,'SatisFiyatInsert',TmpInsertData);
@@ -889,7 +890,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
 
         return new Promise(async resolve => 
         {
-                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "AA.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "TOPTANKUTU.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
                 {
                     console.log(pResult)
                 })
