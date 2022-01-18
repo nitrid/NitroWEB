@@ -484,10 +484,37 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     {
         $('#AltGrupModal').modal("show");
     } 
+    $scope.UreticiModal = function()
+    {
+        $('#MdlUretici').modal("show");
+    } 
+    $scope.KaliteModal = function()
+    {
+        $('#MdlKalite').modal("show");
+    } 
+    $scope.MateryalModal = function()
+    {
+        $('#MdlMateryal').modal("show");
+    } 
     $scope.ModelModal = function()
     {
-        
-        $('#ModelModal').modal("show");
+        $('#MdlModel').modal("show");
+    } 
+    $scope.RenkModal = function()
+    {
+        $('#MdlRenk').modal("show");
+    } 
+    $scope.TopukBoyuModal = function()
+    {
+        $('#MdlTopuk').modal("show");
+    } 
+    $scope.YilModal = function()
+    {
+        $('#MdlYil').modal("show");
+    } 
+    $scope.TabanModal = function()
+    {
+        $('#MdlTaban').modal("show");
     } 
     $scope.StokKodOlustur =async function()
     {
