@@ -427,10 +427,10 @@ angular.module("app",
  state
  (
      {
-         name: 'main.Siparisyazdir',
-         url: '/Siparisyazdir',
-         templateUrl : "view/akinlar/Siparisyazdir.html",
-         controller:"Siparisyazdir"
+         name: 'main.SiparisYazdir',
+         url: '/SiparisYazdir',
+         templateUrl : "view/akinlar/SiparisYazdir.html",
+         controller:"SiparisYazdir"
      }
  ).
  state

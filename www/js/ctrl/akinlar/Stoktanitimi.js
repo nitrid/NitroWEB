@@ -516,6 +516,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     {
         $('#MdlTaban').modal("show");
     } 
+    $scope.AstarModal = function()
+    {
+        $('#MdlAstar').modal("show");
+    }
     $scope.StokKodOlustur =async function()
     {
         if($scope.KaliteKodu  == '')
@@ -744,8 +748,8 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
 
         let TmpInsertData = 
         [
-            $scope.ModelKodu,
-            $scope.ModelAdi
+            $scope.YeniModelKodu,
+            $scope.YeniModelAdi
                        
         ]
         console.log(TmpInsertData)
@@ -779,14 +783,8 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     }
     $scope.Modelkayit = async function()
     {
-        if($scope.ModelKodu == '' || $scope.ModelAdi == '' )
-        {
-            swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
-        }
-        else
-        {
             $scope.ModelInsert()
-        } 
+       
     }
     $scope.StokGetir = async function(pKodu)
     {
@@ -891,7 +889,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
 
         return new Promise(async resolve => 
         {
-                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "Toptan_kutu_Tasarım.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "AA.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
                 {
                     console.log(pResult)
                 })
@@ -900,6 +898,118 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
             resolve()
         });
+    }
+    $scope.UreticiKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniUreticiKodu,
+            $scope.YeniUreticiAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'UreticiInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniUreticiKodu = ''
+         $scope.YeniUreticiAdi = ''
+    }
+    $scope.KaliteKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniKaliteKodu,
+            $scope.YeniKaliteAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'KaliteInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniKaliteKodu = ''
+         $scope.YeniKaliteAdi = ''
+    }
+    $scope.MateryalKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniMateryalKodu,
+            $scope.YeniMateryalAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'MateryalInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniMateryalKodu  = ''
+         $scope.YeniMateryalAdi = ''
+    }
+    $scope.RenkKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniRenkKodu,
+            $scope.YeniRenkAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'RenkInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniRenkKodu = ''
+            $scope.YeniRenkAdi = ''
+    }
+    $scope.TopukKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniTopukKodu,
+            $scope.YeniTopukAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'TopukInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniTopukKodu = ''
+            $scope.YeniTopukAdi = ''
+    }
+    $scope.AstarKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniAstarKodu,
+            $scope.YeniAstarAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'AstarInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniAstarKodu  = ''
+         $scope.YeniAstarAdi = ''
+    }
+    $scope.TabanKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniTabanKodu,
+            $scope.YeniTabanAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'TabanInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniTabanKodu = ''
+        $scope.YeniTabanAdi  = ''
+    }
+    $scope.YilKaydet = async function()
+    {
+        
+        let TmpInsertData = 
+        [
+            $scope.YeniYilKodu,
+            $scope.YeniYilAdi
+                       
+        ]
+        let InsertKontrol = await srv.Execute($scope.Firma,'YilInsert',TmpInsertData);
+         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+         $scope.YeniYilKodu = ''
+         $scope.YeniYilAdi = ''
     }
 
 }

@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.3.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report" Margins="0, 0, 388, 93" PrinterName="Microsoft Print to PDF" PaperKind="A4" PageWidth="827" PageHeight="1169" Version="19.2" Font="Arial, 9.75pt">
+  <Bands>
+    <Item1 Ref="1" ControlType="TopMarginBand" Name="TopMargin" HeightF="387.5">
+      <Controls>
+        <Item1 Ref="2" ControlType="XRLabel" Name="label17" Text="RENK" TextAlignment="TopCenter" SizeF="86.3308,20.62506" LocationFloat="202.708, 346.375" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="3" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="4" ControlType="XRLabel" Name="label45" Text="label24" TextAlignment="TopRight" SizeF="73.16595,12.58332" LocationFloat="689.0005, 247.3333" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="5" EventName="BeforePrint" PropertyName="Text" Expression="[ODEMEPLAN]" />
+          </ExpressionBindings>
+          <StylePriority Ref="6" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="7" ControlType="XRLabel" Name="label35" Text="label4" TextAlignment="TopLeft" SizeF="265.8744,12.58334" LocationFloat="136.2092, 226.7501" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="8" EventName="BeforePrint" PropertyName="Text" Expression="[CARIADI]" />
+          </ExpressionBindings>
+          <StylePriority Ref="9" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="10" ControlType="XRLabel" Name="label5" Text="label5" SizeF="39.58333,12.58334" LocationFloat="665.5412, 218.9586" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="11" EventName="BeforePrint" PropertyName="Text" Expression="[SERI]" />
+          </ExpressionBindings>
+          <StylePriority Ref="12" UseFont="false" />
+        </Item4>
+        <Item5 Ref="13" ControlType="XRLabel" Name="label6" Text="label6" TextAlignment="TopRight" SizeF="48.70892,12.58334" LocationFloat="713.458, 218.9586" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="14" EventName="BeforePrint" PropertyName="Text" Expression="[SIRA]" />
+          </ExpressionBindings>
+          <StylePriority Ref="15" UseFont="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="16" ControlType="XRLabel" Name="label38" TextFormatString="{0:dd.MM.yyyy}" Text="label10" TextAlignment="TopRight" WordWrap="false" SizeF="59.37505,13.70834" LocationFloat="703.8335, 233.6249" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="17" EventName="BeforePrint" PropertyName="Text" Expression="[TARIH]" />
+          </ExpressionBindings>
+          <StylePriority Ref="18" UseFont="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="19" ControlType="XRLabel" Name="label39" Text="CARİ ADI :" SizeF="80.20843,10.62502" LocationFloat="56.00074, 226.6251" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="20" UseFont="false" />
+        </Item7>
+        <Item8 Ref="21" ControlType="XRLabel" Name="label18" Text="TARİH       :" SizeF="79.54382,13.70834" LocationFloat="592.2071, 233.6249" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="22" UseFont="false" />
+        </Item8>
+        <Item9 Ref="23" ControlType="XRLabel" Name="label13" Text="KALITE" TextAlignment="TopCenter" SizeF="100.8736,20.62503" LocationFloat="101.8344, 346.375" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="24" UseFont="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="25" ControlType="XRLabel" Name="label16" Text="MİKTAR" TextAlignment="TopCenter" SizeF="67.12531,20.62503" LocationFloat="623.9586, 346.3753" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="26" UseFont="false" UseTextAlignment="false" />
+        </Item10>
+        <Item11 Ref="27" ControlType="XRLabel" Name="label14" Text="FİYAT" TextAlignment="TopCenter" SizeF="51.79858,20.62503" LocationFloat="691.084, 346.3752" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="28" UseFont="false" UseTextAlignment="false" />
+        </Item11>
+        <Item12 Ref="29" ControlType="XRLabel" Name="label11" Text="-" SizeF="8.333344,12.58334" LocationFloat="705.1244, 218.9586" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="30" UseFont="false" />
+        </Item12>
+        <Item13 Ref="31" ControlType="XRLabel" Name="label25" Text="ÖDEME ŞEKLİ:" SizeF="96.79352,12.58334" LocationFloat="592.2071, 247.3333" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="32" UseFont="false" />
+        </Item13>
+        <Item14 Ref="33" ControlType="XRLabel" Name="label41" Text="STOK ADI" TextAlignment="TopCenter" SizeF="221.875,20.62503" LocationFloat="402.0836, 346.3753" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="34" UseFont="false" UseTextAlignment="false" />
+        </Item14>
+        <Item15 Ref="35" ControlType="XRLabel" Name="label37" Text="ADRES :" SizeF="117.7083,12.58334" LocationFloat="54.95908, 239.3333" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="36" UseFont="false" />
+        </Item15>
+        <Item16 Ref="37" ControlType="XRLabel" Name="label30" Text="label30" SizeF="362.7494,10.2917" LocationFloat="56.00074, 251.9168" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="38" EventName="BeforePrint" PropertyName="Text" Expression="[CADDE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="39" UseFont="false" />
+        </Item16>
+        <Item17 Ref="40" ControlType="XRLabel" Name="label31" Text="label31" SizeF="100,10.2917" LocationFloat="56.00074, 262.2083" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="41" EventName="BeforePrint" PropertyName="Text" Expression="[IL]" />
+          </ExpressionBindings>
+          <StylePriority Ref="42" UseFont="false" />
+        </Item17>
+        <Item18 Ref="43" ControlType="XRLabel" Name="label32" Text="label32" SizeF="122.7508,10.29166" LocationFloat="170.9995, 262.2083" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="44" EventName="BeforePrint" PropertyName="Text" Expression="[ILCE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="45" UseFont="false" />
+        </Item18>
+        <Item19 Ref="46" ControlType="XRLabel" Name="label24" Text="TAKİP NO:" SizeF="67.62689,12.58334" LocationFloat="592.2071, 218.9586" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="47" UseFont="false" />
+        </Item19>
+        <Item20 Ref="48" ControlType="XRLabel" Name="label21" Text="PLASİYER       :" SizeF="96.79352,12.58334" LocationFloat="592.2071, 259.9167" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="49" UseFont="false" />
+        </Item20>
+        <Item21 Ref="50" ControlType="XRLabel" Name="label7" Text="label4" TextAlignment="TopRight" SizeF="73.16595,10.41667" LocationFloat="689.0005, 262.0834" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="51" EventName="BeforePrint" PropertyName="Text" Expression="[SATICI]" />
+          </ExpressionBindings>
+          <StylePriority Ref="52" UseFont="false" UseTextAlignment="false" />
+        </Item21>
+        <Item22 Ref="53" ControlType="XRLabel" Name="label27" Text="label27" SizeF="99.99999,18.91676" LocationFloat="72.66737, 272.5" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="54" EventName="BeforePrint" PropertyName="Text" Expression="[VDADI]" />
+          </ExpressionBindings>
+          <StylePriority Ref="55" UseFont="false" />
+        </Item22>
+        <Item23 Ref="56" ControlType="XRLabel" Name="label46" Text="label28" SizeF="100,16.75" LocationFloat="172.6674, 272.5" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="57" EventName="BeforePrint" PropertyName="Text" Expression="[VDNO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="58" UseFont="false" />
+        </Item23>
+        <Item24 Ref="59" ControlType="XRLabel" Name="label29" Text="label29" SizeF="100,15.79146" LocationFloat="136.2092, 210.9586" Font="Times New Roman, 8pt" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="60" EventName="BeforePrint" PropertyName="Text" Expression="[CARIKODU]" />
+          </ExpressionBindings>
+          <StylePriority Ref="61" UseFont="false" />
+        </Item24>
+        <Item25 Ref="62" ControlType="XRBarCode" Name="barCode2" AutoModule="true" ShowText="false" Text="barCode2" SizeF="184.92,61.45834" LocationFloat="592.2071, 272.5" Font="Times New Roman, 9.75pt" Padding="10,10,0,0,100">
+          <Symbology Ref="63" Name="Code39" WideNarrowRatio="3" CalcCheckSum="false" />
+          <ExpressionBindings>
+            <Item1 Ref="64" EventName="BeforePrint" PropertyName="Text" Expression="[EVRAKNO]" />
+          </ExpressionBindings>
+          <StylePriority Ref="65" UseFont="false" />
+        </Item25>
+        <Item26 Ref="66" ControlType="XRLabel" Name="label40" Text="MATERYAL" TextAlignment="TopCenter" SizeF="113.0448,20.62506" LocationFloat="289.0388, 346.375" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="67" UseFont="false" UseTextAlignment="false" />
+        </Item26>
+        <Item27 Ref="68" ControlType="XRLabel" Name="label3" Text="TUTAR" TextAlignment="TopCenter" SizeF="66.9563,20.62503" LocationFloat="743.4659, 346.3752" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="69" UseFont="false" UseTextAlignment="false" />
+        </Item27>
+        <Item28 Ref="70" ControlType="XRLabel" Name="label4" Text="RESIM" TextAlignment="TopCenter" SizeF="86.3308,20.62506" LocationFloat="15.50363, 346.3753" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="71" UseFont="false" UseTextAlignment="false" />
+        </Item28>
+      </Controls>
+    </Item1>
+    <Item2 Ref="72" ControlType="DetailBand" Name="Detail" HeightF="70.20836">
+      <Controls>
+        <Item1 Ref="73" ControlType="XRLabel" Name="label26" Text="label26" TextAlignment="TopLeft" SizeF="89.41527,13.0000114" LocationFloat="113.292725, 28.2917023" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="74" EventName="BeforePrint" PropertyName="Text" Expression="[SIPARIS].[KALITEKODU]" />
+          </ExpressionBindings>
+          <StylePriority Ref="75" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="76" ControlType="XRLabel" Name="label8" TextFormatString="{0:0.00}" Text="label3" TextAlignment="TopCenter" SizeF="66.95612,13.00001" LocationFloat="743.4661, 28.20505" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="77" EventName="BeforePrint" PropertyName="Text" Expression="[SIPARIS].[TUTAR]" />
+          </ExpressionBindings>
+          <StylePriority Ref="78" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="79" ControlType="XRLabel" Name="label10" Text="label2" TextAlignment="TopCenter" SizeF="55.20844,13.08333" LocationFloat="634.9152, 28.20505" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="80" EventName="BeforePrint" PropertyName="Text" Expression="[SIPAIRS].[MIKTAR]" />
+          </ExpressionBindings>
+          <StylePriority Ref="81" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="82" ControlType="XRLabel" Name="label15" TextFormatString="{0:0.00}" Text="label11" TextAlignment="TopCenter" SizeF="51.79865,13.00001" LocationFloat="691.084, 28.20505" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="83" EventName="BeforePrint" PropertyName="Text" Expression="[SIPARIS].[BIRIMF]" />
+          </ExpressionBindings>
+          <StylePriority Ref="84" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="85" ControlType="XRLabel" Name="label12" Text="label12" TextAlignment="TopLeft" WordWrap="false" SizeF="113.0448,13.08333" LocationFloat="289.0388, 28.20835" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="86" EventName="BeforePrint" PropertyName="Text" Expression="[SIPARIS].[MODELADI]" />
+          </ExpressionBindings>
+          <StylePriority Ref="87" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="88" ControlType="XRLabel" Name="label43" Text="label43" TextAlignment="TopLeft" WordWrap="false" SizeF="86.3308,13.00001" LocationFloat="202.708, 28.2917" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="89" EventName="BeforePrint" PropertyName="Text" Expression="[SIPARIS].[SEZONADI]" />
+          </ExpressionBindings>
+          <StylePriority Ref="90" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="91" ControlType="XRLabel" Name="label1" Text="label4" TextAlignment="TopLeft" WordWrap="false" SizeF="232.8316,13.08" LocationFloat="402.0836, 28.20835" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100" Borders="Left, Bottom">
+          <ExpressionBindings>
+            <Item1 Ref="92" EventName="BeforePrint" PropertyName="Text" Expression="[SIPARIS].[KALITEADI]" />
+          </ExpressionBindings>
+          <StylePriority Ref="93" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item7>
+        <Item8 Ref="94" ControlType="XRPictureBox" Name="pictureBox1" Sizing="StretchImage" SizeF="109.374939,70.20836" LocationFloat="3.91778946, 0">
+          <ExpressionBindings>
+            <Item1 Ref="95" EventName="BeforePrint" PropertyName="ImageUrl" Expression="[PICTURE]" />
+          </ExpressionBindings>
+        </Item8>
+      </Controls>
+    </Item2>
+    <Item3 Ref="96" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="92.7083359" />
+    <Item4 Ref="97" ControlType="GroupFooterBand" Name="GroupFooter1">
+      <Controls>
+        <Item1 Ref="98" ControlType="XRLabel" Name="label36" TextFormatString="{0:#}" Text="label38" TextAlignment="TopRight" SizeF="69.08337,12.58335" LocationFloat="730.5016, 9.291649" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="99" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="100" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([MIKTAR])" />
+          </ExpressionBindings>
+          <StylePriority Ref="101" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="102" ControlType="XRLabel" Name="label28" Text="Toplam Miktar :" SizeF="94.62616,12.58335" LocationFloat="635.8755, 9.291649" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="103" UseFont="false" />
+        </Item2>
+        <Item3 Ref="104" ControlType="XRLabel" Name="label23" TextFormatString="{0:#.00}" Text="label23" TextAlignment="TopRight" SizeF="68.0415,12.58335" LocationFloat="731.5436, 47.0417" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="105" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="106" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([KDV])" />
+          </ExpressionBindings>
+          <StylePriority Ref="107" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="108" ControlType="XRLabel" Name="label44" Text="TPL Vergi  :" SizeF="94.62616,12.58335" LocationFloat="635.8756, 47.0417" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="109" UseFont="false" />
+        </Item4>
+        <Item5 Ref="110" ControlType="XRLabel" Name="label22" TextFormatString="{0:n}" Text="label22" TextAlignment="TopRight" SizeF="69.08337,12.58335" LocationFloat="730.5018, 34.45842" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="111" EventName="BeforePrint" PropertyName="Text" Expression="[ISKONTO1]" />
+          </ExpressionBindings>
+          <StylePriority Ref="112" UseFont="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="113" ControlType="XRLabel" Name="label42" Text="İsk Toplam :" SizeF="94.62616,12.58335" LocationFloat="635.8755, 34.45842" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="114" UseFont="false" />
+        </Item6>
+        <Item7 Ref="115" ControlType="XRLabel" Name="label9" TextFormatString="{0:#.00}" Text="label36" TextAlignment="TopRight" SizeF="69.08337,12.58335" LocationFloat="730.5017, 21.875" Font="Times New Roman, 8pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="116" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="117" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([TUTAR])" />
+          </ExpressionBindings>
+          <StylePriority Ref="118" UseFont="false" UseTextAlignment="false" />
+        </Item7>
+        <Item8 Ref="119" ControlType="XRLabel" Name="label47" TextFormatString="{0:#.00}" Text="label47" TextAlignment="TopRight" SizeF="69.08337,12.58335" LocationFloat="731.5436, 59.62512" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <Summary Ref="120" Running="Report" />
+          <ExpressionBindings>
+            <Item1 Ref="121" EventName="BeforePrint" PropertyName="Text" Expression="sumSum([GENELTOPLAMA])" />
+          </ExpressionBindings>
+          <StylePriority Ref="122" UseFont="false" UseTextAlignment="false" />
+        </Item8>
+        <Item9 Ref="123" ControlType="XRLabel" Name="label19" Text="Genel Toplam :" SizeF="94.62616,12.58335" LocationFloat="635.8755, 59.62512" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="124" UseFont="false" />
+        </Item9>
+        <Item10 Ref="125" ControlType="XRLabel" Name="label2" Text="Ara Toplam :" SizeF="94.62616,12.58335" LocationFloat="635.8755, 21.875" Font="Times New Roman, 9pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="126" UseFont="false" />
+        </Item10>
+      </Controls>
+    </Item4>
+  </Bands>
+</XtraReportsLayoutSerializer>

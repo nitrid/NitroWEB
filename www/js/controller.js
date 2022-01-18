@@ -46,7 +46,7 @@ angular.module('app.controller', ['angular.filter'])
 .controller('Modelctrl', ['$scope','srv','$rootScope','$filter', Modelctrl])
 .controller('Ureticictrl', ['$scope','srv','$rootScope','$filter', Ureticictrl])
 .controller('Stokeimage', ['$scope','srv','$rootScope','$filter', Stokeimage])
-.controller('Siparisyazdir', ['$scope','srv','$rootScope','$filter', Siparisyazdir])
+.controller('SiparisYazdir', ['$scope','srv','$rootScope','$filter', SiparisYazdir])
 .controller('Siparisstokkontrol', ['$scope','srv','$rootScope','$filter', Siparisstokkontrol])
 .controller('StokTanitimi', ['$scope','srv','$rootScope','$filter', StokTanitimi])
 

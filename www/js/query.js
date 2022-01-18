@@ -3144,7 +3144,359 @@ var Query =
         ",@msg_S_0023         --<msg_S_0023, [dbo].[nvarchar_maxhesapisimno],>)"+
         " ) ",
         param:['msg_S_0022:string|50','msg_S_0023:string|50']
+    },
+    UreticiInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_URETICILERI]  " +
+        "([urt_Guid]  " +
+        ",[urt_DBCno]  " +
+        ",[urt_SpecRECno]  " +
+        ",[urt_iptal]  " +
+        ",[urt_fileid]  " +
+        ",[urt_hidden]  " +
+        ",[urt_kilitli]  " +
+        ",[urt_degisti]  " +
+        ",[urt_checksum]  " +
+        ",[urt_create_user]  " +
+        ",[urt_create_date]  " +
+        ",[urt_lastup_user]  " +
+        ",[urt_lastup_date]  " +
+        ",[urt_special1]  " +
+        ",[urt_special2]  " +
+        ",[urt_special3]  " +
+        ",[urt_kod]  " +
+        ",[urt_ismi]  " +
+        ",[urt_uts_kurum_no])  " +
+        "VALUES  " +
+        "(newid()          --<urt_Guid, uniqueidentifier,>  \n"+
+        ",0          --<urt_DBCno, smallint,>  \n"+
+        ",0          --<urt_SpecRECno, int,>  \n"+
+        ",0          --<urt_iptal, bit,>  \n"+
+        ",0          --<urt_fileid, smallint,>  \n"+
+        ",0          --<urt_hidden, bit,>  \n"+
+        ",0          --<urt_kilitli, bit,>  \n"+
+        ",0          --<urt_degisti, bit,>  \n"+
+        ",0          --<urt_checksum, int,>  \n"+
+        ",1          --<urt_create_user, smallint,>  \n"+
+        ",GETDATE()          --<urt_create_date, datetime,>  \n"+
+        ",1          --<urt_lastup_user, smallint,>  \n"+
+        ",GETDATE()          --<urt_lastup_date, datetime,>  \n"+
+        ",''          --<urt_special1, nvarchar(4),>  \n"+
+        ",''          --<urt_special2, nvarchar(4),>  \n"+
+        ",''          --<urt_special3, nvarchar(4),>  \n"+
+        ",@urt_kod         --<urt_kod, nvarchar(25),>  \n"+
+        ",@urt_ismi          --<urt_ismi, [dbo].[nvarchar_maxhesapisimno],>  \n"+
+        ",''          --<urt_uts_kurum_no, nvarchar(15),>  \n"+
+        " ) ",
+        param:['urt_kod:string|50','urt_ismi:string|50']
+    },
+    TabanInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_SEKTORLERI]  "+
+        "([sktr_Guid]  "+
+        ",[sktr_DBCno]  "+
+        ",[sktr_SpecRECno]  "+
+        ",[sktr_iptal]  "+
+        ",[sktr_fileid]  "+
+        ",[sktr_hidden]  "+
+        ",[sktr_kilitli]  "+
+        ",[sktr_degisti]  "+
+        ",[sktr_checksum]  "+
+        ",[sktr_create_user]  "+
+        ",[sktr_create_date]  "+
+        ",[sktr_lastup_user]  "+
+        ",[sktr_lastup_date]  "+
+        ",[sktr_special1]  "+
+        ",[sktr_special2]  "+
+        ",[sktr_special3]  "+
+        ",[sktr_kod]  "+
+        ",[sktr_ismi]  "+
+        ",[sktr_muhkodu])  "+
+        "VALUES  "+
+        "(newid()              --<sktr_Guid, uniqueidentifier,>     \n"+
+        ",0              --<sktr_DBCno, smallint,>    \n"+
+        ",0              --<sktr_SpecRECno, int,>    \n"+
+        ",0              --<sktr_iptal, bit,>    \n"+
+        ",0              --<sktr_fileid, smallint,>    \n"+
+        ",0              --<sktr_hidden, bit,>    \n"+
+        ",0              --<sktr_kilitli, bit,>    \n"+
+        ",0              --<sktr_degisti, bit,>    \n"+
+        ",0              --<sktr_checksum, int,>    \n"+
+        ",1              --<sktr_create_user, smallint,>    \n"+
+        ",getdate()              --<sktr_create_date, datetime,>    \n"+
+        ",1              --<sktr_lastup_user, smallint,>    \n"+
+        ",getdate()              --<sktr_lastup_date, datetime,>    \n"+
+        ",''              --<sktr_special1, nvarchar(4),>    \n"+
+        ",''              --<sktr_special2, nvarchar(4),>    \n"+
+        ",''              --<sktr_special3, nvarchar(4),>    \n"+
+        ",@sktr_kod              --<sktr_kod, nvarchar(25),>    \n"+
+        ",@sktr_ismi              --<sktr_ismi, [dbo].[nvarchar_maxhesapisimno],>    \n"+
+        ",''              --<sktr_muhkodu, nvarchar(4),> \n"+
+        " ) ",
+        param:['sktr_kod:string|50','sktr_ismi:string|50']
+    },
+    TopukInsert :
+    {
+        query : "INSERT INTO [dbo].[STOK_REYONLARI]  " +
+        "([ryn_Guid]  " +
+        ",[ryn_DBCno]  " +
+        ",[ryn_SpecRECno]  " +
+        ",[ryn_iptal]  " +
+        ",[ryn_fileid]  " +
+        ",[ryn_hidden]  " +
+        ",[ryn_kilitli]  " +
+        ",[ryn_degisti]  " +
+        ",[ryn_checksum]  " +
+        ",[ryn_create_user]  " +
+        ",[ryn_create_date]  " +
+        ",[ryn_lastup_user]  " +
+        ",[ryn_lastup_date]  " +
+        ",[ryn_special1]  " +
+        ",[ryn_special2]  " +
+        ",[ryn_special3]  " +
+        ",[ryn_kod]  " +
+        ",[ryn_ismi])  " +
+        "VALUES  " +
+        "(newid()                  --<ryn_Guid, uniqueidentifier,>    \n"+
+        ",0                  --<ryn_DBCno, smallint,>    \n"+
+        ",0                  --<ryn_SpecRECno, int,>    \n"+
+        ",0                  --<ryn_iptal, bit,>    \n"+
+        ",0                  --<ryn_fileid, smallint,>    \n"+
+        ",0                  --<ryn_hidden, bit,>    \n"+
+        ",0                  --<ryn_kilitli, bit,>    \n"+
+        ",0                  --<ryn_degisti, bit,>    \n"+
+        ",0                  --<ryn_checksum, int,>    \n"+
+        ",1                  --<ryn_create_user, smallint,>    \n"+
+        ",getdate()                  --<ryn_create_date, datetime,>    \n"+
+        ",1                  --<ryn_lastup_user, smallint,>    \n"+
+        ",getdate()                  --<ryn_lastup_date, datetime,>    \n"+
+        ",''                  --<ryn_special1, nvarchar(4),>    \n"+
+        ",''                  --<ryn_special2, nvarchar(4),>    \n"+
+        ",''                  --<ryn_special3, nvarchar(4),>    \n"+
+        ",@ryn_kod                  --<ryn_kod, nvarchar(25),>    \n"+
+        ",@ryn_ismi                  --<ryn_ismi, [dbo].[nvarchar_maxhesapisimno],>    \n " +
+        " ) ",
+        param:['ryn_kod:string|50','ryn_ismi:string|50']
+    },
+    AstarInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_AMBALAJLARI]  "  +
+        "([amb_Guid]  "  +
+        ",[amb_DBCno]  "  +
+        ",[amb_SpecRECno]  "  +
+        ",[amb_iptal]  "  +
+        ",[amb_fileid]  "  +
+        ",[amb_hidden]  "  +
+        ",[amb_kilitli]  "  +
+        ",[amb_degisti]  "  +
+        ",[amb_checksum]  "  +
+        ",[amb_create_user]  "  +
+        ",[amb_create_date]  "  +
+        ",[amb_lastup_user]  "  +
+        ",[amb_lastup_date]  "  +
+        ",[amb_special1]  "  +
+        ",[amb_special2]  "  +
+        ",[amb_special3]  "  +
+        ",[amb_kod]  "  +
+        ",[amb_ismi]  "  +
+        ",[amb_miktar]  "  +
+        ",[amb_dara])  "  +
+        "VALUES  "  +
+        "(newid()              --<amb_Guid, uniqueidentifier,>     \n"+
+        ",0              --<amb_DBCno, smallint,>     \n"+
+        ",0              --<amb_SpecRECno, int,>     \n"+
+        ",0              --<amb_iptal, bit,>     \n"+
+        ",0              --<amb_fileid, smallint,>     \n"+
+        ",0              --<amb_hidden, bit,>     \n"+
+        ",0              --<amb_kilitli, bit,>     \n"+
+        ",0              --<amb_degisti, bit,>     \n"+
+        ",0              --<amb_checksum, int,>     \n"+
+        ",1              --<amb_create_user, smallint,>     \n"+
+        ",getdate()              --<amb_create_date, datetime,>     \n"+
+        ",1              --<amb_lastup_user, smallint,>     \n"+
+        ",getdate()              --<amb_lastup_date, datetime,>     \n"+
+        ",''              --<amb_special1, nvarchar(4),>     \n"+
+        ",''              --<amb_special2, nvarchar(4),>     \n"+
+        ",''              --<amb_special3, nvarchar(4),>     \n"+
+        ",@amb_kod              --<amb_kod, nvarchar(25),>     \n"+
+        ",@amb_ismi              --<amb_ismi, [dbo].[nvarchar_maxhesapisimno],>     \n"+
+        ",0              --<amb_miktar, float,>     \n"+
+        ",0              --<amb_dara, float,>     \n"+
+        " ) ",
+        param:['ryn_kod:string|50','ryn_ismi:string|50']
+    },
+    MateryalInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_MARKALARI]   " +
+        "([mrk_Guid]   " +
+        ",[mrk_DBCno]   " +
+        ",[mrk_SpecRECno]   " +
+        ",[mrk_iptal]   " +
+        ",[mrk_fileid]   " +
+        ",[mrk_hidden]   " +
+        ",[mrk_kilitli]   " +
+        ",[mrk_degisti]   " +
+        ",[mrk_checksum]   " +
+        ",[mrk_create_user]   " +
+        ",[mrk_create_date]   " +
+        ",[mrk_lastup_user]   " +
+        ",[mrk_lastup_date]   " +
+        ",[mrk_special1]   " +
+        ",[mrk_special2]   " +
+        ",[mrk_special3]   " +
+        ",[mrk_kod]   " +
+        ",[mrk_ismi])   " +
+        "VALUES   " +
+        "(newid()          --<mrk_Guid, uniqueidentifier,>   \n"+
+        ",0          --<mrk_DBCno, smallint,>   \n"+
+        ",0          --<mrk_SpecRECno, int,>   \n"+
+        ",0          --<mrk_iptal, bit,>   \n"+
+        ",0          --<mrk_fileid, smallint,>   \n"+
+        ",0          --<mrk_hidden, bit,>   \n"+
+        ",0          --<mrk_kilitli, bit,>   \n"+
+        ",0          --<mrk_degisti, bit,>   \n"+
+        ",0          --<mrk_checksum, int,>   \n"+
+        ",1          --<mrk_create_user, smallint,>   \n"+
+        ",getdate()          --<mrk_create_date, datetime,>   \n"+
+        ",1          --<mrk_lastup_user, smallint,>   \n"+
+        ",getdate()          --<mrk_lastup_date, datetime,>   \n"+
+        ",''          --<mrk_special1, nvarchar(4),>   \n"+
+        ",''          --<mrk_special2, nvarchar(4),>   \n"+
+        ",''          --<mrk_special3, nvarchar(4),>   \n"+
+        ",@mrk_kod          --<mrk_kod, nvarchar(25),>   \n"+
+        ",@mrk_ismi          --<mrk_ismi, [dbo].[nvarchar_maxhesapisimno],> \n"+
+        " ) ",
+        param:['mrk_kod:string|50','mrk_ismi:string|50']
+    },
+    RenkInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_YILSEZON_TANIMLARI]    " +
+        "([ysn_Guid]    " +
+        ",[ysn_DBCno]    " +
+        ",[ysn_SpecRECNo]    " +
+        ",[ysn_iptal]    " +
+        ",[ysn_fileid]    " +
+        ",[ysn_hidden]    " +
+        ",[ysn_kilitli]    " +
+        ",[ysn_degisti]    " +
+        ",[ysn_CheckSum]    " +
+        ",[ysn_create_user]    " +
+        ",[ysn_create_date]    " +
+        ",[ysn_lastup_user]    " +
+        ",[ysn_lastup_date]    " +
+        ",[ysn_special1]    " +
+        ",[ysn_special2]    " +
+        ",[ysn_special3]    " +
+        ",[ysn_kodu]    " +
+        ",[ysn_ismi])    " +
+        "VALUES    " +
+        "(newid()              --<ysn_Guid, uniqueidentifier,>   \n"+
+        ",0              --<ysn_DBCno, smallint,>   \n"+
+        ",0              --<ysn_SpecRECNo, int,>   \n"+
+        ",0              --<ysn_iptal, bit,>   \n"+
+        ",0              --<ysn_fileid, smallint,>   \n"+
+        ",0              --<ysn_hidden, bit,>   \n"+
+        ",0              --<ysn_kilitli, bit,>   \n"+
+        ",0              --<ysn_degisti, bit,>   \n"+
+        ",0              --<ysn_CheckSum, int,>   \n"+
+        ",1              --<ysn_create_user, smallint,>   \n"+
+        ",getdate()              --<ysn_create_date, datetime,>   \n"+
+        ",1              --<ysn_lastup_user, smallint,>   \n"+
+        ",getdate()              --<ysn_lastup_date, datetime,>   \n"+
+        ",''              --<ysn_special1, nvarchar(4),>   \n"+
+        ",''              --<ysn_special2, nvarchar(4),>   \n"+
+        ",''              --<ysn_special3, nvarchar(4),>   \n"+
+        ",@ysn_kodu              --<ysn_kodu, nvarchar(25),>   \n"+
+        ",@ysn_ismi              --<ysn_ismi, [dbo].[nvarchar_maxhesapisimno],>   \n"+ 
+        " ) ",
+        param:['ysn_kodu:string|50','ysn_ismi:string|50']
+    },
+    YilInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_ANAHAMMADDELERI]  " +
+        "([ahm_Guid]  " +
+        ",[ahm_DBCno]  " +
+        ",[ahm_SpecRECNo]  " +
+        ",[ahm_iptal]  " +
+        ",[ahm_fileid]  " +
+        ",[ahm_hidden]  " +
+        ",[ahm_kilitli]  " +
+        ",[ahm_degisti]  " +
+        ",[ahm_CheckSum]  " +
+        ",[ahm_create_user]  " +
+        ",[ahm_create_date]  " +
+        ",[ahm_lastup_user]  " +
+        ",[ahm_lastup_date]  " +
+        ",[ahm_special1]  " +
+        ",[ahm_special2]  " +
+        ",[ahm_special3]  " +
+        ",[ahm_kodu]  " +
+        ",[ahm_ismi])  " +
+        "VALUES  " +
+        "(newid()              --<ahm_Guid, uniqueidentifier,>   \n"+ 
+        ",0              --<ahm_DBCno, smallint,>   \n"+ 
+        ",0              --<ahm_SpecRECNo, int,>   \n"+ 
+        ",0              --<ahm_iptal, bit,>   \n"+ 
+        ",0              --<ahm_fileid, smallint,>   \n"+ 
+        ",0              --<ahm_hidden, bit,>   \n"+ 
+        ",0              --<ahm_kilitli, bit,>   \n"+ 
+        ",0              --<ahm_degisti, bit,>   \n"+ 
+        ",0              --<ahm_CheckSum, int,>   \n"+ 
+        ",1              --<ahm_create_user, smallint,>   \n"+ 
+        ",getdate()              --<ahm_create_date, datetime,>   \n"+ 
+        ",1              --<ahm_lastup_user, smallint,>   \n"+ 
+        ",getdate()              --<ahm_lastup_date, datetime,>   \n"+ 
+        ",''              --<ahm_special1, nvarchar(4),>   \n"+ 
+        ",''              --<ahm_special2, nvarchar(4),>   \n"+ 
+        ",''              --<ahm_special3, nvarchar(4),>   \n"+ 
+        ",@ahm_kodu              --<ahm_kodu, nvarchar(25),>   \n"+ 
+        ",@ahm_ismi              --<ahm_ismi, [dbo].[nvarchar_maxhesapisimno],> \n"+ 
+        ") ",
+        param:['ahm_kodu:string|50','ahm_ismi:string|50']
+    },
+    KaliteInsert : 
+    {
+        query : "INSERT INTO [dbo].[STOK_KALITE_KONTROL_TANIMLARI]  " +
+        "([KKon_Guid]  " +
+        ",[KKon_DBCno]  " +
+        ",[KKon_SpecRecno]  " +
+        ",[KKon_iptal]  " +
+        ",[KKon_fileid]  " +
+        ",[KKon_hidden]  " +
+        ",[KKon_kilitli]  " +
+        ",[KKon_degisti]  " +
+        ",[KKon_checksum]  " +
+        ",[KKon_create_user]  " +
+        ",[KKon_create_date]  " +
+        ",[KKon_lastup_user]  " +
+        ",[KKon_lastup_date]  " +
+        ",[KKon_special1]  " +
+        ",[KKon_special2]  " +
+        ",[KKon_special3]  " +
+        ",[KKon_kod]  " +
+        ",[KKon_ismi])  " +
+        " VALUES  " +
+        "(newid()              --<KKon_Guid, uniqueidentifier,>  \n"+ 
+        ",0              --<KKon_DBCno, smallint,>  \n"+ 
+        ",0              --<KKon_SpecRecno, int,>  \n"+ 
+        ",0              --<KKon_iptal, bit,>  \n"+ 
+        ",0              --<KKon_fileid, smallint,>  \n"+ 
+        ",0              --<KKon_hidden, bit,>  \n"+ 
+        ",0              --<KKon_kilitli, bit,>  \n"+ 
+        ",0              --<KKon_degisti, bit,>  \n"+ 
+        ",0              --<KKon_checksum, int,>  \n"+ 
+        ",1              --<KKon_create_user, smallint,>  \n"+ 
+        ",getdate()              --<KKon_create_date, datetime,>  \n"+ 
+        ",1              --<KKon_lastup_user, smallint,>  \n"+ 
+        ",getdate()              --<KKon_lastup_date, datetime,>  \n"+ 
+        ",''              --<KKon_special1, nvarchar(4),>  \n"+ 
+        ",''              --<KKon_special2, nvarchar(4),>  \n"+ 
+        ",''              --<KKon_special3, nvarchar(4),>  \n"+ 
+        ",@KKon_kod              --<KKon_kod, nvarchar(25),>  \n"+ 
+        ",@KKon_ismi              --<KKon_ismi, [dbo].[nvarchar_maxhesapisimno],>  \n"+ 
+        " ) ",
     }
+   
 
 
 };
