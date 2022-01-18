@@ -1,8 +1,8 @@
 /// <XRTypeInfo>
 ///   <AssemblyFullName>DevExpress.XtraReports.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</AssemblyFullName>
-///   <AssemblyLocation>C:\Project\Nitrogen\NitroWEB\devprint\DevPrintDesign\bin\Debug\DevExpress.XtraReports.v19.2.dll</AssemblyLocation>
+///   <AssemblyLocation>C:\NitroWEB\devprint\DevPrintDesign\bin\Debug\DevExpress.XtraReports.v19.2.dll</AssemblyLocation>
 ///   <TypeName>DevExpress.XtraReports.UI.XtraReport</TypeName>
-///   <Localization>tr-TR</Localization>
+///   <Localization>en-US</Localization>
 ///   <Version>19.2</Version>
 ///   <Resources>
 ///     <Resource Name="XtraReportSerialization.xtraReport1">
@@ -188,7 +188,10 @@ namespace XtraReportSerialization {
             this.PageHeight = 120;
             this.PageWidth = 240;
             this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
-            this.PrinterName = "Microsoft Print to PDF";
+            this.PrinterName = "BARKOD_1";
+            this.ShowPreviewMarginLines = false;
+            this.ShowPrintMarginsWarning = false;
+            this.ShowPrintStatusDialog = false;
             this.StyleSheetPath = "";
             this.Version = "19.2";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();

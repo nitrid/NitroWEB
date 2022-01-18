@@ -455,6 +455,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         $scope.TabanAdi = '';
         $scope.AstarAdi = '';
         $scope.PreviewImage = ''
+        $scope.AyakNo = '';
 
 
        
@@ -468,10 +469,13 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             },
             key : "key",
             value : "value",
-            defaultVal : 'Toptan_kutu_Tasarım.repx',
-            selectionMode : "key",
-            return : 'Toptan_kutu_Tasarım.repx',
-            
+            defaultVal : $rootScope.GeneralParamList.Tasarim,
+            selectionMode : "value",
+            return : $rootScope.GeneralParamList.Tasarim,
+            onSelected : function(pSelected)
+            {
+                $rootScope.GeneralParamList.Tasarim = pSelected
+            }
         }
         $scope.StokHesap();
         $scope.FiyatListGetir('')
@@ -871,7 +875,14 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             resolve(TasarimList);
         });
     }
-    $scope.EtiketYazdir = async function()
+    $scope.EtiketYazdir = function()
+    {
+        for (let i = 0; i < $scope.BasimAdet; i++) 
+        {
+            $scope.EtiketYazdir2()
+        }
+    }
+    $scope.EtiketYazdir2 = async function()
     {
         if($scope.BteStokKodu.txt == '')
         {
@@ -881,24 +892,27 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "select sto_kalkon_kodu AS KALITE , sto_sezon_kodu AS RENK,sto_marka_kodu AS MATERYAL,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod and bar_birimpntr = 1) AS BARKOD from STOKLAR WHERE sto_kod = @sto_kod " ,
+            query : "select sto_kalkon_kodu AS KALITE ,'https://altinayak.com.tr/upload/product/'+sto_kod+'-1.jpg' AS RESIM, (SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu =  sto_sezon_kodu) AS RENK,(SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu =  sto_sezon_kodu) AS RENK1,(SELECT mrk_ismi FROM STOK_MARKALARI WHERE mrk_kod=sto_marka_kodu) AS MATERYAL,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod and bar_birimpntr = 1) AS BARKOD from STOKLAR WHERE sto_kod = @sto_kod " ,
             param : ['sto_kod'],
             type : ['string|25'],
             value : [$scope.BteStokKodu.txt]
         }
         let TmpResult = await srv.Execute(TmpQuery)
-
-        return new Promise(async resolve => 
-        {
-                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "TOPTANKUTU.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+        TmpResult[0].AYAKNO = $scope.AyakNo
+        console.log(TmpResult)
+            return new Promise(async resolve => 
                 {
-                    console.log(pResult)
-                })
-            
-        
-            swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
-            resolve()
-        });
+                        srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $scope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+                        {
+                            console.log(pResult)
+                        })
+                    
+                
+                    swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+                    resolve()
+                });
+       
+       
     }
     $scope.UreticiKaydet = async function()
     {
