@@ -453,117 +453,117 @@ angular.module("app",
      
  )
  //Rovigo 
- .state
- (
-     {
-         name: 'main.Yilkodu',
-         url: '/Yilkodu',
-         templateUrl : "view/Rovigo/Yilkodu.html",
-         controller:"Yilkodu"
-     }
- ) .state
+//  .state
+//  (
+//      {
+//          name: 'main.Yilkodu',
+//          url: '/Yilkodu',
+//          templateUrl : "view/Rovigo/Yilkodu.html",
+//          controller:"Yilkodu"
+//      }
+//  ) .state
 
- (
-     {
-         name: 'main.Tabancinsikodu',
-         url: '/Tabancinsikodu',
-         templateUrl : "view/Rovigo/Tabancinsikodu.html",
-         controller:"Tabancinsikodu"
-     }
- ) .state
+//  (
+//      {
+//          name: 'main.Tabancinsikodu',
+//          url: '/Tabancinsikodu',
+//          templateUrl : "view/Rovigo/Tabancinsikodu.html",
+//          controller:"Tabancinsikodu"
+//      }
+//  ) .state
 
- (
-     {
-         name: 'main.Astarkodu',
-         url: '/Astarkodu',
-         templateUrl : "view/Rovigo/Astarkodu.html",
-         controller:"Astarkodu"
-     }
- )   .state
+//  (
+//      {
+//          name: 'main.Astarkodu',
+//          url: '/Astarkodu',
+//          templateUrl : "view/Rovigo/Astarkodu.html",
+//          controller:"Astarkodu"
+//      }
+//  )   .state
 
- (
-     {
-         name: 'main.Topukboyu',
-         url: '/Topukboyu',
-         templateUrl : "view/Rovigo/Topukboyu.html",
-         controller:"Topukboyu"
-     }
- )  
- .state
+//  (
+//      {
+//          name: 'main.Topukboyu',
+//          url: '/Topukboyu',
+//          templateUrl : "view/Rovigo/Topukboyu.html",
+//          controller:"Topukboyu"
+//      }
+//  )  
+//  .state
 
- (
-     {
-         name: 'main.Altgrup_1',
-         url: '/Altgrup_1',
-         templateUrl : "view/Rovigo/Altgrup_1.html",
-         controller:"Altgrup_1"
-     }
- ) .state
+//  (
+//      {
+//          name: 'main.Altgrup_1',
+//          url: '/Altgrup_1',
+//          templateUrl : "view/Rovigo/Altgrup_1.html",
+//          controller:"Altgrup_1"
+//      }
+//  ) .state
 
- (
-     {
-         name: 'main.Anagrup1',
-         url: '/Anagrup1',
-         templateUrl : "view/Rovigo/Anagrup1.html",
-         controller:"Anagrupctrl"
-     } 
-     )
-      .state
+//  (
+//      {
+//          name: 'main.Anagrup1',
+//          url: '/Anagrup1',
+//          templateUrl : "view/Rovigo/Anagrup1.html",
+//          controller:"Anagrupctrl"
+//      } 
+//      )
+//       .state
 
-     (
-         {
-             name: 'main.Renkkodu',
-             url: '/Renkkodu',
-             templateUrl : "view/Rovigo/Renkkodu.html",
-             controller:"Renkkodu"
-         }
-     ) 
-     .state
+//      (
+//          {
+//              name: 'main.Renkkodu',
+//              url: '/Renkkodu',
+//              templateUrl : "view/Rovigo/Renkkodu.html",
+//              controller:"Renkkodu"
+//          }
+//      ) 
+//      .state
 
-     (
-         {
-             name: 'main.Materyal_R',
-             url: '/Materyal_R',
-             templateUrl : "view/Rovigo/Materyal_R.html",
-             controller:"Materyal_R"
-         }
-     ).state
+//      (
+//          {
+//              name: 'main.Materyal_R',
+//              url: '/Materyal_R',
+//              templateUrl : "view/Rovigo/Materyal_R.html",
+//              controller:"Materyal_R"
+//          }
+//      ).state
 
-     (
-         {
-             name: 'main.Renkmodel',
-             url: '/Renkmodel',
-             templateUrl : "view/Rovigo/Renkmodel.html",
-             controller:"Renkmodel"
-         }
-     )  .state
+//      (
+//          {
+//              name: 'main.Renkmodel',
+//              url: '/Renkmodel',
+//              templateUrl : "view/Rovigo/Renkmodel.html",
+//              controller:"Renkmodel"
+//          }
+//      )  .state
 
-     (
-         {
-             name: 'main.Kalitekodu',
-             url: '/Kalitekodu',
-             templateUrl : "view/Rovigo/Kalitekodu.html",
-             controller:"Kalitekodu"
-         }
-     ).state
+//      (
+//          {
+//              name: 'main.Kalitekodu',
+//              url: '/Kalitekodu',
+//              templateUrl : "view/Rovigo/Kalitekodu.html",
+//              controller:"Kalitekodu"
+//          }
+//      ).state
 
-     (
-         {
-             name: 'main.Uretici_R',
-             url: '/Uretici_R',
-             templateUrl : "view/Rovigo/Uretici_R.html",
-             controller:"Uretici_R"
-         }
-     ) .state
+//      (
+//          {
+//              name: 'main.Uretici_R',
+//              url: '/Uretici_R',
+//              templateUrl : "view/Rovigo/Uretici_R.html",
+//              controller:"Uretici_R"
+//          }
+//      ) .state
 
-     (
-         {
-             name: 'main.Stimage',
-             url: '/Stimage',
-             templateUrl : "view/Rovigo/Stimage.html",
-             controller:"Stimage"
-         }
-     )      
+//      (
+//          {
+//              name: 'main.Stimage',
+//              url: '/Stimage',
+//              templateUrl : "view/Rovigo/Stimage.html",
+//              controller:"Stimage"
+//          }
+//      )      
                 
            
      

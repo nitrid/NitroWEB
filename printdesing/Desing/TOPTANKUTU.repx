@@ -122,7 +122,7 @@ namespace XtraReportSerialization {
             // label2
             // 
             this.label2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DATA.MATERYEL1]")});
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DATA.MATERYAL]")});
             this.label2.Font = new System.Drawing.Font("Times New Roman", 8F);
             this.label2.LocationFloat = new DevExpress.Utils.PointFloat(108.125F, 50.49998F);
             this.label2.Name = "label2";

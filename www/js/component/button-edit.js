@@ -92,9 +92,10 @@ angular.module('app').component('buttonEdit',
                     (
                         {
                             dataSource: TmpData,
-                            allowColumnResizing: true,
+                            // allowColumnResizing: true,
                             width: "100%",
-                            columnWidth: 100,
+                            columnMinWidth: 50,
+                            columnAutoWidth: true,
                             selection: 
                             {
                                 mode: "single"
@@ -114,6 +115,10 @@ angular.module('app').component('buttonEdit',
                             headerFilter: 
                             {
                                 visible: true
+                            },
+                            scrolling: 
+                            {
+                                columnRenderingMode: "horizontal"
                             },
                             onSelectionChanged: function (selectedItems) 
                             {

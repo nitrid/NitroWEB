@@ -9,21 +9,68 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT sto_kod AS KODU, sto_isim AS ADI FROM STOKLAR",
+                query : "SELECT sto_kod AS KODU, sto_isim As ADI, " +
+                        "ISNULL((Select TOP 1 msg_S_0135 FROM STOK_ANA_GRUPLARI_CHOOSE_2 WHERE msg_S_0135 = sto_anagrup_kod),'') AS ANAGRUP,  " +
+                        "ISNULL((SELECT TOP 1 msg_S_0135 FROM STOK_ALT_GRUPLARI_CHOOSE_2 WHERE msg_S_0135 = sto_altgrup_kod),'') AS ALTGRUP,  " +
+                        "sto_kalkon_kodu AS KALITE,  " +
+                        "ISNULL((SELECT TOP 1 mrk_ismi FROM STOK_MARKALARI WHERE mrk_kod = sto_marka_kodu),'') AS MATERYAL,  " +
+                        "ISNULL((SELECT TOP 1 [msg_S_0070] FROM STOK_YILSEZON_TANIMLARI_CHOOSE_2 WHERE [msg_S_0078] = sto_sezon_kodu),'') AS RENK,  " +
+                        "ISNULL((SELECT TOP 1 [msg_S_0019] FROM STOK_URETICILERI_CHOOSE_2 WHERE [msg_S_0018] = sto_uretici_kodu),'') AS URETICI,  " +
+                        "ISNULL((SELECT TOP 1 msg_S_0078 FROM STOK_MODEL_TANIMLARI_CHOOSE_2 WHERE msg_S_0078 = sto_model_kodu),'') AS MODEL,  " +
+                        "ISNULL((SELECT TOP 1 ahm_kodu FROM STOK_ANAHAMMADDELERI WHERE ahm_kodu = sto_hammadde_kodu),'') AS YIL,  " +
+                        "sto_standartmaliyet AS ALIS, " +
+                        "dbo.fn_StokSatisFiyati(sto_kod,1,0,0) AS SATIS, " +
+                        "ISNULL((SELECT dbo.fn_DepodakiMiktar (sto_kod,1,CONVERT(VARCHAR(10),GETDATE(),112))),0) AS [MIKTARI],  " +
+                        "CASE WHEN sto_special3 = 1 THEN 'VAR' ELSE 'YOK' END AS RESIM  " +
+                        "FROM STOKLAR WHERE sto_pasif_fl = 0 ",
             },
             selection : "KODU",
-            
-           txt: "",
+            txt: "",
             columns :
             [
                 {
                     dataField: "KODU",
-                    width: 200
+                    width: 160
                 }, 
                 {
                     dataField: "ADI",
                     width: 200
+                },
+                {
+                    dataField: "ALTGRUP",
                 }, 
+                {
+                    dataField: "KALITE",
+                }, 
+                {
+                    dataField: "RENK",
+                }, 
+                {
+                    dataField: "MATERYAL",
+                    width: 120
+                }, 
+                {
+                    dataField: "URETICI",
+                }, 
+                {
+                    dataField: "MODEL",
+                },
+                {
+                    dataField: "YIL",
+                },
+                {
+                    dataField: "ALIS",
+                },
+                {
+                    dataField: "SATIS",
+                },
+                {
+                    dataField: "MIKTARI",
+                },
+                {
+                    dataField: "RESIM",
+                    width: 70
+                },
             ],
             onClick : function(pCallback)
             {                                
@@ -134,7 +181,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
                 $scope.StokAdi = pData.ADI;
                 $scope.KaliteAdi = pData.ADI
                 $scope.KaliteKodu = pData.KODU
-                $scope.StokKodOlustur()
+                $scope.StokKodOlustur(1)
             }
         }
         $scope.BteModel = 
@@ -233,7 +280,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
                
             }
         }
-
         $scope.BteMateryal = 
         {
             title : "Materyal",
@@ -241,10 +287,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT mrk_kod AS KODU, mrk_ismi AS ADI FROM STOK_MARKALARI ",
+                query : "SELECT mrk_kod AS KODU, mrk_ismi AS ADI FROM STOK_MARKALARI ORDER BY mrk_kod",
             },
             selection : "KODU",
-           txt: "",
+            txt: "",
             columns :
             [
                 {
@@ -265,11 +311,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             {
                 $scope.MateryalAdi = pData.ADI;
                 $scope.MateryalKodu = pData.KODU
-                $scope.StokKodOlustur()
+                $scope.StokKodOlustur(2)
                
             }
         }
-
         $scope.BteRenk = 
         {
             title : "Renk Seçimi",
@@ -277,10 +322,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : "SELECT [msg_S_0078] AS KODU, [msg_S_0070] AS ADI FROM STOK_YILSEZON_TANIMLARI_CHOOSE_2 ",
+                query : "SELECT [msg_S_0078] AS KODU, [msg_S_0070] AS ADI FROM STOK_YILSEZON_TANIMLARI_CHOOSE_2 ORDER BY [msg_S_0078]",
             },
             selection : "KODU",
-           txt: "",
+            txt: "",
             columns :
             [
                 {
@@ -300,7 +345,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             {
                 $scope.RenkAdi = pData.ADI;
                 $scope.RenkKodu = pData.KODU
-                $scope.StokKodOlustur()
+                $scope.StokKodOlustur(3)
             }
         }
         $scope.BteTopukBoyu = 
@@ -310,10 +355,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " SELECT [msg_S_0020] AS KODU,[msg_S_1080] AS ADI FROM STOK_REYONLARI_CHOOSE_2 ORDER BY  [msg_S_0020] ASC",
+                query : " SELECT [msg_S_0020] AS KODU,[msg_S_1080] AS ADI FROM STOK_REYONLARI_CHOOSE_2 ORDER BY [msg_S_0020] ASC",
             },
             selection : "KODU",
-           txt: "",
+            txt: "",
             columns :
             [
                 {
@@ -341,12 +386,11 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         $scope.BteTaban = 
         {
             title : "Taban Seçimi",
-            
              
             datasource : 
             {
                 db : "{M}." + $scope.Firma,
-                query : " SELECT [msg_S_0022] AS KODU, [msg_S_0023] AS ADI FROM STOK_SEKTORLERI_CHOOSE_2 ORDER BY  [msg_S_0022] ASC",
+                query : " SELECT [msg_S_0022] AS KODU, [msg_S_0023] AS ADI FROM STOK_SEKTORLERI_CHOOSE_2 ORDER BY [msg_S_0022] ASC",
             },
             selection : "KODU",
            txt: "",
@@ -371,7 +415,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
                
             }
         }
-
         $scope.BteYilAdi = 
         {
             title : "Yıl Seçimi",
@@ -456,9 +499,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         $scope.AstarAdi = '';
         $scope.PreviewImage = ''
         $scope.AyakNo = '';
-
-
-       
        
         InitObj();
         $scope.CmbTasarimList =
@@ -524,8 +564,24 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     {
         $('#MdlAstar').modal("show");
     }
-    $scope.StokKodOlustur =async function()
+    $scope.StokKodOlustur =async function(pType)
     {
+        if(pType == 1) //Kalite
+        {
+            $scope.RenkKodu = $scope.BteRenk.txt
+            $scope.MateryalKodu = $scope.BteMateryal.txt
+        }
+        else if(pType == 2) //Materyal
+        {
+            $scope.KaliteKodu = $scope.BteKalite.txt
+            $scope.RenkKodu = $scope.BteRenk.txt
+        }
+        else if(pType == 3) //Renk
+        {
+            $scope.KaliteKodu = $scope.BteKalite.txt
+            $scope.MateryalKodu = $scope.BteMateryal.txt
+        }
+
         if($scope.KaliteKodu  == '')
         {
             $scope.KaliteKodu = $scope.BteKalite.txt
@@ -555,18 +611,18 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.BteAstar.txt, 
             $scope.BteMateryal.txt,  
             $scope.BteModel.txt,
+            $scope.BteKalite.txt,
             $scope.BteRenk.txt,
             $scope.BteYilAdi.txt,
-            $scope.BteKalite.txt,
             $scope.Maliyet,
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
-       for (let i = 0; i < $scope.FiyatListeleri.length; i++) 
-       {
-           $scope.SatisFiyatInsert($scope.FiyatListeleri[i].sfl_sirano,$scope.FiyatListeleri[i].MODEL)
-       }
-       await $scope.BarkodInsert()
-       swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
+        for (let i = 0; i < $scope.FiyatListeleri.length; i++) 
+        {
+            $scope.SatisFiyatInsert($scope.FiyatListeleri[i].sfl_sirano,$scope.FiyatListeleri[i].MODEL)
+        }
+        await $scope.BarkodInsert()
+        swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
     }
     $scope.BarkodGetirKey = async function(keyEvent)
     {
@@ -587,7 +643,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.StokGetir(SeriKontrol[0].bar_stokkodu);
         }
     }
-
     $scope.StokKaydet =  async function()
     {
         let TmpQuery = 
@@ -601,7 +656,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         if(tmpdata.length > 0 )
         {
             $scope.StokUpdate()
-            console.log(11)
         }
         else
         {
@@ -612,7 +666,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             else
             {
                 $scope.StokInsert()
-                console.log(22)
             }
         }
         
@@ -654,6 +707,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         ]
         console.log(TmpInsertData)
         let InsertKontrol = await srv.Execute($scope.Firma,'StokBarkodInsert',TmpInsertData);
+        if(InsertKontrol == "")
+        {
+            $scope.StokHesap()
+        }
     }
     $scope.FiyatListGetir = async function(pValue)
     {
@@ -674,7 +731,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.BteStokKodu.txt,
             pListe,
             pFiyat,
-            pListe
+            pFiyat
         ]
         console.log(TmpInsertData)
         let InsertKontrol = await srv.Execute($scope.Firma,'SatisFiyatInsert',TmpInsertData);
@@ -695,7 +752,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             AutoStr += chars[Math.floor(Math.random() * chars.length)];
         }
         referans = referans + AutoStr
-        console.log(referans)
         output = [],
         sNumber = referans.toString();
     
@@ -722,9 +778,9 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         }
         let SeriKontrol = await srv.Execute(TmpQuery)
         if(SeriKontrol.length > 0)
-         {
+        {
             $scope.StokHesap()
-         }
+        }
     }
     $scope.AnaGruplarInsert=async function()
     {
@@ -768,7 +824,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         }else{
             $scope.AnaGruplarInsert()  }
     }
-
     $scope.AltGruplarKaydet = async function()
     {
         if($scope.AnaGrupAdi == '' || $scope.AltGrupKodu == '' || $scope.AltGrupAdi == '')
@@ -864,7 +919,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         {
             let TasarimList = [];
     
-            console.log(srv)
             srv.Emit('DesingList',"",(pResult)=>
             {
                 for (let i = 0; i < pResult.length; i++) 
@@ -875,11 +929,11 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             resolve(TasarimList);
         });
     }
-    $scope.EtiketYazdir = function()
+    $scope.EtiketYazdir = async function()
     {
         for (let i = 0; i < $scope.BasimAdet; i++) 
         {
-            $scope.EtiketYazdir2()
+            await $scope.EtiketYazdir2()
         }
     }
     $scope.EtiketYazdir2 = async function()
@@ -900,17 +954,16 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         let TmpResult = await srv.Execute(TmpQuery)
         TmpResult[0].AYAKNO = $scope.AyakNo
         console.log(TmpResult)
-            return new Promise(async resolve => 
-                {
-                        srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $scope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
-                        {
-                            console.log(pResult)
-                        })
-                    
-                
-                    swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
-                    resolve()
-                });
+        return new Promise(async resolve => 
+        {
+            srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $scope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+            {
+                console.log(pResult)
+            })
+        
+            swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+            resolve()
+        });
        
        
     }
@@ -930,17 +983,19 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     }
     $scope.KaliteKaydet = async function()
     {
-        
         let TmpInsertData = 
         [
             $scope.YeniKaliteKodu,
-            $scope.YeniKaliteAdi
-                       
+            $scope.YeniKaliteAdi           
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'KaliteInsert',TmpInsertData);
-         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
-         $scope.YeniKaliteKodu = ''
-         $scope.YeniKaliteAdi = ''
+        if(InsertKontrol == "")
+        {
+            swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+            $scope.YeniKaliteKodu = ''
+            $scope.YeniKaliteAdi = ''
+        }
+
     }
     $scope.MateryalKaydet = async function()
     {
