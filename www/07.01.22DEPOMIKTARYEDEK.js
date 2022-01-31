@@ -34,7 +34,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             datasource : 
             {
                 db: "{M}." + $scope.Firma,
-                query : "SELECT '0' AS KODU,'TÃœMÃœ' AS ACIKLAMA " +
+                query : "SELECT '0' AS KODU,'TÜMÜ' AS ACIKLAMA " +
                         "UNION ALL " +
                         "SELECT Op_Kodu AS KODU,Op_Aciklama AS ACIKLAMA FROM URETIM_OPERASYONLARI ORDER BY KODU " ,
             },
@@ -78,7 +78,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 db: "{M}." + $scope.Firma,
                 query : "SELECT " +
                         "CASE WHEN is_Onayli_fl = 0 THEN 'ONAYSIZ' WHEN is_Onayli_fl = 1 THEN 'ONAYLI' END AS ONAYDURUMU, " +
-                        "CASE WHEN is_Onceligi = 0 THEN 'DÃœÅžÃœK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÃœKSEK' END AS ONCELIK, " +
+                        "CASE WHEN is_Onceligi = 0 THEN 'DÜÞÜK' WHEN is_Onceligi = 1 THEN 'NORMAL' WHEN is_Onceligi = 2 THEN 'YÜKSEK' END AS ONCELIK, " +
                         "CONVERT(varchar,is_BaslangicTarihi,102) AS IS_EMRI_ACILIS_TARIH, " +
                         "CONVERT(varchar,is_Emri_AktiflesmeTarihi,102) AS IS_EMRI_AKTIFLESTIRME_TARIH, " +
                         "CONVERT(varchar,is_Emri_PlanBaslamaTarihi,102) AS IS_EMRI_PLANLAMA_TARIH, " +
@@ -122,16 +122,16 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                         "((ROTA.RtP_OperasyonKodu = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
                         "((TERP.ISEMRI_ISTASYON_KOD = @RtP_OperasyonKodu) OR (@RtP_OperasyonKodu = '0')) AND " +
                         "ISM.is_Onayli_fl = @is_Onayli_fl   " +
-                        "ORDER BY ISEMRI_STATUS DESC,CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) asc ,ISNULL((SELECT RT.RtP_TamamlananMiktar FROM URETIM_ROTA_PLANLARI AS RT WHERE RT.RtP_OperasyonSafhaNo = ROTA.RtP_OperasyonSafhaNo - 1 AND RT.RtP_IsEmriKodu = is_Kod),0) desc,SIPARISNO",
+                        "ORDER BY ISEMRI_STATUS DESC,CONVERT(int,TERP.ISEMRI_ISTASYON_SIRA) asc ,ISNULL((SELECT RT.RtP_TamamlananMiktar FROM URETIM_ROTA_PLANLARI AS RT WHERE RT.RtP_OperasyonSafhaNo = ROTA.RtP_OperasyonSafhaNo - 1 AND RT.RtP_IsEmriKodu = is_Kod),0) desc" ,
                         param : ['RtP_OperasyonKodu:string|20','is_Onayli_fl:string|5'],
                         value : [pKod,$rootScope.GeneralParamList.IsEmriOnayDurumu]
             }
 
-            let Data = await srv.Execute(TmpQuery); //GRUPLAMA Ä°ÅžLEMÄ°
+            let Data = await srv.Execute(TmpQuery); //GRUPLAMA ÝÞLEMÝ
 
             if(Data.length == 0)
             {
-                swal("UyarÄ±", "GÃ¶sterilecek Veri BulunamadÄ±.",icon="warning");
+                swal("Uyarý", "Gösterilecek Veri Bulunamadý.",icon="warning");
             }
 
             PlanlananEmriGrid(Data,pColor);
@@ -175,25 +175,25 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 {
                     width: 50,
                     dataField: "ISTASYONSIRA",
-                    caption: "Istasyon SÄ±ra",
+                    caption: "Istasyon Sýra",
                     alignment: "center"
                 },
                 {
                     width: 80,
                     dataField: "SIPARISNO",
-                    caption: "SipariÅŸ No",
+                    caption: "Sipariþ No",
                     alignment: "center"
                 },
                 {
                     width: 100,
                     dataField: "KODU",
-                    caption: "Ä°ÅŸ Emri No",
+                    caption: "Ýþ Emri No",
                     alignment: "center"
                 },
                 {
                     width: 80,
                     dataField: "ONCEKIISTASYONTAMAMLANANMIKTAR",
-                    caption: "Ã–nceki Ä°stasyon Tamamlanan Miktar",
+                    caption: "Önceki Ýstasyon Tamamlanan Miktar",
                     alignment: "center"
                 },
                 {
@@ -215,9 +215,9 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                     alignment: "left"
                 },
                 {
-                    width: 500,
+                    width: 300,
                     dataField: "STOKADI",
-                    caption: "Stok AdÄ±",
+                    caption: "Stok Adý",
                     alignment: "left"
                 },
                
@@ -246,14 +246,14 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                     alignment: "left"
                 },
                 {      
-                    caption: "Ä°ÅžLEMLER",
+                    caption: "ÝÞLEMLER",
                     width: 90,
                     type: "buttons",
                     buttons: 
                     [ 
                         {
                             icon: "print",
-                            text: "ETÄ°KES BAS",
+                            text: "ETÝKES BAS",
                             onClick: function (e) 
                             {
 
@@ -285,19 +285,19 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             {  
                 if (e.rowType == 'data' && e.data.ISEMRISTATUS == 0)  
                 {  
-                    e.rowElement.css("background-color", "#87bdd8"); //PLANLANAN Ä°Åž EMÄ°RLERÄ°
+                    e.rowElement.css("background-color", "#87bdd8"); //PLANLANAN ÝÞ EMÝRLERÝ
                 }
                 else if(e.rowType == 'data'  && e.data.ISEMRISTATUS == 1)
                 {
-                    e.rowElement.css("background-color", "#FFFF00"); //AKTÄ°F Ä°Åž EMÄ°RLERÄ°
+                    e.rowElement.css("background-color", "#FFFF00"); //AKTÝF ÝÞ EMÝRLERÝ
                 }
                 else if(e.rowType == 'data' && e.data.ISEMRISTATUS == 2)
                 {
-                    e.rowElement.css("background-color", "#eea29a"); //KAPANMIÅž Ä°Åž EMÄ°RLERÄ°
+                    e.rowElement.css("background-color", "#eea29a"); //KAPANMIÞ ÝÞ EMÝRLERÝ
                 }
                 else if(e.rowType == 'data' && e.data.ISEMRISTATUS == 3)
                 {
-                    e.rowElement.css("background-color", "#ff0000"); //DURDURULMUS Ä°Åž EMÄ°RLERÄ°
+                    e.rowElement.css("background-color", "#ff0000"); //DURDURULMUS ÝÞ EMÝRLERÝ
                 }
             },
             onSelectionChanged: async function (selectedItems) 
@@ -354,7 +354,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 {
                     width: 150,
                     dataField: "DEPO",
-                    caption: "DEPO MÄ°KTAR",
+                    caption: "DEPO MÝKTAR",
                     alignment: "center"
                 },
             ],
@@ -394,13 +394,13 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         {
             for (let i = 0; i < $scope.BasimMiktar; i++) 
             {
-                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $rootScope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(pData).split("Ä°").join("I").split("Ã‡").join("C").split("Ã§").join("c").split("Äž").join("G").split("ÄŸ").join("g").split("Åž").join("S").split("ÅŸ").join("s").split("Ã–").join("O").split("Ã¶").join("o").split("Ãœ").join("U").split("Ã¼").join("u") +"}",(pResult)=>
+                srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $rootScope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(pData).split("Ý").join("I").split("Ç").join("C").split("ç").join("c").split("Ð").join("G").split("ð").join("g").split("Þ").join("S").split("þ").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
                 {
                     console.log(pResult)
                 })
             }
        
-            swal("Ä°ÅŸlem BaÅŸarÄ±lÄ±!", "Etiket YazdÄ±rma Ä°ÅŸlemi GerÃ§ekleÅŸtirildi.",icon="success");
+            swal("Ýþlem Baþarýlý!", "Etiket Yazdýrma Ýþlemi Gerçekleþtirildi.",icon="success");
             resolve()
         });
     }
@@ -420,10 +420,10 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                         "upl_kodu AS KODU, " +
                         "ISNULL((SELECT sto_isim FROM STOKLAR WHERE sto_kod = upl_kodu),'') AS ADI, " +
                         "upl_isemri AS ISEMRI, " +
-                        "CASE WHEN upl_uretim_tuket = 1 THEN 'ÃœRETÄ°M' ELSE 'TÃœKETÄ°M' END AS TIP, " +
+                        "CASE WHEN upl_uretim_tuket = 1 THEN 'ÜRETÝM' ELSE 'TÜKETÝM' END AS TIP, " +
                         "upl_uretim_tuket AS URETTUKET, " +
                         "upl_depno AS DEPO, " +
-                        " dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) AS DEPOMIKTAR, " +
+                        "CASE (SELECT sto_cins FROM STOKLAR WHERE sto_kod = upl_kodu) WHEN 1 THEN ISNULL((SELECT SUM(sth_miktar) FROM STOK_HAREKETLERI WHERE sth_stok_kod = upl_kodu AND sth_HareketGrupKodu1 = @SIPARIS AND sth_evraktip = 2),0) ELSE dbo.fn_DepodakiMiktar(upl_kodu,upl_depno,GETDATE()) END AS DEPOMIKTAR, " +
                         "upl_miktar AS PMIKTAR, " +
                         "upl_miktar / ISNULL((SELECT TOP 1 upl_miktar FROM URETIM_MALZEME_PLANLAMA AS UMP2 WHERE UMP2.upl_isemri = UMP1.upl_isemri AND UMP2.upl_uretim_tuket = 1 ORDER BY upl_satirno ASC),1) AS BMIKTAR " +
                         "FROM URETIM_MALZEME_PLANLAMA AS UMP1 WHERE upl_isemri = @upl_isemri AND upl_safhano = @upl_safhano",
@@ -578,8 +578,8 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             [
                 $rootScope.GeneralParamList.MikroId,
                 $rootScope.GeneralParamList.MikroId,
-                0, //FÄ°RMA NO
-                0, //ÅžUBE NO
+                0, //FÝRMA NO
+                0, //ÞUBE NO
                 moment(new Date()).format("DD.MM.YYYY"),
                 TmpTip,
                 7,
@@ -600,64 +600,64 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 1, //ISKONTO 8
                 1, //ISKONTO 9
                 1, //ISKONTO 10
-                0, //SATIR ISKONTO TÄ°P 1
-                0, //SATIR ISKONTO TÄ°P 2
-                0, //SATIR ISKONTO TÄ°P 3
-                0, //SATIR ISKONTO TÄ°P 4
-                0, //SATIR ISKONTO TÄ°P 5
-                0, //SATIR ISKONTO TÄ°P 6
-                0, //SATIR ISKONTO TÄ°P 7
-                0, //SATIR ISKONTO TÄ°P 8
-                0, //SATIR ISKONTO TÄ°P 9
-                0, //SATIR ISKONTO TÄ°P 10
-                0, //CARÄ°CÄ°NSÄ°
+                0, //SATIR ISKONTO TÝP 1
+                0, //SATIR ISKONTO TÝP 2
+                0, //SATIR ISKONTO TÝP 3
+                0, //SATIR ISKONTO TÝP 4
+                0, //SATIR ISKONTO TÝP 5
+                0, //SATIR ISKONTO TÝP 6
+                0, //SATIR ISKONTO TÝP 7
+                0, //SATIR ISKONTO TÝP 8
+                0, //SATIR ISKONTO TÝP 9
+                0, //SATIR ISKONTO TÝP 10
+                0, //CARÝCÝNSÝ
                 '', //CARI KODU,
-                pDr.ISEMRI, //Ä°ÅžEMRÄ°KODU
+                pDr.ISEMRI, //ÝÞEMRÝKODU
                 "", //PERSONEL KODU
-                0, //HARDOVÄ°ZCÄ°NSÄ°
-                1, //HARDOVÄ°ZKURU
-                1, //ALTDOVÄ°ZKURU
-                0, //STOKDOVÄ°ZCÄ°NSÄ°
-                1, //STOKDOVÄ°ZKURU
+                0, //HARDOVÝZCÝNSÝ
+                1, //HARDOVÝZKURU
+                1, //ALTDOVÝZKURU
+                0, //STOKDOVÝZCÝNSÝ
+                1, //STOKDOVÝZKURU
                 pDr.MIKTAR,
                 pDr.MIKTAR,
                 1, //BIRIM PNTR
                 0, //TUTAR
-                0, // Ä°SKONTO TUTAR 1
-                0, // Ä°SKONTO TUTAR 2
-                0, // Ä°SKONTO TUTAR 3
-                0, // Ä°SKONTO TUTAR 4
-                0, // Ä°SKONTO TUTAR 5
-                0, // Ä°SKONTO TUTAR 6
+                0, // ÝSKONTO TUTAR 1
+                0, // ÝSKONTO TUTAR 2
+                0, // ÝSKONTO TUTAR 3
+                0, // ÝSKONTO TUTAR 4
+                0, // ÝSKONTO TUTAR 5
+                0, // ÝSKONTO TUTAR 6
                 0, // MASRAF TUTAR 1
                 0, // MASRAF TUTAR 2
                 0, // MASRAF TUTAR 3
                 0, // MASRAF TUTAR 4
-                0, // VERÄ°PNTR
-                0, // VERGÄ°
-                0, // MASRAFVERGÄ°PNTR,
-                0, // MASRAFVERGÄ°
+                0, // VERÝPNTR
+                0, // VERGÝ
+                0, // MASRAFVERGÝPNTR,
+                0, // MASRAFVERGÝ
                 0, // ODEME NO                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-                '',// AÃ‡IKLAMA
+                '',// AÇIKLAMA
                 '00000000-0000-0000-0000-000000000000',       //sth_sip_uid
                 '00000000-0000-0000-0000-000000000000', //sth_fat_uid,
-                pDr.DEPO, //GÄ°RÄ°SDEPONO
-                pDr.DEPO, //CÄ°KÄ°SDEPONO
-                moment(new Date()).format("DD.MM.YYYY"), //MALKABULSEVKTARÄ°HÄ°
-                '', // CARÄ°SORUMLULUKMERKEZÄ°
-                '', // STOKSORUMLULUKMERKEZÄ°
-                0,  // VERGÄ°SÄ°ZFL
+                pDr.DEPO, //GÝRÝSDEPONO
+                pDr.DEPO, //CÝKÝSDEPONO
+                moment(new Date()).format("DD.MM.YYYY"), //MALKABULSEVKTARÝHÝ
+                '', // CARÝSORUMLULUKMERKEZÝ
+                '', // STOKSORUMLULUKMERKEZÝ
+                0,  // VERGÝSÝZFL
                 1,  // ADRESNO
                 '', // PARTI, 
                 1,  // LOT
                 '', // PROJE KODU
-                '', // EXÄ°MKODU
-                0, // DÄ°STÄ°CARETTURU
-                0, // OTVVERGÄ°SÄ°ZFL
-                0, // OÄ°VVERGÄ°SÄ°Z
+                '', // EXÝMKODU
+                0, // DÝSTÝCARETTURU
+                0, // OTVVERGÝSÝZFL
+                0, // OÝVVERGÝSÝZ
                 0, //FIYAT LISTE NO
-                0, //NAKLÄ°YEDEPO
-                0, // NAKLÄ°YEDURUMU
+                0, //NAKLÝYEDEPO
+                0, // NAKLÝYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
             console.log(TmpInsertData)
@@ -824,7 +824,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         {
             if($scope.SelectedRow.length == 0)
             {
-                swal("UyarÄ±", "LÃ¼tfen SatÄ±r SeÃ§imi YapÄ±nÄ±z.",icon="warning");
+                swal("Uyarý", "Lütfen Satýr Seçimi Yapýnýz.",icon="warning");
                 return;
             }
             $scope.UrunAdet =  $scope.SelectedRow[0].PLANLANANROTAMIKTAR
@@ -834,7 +834,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         {
             // if($scope.SelectedRow.BARKOD == "" || typeof($scope.SelectedRow.BARKOD) == 'undefined')
             // {
-            //     swal("UyarÄ±", "SeÃ§miÅŸ OlduÄŸunuz SatÄ±rÄ±n Barkod Bilgisi BulunamadÄ±.",icon="warning");
+            //     swal("Uyarý", "Seçmiþ Olduðunuz Satýrýn Barkod Bilgisi Bulunamadý.",icon="warning");
             //     return;
             // }
 
@@ -850,7 +850,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         {
             if($scope.SelectedRow[0].ISEMRISTATUS == 1)
             {
-                swal("UyarÄ±", "LÃ¼tfen PlanlanmÄ±ÅŸ Ä°ÅŸ Emri SeÃ§iniz.",icon="warning");
+                swal("Uyarý", "Lütfen Planlanmýþ Ýþ Emri Seçiniz.",icon="warning");
                 return;
             }
             else if($scope.SelectedRow[0].ISEMRISTATUS == 3)
@@ -898,8 +898,8 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             }
 
             swal({
-                title: "UyarÄ±",
-                text : "Ä°ÅŸ Emrini BaÅŸlatmak Ä°stediÄŸinize Emin Misiniz ? ",
+                title: "Uyarý",
+                text : "Ýþ Emrini Baþlatmak Ýstediðinize Emin Misiniz ? ",
                 icon: "warning",
                 buttons: true,
                 dangerMode: false,
@@ -912,9 +912,9 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                     {
                         let rotacontrol = await RotaControl($scope.SelectedRow[0].KODU,$scope.SelectedRow[0].SAFHANO);
         
-                        if(rotacontrol[0].TAMAMLANANMIKTAR == 0) //BÄ°R Ã–NCEKÄ° Ä°STASYONDAKÄ° MÄ°KTAR KONTROLÃœ
+                        if(rotacontrol[0].TAMAMLANANMIKTAR == 0) //BÝR ÖNCEKÝ ÝSTASYONDAKÝ MÝKTAR KONTROLÜ
                         {
-                            swal("Ä°ÅŸlem BaÅŸarÄ±sÄ±z!","Bir Ã–nceki Ä°stasyonda Tamamlanan Miktar 0'dan BÃ¼yÃ¼k OlmalÄ±." ,icon="error"); 
+                            swal("Ýþlem Baþarýsýz!","Bir Önceki Ýstasyonda Tamamlanan Miktar 0'dan Büyük Olmalý." ,icon="error"); 
                             return;
                         }
                     }
@@ -929,20 +929,20 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                     await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
                     await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
                   
-                    swal("BaÅŸarÄ±lÄ±! Ä°ÅŸ Emri BaÅŸlatÄ±ldÄ±.", 
+                    swal("Baþarýlý! Ýþ Emri Baþlatýldý.", 
                   {
                     icon: "success",
                   });
                 }
                 else 
                 {
-                  swal("UyarÄ±", "Ä°ÅŸlem Ä°ptal Edildi.",icon="warning");
+                  swal("Uyarý", "Ýþlem Ýptal Edildi.",icon="warning");
                 }
               });
         }
         else
         {
-            swal("UyarÄ±", "LÃ¼tfen SatÄ±r SeÃ§imi YapÄ±nÄ±z.",icon="warning");
+            swal("Uyarý", "Lütfen Satýr Seçimi Yapýnýz.",icon="warning");
         }
     }
     $scope.BtnUrunGiris = async function(pType)
@@ -950,22 +950,22 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         console.log($scope.MiktarGiris)
         if($scope.MiktarGiris == null)
         {
-            swal("UyarÄ±", "Miktar BoÅŸ GeÃ§ilemez.",icon="warning");
+            swal("Uyarý", "Miktar Boþ Geçilemez.",icon="warning");
             return;
         }
         if($scope.SelectedRow.length <= 0)
         {
-            swal("UyarÄ±", "LÃ¼tfen SatÄ±r SeÃ§imi YapÄ±nÄ±z.",icon="warning");
+            swal("Uyarý", "Lütfen Satýr Seçimi Yapýnýz.",icon="warning");
             return;
         }
         if($scope.SelectedRow[0].ISEMRISTATUS == 0)
         {
-            swal("UyarÄ±", "LÃ¼tfen Aktif Ä°ÅŸ Emri SeÃ§iniz.",icon="warning");
+            swal("Uyarý", "Lütfen Aktif Ýþ Emri Seçiniz.",icon="warning");
             return;
         }
         if($scope.SelectedRow[0].ISEMRISTATUS == 3)
         {
-            swal("UyarÄ±", "LÃ¼tfen Aktif Ä°ÅŸ Emri SeÃ§iniz.",icon="warning");
+            swal("Uyarý", "Lütfen Aktif Ýþ Emri Seçiniz.",icon="warning");
             return;
         }
      
@@ -983,9 +983,9 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 console.log($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR)
                 console.log($scope.MiktarGiris)
                 console.log($scope.SelectedRow[0].ONCEKIISTASYONTAMAMLANANMIKTAR)
-                if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].ONCEKIISTASYONTAMAMLANANMIKTAR) //BÄ°R Ã–NCEKÄ° Ä°STASYONDAKÄ° MÄ°KTAR KONTROLÃœ
+                if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].ONCEKIISTASYONTAMAMLANANMIKTAR) //BÝR ÖNCEKÝ ÝSTASYONDAKÝ MÝKTAR KONTROLÜ
                 {
-                    swal("Ä°ÅŸlem BaÅŸarÄ±sÄ±z!","Bir Ã–nceki (" + rotacontrol[0].OPERASYONADI + ") Ä°stasyonda \n Tamamlanan Miktar : " + rotacontrol[0].TAMAMLANANMIKTAR ,icon="error"); 
+                    swal("Ýþlem Baþarýsýz!","Bir Önceki (" + rotacontrol[0].OPERASYONADI + ") Ýstasyonda \n Tamamlanan Miktar : " + rotacontrol[0].TAMAMLANANMIKTAR ,icon="error"); 
                     return;
                 }
             }
@@ -995,9 +995,9 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             console.log(TmpDrTuket)
             let TmpDrUret = $scope.Data.DATA.filter(x => x.URETTUKET == 1);
 
-            if(MiktarKontrol()) //Girilen Miktar Ä°le Planlanan Miktar Kontrol
+            if(MiktarKontrol()) //Girilen Miktar Ýle Planlanan Miktar Kontrol
             {
-                swal("Dikkat", "Ãœretilecek ÃœrÃ¼n Planlanan ÃœrÃ¼nden Fazla Olamaz.",icon="warning");
+                swal("Dikkat", "Üretilecek Ürün Planlanan Üründen Fazla Olamaz.",icon="warning");
                 return;
             }
 
@@ -1023,9 +1023,9 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 }
             }
 
-            if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].PLANLANANROTAMIKTAR) //GÄ°RÄ°LEN MÄ°KTAR + TAMAMLANAN MÄ°KTAR KONTROLÃœ
+            if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].PLANLANANROTAMIKTAR) //GÝRÝLEN MÝKTAR + TAMAMLANAN MÝKTAR KONTROLÜ
             {
-                swal("Dikkat", "(Ãœretilecek ÃœrÃ¼n + Tamamlanan Miktar) Planlanan Miktardan Fazla Olamaz.",icon="warning");
+                swal("Dikkat", "(Üretilecek Ürün + Tamamlanan Miktar) Planlanan Miktardan Fazla Olamaz.",icon="warning");
                 return;
             }
            
@@ -1051,24 +1051,24 @@ function Operator($scope,srv,$rootScope,$filter,$window)
 
             $scope.Init();
 
-            swal("Ä°ÅŸlem BaÅŸarÄ±lÄ±!", "KayÄ±t Ä°ÅŸlemi GerÃ§ekleÅŸtirildi.",icon="success");
+            swal("Ýþlem Baþarýlý!", "Kayýt Ýþlemi Gerçekleþtirildi.",icon="success");
         }
     }
     $scope.GecikmeKaydet = async function()
     {
         if($scope.SelectedRow.length <= 0)
         {
-            swal("UyarÄ±", "LÃ¼tfen SatÄ±r SeÃ§imi YapÄ±nÄ±z.",icon="warning");
+            swal("Uyarý", "Lütfen Satýr Seçimi Yapýnýz.",icon="warning");
             return;
         }
         if($scope.SelectedRow[0].ISEMRISTATUS == 0)
         {
-            swal("UyarÄ±", "LÃ¼tfen Aktif Ä°ÅŸ Emri SeÃ§iniz.",icon="warning");
+            swal("Uyarý", "Lütfen Aktif Ýþ Emri Seçiniz.",icon="warning");
             return;
         }
         if($scope.SelectedRow[0].ISEMRISTATUS == 3)
         {
-            swal("UyarÄ±", "LÃ¼tfen Aktif Ä°ÅŸ Emri SeÃ§iniz.",icon="warning");
+            swal("Uyarý", "Lütfen Aktif Ýþ Emri Seçiniz.",icon="warning");
             return;
         }
         let TmpInsertData = 
@@ -1097,7 +1097,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         }
         else
         {
-            swal("UyarÄ±", "Durdurma Tablosuna KayÄ±t AtÄ±lamadÄ±.",icon="warning");
+            swal("Uyarý", "Durdurma Tablosuna Kayýt Atýlamadý.",icon="warning");
         }
 
         

@@ -2146,7 +2146,7 @@ var Query =
     BagliIsEmriGet : 
     {
         query : "SELECT ISM.is_Guid AS GUID,ISM.is_Kod AS KODU,ISM.is_BagliOlduguIsemri AS BAGLIISEMRI,ROTA.RtP_OperasyonKodu AS OPKODU FROM ISEMIRLERI AS ISM " +
-                "INNER JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
+                "left outer JOIN URETIM_ROTA_PLANLARI AS ROTA ON ISM.is_Kod = ROTA.RtP_IsEmriKodu " +
                 "WHERE ISM.is_BagliOlduguIsemri = @is_BagliOlduguIsemri " ,
         param : ['is_BagliOlduguIsemri'],
         type : ['string|25']

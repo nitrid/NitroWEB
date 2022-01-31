@@ -13,10 +13,10 @@ let LicMenu = "";
 
 // FTP CONNECT CONFIG
 config = {
-    host: 'ftp.tone.ist',
+    host: '192.168.2.245',
     port: 21,
-    user: 'metin@teknoerp.com.tr',
-    password: 'Syncmaster750s'
+    user: 'ftpgnk',
+    password: 'L6tBfYQYnPCM'
 }
 options = {
     logging: 'basic'
@@ -305,7 +305,8 @@ function dbengine(config,io)
                     fn(true)
                     sharp.cache(false);
                     client.connect(function () {
-                        client.upload(['upload/**'], '/', {
+                       
+                        client.upload(['../upload/**'], '/', {
                             baseDir: 'uploadPDF',
                             overwrite: 'older'
                         }, function (result) {

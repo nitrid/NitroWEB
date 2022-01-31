@@ -60,27 +60,38 @@ function UploadPage($scope,srv,$rootScope,$filter)
                         }
                     }]
                 },
+                
+                {
+                    width: 200,
+                    dataField : "KODU",
+                    caption: "KODU",
+                    align: "left"
+                    
+                },
                 {
                     dataField : "ADI",
                     caption: "ADI",
-                    align: "center",
-                    width: 200,
+                    align: "left",
+                    width: 500,
                 },
                 {
-                    dataField : "KODU",
-                    caption: "KODU",
-                    align: "center"
-                },
-                {
+                    width: 50,
                     dataField : "PDF",
                     caption: "PDF",
-                    align: "center"
+                    align: "left"
                 },
                 {
+                    width: 100,
                     dataField : "TARIH",
                     caption: "TARIH",
-                    align: "center"
+                    align: "left"
                 },
+                {
+                    width: 200,
+                    dataField : "[DOSYA_YOL]",
+                    caption: "[DOSYA_YOL]",
+                    align: "left"
+                }, 
             ],
           
         });
@@ -91,11 +102,10 @@ function UploadPage($scope,srv,$rootScope,$filter)
         {
             db: "{M}." + $scope.Firma,
             query : "SELECT sto_isim AS ADI, sto_kod AS KODU,ISNULL((SELECT 'VAR' FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_PDF where STOK_KOD = sto_kod COLLATE Turkish_CI_AS),'YOK') AS PDF, " +
-            " (SELECT CONVERT(varchar,UPDATE_DATE,104) FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_PDF where STOK_KOD = sto_kod COLLATE Turkish_CI_AS) AS TARIH FROM STOKLAR " ,
+            " (SELECT CONVERT(varchar,UPDATE_DATE,104) FROM [GENDB_NITROWEB].dbo.TERP_NITROWEB_PDF where STOK_KOD = sto_kod COLLATE Turkish_CI_AS) AS TARIH FROM STOKLAR WHERE sto_cins <> 1" ,
         }
         let TmpResult = await srv.Execute(TmpQuery)
         $scope.StokListe = TmpResult
-        console.log($scope.StokListe)
         $("#TblStokList").dxDataGrid("instance").option("dataSource", $scope.StokListe); 
     }
     $scope.DetayClick = function()

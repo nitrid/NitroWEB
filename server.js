@@ -4,7 +4,7 @@ var config = require('./config.json');
 var express = require('express');
 var app = express();
 
-app.use('/',express.static(__dirname + "/www/"));
+app.use('/',express.static(__dirname + "/www"));
 
 let http = app.listen(config.port);
 let io = require('socket.io')(http);
@@ -15,10 +15,10 @@ console.log = function(msg)
 {
     let BufferDate = new Date().getFullYear().toString() + (new Date().getMonth() + 1).toString().padStart(2, '0') + new Date().getDate().toString().padStart(2, '0');
     
-    if(!fs.existsSync(__dirname +"/log/"))
-    {
-        fs.mkdirSync(__dirname +"/log/");
-    }
+    // if(!fs.existsSync(__dirname +"/log/"))
+    // {
+    //     fs.mkdirSync(__dirname +"/log/");
+    // }
 
     fs.appendFile(__dirname +"/log/" + BufferDate + ".log", msg + '\r\n', function(err) 
     {

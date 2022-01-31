@@ -4,3 +4,4 @@ package-lock.json
 daemon/
 lic.json
 config.json
+upload/

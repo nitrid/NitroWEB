@@ -279,7 +279,7 @@ namespace XtraReportSerialization {
                         this.label6,
                         this.label5,
                         this.label26});
-            this.Detail.HeightF = 16.16325F;
+            this.Detail.HeightF = 18.16324F;
             this.Detail.KeepTogether = true;
             this.Detail.KeepTogetherWithDetailReports = true;
             this.Detail.MultiColumn.Layout = DevExpress.XtraPrinting.ColumnLayout.AcrossThenDown;

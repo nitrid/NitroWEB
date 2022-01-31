@@ -1,4 +1,4 @@
-function Planlama($scope,srv,$rootScope,$filter)
+function Planlama($scope,srv,$rootScope,$filter,$window)
 {
     $scope.Init = async function () 
     {
@@ -157,7 +157,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "is_special3 AS SPECIAL, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
-                        "'../../upload/' +UPL.upl_kodu+ '-1.pdf' AS PDF,  " +
+                        "'http://192.168.2.245/upload/'+UPL.upl_kodu+ '.pdf' AS PDF,  " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
@@ -204,7 +204,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "MAX(is_Ismi) AS ADI, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 SUM(ish_uret_miktar) FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
-                        "'../../upload/' +UPL.upl_kodu+ '-1.pdf' AS PDF,  " +
+                        "'http://192.168.2.245/upload/'+UPL.upl_kodu+ '.pdf' AS PDF,  " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
@@ -258,7 +258,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                         "TERP.ISEMRI_ISTASYON_SIRA AS ISTASYONSIRA, " +
                         "UPL.upl_miktar - ISNULL((SELECT TOP 1 ish_uret_miktar FROM ISEMRI_MALZEME_DURUMLARI WHERE ish_isemri = is_Kod and ish_plan_sevkmiktar = 0),0) AS PLANMIKTAR, " + 
                         "UPL.upl_kodu AS STOKKODU, " +
-                        "'../../upload/' +UPL.upl_kodu+ '-1.pdf' AS PDF,  " +
+                        "'http://192.168.2.245/upload/'+UPL.upl_kodu+ '.pdf' AS PDF,  " +
                         "ISNULL((SELECT sto_isim  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu),'') AS STOKADI, " +
                         "ISNULL((SELECT malz_tipi FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS MALZEMETIPI, " +
                         "ISNULL((SELECT sac_kalinlik FROM STOKLAR_USER where Record_uid = (SELECT sto_Guid  FROM STOKLAR WHERE sto_kod =  UPL.upl_kodu)),'') AS SACKALINLIK, " +
@@ -326,29 +326,12 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
                 {
-                    width: 50,
+                    width: 100,
                     dataField: "SIPARISNO",
                     caption: "Sipariş No",
                     alignment: "left"
                 },
-                {
-                    width: 50,
-                    dataField: "IS_EMRI_ACILIS_TARIH",
-                    caption: "Açılış Tarihi",
-                    alignment: "left"
-                }, 
-                {
-                    width: 50,
-                    dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
-                    caption: "Aktifleştirme Tarihi",
-                    alignment: "left"
-                },
-                {
-                    width: 50,
-                    dataField: "IS_EMRI_PLANLAMA_TARIH",
-                    caption: "Planlama Tarihi",
-                    alignment: "center"
-                },
+                
                 {
                     width: 150,
                     dataField: "KODU",
@@ -368,34 +351,18 @@ function Planlama($scope,srv,$rootScope,$filter)
                     alignment: "center"
                 },
                 {
-                    width: 300,
+                    width: 400,
                     dataField: "STOKADI",
                     caption: "Stok Adı",
                     alignment: "center"
                 },
                 {
+                    width: 120,
                     dataField: "SIPBELGENO",
                     caption: "BELGE NO",
                     alignment: "center"
                 },
-                {
-                     width: 120,
-                    dataField: "MALZEMETIPI",
-                    caption: "MALZ. TIP",
-                    alignment: "center"
-                },
-                {
-                     width: 120,
-                   dataField: "SACKALINLIK",
-                    caption: "S. KALINLIK",
-                    alignment: "center"
-                },
-                {
-                     width: 120,
-                 dataField: "SONHALI",
-                    caption: "SON HALI",
-                    alignment: "center"
-                },
+                
                 {      
                     caption: "İŞLEMLER",
                     width: 90,
@@ -480,29 +447,12 @@ function Planlama($scope,srv,$rootScope,$filter)
             },
             columns: [
             {
-                width: 50,
+                width: 100,
                 dataField: "SIPARISNO",
                 caption: "Sipariş No",
                 alignment: "left"
             },
-            {
-                width: 150,
-                dataField: "IS_EMRI_ACILIS_TARIH",
-                caption: "Açılış Tarihi",
-                alignment: "center"
-            }, 
-            {
-                width: 150,
-                dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
-                caption: "Aktifleştirme Tarihi",
-                alignment: "center"
-            },
-            {
-                width: 150,
-                dataField: "IS_EMRI_PLANLAMA_TARIH",
-                caption: "Planlama Tarihi",
-                alignment: "center"
-            },
+           
             {
                 width: 150,
                 dataField: "KODU",
@@ -522,34 +472,18 @@ function Planlama($scope,srv,$rootScope,$filter)
                 alignment: "left"
             },
             {
-                width: 300,
+                width: 400,
                 dataField: "STOKADI",
                 caption: "Stok Adı",
                 alignment: "left"
             },
             {
+                width: 120,
                 dataField: "SIPBELGENO",
                 caption: "BELGE NO",
                 alignment: "center"
             },
-            {
-                 width: 120,
-                    dataField: "MALZEMETIPI",
-                caption: "MALZ. TIP",
-                alignment: "center"
-            },
-            {
-                 width: 120,
-                   dataField: "SACKALINLIK",
-                caption: "S. KALINLIK",
-                alignment: "center"
-            },
-            {
-                 width: 120,
-                 dataField: "SONHALI",
-                caption: "SON HALI",
-                alignment: "center"
-            },
+            
             {      
                 caption: "İŞLEMLER",
                 width: 90,
@@ -569,7 +503,8 @@ function Planlama($scope,srv,$rootScope,$filter)
                         text: "PDF GOSTER",
                         onClick: function (e) 
                         {
-                            
+                            var url = e.row.data.PDF
+                            $window.open(url, '_blank');
                         }
                     }
                 ]
@@ -644,24 +579,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                     caption: "Istasyon Sıra",
                     alignment: "center"
                 },
-                {
-                    width: 150,
-                    dataField: "IS_EMRI_ACILIS_TARIH",
-                    caption: "Açılış Tarihi",
-                    alignment: "center"
-                }, 
-                {
-                    width: 150,
-                    dataField: "IS_EMRI_AKTIFLESTIRME_TARIH",
-                    caption: "Aktifleştirme Tarihi",
-                    alignment: "center"
-                },
-                {
-                    width: 150,
-                    dataField: "IS_EMRI_PLANLAMA_TARIH",
-                    caption: "Planlama Tarihi",
-                    alignment: "center"
-                },
+               
                 {
                     width: 200,
                     dataField: "KODU",
@@ -687,6 +605,7 @@ function Planlama($scope,srv,$rootScope,$filter)
                     alignment: "left"
                 },
                 {
+                    width: 120,
                     dataField: "SIPBELGENO",
                     caption: "BELGE NO",
                     alignment: "center"
@@ -728,7 +647,8 @@ function Planlama($scope,srv,$rootScope,$filter)
                             text: "PDF GOSTER",
                             onClick: function (e) 
                             {
-                                
+                                var url = e.row.data.PDF
+                            $window.open(url, '_blank');
                             }
                         }
                     ]
