@@ -19,7 +19,6 @@ function Main($scope,$state,srv,$rootScope)
         if(srv.SocketConnected)
         {
             $scope.Menu = await srv.Execute($scope.Firm,'GetParam',['1',$scope.User])
-            console.log($scope.Menu)
             $scope.MenuYonetim = await srv.Execute($scope.Firm,'GetParam',['2',$scope.User])
             $scope.MenuRapor = await srv.Execute($scope.Firm,'GetParam',['3',$scope.User])
 

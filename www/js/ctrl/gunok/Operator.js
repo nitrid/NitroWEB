@@ -660,7 +660,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 0, // NAKLİYEDURUMU
                 (typeof pDr.ISMERKEZI == 'undefined') ? '' : pDr.ISMERKEZI
             ];
-            console.log(TmpInsertData)
             let TmpResult = await srv.Execute($scope.Firma,'StokHarInsert',TmpInsertData);
 
             if(typeof TmpResult != 'undefined')
@@ -817,9 +816,8 @@ function Operator($scope,srv,$rootScope,$filter,$window)
     {
         $('#MdlDurdur').modal('show')
     }
-    $scope.BtnEtiketYazdir = async function(pType)
+    $scope.BtnEtiketYazdir = async function(pType,pUrunAdet)
     {
-        console.log($scope.SelectedRow)
         if(pType == 0)
         {
             if($scope.SelectedRow.length == 0)
@@ -827,18 +825,25 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 swal("Uyarı", "Lütfen Satır Seçimi Yapınız.",icon="warning");
                 return;
             }
-            $scope.UrunAdet =  $scope.SelectedRow[0].PLANLANANROTAMIKTAR
-            $('#MdlEtiketYazdir').modal('show')
+
+            $scope.UrunAdet =  $scope.SelectedRow[0].TAMAMLANANROTAMIKTAR;
+            $('#MdlEtiketYazdir').modal('show');
         }
         else if(pType == 1)
         {
             // if($scope.SelectedRow.BARKOD == "" || typeof($scope.SelectedRow.BARKOD) == 'undefined')
-            // {
+            // {fMiktarGiris
             //     swal("Uyarı", "Seçmiş Olduğunuz Satırın Barkod Bilgisi Bulunamadı.",icon="warning");
             //     return;
             // }
 
-            $scope.SelectedRow[0].URUNADET = $scope.UrunAdet
+            $scope.SelectedRow[0].URUNADET = $scope.UrunAdet;
+
+            if(typeof (pUrunAdet) != "undefined")
+            {
+                $scope.SelectedRow[0].URUNADET = pUrunAdet;
+            }
+
             await EtiketPrint($scope.SelectedRow);
             
             $('#MdlEtiketYazdir').modal('hide');
@@ -880,7 +885,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 {
                     if(srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU) > TmpDrTuketData[i].DEPOMIKTAR)
                     {
-                        console.log(11)
                         IInfoTextBaslat[i] =  {STOK: TmpDrTuketData[i].KODU, DEPO: TmpDrTuketData[i].DEPOMIKTAR, MIKTAR: srv.SumColumn($scope.ControlData,"BMIKTAR","KODU = " + TmpDrTuketData[i].KODU)}
                     }
                 }
@@ -888,8 +892,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 if(IInfoTextBaslat != "")
                 {
                     DepoMiktarGrid()
-                    $scope.DepoMiktarData = IInfoTextBaslat
-                    console.log(IInfoTextBaslat)
+                    $scope.DepoMiktarData = IInfoTextBaslat;
                     $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
                     
                     $('#MdlDepeMiktar').modal('show')
@@ -921,11 +924,8 @@ function Operator($scope,srv,$rootScope,$filter,$window)
 
                     if($scope.SelectedRow[0].SAFHANO == 1)
                     {
-                        console.log($scope.SelectedRow[0].GUID)
                         await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]);
                     }
-                     console.log($scope.SelectedRow[0].GUID)
-                     console.log($scope.SelectedRow[0].OPERASYONKODU)
                     await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
                     await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
                   
@@ -947,7 +947,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
     }
     $scope.BtnUrunGiris = async function(pType)
     {
-        console.log($scope.MiktarGiris)
         if($scope.MiktarGiris == null)
         {
             swal("Uyarı", "Miktar Boş Geçilemez.",icon="warning");
@@ -980,9 +979,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             {
                 let rotacontrol = await RotaControl($scope.SelectedRow[0].KODU,$scope.SelectedRow[0].SAFHANO);
 
-                console.log($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR)
-                console.log($scope.MiktarGiris)
-                console.log($scope.SelectedRow[0].ONCEKIISTASYONTAMAMLANANMIKTAR)
                 if(($scope.SelectedRow[0].TAMAMLANANROTAMIKTAR + $scope.MiktarGiris) > $scope.SelectedRow[0].ONCEKIISTASYONTAMAMLANANMIKTAR) //BİR ÖNCEKİ İSTASYONDAKİ MİKTAR KONTROLÜ
                 {
                     swal("İşlem Başarısız!","Bir Önceki (" + rotacontrol[0].OPERASYONADI + ") İstasyonda \n Tamamlanan Miktar : " + rotacontrol[0].TAMAMLANANMIKTAR ,icon="error"); 
@@ -992,7 +988,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
 
             BaslatData();
             let TmpDrTuket = $scope.Data.DATA.filter(x => x.URETTUKET == 0);
-            console.log(TmpDrTuket)
             let TmpDrUret = $scope.Data.DATA.filter(x => x.URETTUKET == 1);
 
             if(MiktarKontrol()) //Girilen Miktar İle Planlanan Miktar Kontrol
@@ -1014,10 +1009,9 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 if(InfoText != "")
                 {
                     DepoMiktarGrid()
-                    $scope.DepoMiktarData = InfoText
-                    console.log(InfoText)
+                    $scope.DepoMiktarData = InfoText;
+
                     $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
-                    
                     $('#MdlDepeMiktar').modal('show')
                     return;
                 }
@@ -1037,7 +1031,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 await InsertUrunGirisCikis(1,TmpDrTuket[i],$rootScope.GeneralParamList.UrunCikisSeri,$scope.SthCSira);
                 await UpdateMalzemePlani(TmpDrTuket[i].ISEMRI, TmpDrTuket[i].KODU, TmpDrTuket[i].MIKTAR, false);
             }
-            console.log(TmpDrUret)
             for (let i = 0; i < TmpDrUret.length; i++)                                           
             {
                 await InsertUrunGirisCikis(0,TmpDrUret[i],$rootScope.GeneralParamList.UrunGirisSeri,$scope.SthGSira);
@@ -1049,9 +1042,27 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 await srv.Execute($scope.Firma,'IsEmriKapat',[$scope.SelectedRow[0].GUID]); 
             }
 
-            $scope.Init();
-
-            swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+            swal({
+                title: "Etiket Yazdırmak İster Misiniz ?",
+                text: "Ürün girişi kadar etiket yazdırılacak.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: false,
+              })
+              .then((willDelete) => 
+              {
+                if (willDelete) 
+                {
+                    $scope.BtnEtiketYazdir(1,$scope.MiktarGiris);
+                    swal("İşlem Başarılı!", "Kayıt İşlemi Gerçekleştirildi.",icon="success");
+                    $scope.Init();
+                } 
+                else 
+                {
+                  swal("Etiket yazdırma işlemi iptal edildi.");
+                  $scope.Init();
+                }
+            });
         }
     }
     $scope.GecikmeKaydet = async function()
@@ -1091,8 +1102,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD]
             }
 
-            console.log(TmpQuery)
-            let TmpResult = await srv.Execute(TmpQuery)
+            let TmpResult = await srv.Execute(TmpQuery);
             await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#ff0000");
         }
         else
@@ -1104,7 +1114,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
     }
     $scope.PDFClick = function(pData)
     {
-        console.log(pData)
         $scope.PDFDetay = pData.PDF
         $('#MdlIsEmriDetay').modal('show')
     }

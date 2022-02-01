@@ -344,7 +344,6 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
         {
             for (let i = 0; i < $scope.BasimMiktar; i++) 
             {
-                console.log('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $rootScope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(pData).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}")
                 srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $rootScope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(pData).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
                 {
                     console.log(pResult)
@@ -357,7 +356,6 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
     }
     function UretimMalzemePlanGetir(pIsEmri)
     {
-        console.log(pIsEmri)
         return new Promise(async resolve => 
         {
             let TmpQuery = 
@@ -941,7 +939,6 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                 {
                     DepoMiktarGrid()
                     $scope.DepoMiktarData = InfoText
-                    console.log(InfoText)
                     $("#TblDepoMiktar").dxDataGrid("instance").option("dataSource", $scope.DepoMiktarData); 
                     
                     $('#MdlDepeMiktar').modal('show')
@@ -1016,7 +1013,6 @@ function UretimTamamlama($scope,srv,$rootScope,$filter)
                 value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD]
             }
 
-            console.log(TmpQuery)
             let TmpResult = await srv.Execute(TmpQuery)
             await GetPlanlananIsEmrileri("#ff0000");
         }

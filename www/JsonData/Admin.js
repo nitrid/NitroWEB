@@ -1,4 +1,5 @@
-var Admin= [
+var Admin= 
+[
 	{
 		"REC": 1,
 		"TARIH": "12.07.2021",
