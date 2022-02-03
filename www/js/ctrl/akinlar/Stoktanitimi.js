@@ -393,7 +393,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
                 query : " SELECT [msg_S_0022] AS KODU, [msg_S_0023] AS ADI FROM STOK_SEKTORLERI_CHOOSE_2 ORDER BY [msg_S_0022] ASC",
             },
             selection : "KODU",
-           txt: "",
+            txt: "",
             columns :
             [
                 {
@@ -620,14 +620,16 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.BteYilAdi.txt,
             $scope.Maliyet,
         ]
-
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
-        for (let i = 0; i < $scope.FiyatListeleri.length; i++) 
+        if(InsertKontrol == "")
         {
-            $scope.SatisFiyatInsert($scope.FiyatListeleri[i].sfl_sirano,$scope.FiyatListeleri[i].MODEL)
+            for (let i = 0; i < $scope.FiyatListeleri.length; i++) 
+            {
+                $scope.SatisFiyatInsert($scope.FiyatListeleri[i].sfl_sirano,$scope.FiyatListeleri[i].MODEL)
+            }
+            await $scope.BarkodInsert()
+            swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
         }
-        await $scope.BarkodInsert()
-        swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
     }
     $scope.BarkodGetirKey = async function(keyEvent)
     {
@@ -969,10 +971,11 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         console.log(TmpResult)
         return new Promise(async resolve => 
         {
-            srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $scope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+            srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "TOPTANKUTU.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
             {
                 console.log(pResult)
             })
+            
         
             swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
             resolve()
@@ -1081,18 +1084,16 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         $scope.YeniTabanAdi  = ''
     }
     $scope.YilKaydet = async function()
-    {
-        
+    {  
         let TmpInsertData = 
         [
             $scope.YeniYilKodu,
-            $scope.YeniYilAdi
-                       
+            $scope.YeniYilAdi        
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'YilInsert',TmpInsertData);
-         swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
-         $scope.YeniYilKodu = ''
-         $scope.YeniYilAdi = ''
+        swal("İşlem Başarılı!", "Başarıyla Kayıt Edildi.",icon="success");
+        $scope.YeniYilKodu = ''
+        $scope.YeniYilAdi = ''
     }
 
 }
