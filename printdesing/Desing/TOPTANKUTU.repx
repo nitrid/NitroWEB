@@ -1,8 +1,8 @@
 /// <XRTypeInfo>
 ///   <AssemblyFullName>DevExpress.XtraReports.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a</AssemblyFullName>
-///   <AssemblyLocation>C:\Project\Nitrogen\NitroWEB\devprint\DevPrintDesign\bin\Debug\DevExpress.XtraReports.v19.2.dll</AssemblyLocation>
+///   <AssemblyLocation>C:\Teknoerp\NitroWEB\devprint\DevPrintDesign\bin\Debug\DevExpress.XtraReports.v19.2.dll</AssemblyLocation>
 ///   <TypeName>DevExpress.XtraReports.UI.XtraReport</TypeName>
-///   <Localization>tr-TR</Localization>
+///   <Localization>en-US</Localization>
 ///   <Version>19.2</Version>
 ///   <Resources>
 ///     <Resource Name="XtraReportSerialization.xtraReport1">
@@ -122,7 +122,7 @@ namespace XtraReportSerialization {
             // label2
             // 
             this.label2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DATA.MATERYEL1]")});
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DATA.MATERYAL]")});
             this.label2.Font = new System.Drawing.Font("Times New Roman", 8F);
             this.label2.LocationFloat = new DevExpress.Utils.PointFloat(108.125F, 50.49998F);
             this.label2.Name = "label2";
@@ -164,7 +164,7 @@ namespace XtraReportSerialization {
             // label1
             // 
             this.label1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DATA.RENK1]")});
+                        new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[DATA.RENK]")});
             this.label1.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 50.49998F);
             this.label1.Name = "label1";
             this.label1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
