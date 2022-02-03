@@ -39,7 +39,7 @@ function SiparisYazdir($scope,srv,$rootScope,$filter)
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
         $rootScope.PageName = "SiparisYazdir"
-        $scope.Seri = ''
+        $scope.Seri = '';
         $scope.Sira = 0
 
         InitObj();
@@ -121,15 +121,15 @@ function SiparisYazdir($scope,srv,$rootScope,$filter)
         let TmpResult = await srv.Execute(TmpQuery)
         
         return new Promise(async resolve => 
+        {
+            srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "RESIMLISIPARIS.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
             {
-                    srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + "RESIMLISIPARIS.repx" + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
-                    {
-                        console.log(pResult)
-                    })
-                
+                console.log(pResult)
+            })
             
-                swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
-                resolve()
-            });
+        
+            swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
+            resolve()
+        });
     }
 }

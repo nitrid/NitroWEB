@@ -2622,7 +2622,7 @@ var Query =
         ",[sto_resim_url]  " +
         ",[sto_GEKAP_depozitoonaykodu])  " +
         "VALUES  " +
-        "(NEWID()              --<sto_Guid, uniqueidentifier,>     \n " + 
+        "(NEWID()        --<sto_Guid, uniqueidentifier,>     \n " + 
         ",0              --<sto_DBCno, smallint,>     \n " + 
         ",0              --<sto_SpecRECno, int,>     \n " + 
         ",0              --<sto_iptal, bit,>     \n " + 
@@ -2644,7 +2644,7 @@ var Query =
         ",''              --<sto_yabanci_isim, nvarchar(127),>     \n " + 
         ",''              --<sto_sat_cari_kod, nvarchar(25),>     \n " + 
         ",0              --<sto_cins, tinyint,>     \n " + 
-        ",0              --<sto_doviz_cinsi, tinyint,>     \n " + 
+        ",1              --<sto_doviz_cinsi, tinyint,>     \n " + 
         ",0              --<sto_detay_takip, tinyint,>     \n " + 
         ",'ADET'              --<sto_birim1_ad, nvarchar(10),>     \n " + 
         ",1              --<sto_birim1_katsayi, float,>     \n " + 
@@ -2997,7 +2997,7 @@ var Query =
         ",''  --<sfiyat_kampanyakod, nvarchar(4),> \n"+
         ",0  --<sfiyat_doviz_kuru, float,>) \n"+
         " ) ",
-        param:['sfiyat_stokkod:string|50','sfiyat_fiyati:float','sfiyat_listesirano:int','sfiyat_doviz:int']
+        param:['sfiyat_stokkod:string|50','sfiyat_fiyati:float','sfiyat_listesirano:float','sfiyat_doviz:float']
     },
     AnaGruplarInsert:
     {
@@ -3138,7 +3138,7 @@ var Query =
         "([#msg_S_0088]"+
         ",[msg_S_0022]"+
         ",[msg_S_0023])"+
-  "VALUES"+
+        "VALUES"+
         "(newid() --,uniqueidentifier,>"+
         ",@msg_S_0022        --<msg_S_0022, nvarchar(25),>"+
         ",@msg_S_0023         --<msg_S_0023, [dbo].[nvarchar_maxhesapisimno],>)"+
@@ -3323,7 +3323,7 @@ var Query =
         ",0              --<amb_miktar, float,>     \n"+
         ",0              --<amb_dara, float,>     \n"+
         " ) ",
-        param:['ryn_kod:string|50','ryn_ismi:string|50']
+        param:['amb_kod:string|50','amb_ismi:string|50']
     },
     MateryalInsert : 
     {
@@ -3457,44 +3457,45 @@ var Query =
     KaliteInsert : 
     {
         query : "INSERT INTO [dbo].[STOK_KALITE_KONTROL_TANIMLARI]  " +
-        "([KKon_Guid]  " +
-        ",[KKon_DBCno]  " +
-        ",[KKon_SpecRecno]  " +
-        ",[KKon_iptal]  " +
-        ",[KKon_fileid]  " +
-        ",[KKon_hidden]  " +
-        ",[KKon_kilitli]  " +
-        ",[KKon_degisti]  " +
-        ",[KKon_checksum]  " +
-        ",[KKon_create_user]  " +
-        ",[KKon_create_date]  " +
-        ",[KKon_lastup_user]  " +
-        ",[KKon_lastup_date]  " +
-        ",[KKon_special1]  " +
-        ",[KKon_special2]  " +
-        ",[KKon_special3]  " +
-        ",[KKon_kod]  " +
-        ",[KKon_ismi])  " +
-        " VALUES  " +
-        "(newid()              --<KKon_Guid, uniqueidentifier,>  \n"+ 
-        ",0              --<KKon_DBCno, smallint,>  \n"+ 
-        ",0              --<KKon_SpecRecno, int,>  \n"+ 
-        ",0              --<KKon_iptal, bit,>  \n"+ 
-        ",0              --<KKon_fileid, smallint,>  \n"+ 
-        ",0              --<KKon_hidden, bit,>  \n"+ 
-        ",0              --<KKon_kilitli, bit,>  \n"+ 
-        ",0              --<KKon_degisti, bit,>  \n"+ 
-        ",0              --<KKon_checksum, int,>  \n"+ 
-        ",1              --<KKon_create_user, smallint,>  \n"+ 
-        ",getdate()              --<KKon_create_date, datetime,>  \n"+ 
-        ",1              --<KKon_lastup_user, smallint,>  \n"+ 
-        ",getdate()              --<KKon_lastup_date, datetime,>  \n"+ 
-        ",''              --<KKon_special1, nvarchar(4),>  \n"+ 
-        ",''              --<KKon_special2, nvarchar(4),>  \n"+ 
-        ",''              --<KKon_special3, nvarchar(4),>  \n"+ 
-        ",@KKon_kod              --<KKon_kod, nvarchar(25),>  \n"+ 
-        ",@KKon_ismi              --<KKon_ismi, [dbo].[nvarchar_maxhesapisimno],>  \n"+ 
-        " ) ",
+                "([KKon_Guid]  " +
+                ",[KKon_DBCno]  " +
+                ",[KKon_SpecRecno]  " +
+                ",[KKon_iptal]  " +
+                ",[KKon_fileid]  " +
+                ",[KKon_hidden]  " +
+                ",[KKon_kilitli]  " +
+                ",[KKon_degisti]  " +
+                ",[KKon_checksum]  " +
+                ",[KKon_create_user]  " +
+                ",[KKon_create_date]  " +
+                ",[KKon_lastup_user]  " +
+                ",[KKon_lastup_date]  " +
+                ",[KKon_special1]  " +
+                ",[KKon_special2]  " +
+                ",[KKon_special3]  " +
+                ",[KKon_kod]  " +
+                ",[KKon_ismi])  " +
+                " VALUES  " +
+                "(newid()              --<KKon_Guid, uniqueidentifier,>  \n"+ 
+                ",0              --<KKon_DBCno, smallint,>  \n"+ 
+                ",0              --<KKon_SpecRecno, int,>  \n"+ 
+                ",0              --<KKon_iptal, bit,>  \n"+ 
+                ",0              --<KKon_fileid, smallint,>  \n"+ 
+                ",0              --<KKon_hidden, bit,>  \n"+ 
+                ",0              --<KKon_kilitli, bit,>  \n"+ 
+                ",0              --<KKon_degisti, bit,>  \n"+ 
+                ",0              --<KKon_checksum, int,>  \n"+ 
+                ",1              --<KKon_create_user, smallint,>  \n"+ 
+                ",getdate()              --<KKon_create_date, datetime,>  \n"+ 
+                ",1              --<KKon_lastup_user, smallint,>  \n"+ 
+                ",getdate()              --<KKon_lastup_date, datetime,>  \n"+ 
+                ",''              --<KKon_special1, nvarchar(4),>  \n"+ 
+                ",''              --<KKon_special2, nvarchar(4),>  \n"+ 
+                ",''              --<KKon_special3, nvarchar(4),>  \n"+ 
+                ",@KKon_kod              --<KKon_kod, nvarchar(25),>  \n"+ 
+                ",@KKon_ismi              --<KKon_ismi, [dbo].[nvarchar_maxhesapisimno],>  \n"+ 
+                " ) ",
+        param : ['KKon_kod:string|25','KKon_ismi:string|max']
     }
    
 
