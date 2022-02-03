@@ -490,13 +490,16 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         $scope.MateryalAdi = '';
         $scope.RenkAdi = '';
         $scope.TopukAdi = '';
+        $scope.TopukAdi2 = "";
         $scope.KaliteKodu = '';
         $scope.RenkKodu = '';
         $scope.MateryalKodu = '';
         $scope.StokAdi = '';
         $scope.UreticiAdi = '';
         $scope.TabanAdi = '';
+        $scope.TabanAdi2 = '';
         $scope.AstarAdi = '';
+        $scope.AstarAdi2 = '';
         $scope.PreviewImage = ''
         $scope.AyakNo = '';
        
@@ -599,6 +602,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     }
     $scope.StokInsert = async function()
     {
+        console.log($scope.BteUretici.id)
         let TmpInsertData = 
         [
             $scope.BteStokKodu.txt,
@@ -616,6 +620,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.BteYilAdi.txt,
             $scope.Maliyet,
         ]
+
         let InsertKontrol = await srv.Execute($scope.Firma,'StokInsert',TmpInsertData);
         for (let i = 0; i < $scope.FiyatListeleri.length; i++) 
         {
@@ -659,6 +664,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         }
         else
         {
+            console.log($scope.BteUretici)
             if($scope.BteStokKodu.txt == '' || $scope.BteAltGrup.txt == '' || $scope.BteUretici.txt == '' || $scope.BteAnaGrup.txt == '' ||  $scope.BteModel.txt == '' || $scope.BteMateryal.txt == '' || $scope.BteKalite.txt == '')
             {
                 swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
@@ -858,13 +864,16 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             "sto_isim AS STOKADI, " +
             "sto_model_kodu as MODEL, " +
             "sto_sektor_kodu as TABAN, " +
+            "(SELECT [msg_S_0023] FROM STOK_SEKTORLERI_CHOOSE_2 WHERE [msg_S_0022] = sto_sektor_kodu) AS TABAN_ADI," +
             "sto_sezon_kodu AS RENK , " + 
             "sto_hammadde_kodu AS YIL , " +
             "(SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu = sto_sezon_kodu) AS RENKADI, " +
             "sto_reyon_kodu as TOPUK, " +
+            "(SELECT [msg_S_1080] FROM STOK_REYONLARI_CHOOSE_2 WHERE [msg_S_0020] = sto_reyon_kodu) AS TOPUK_ADI," +
             "sto_standartmaliyet AS MALIYET, " +
             "sto_sat_cari_kod AS TEDARIKCI, " +
             "sto_ambalaj_kodu AS ASTAR, " +
+            "(SELECT [msg_S_0070] FROM STOK_AMBALAJLARI_CHOOSE_2 WHERE [msg_S_0078] = sto_ambalaj_kodu) AS ASTAR_ADI," +
             "sto_uretici_kodu AS URETICI, " +
             "(SELECT TOP 1 urt_ismi FROM STOK_URETICILERI WHERE urt_kod = sto_uretici_kodu) AS URETICIADI, " +
             "sto_kalkon_kodu AS KALITE , " +
@@ -906,6 +915,10 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             $scope.AltGrupAdi = TmpResult[0].ALTGRUP;
             $scope.AstarAdi = TmpResult[0].ASTAR;
             $scope.TopukAdi = TmpResult[0].TOPUK;
+            $scope.TopukAdi2 = TmpResult[0].TOPUK_ADI;
+            $scope.AstarAdi2 = TmpResult[0].ASTAR_ADI;
+            $scope.TabanAdi2 =TmpResult[0].TABAN_ADI;
+
             $scope.FiyatListGetir($scope.BteStokKodu.txt)
         }
         else
