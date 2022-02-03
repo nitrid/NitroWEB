@@ -213,7 +213,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-               $scope.ModelAd = pData.ADI
+               $scope.ModelAd = pData.KODU
             }
         } 
         $scope.BteUretici = 
@@ -276,7 +276,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-                $scope.AstarAdi = pData.ADI;
+                $scope.AstarAdi2 = pData.ADI;
                
             }
         }
@@ -376,7 +376,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-                $scope.TopukAdi = pData.ADI;
+                $scope.TopukAdi2 = pData.ADI;
             },
             rowDblClick : async function(pData)
             {
@@ -411,7 +411,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             },
             onSelected : async function(pData)
             {
-                $scope.TabanAdi = pData.ADI;
+                $scope.TabanAdi2 = pData.ADI;
                
             }
         }
