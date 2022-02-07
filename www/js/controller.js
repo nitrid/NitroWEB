@@ -48,6 +48,7 @@ angular.module('app.controller', ['angular.filter'])
 .controller('Stokeimage', ['$scope','srv','$rootScope','$filter', Stokeimage])
 .controller('SiparisYazdir', ['$scope','srv','$rootScope','$filter', SiparisYazdir])
 .controller('Siparisstokkontrol', ['$scope','srv','$rootScope','$filter', Siparisstokkontrol])
+.controller('MalSevkiyat', ['$scope','srv','$rootScope','$filter', MalSevkiyat])
 .controller('StokTanitimi', ['$scope','srv','$rootScope','$filter', StokTanitimi])
 
 // //ROVİGO

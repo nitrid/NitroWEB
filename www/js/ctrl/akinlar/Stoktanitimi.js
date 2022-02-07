@@ -931,13 +931,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
     }
     $scope.EtiketYazdir = async function()
     {
-        for (let i = 0; i < $scope.BasimAdet; i++) 
-        {
-            await $scope.EtiketYazdir2()
-        }
-    }
-    $scope.EtiketYazdir2 = async function()
-    {
         if($scope.BteStokKodu.txt == '')
         {
             swal("Dikkat!", "Stok Kodu Seçmeden Yazdırma İşlemi Yapılamaz.",icon="warning");
@@ -956,7 +949,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         console.log(TmpResult)
         return new Promise(async resolve => 
         {
-            srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $scope.GeneralParamList.Tasarim + "',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
+            srv.Emit('DevPrint',"{TYPE:'PRINT',PATH:'" + $scope.GeneralParamList.TasarimYolu + "/" + $scope.GeneralParamList.Tasarim + "',QUANTITY:'"+$scope.BasimAdet+"',DATA:"+ JSON.stringify(TmpResult).split("İ").join("I").split("Ç").join("C").split("ç").join("c").split("Ğ").join("G").split("ğ").join("g").split("Ş").join("S").split("ş").join("s").split("Ö").join("O").split("ö").join("o").split("Ü").join("U").split("ü").join("u") +"}",(pResult)=>
             {
                 console.log(pResult)
             })
@@ -964,8 +957,6 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             swal("İşlem Başarılı!", "Yazdırma İşlemi Gerçekleştirildi.",icon="success");
             resolve()
         });
-       
-       
     }
     $scope.UreticiKaydet = async function()
     {

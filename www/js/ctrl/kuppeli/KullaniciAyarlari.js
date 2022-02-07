@@ -74,6 +74,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 ResimYukleme : srv.GetParamValue($scope.Data,"ResimYukleme"),
                 StokTanitimi : srv.GetParamValue($scope.Data,"StokTanitimi"),
                 SiparisYazdir : srv.GetParamValue($scope.Data,"SiparisYazdir"),
+                Siparisstokkontrol : srv.GetParamValue($scope.Data,"Siparisstokkontrol"),
                 // Menü Yönetim
                 KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
                 KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
@@ -249,6 +250,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             {
                 SiparisYazdir : $rootScope.GeneralParamList.SiparisYazdir
             },
+            {
+                Siparisstokkontrol : $rootScope.GeneralParamList.Siparisstokkontrol
+            },
         
             // Menü Yönetim
             {
@@ -320,6 +324,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             ["ResimYukleme",$rootScope.GeneralParamList.Planlama,1,"ResimYukleme"],
             ["StokTanitimi",$rootScope.GeneralParamList.Planlama,1,"StokTanitimi"],
             ["SiparisYazdir",$rootScope.GeneralParamList.Planlama,1,"SiparisYazdir"],
+            ["Siparisstokkontrol",$rootScope.GeneralParamList.Planlama,1,"Siparis Stok Kontrol"],
             
             // Menü Yönetim
             ["KullaniciAyarlari",$rootScope.GeneralParamList.KullaniciAyarlari,2,"Kullanici Ayarları"],
