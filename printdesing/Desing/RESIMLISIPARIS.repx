@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<XtraReportsLayoutSerializer SerializerVersion="19.2.3.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report" Margins="0, 0, 388, 93" PrinterName="Microsoft Print to PDF" PaperKind="A4" PageWidth="827" PageHeight="1169" Version="19.2" Font="Arial, 9.75pt">
+<XtraReportsLayoutSerializer SerializerVersion="19.2.3.0" Ref="0" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report" ShowPreviewMarginLines="false" Margins="0, 0, 388, 93" PrinterName="Microsoft Print to PDF" PaperKind="A4" PageWidth="827" PageHeight="1169" Version="19.2" ShowPrintStatusDialog="false" ShowPrintMarginsWarning="false" Font="Arial, 9.75pt">
   <Bands>
     <Item1 Ref="1" ControlType="TopMarginBand" Name="TopMargin" HeightF="387.5">
       <Controls>
