@@ -1,644 +1,700 @@
-<div ng-controller="StokTanitimi" ng-init="Init()">   
-  <div class="card p-3 border"> 
+<div ng-controller="StokTanitimi" ng-init="Init()">
+  <div class="card p-1">
     <div class="row">
-    <div class="col-5" style="padding-left: 3%;"> 
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Stok Kodu:</dt></p>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="2" class="form-control form-control-sm border-0" option="BteStokKodu"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{StokAdi}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-          <p class="text-md-right"><dt>Üretici:</dt> </p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button" ng-click="UreticiModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="3" class="form-control form-control-sm border-0" option="BteUretici"></button-edit>        
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{UreticiAdi}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-          <p class="text-md-right"><dt>Kalite:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button" ng-click="KaliteModal()"  class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-          <button-edit id="4" class="form-control form-control-sm border-0"  option="BteKalite"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{KaliteAdi}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Materyal 1:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="MateryalModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="5" class="form-control form-control-sm border-0" option="BteMateryal"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{MateryalAdi}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Renk 1:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="RenkModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="6" class="form-control form-control-sm border-0" option="BteRenk"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{RenkAdi}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Topuk Boyu:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="TopukBoyuModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="7" class="form-control form-control-sm border-0" option="BteTopukBoyu"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{TopukAdi2}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Astar:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="AstarModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="8" class="form-control form-control-sm border-0" option="BteAstar"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{AstarAdi2}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-        <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-          <p class="text-md-right"><dt>Taban Cinsi:</dt></p>
+      <div class="col-5" style="padding-left: 1%;">
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Stok Kodu:</dt>
+            </p>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="2" class="form-control form-control-sm border-0" option="BteStokKodu"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{StokAdi}}</dt>
+            </p>
+          </div>
         </div>
-        <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-          <button type="button"  ng-click="TabanModal()" class="btn btn-primary">+</button>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Üretici:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="UreticiModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="3" class="form-control form-control-sm border-0" option="BteUretici"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{UreticiAdi}}</dt>
+            </p>
+          </div>
         </div>
-        <div class="col-4" style="padding: 0px;">
-          <button-edit id="9" class="form-control form-control-sm border-0" option="BteTaban"></button-edit>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Kalite:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="KaliteModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="4" class="form-control form-control-sm border-0" option="BteKalite"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{KaliteAdi}}</dt>
+            </p>
+          </div>
         </div>
-        <div class="col-4">
-          <p class="text-md-right"><dt>{{TabanAdi2}}</dt></p>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Materyal 1:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="MateryalModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="5" class="form-control form-control-sm border-0" option="BteMateryal"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{MateryalAdi}}</dt>
+            </p>
+          </div>
         </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Renk 1:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="RenkModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="6" class="form-control form-control-sm border-0" option="BteRenk"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{RenkAdi}}</dt>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Topuk Boyu:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="TopukBoyuModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="7" class="form-control form-control-sm border-0" option="BteTopukBoyu"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{TopukAdi2}}</dt>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Astar:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="AstarModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="8" class="form-control form-control-sm border-0" option="BteAstar"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{AstarAdi2}}</dt>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Taban Cinsi:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="TabanModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="9" class="form-control form-control-sm border-0" option="BteTaban"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{TabanAdi2}}</dt>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Yıl Adı:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="YilModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="10" class="form-control form-control-sm border-0" option="BteYilAdi"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{YilAdi}}</dt>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Model :</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="ModelModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="11" class="form-control form-control-sm border-0" option="BteModel"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{ModelAd}}</dt>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Ana Grup:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="AnaGrupModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="12" class="form-control form-control-sm border-0" option="BteAnaGrup"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{AnaGrupAdi}}</dt>
+            </p>
+          </div>
+        </div>
+        <div class="row" style="width: auto;max-height: 50px;">
+          <div class="col-4" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Alt Grup:</dt>
+            </p>
+          </div>
+          <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button type="button" ng-click="AltGrupModal()" class="btn btn-primary btn-m  mt-1">+</button>
+          </div>
+          <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+            <button-edit id="13" class="form-control form-control-sm border-0" option="BteAltGrup"></button-edit>
+          </div>
+          <div class="col-3 d-flex align-self-center" style="max-height: 50px;">
+            <p class="text-sm-right">
+              <dt>{{AltGrupAdi}}</dt>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--ORTA-->
+      <div class="col-4" style="padding-right: 3%;padding-left: 3%;">
+        <div class="row ">
+          <div class="col-3" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Tasarım:</dt>
+            </p>
+          </div>
+          <div class="col-5 d-flex align-self-center justify-content-end">
+            <div class="form-group">
+              <combobox option="CmbTasarimList" ng-model="TasarimValue"></combobox>
+            </div>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-3" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Basım Adeti:</dt>
+            </p>
+          </div>
+          <div class="col-5 d-flex align-self-center justify-content-end">
+            <input class="form-control" ng-model="BasimAdet" type="number">
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-3" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Ayak No:</dt>
+            </p>
+          </div>
+          <div class="col-5 d-flex align-self-center justify-content-end">
+            <input class="form-control" ng-model="AyakNo" type="text">
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-3" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Barkod:</dt>
+            </p>
+          </div>
+          <div class="col-5 d-flex align-self-center justify-content-end">
+            <input class="form-control" ng-keypress="BarkodGetirKey($event)" ng-model="YeniBarkod" type="text">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3" style="width: auto; margin-right: auto;">
+            <p class="text-sm-right">
+              <dt>Maliyet:</dt>
+            </p>
+          </div>
+          <div class="col-5 d-flex align-self-center justify-content-end">
+            <input class="form-control" ng-model="Maliyet" type="text">
+          </div>
+        </div>
+        <div class="row" ng-repeat="option in FiyatListeleri">
+          <div class="col-3" style="width: auto; margin-right: auto;max-width: 120px;">
+            <p class="text-sm-right">
+              <dt>{{option.sfl_aciklama}}:</dt>
+            </p>
+          </div>
+          <div class="col-5 d-flex align-self-center justify-content-end">
+            <input class="form-control" ng-model="option.MODEL" type="text">
+          </div>
+        </div>
+      </div>
+      <!--SAĞ TARAF-->
+      <div class="col-3" style="padding-right: 1%;">
+        <div class="row">
+          <p class="h5" style="text-align: center;">
+            <b>ÜRÜN FOTOĞRAFI</b>
+          </p>
+          <img class="rounded mx-auto d-block" style="max-width:300px;max-height: 450px;" ng-src="{{PreviewImage}}">
+        </div>
+      </div>
     </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Yıl Adı:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="YilModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="10" class="form-control form-control-sm border-0" option="BteYilAdi"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{YilAdi}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Model :</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="ModelModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="11" class="form-control form-control-sm border-0" option="BteModel"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{ModelAd}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Ana Grup:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="AnaGrupModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="12" class="form-control form-control-sm border-0" option="BteAnaGrup"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{AnaGrupAdi}}</dt></p>
-      </div>
-    </div>
-    <div class="row" style="width: auto;">
-      <div class="col-3 px-1" style="width: auto; margin-right: auto;">
-        <p class="text-md-right"><dt>Alt Grup:</dt></p>
-      </div>
-      <div class="col-1 py-2" style="padding: 0px;text-align: right;">
-        <button type="button"  ng-click="AltGrupModal()" class="btn btn-primary">+</button>
-      </div>
-      <div class="col-4" style="padding: 0px;">
-        <button-edit id="13" class="form-control form-control-sm border-0" option="BteAltGrup"></button-edit>
-      </div>
-      <div class="col-4">
-        <p class="text-md-right"><dt>{{AltGrupAdi}}</dt></p>
-      </div>
-    </div>
-    
-  </div>
-
-<!--ORTA SAĞ-->
-<div class="col-4" style="padding-right: 3%;padding-left: 3%;">
-  <div class="row ">
-    <div class="col-2 px-1" style="width: auto; margin-right: auto;">
-      <p class="text-md-right"><dt>Tasarım:</dt></p>
-    </div> 
-  <div class="col-6 py-1">
-      <div class="form-group">
-          <combobox option="CmbTasarimList" ng-model="TasarimValue"></combobox>
-      </div>  
-  </div>
-</div>
-<div class="row ">
-  <div class="col-2 px-1" style="width: auto; margin-right: auto;">
-    <p class="text-md-right"><dt>Basım Adeti:</dt></p>
-  </div>    
-  <div class="col-6 py-1">
-    <input class="form-control" ng-model="BasimAdet" type="number"> 
-  </div>
-</div>
-<div class="row ">
-  <div class="col-2 px-1" style="width: auto; margin-right: auto;">
-    <p class="text-md-right"><dt>Ayak No:</dt></p>
-  </div>    
-  <div class="col-6 py-1">
-    <input class="form-control" ng-model="AyakNo" type="text"> 
-  </div>
-</div>
-<div class="row ">
-  <div class="col-2 px-1" style="width: auto; margin-right: auto;">
-    <p class="text-md-right"><dt>Barkod:</dt></p>
-  </div>    
-  <div class="col-6 py-1">
-    <input class="form-control" ng-keypress = "BarkodGetirKey($event)" ng-model="YeniBarkod"  type="text"> 
-  </div>
-</div>
-<div class="row">
-  <div class="col-2 px-1" style="width: auto; margin-right: auto;">
-    <p class="text-md-right"><dt>Maliyet:</dt></p>
-  </div>    
-  <div class="col-6 py-1">
-    <input class="form-control" ng-model="Maliyet"  type="text"> 
-  </div>
-</div>
-<div class="row" ng-repeat="option in FiyatListeleri">
-  <div class="col-2 px-1" style="width: auto; margin-right: auto;">
-    <p class="text-md-right"><dt>{{option.sfl_aciklama}}:</dt></p>
-  </div>    
-  <div class="col-6 py-1">
-    <input class="form-control" ng-model="option.MODEL" type="text"> 
-  </div>    
-</div>
-</div>
-  
-<!--SAĞ TARAF-->
-  <div class="col-3">
+    <!--SAĞ ALT-->
     <div class="row">
-      <p class="h5" style="text-align: center;"><b>ÜRÜN FOTOĞRAFI</b></p>
-      <img class="rounded mx-auto d-block" style="max-width:300px;max-height: 450px;" ng-src="{{PreviewImage}}">
-    </div> 
-  </div>
-
-</div>
-
-<!--SAĞ ALT-->
-<div class="row">
-  <div class="col-12" style="text-align: right;">
-      <button type="button" class="btn btn-primary btn-lg " ng-click="StokKaydet()">Kaydet</button>
-      <button type="button" class="btn btn-warning btn-lg " ng-click="EtiketYazdir()">Yazdır</button>
-      <button type="button" class="btn btn-success btn-lg" ng-click="Init()">Yeni</button>
-  </div>
-</div>
-</div> 
-
-
-<!--ANA GRUP MODAL-->
-
-<div id="AnaGrupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniAnagrupKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniAnaGrupAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()"  >Kaydet</button>
-              </div>
+      <div class="col-12 d-flex align-self-center justify-content-end" style="padding-right: 1%;">
+        <button type="button" class="btn btn-primary btn-lg " ng-click="StokKaydet()">Kaydet</button>
+        <button type="button" class="btn btn-warning btn-lg " ng-click="EtiketYazdir()">Yazdır</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="Init()">Yeni</button>
       </div>
+    </div>
   </div>
-</div>
-
-<!--URETICI MODAL-->
-
-<div id="MdlUretici" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <!--ANA GRUP MODAL-->
+  <div id="AnaGrupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
       <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Üretici Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniUreticiKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Üretici Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniUreticiAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="UreticiKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--KAlite MODAL-->
-
-<div id="MdlKalite" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Kalite Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniKaliteKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Kalite Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniKaliteAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="KaliteKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--MdlMateryal MODAL-->
-
-<div id="MdlMateryal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Materyal Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniMateryalKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Materyal Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniMateryalAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="MateryalKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--Rnk MODAL-->
-
-<div id="MdlRenk" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Renk Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniRenkKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniRenkAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="RenkKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--Topuk MODAL-->
-
-<div id="MdlTopuk" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Topuk Boyu Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniTopukKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Topuk Boyu Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniTopukAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="TopukKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--Asltar MODAL-->
-
-<div id="MdlAstar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Astar Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniAstarKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Astar Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniAstarAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="AstarKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--Taban MODAL-->
-
-<div id="MdlTaban" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Taban Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniTabanKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Taban Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniTabanAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="TabanKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--Yıl MODAL-->
-
-<div id="MdlYil" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Yıl Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniYilKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Yıl Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniYilAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--MdlModel MODAL-->
-
-<div id="MdlModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-  
-         
-              <div class="modal-body">
-                <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                  <div class="col-4 px-6">
-                    <p class="text-md-right my-0 py-1 "> <dt>Model Kodu:</dt></p>
-                  </div> 
-                   <div class="col-4 px-6">
-                    <input class="form-control" ng-model="YeniModelKodu" id="inputdefault" type="text"> 
-                   </div>
-                  </div>
-                  <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                    <div class="col-4 px-6">
-                      <p class="text-md-right my-0 py-1 "> <dt>Model Adı:</dt></p>
-                    </div> 
-                     <div class="col-4 px-6">
-                      <input class="form-control" ng-model="YeniModelAdi" id="inputdefault" type="text"> 
-                     </div>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" ng-click="ModelKaydet()"  >Kaydet</button>
-              </div>
-
-      </div>
-  </div>
-</div>
-<!--ALT GRUP MODAL-->
-<div id="AltGrupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Ana Grup Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniAnagrupKodu" id="inputdefault" type="text">
+            </div>
           </div>
           <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
             <div class="col-4 px-6">
-              <p class="text-md-right my-0 py-1 "> <dt>Ana Grup Kodu:</dt></p>
-            </div> 
-             <div class="col-4 px-6">
-              <Button-edit  class="form-control form-control-sm border-0" option="BteAnaGrupAlt" id="23"> 
-             </div>
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Ana Grup Adı:</dt>
+              </p>
             </div>
-            <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-              <div class="col-4 px-6">
-                <p class="text-md-right my-0 py-1 "> <dt>Alt Grup Kodu:</dt></p>
-              </div> 
-               <div class="col-4 px-6">
-                <input class="form-control" ng-model="AltGrupKodu" id="inputdefault" type="text"> 
-               </div>
-              </div>
-              <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
-                <div class="col-4 px-6">
-                  <p class="text-md-right my-0 py-1 "> <dt>Alt Grup adı:</dt></p>
-                </div> 
-                 <div class="col-4 px-6">
-                  <input class="form-control" ng-model="AltGrupAdi" id="inputdefault" type="text"> 
-                 </div>
-                </div>
-          <form ng-submit="AltGrupModall()">
-              <div class="modal-body">
-              </div>
-              <div class="modal-footer">
-              
-                  <button type="submit" class="btn btn-primary" ng-click="AltGruplarKaydet()">Kaydet</button>
-              </div>
-          </form>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniAnaGrupAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()">Kaydet</button>
+        </div>
       </div>
+    </div>
+  </div>
+  <!--URETICI MODAL-->
+  <div id="MdlUretici" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Üretici Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniUreticiKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Üretici Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniUreticiAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="UreticiKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--KAlite MODAL-->
+  <div id="MdlKalite" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Kalite Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniKaliteKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Kalite Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniKaliteAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="KaliteKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--MdlMateryal MODAL-->
+  <div id="MdlMateryal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Materyal Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniMateryalKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Materyal Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniMateryalAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="MateryalKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Rnk MODAL-->
+  <div id="MdlRenk" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Renk Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniRenkKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Ana Grup Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniRenkAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="RenkKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Topuk MODAL-->
+  <div id="MdlTopuk" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Topuk Boyu Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniTopukKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Topuk Boyu Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniTopukAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="TopukKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Asltar MODAL-->
+  <div id="MdlAstar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Astar Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniAstarKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Astar Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniAstarAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="AstarKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Taban MODAL-->
+  <div id="MdlTaban" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Taban Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniTabanKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Taban Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniTabanAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="TabanKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Yıl MODAL-->
+  <div id="MdlYil" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Yıl Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniYilKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Yıl Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniYilAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--MdlModel MODAL-->
+  <div id="MdlModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Model Kodu:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniModelKodu" id="inputdefault" type="text">
+            </div>
+          </div>
+          <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+            <div class="col-4 px-6">
+              <p class="text-sm-right my-0 py-1 ">
+                <dt>Model Adı:</dt>
+              </p>
+            </div>
+            <div class="col-4 px-6">
+              <input class="form-control" ng-model="YeniModelAdi" id="inputdefault" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="ModelKaydet()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--ALT GRUP MODAL-->
+  <div id="AltGrupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+          <div class="col-4 px-6">
+            <p class="text-sm-right my-0 py-1 ">
+              <dt>Ana Grup Kodu:</dt>
+            </p>
+          </div>
+          <div class="col-4 px-6">
+            <Button-edit class="form-control form-control-sm border-0" option="BteAnaGrupAlt" id="23">
+          </div>
+        </div>
+        <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+          <div class="col-4 px-6">
+            <p class="text-sm-right my-0 py-1 ">
+              <dt>Alt Grup Kodu:</dt>
+            </p>
+          </div>
+          <div class="col-4 px-6">
+            <input class="form-control" ng-model="AltGrupKodu" id="inputdefault" type="text">
+          </div>
+        </div>
+        <div class="row py-1 justify-content-center align-items-center border-dark mb-3 p-2 m-2">
+          <div class="col-4 px-6">
+            <p class="text-sm-right my-0 py-1 ">
+              <dt>Alt Grup adı:</dt>
+            </p>
+          </div>
+          <div class="col-4 px-6">
+            <input class="form-control" ng-model="AltGrupAdi" id="inputdefault" type="text">
+          </div>
+        </div>
+        <form ng-submit="AltGrupModall()">
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-click="AltGruplarKaydet()">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
-
 </div>
-</div>
-
-
