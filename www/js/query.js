@@ -3306,10 +3306,7 @@ var Query =
         ",'' --<rnk_kirilim_60, [dbo].[nvarchar_maxhesapisimno],>) \n"+
         " ) ",
         param:['mk_kodu:string|50','mk_ismi:string|50',"rnk_kirilim_1:string|50","rnk_kirilim_2:string|50","rnk_kirilim_3:string|50","rnk_kirilim_4:string|50","rnk_kirilim_5:string|50","rnk_kirilim_6:string|50","rnk_kirilim_7:string|50","rnk_kirilim_8:string|50"]
-    }
-    
-
-
+    } 
 };
 
 

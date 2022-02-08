@@ -65,7 +65,6 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         return new Promise(async resolve => 
         {
             $scope.Data = await srv.Execute($scope.Firm,'GetKullanici',[pKullanici])
-            console.log($scope.Data)
             $rootScope.GeneralParamList = 
             {
                 // Kullanıcı

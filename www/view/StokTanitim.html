@@ -1,0 +1,542 @@
+<div ng-controller="StokTanitim" ng-init="Init()">
+  <div class="card"> 
+    <div  class="row">
+    <div class="col-5" style="padding-left: 3%;max-height: 960px;"> 
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-3" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right "><dt>Stok Kodu:</dt></p>
+      </div>   
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="2" class="form-control form-control border-0" option="BteStokKodu"></button-edit>
+      </div>
+      <div class="col-4 d-flex align-self-center">
+        <p class="text-sm-right "><dt>{{StokAdi}}</dt></p>
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-3" style="width: auto;margin-right: auto;">
+         <p class="text-sm-right"><dt>Ana Grup:</dt> </p>
+      </div>
+      <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button type="button" ng-click="AnaGrupModal()" class="btn btn-primary btn-m  mt-1">+</button>
+      </div>
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+          <button-edit id="3" class="form-control form-control border-0" option="BteAnaGrup"></button-edit>        
+      </div>
+      <div class="col-4 d-flex align-self-center">
+        <p class="text-sm-right "><dt>{{AnaGrupAdi}}</dt></p>
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-3" style="width: auto;margin-right: auto;">
+          <p class="text-sm-right"><dt>Alt Grup1:</dt></p>
+      </div>
+      <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button type="button" ng-click="AltGrupModal()"  class="btn btn-primary btn-m  mt-1 ">+</button>
+      </div>
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+          <button-edit id="4" class="form-control form-control border-0"  option="BteAltGrup"></button-edit>
+      </div>
+      <div class="col-4 d-flex align-self-center">
+        <p class="text-sm-right "><dt>{{AltGrupAdi}}</dt></p>
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-3" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Alt Grup2:</dt></p>
+      </div>
+      <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button type="button"  ng-click="AltGrupV2Modal()" class="btn btn-primary btn-m">+</button>
+      </div>
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="5" class="form-control form-control border-0" option="BteAltGrup2"></button-edit>
+      </div>
+      <div class="col-4 d-flex align-self-center">
+        <p class="text-sm-right "><dt>{{AltGrupAdi2}}</dt></p>
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-3" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Model:</dt></p>
+      </div>
+      <div class="col-1 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button type="button" ng-click="ModelModal()" class="btn btn-primary btn-m mt-1">+</button>
+      </div>
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="6" class="form-control form-control border-0" option="BteModel"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Tedarikçi:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="7" class="form-control form-control border-0" option="BteTedarikci"></button-edit>
+      </div>
+      <div class="col-4 d-flex align-self-center">
+        <p class="text-sm-right "><dt>{{TedarikciAdi}}</dt></p>
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Raf:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="8" class="form-control form-control border-0" option="BteRaf"></button-edit>
+      </div>
+      <div class="col-4 d-flex align-self-center">
+        <p class="text-sm-right "><dt>{{RafAdi}}</dt></p>
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+        <div class="col-2" style="width: auto;margin-right: auto;">
+          <p class="text-sm-right"><dt>Materyal:</dt></p>
+        </div>    
+        <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+          <button-edit id="9" class="form-control form-control border-0" option="BteMateryal"></button-edit>
+        </div>
+        <div class="col-4">
+        </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Kaplama:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="10" class="form-control form-control border-0" option="BteKaplama"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Taş :</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="11" class="form-control form-control border-0" option="BteTas"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Taş Rengi:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="12" class="form-control form-control border-0" option="BteTasrengi"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Zincir Sayısı:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="13" class="form-control form-control border-0" option="BteZincirSayisi"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Zincir Rengi:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="14" class="form-control form-control border-0" option="BteZinciRengi"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Figür:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="15" class="form-control form-control border-0" option="BteFigur"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Figür Şekli:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="16" class="form-control form-control border-0" option="BteFigurSekli"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>
+    <div class="row" style="width: auto;max-height: 50px;">
+      <div class="col-2" style="width: auto;margin-right: auto;">
+        <p class="text-sm-right"><dt>Figür Rengi:</dt></p>
+      </div>    
+      <div class="col-4 d-flex align-self-center justify-content-end" style="padding: 0px;">
+        <button-edit id="17" class="form-control form-control border-0" option="BteFigurRengi"></button-edit>
+      </div>
+      <div class="col-4">
+      </div>
+    </div>  
+    
+    </div>
+  
+  <!--ORTA-->
+  <div class="col-4" style="padding-right: 3%;padding-left: 3%;">
+  <div class="row ">
+    <div class="col-3" style="width: auto; margin-right: auto;">
+      <p class="text-sm-right"><dt>Paket:</dt></p>
+    </div> 
+  
+  <div class="col-3 d-flex justify-content-end align-items-center">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" ng-change="PaketDuzenle()" value=""  ng-model="PaketAktif" id="flexCheckIndeterminate">
+      <label class="form-check-label" for="flexCheckIndeterminate">
+        Aktif
+      </label>
+    </div>
+  </div>
+  <div class="col-5 d-flex align-self-center justify-content-end">
+    <input class="form-control" ng-model="Paket" type="text" ng-disabled="PaketDisable"> 
+   </div>
+</div>
+<div class="row ">
+  <div class="col-3" style="width: auto; margin-right: auto;">
+    <p class="text-sm-right"><dt>Renk:</dt></p>
+  </div> 
+  <div class="col-3 d-flex align-self-center justify-content-end">
+    <div class="card bg-light text p-2"> 
+      <div class="form-check" ng-repeat="option in RenkList">
+        <input type="checkbox" class="form-check-input" ng-model="option.VALUE">
+        <label class="form-check-label" >{{option.KIRILIM}}</label>
+      </div>
+    </div>
+  </div>
+</div> 
+  <div class="row ">
+    <div class="col-3" style="width: auto; margin-right: auto;">
+      <p class="text-sm-right"><dt>Maliyet:</dt></p>
+    </div>    
+    <div class="col-5 d-flex align-self-center justify-content-end">
+      <input class="form-control" ng-model="Maliyet"  type="text"> 
+    </div>
+   
+  </div>
+  <div class="row" ng-repeat="option in FiyatListeleri" >
+    <div class="col-3" style="width: auto; margin-right: auto;">
+      <p class="text-sm-right"><dt>{{option.sfl_aciklama}}:</dt></p>
+    </div>    
+    <div class="col-5 d-flex align-self-center justify-content-end">
+      <input class="form-control" ng-model="option.MODEL" type="text"> 
+    </div>
+  </div>      
+</div>
+
+<!--SAĞ TARAF-->
+<div class="col-3" style="padding-right: 3%;">
+  <div class="row">
+    <p class="h5" style="text-align: center;"><b>ÜRÜN FOTOĞRAFI</b></p>
+    <img class="rounded mx-auto d-block" style="max-width: 300px;max-height: 450px;" ng-src="{{PreviewImage}}">
+  </div>
+</div>
+
+</div>
+
+<!--SAĞ ALT-->
+<div class="row">
+  <div class="col-12 d-flex align-self-center justify-content-end">
+    <button type="button" class="btn btn-primary btn-lg " ng-click="StokKaydet()">Kaydet</button>
+    <button type="button" class="btn btn-warning btn-lg " ng-click="EtiketYazdir()">Yazdır</button>
+    <button type="button" class="btn btn-success btn-lg" ng-click="Init()">Yeni</button>
+  </div>    
+</div> 
+</div>
+</div>
+
+
+<!--ANA GRUP MODAL-->
+<div id="AnaGrupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Ana Grup Kodu:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control" ng-model="YeniAnagrupKodu" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Ana Grup Adı:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control" ng-model="YeniAnaGrupAdi" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="AnaGruplarKaydet()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--ALT GRUP MODAL-->
+<div id="AltGrupModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Ana Grup Kodu:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <Button-edit class="form-control form-control-sm border-0" style="padding: 0px;" option="BteAnaGrupAlt" id="23">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Alt Grup Kodu:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control" ng-model="AltGrupKodu" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Alt Grup Adı:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control" ng-model="YeniAltGrupAdi" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="modal-body"></div>
+      <form ng-submit="AltGrupModall()">
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="AltGruplarKaydet()">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AltGrupV2Modal -->
+<div id="AltGrupV2Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Ana Grup Kodu:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <Button-edit class="form-control form-control-sm border-0" style="padding: 0px;" option="YeniAnaGrupAlt2" id="24">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Alt Grup Kodu:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <Button-edit class="form-control form-control-sm border-0" style="padding: 0px;" option="YeniAltGrupAlt2" id="25">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Kodu:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control" ng-model="KoduV2" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt> Adı:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control" ng-model="Adiv2" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="modal-body"></div>
+      <form ng-submit="AltGrupV2Modal()">
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" ng-click="AltGruplar2Kaydet()">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODEL GRUBU -->
+<div id="ModelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleOptionalSmall" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Model Kodu:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control" ng-model="YeniModelKodu" ng-disabled="ModelDisable" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Model Adı:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input class="form-control " ng-model="YeniModelAdi" id="inputdefault" type="text">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Ana Grup:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <Button-edit class="form-control form-control-sm border-0" style="padding: 0px;" option="BteAnaGrupModel" id="19">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Alt Grup:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <Button-edit class="form-control form-control-sm border-0" style="padding: 0px;" option="BteAltGrupModel" id="20">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Alt Grup 2:</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <Button-edit class="form-control form-control-sm border-0" style="padding: 0px;" option="BteAltGrup2Model" id="21">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mt-0 mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 1</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk1" id="inputdefault">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 2</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk2" id="inputdefault">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 3</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk3" id="inputdefault">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 4</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk4" id="inputdefault">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 5</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk5" id="inputdefault">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 6</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk6" id="inputdefault">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 7</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk7" id="inputdefault">
+        </div>
+      </div>
+      <div class="row py-0 px-0 justify-content-center align-items-center  mb-0 p-2 m-1">
+        <div class="col-3 px-0">
+          <p class="text-sm-right my-0 py-1 ">
+            <dt>Renk 8</dt>
+          </p>
+        </div>
+        <div class="col-3 px-0">
+          <input cols="40" rows="5" class="form-control " ng-model="Modelrenk8" id="inputdefault">
+        </div>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" ng-click="Modelkayit()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+</div>

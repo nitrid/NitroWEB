@@ -52,6 +52,7 @@ function Main($scope,$state,srv,$rootScope)
             {
                 if($scope.MenuRapor[x].VALUE == "true")
                 {
+                    console.log($scope.MenuRapor[x].VALUE)
                     TmpHtmlRapor += '<li><a class="dropdown-item" ui-sref="' + 'main.' + $scope.MenuRapor[x].TAG +'" href="">' + $scope.MenuRapor[x].SPECIAL +'</a></li>' 
                     Sayac2++;
                 }

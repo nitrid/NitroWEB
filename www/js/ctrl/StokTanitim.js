@@ -708,7 +708,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
     {        
         $scope.Firma = localStorage.getItem('firm');
         $scope.Param = srv.GetParam(atob(localStorage.getItem('login')));
-        $rootScope.PageName = "StokTanitim"
+        $rootScope.PageName = "Stok Tanıtım"
         $scope.BasimAdet = 1;
         $scope.Barkod = "";
         $scope.Paket = 1;
@@ -748,15 +748,12 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.Modelrenk6='';
         $scope.Modelrenk7='';
         $scope.Modelrenk8='';
-
         
         $scope.ModelDisable=true;
       
-       
         $scope.FiyatListGetir()
         $scope.RenkGetir('')
        
-
         InitObj();
 
         $scope.BteMateryal.txt = "YOK"
@@ -771,7 +768,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
     }
     $scope.AnaGrupModal = async  function()
     {
-        
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
@@ -800,11 +796,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
     } 
     $scope.ModelModal = function()
     {
-        
         $('#ModelModal').modal("show");
-    } 
-
-   
+    }
     $scope.StokKodOlustur =async function()
     {
         let TmpQuery = 
@@ -833,8 +826,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         setTimeout(() => {
             $('#ModelModal').modal("show");
         }, 500);
-       
-
     }
     $scope.StokInsert = async function(pName)
     {
@@ -873,12 +864,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         {
             $scope.SatisFiyatInsert($scope.FiyatListeleri[i].sfl_sirano,$scope.FiyatListeleri[i].MODEL)
         }
-      
        swal("Başarılı", "Stok ve Barkod Oluşturuldu..",icon="success");
     }
-
-
-
     $scope.AlisFiyatHesap =  function()
     {
         $scope.BayiAlis = ($scope.BayiPsf * 60)  / 100
@@ -937,11 +924,7 @@ function StokTanitim($scope,srv,$rootScope,$filter)
                 swal("Başarılı", "Stok Kaydı Gönderildi ",icon="success");
                 $scope.Init()
             }
-           
         }
-
-
-
     }
     $scope.StokUserInsert = async function()
     {   
@@ -974,12 +957,9 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             await $scope.BarkodInsert($scope.BteStokKodu.txt,1)
             if($scope.PaketAktif == true)
             {
-               
-
                 await $scope.BarkodInsert($scope.PaketBarkod,2)
             }
         }
-       
     }
     $scope.BarkodInsert = async function(pbarkod,pbirim)
     {
@@ -992,7 +972,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         console.log(TmpInsertData)
         let InsertKontrol = await srv.Execute($scope.Firma,'StokBarkodInsert',TmpInsertData);
     }
-
     $scope.SatisFiyatInsert = async function(pFiyat,pListe)
     {
         let TmpInsertData = 
@@ -1000,16 +979,14 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             $scope.BteStokKodu.txt,
             pListe,
             pFiyat
-                       
         ]
         console.log(TmpInsertData)
         let InsertKontrol = await srv.Execute($scope.Firma,'SatisFiyatInsert',TmpInsertData);
     }
     $scope.StokHesap=async function(number)
     {
-        
-        output = [],
-        sNumber = number.toString();
+        let output = []
+        let sNumber = number.toString();
     
         for (var i = 0, len = sNumber.length; i < len; i += 1) {
             output.push(+sNumber.charAt(i));
@@ -1025,8 +1002,8 @@ function StokTanitim($scope,srv,$rootScope,$filter)
     $scope.StokPaketHesap=async function(number)
     {
         number = parseFloat(number) + 100000
-        output = [],
-        sNumber = number.toString();
+        let output = []
+        let sNumber = number.toString();
     
         for (var i = 0, len = sNumber.length; i < len; i += 1) {
             output.push(+sNumber.charAt(i));
@@ -1041,7 +1018,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             sonuc = 0
         }
        $scope.PaketBarkod = sNumber + sonuc.toString();
-      
     }
     $scope.AnaGruplarInsert=async function()
     {
@@ -1049,13 +1025,11 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         [
             $scope.YeniAnagrupKodu,
             $scope.YeniAnaGrupAdi
-                       
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'AnaGruplarInsert',TmpInsertData);
         swal("Başarılı", "Kayıt Başarılı",icon="success");
         $('#AnaGrupModal').modal("hide");
     }
-
     $scope.AltGruplarInsert=async function()
     {
         let TmpInsertData = 
@@ -1067,8 +1041,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         let InsertKontrol = await srv.Execute($scope.Firma,'AltGruplarInsert',TmpInsertData);
         $('#AltGrupModal').modal("hide");
     }
-
-
     $scope.AltGruplar2Insert=async function()
     {
         let TmpInsertData = 
@@ -1079,7 +1051,6 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         let InsertKontrol = await srv.Execute($scope.Firma,'AltGruplar2Insert',TmpInsertData);
         $('#AltGrupV2Modal').modal("hide");
     }
-
     $scope.ModelInsert=async function()
     {
         let TmpInsertData = 
@@ -1095,32 +1066,37 @@ function StokTanitim($scope,srv,$rootScope,$filter)
             $scope.ModelRenkInsert()
         }
     }
-    
-//BUTONLAR
-
+    //BUTONLAR
     $scope.AnaGruplarKaydet = async function()
     {
         if($scope.YeniAnagrupKodu == '' || $scope.YeniAnaGrupAdi == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
-        }else{
-            $scope.AnaGruplarInsert()  }
+        }
+        else
+        {
+            $scope.AnaGruplarInsert()  
+        }
     }
-
     $scope.AltGruplarKaydet = async function()
     {
         if($scope.AltGrupKodu == '' || $scope.YeniAltGrupAdi == '' || $scope.BteAnaGrupAlt.txt == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
-        }else{
-            $scope.AltGruplarInsert() } 
+        }
+        else
+        {
+            $scope.AltGruplarInsert() 
+        } 
     }
     $scope.AltGruplar2Kaydet = async function()
     {
         if($scope.YeniAnaGrupAlt2.txt == '' || $scope.YeniAltGrupAlt2 == ''  || $scope.KoduV2 == ''  || $scope.Adiv2 == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
-        }else{
+        }
+        else
+        {
             $scope.AltGruplar2Insert()
         } 
     }
@@ -1129,7 +1105,9 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         if($scope.YeniModelKodu == ''  || $scope.YeniModelAdi == ''  || $scope.BteAltGrupModel.txt == '' || $scope.BteAnaGrupModel.txt == '' || $scope.BteAltGrup2Model.txt == '')
         {
             swal("Dikkat", "Lütfen Boş Alanları Doldurun",icon="warning");
-        }else{
+        }
+        else
+        {
             $scope.ModelInsert()
         } 
     }
@@ -1147,16 +1125,16 @@ function StokTanitim($scope,srv,$rootScope,$filter)
     {
         let TmpInsertData = 
         [
-        $scope.YeniModelKodu,
-        $scope.YeniModelKodu,
-        $scope.Modelrenk1,
-        $scope.Modelrenk2,
-        $scope.Modelrenk3,
-        $scope.Modelrenk4,
-        $scope.Modelrenk5,
-        $scope.Modelrenk6,
-        $scope.Modelrenk7,
-        $scope.Modelrenk8
+            $scope.YeniModelKodu,
+            $scope.YeniModelKodu,
+            $scope.Modelrenk1,
+            $scope.Modelrenk2,
+            $scope.Modelrenk3,
+            $scope.Modelrenk4,
+            $scope.Modelrenk5,
+            $scope.Modelrenk6,
+            $scope.Modelrenk7,
+            $scope.Modelrenk8
         ]
         let InsertKontrol = await srv.Execute($scope.Firma,'RenkGruplarInsert',TmpInsertData);
         swal("Başarılı", "Renkler Oluşturuldu..",icon="success");
@@ -1166,25 +1144,26 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query :  "SELECT rnk_kirilim_1 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_1 <> '' " +
-            "UNION ALL  " +
-            "SELECT rnk_kirilim_2 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_2 <> '' " +
-            "UNION ALL  " +
-            "SELECT rnk_kirilim_3 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_3 <> '' " +
-            "UNION ALL  " +
-            "SELECT rnk_kirilim_4 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_4 <> '' " +
-            "UNION ALL  " +
-            "SELECT rnk_kirilim_5 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_5 <> '' " +
-            "UNION ALL  " +
-            "SELECT rnk_kirilim_6 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_6 <> '' " +
-            "UNION ALL  " +
-            "SELECT rnk_kirilim_7 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_7 <> '' " +
-            "UNION ALL  " +
-            "SELECT rnk_kirilim_8 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_8 <> '' " ,
+            query : "SELECT rnk_kirilim_1 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_1 <> '' " +
+                    "UNION ALL  " +
+                    "SELECT rnk_kirilim_2 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_2 <> '' " +
+                    "UNION ALL  " +
+                    "SELECT rnk_kirilim_3 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_3 <> '' " +
+                    "UNION ALL  " +
+                    "SELECT rnk_kirilim_4 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_4 <> '' " +
+                    "UNION ALL  " +
+                    "SELECT rnk_kirilim_5 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_5 <> '' " +
+                    "UNION ALL  " +
+                    "SELECT rnk_kirilim_6 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_6 <> '' " +
+                    "UNION ALL  " +
+                    "SELECT rnk_kirilim_7 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_7 <> '' " +
+                    "UNION ALL  " +
+                    "SELECT rnk_kirilim_8 AS KIRILIM, 'false' AS VALUE FROM STOK_RENK_TANIMLARI WHERE rnk_kodu = @rnk_kodu and rnk_kirilim_8 <> '' " ,
             param :["rnk_kodu:string|50"],
             value : [pKodu]
         }
         $scope.RenkList = await srv.Execute(TmpQuery)
+        console.log($scope.RenkList)
     }
     $scope.StokGetir = async function(pKodu)
     {
@@ -1192,35 +1171,37 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query :  "SELECT sto_anagrup_kod as ANAGRUP, " +
-            "sto_altgrup_kod as ALTGRUP, " +
-            "sto_isim AS STOKADI, " +
-            "sto_model_kodu as MODEL, " +
-            "sto_sektor_kodu as ALTGRUP2, " +
-            "sto_reyon_kodu as REYON_KODU, " +
-            "sto_muhgrup_kodu as ANA_GRUP, " +
-            "sto_renk_kodu AS RENK_KODU, " +
-            "sto_standartmaliyet AS MALIYET, " +
-            "sto_sat_cari_kod AS TEDARIKCI, " +
-            "Q1 AS MATERYAL, " +
-            "Q2 AS KAPLAMA, " +
-            "Q3 AS TAS, " +
-            "Q4 AS TAS_RENGI, " +
-            "Q5 AS ZINCIR_SAYISI, " +
-            "Q6 AS ZINCIR_RENGI, " +
-            "Q7 AS FIGUR, " +
-            "Q8 AS FIGUR_SEKLI, " +
-            "Q9 AS FIGUR_RENGI, " +
-            "(SELECT TOP 1 bar_kodu from BARKOD_TANIMLARI WHERE bar_stokkodu=sto_kod and bar_birimpntr = 1) AS BARKOD, " +
-            "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 1) AS BAYIPSF, " +
-            "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 2) AS SUBEPSF, " +
-            "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 6) AS YUZDE60 " +
-            " FROM STOKLAR LEFT JOIN STOKLAR_USER ON sto_Guid = Record_uid where sto_kod=@STOKKODU" ,
+            query : "SELECT sto_anagrup_kod as ANAGRUP, " +
+                    "sto_altgrup_kod as ALTGRUP, " +
+                    "sto_isim AS STOKADI, " +
+                    "sto_model_kodu as MODEL, " +
+                    "sto_sektor_kodu as ALTGRUP2, " +
+                    "sto_reyon_kodu as REYON_KODU, " +
+                    "sto_muhgrup_kodu as ANA_GRUP, " +
+                    "sto_renk_kodu AS RENK_KODU, " +
+                    "sto_standartmaliyet AS MALIYET, " +
+                    "sto_sat_cari_kod AS TEDARIKCI, " +
+                    "Q1 AS MATERYAL, " +
+                    "Q2 AS KAPLAMA, " +
+                    "Q3 AS TAS, " +
+                    "Q4 AS TAS_RENGI, " +
+                    "Q5 AS ZINCIR_SAYISI, " +
+                    "Q6 AS ZINCIR_RENGI, " +
+                    "Q7 AS FIGUR, " +
+                    "Q8 AS FIGUR_SEKLI, " +
+                    "Q9 AS FIGUR_RENGI, " +
+                    "(SELECT TOP 1 bar_kodu from BARKOD_TANIMLARI WHERE bar_stokkodu=sto_kod and bar_birimpntr = 1) AS BARKOD, " +
+                    "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 1) AS BAYIPSF, " +
+                    "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 2) AS SUBEPSF, " +
+                    "(SELECT TOP 1 sfiyat_fiyati FROM STOK_SATIS_FIYAT_LISTELERI WHERE sfiyat_stokkod = sto_kod and sfiyat_listesirano = 6) AS YUZDE60 " +
+                    " FROM STOKLAR LEFT JOIN STOKLAR_USER ON sto_Guid = Record_uid where sto_kod=@STOKKODU" ,
             param :["STOKKODU:string|50"],
             value : [pKodu]
         }
+
         let TmpResult = await srv.Execute(TmpQuery)
         console.log(TmpResult)
+
         $scope.BteMateryal.txt = TmpResult[0].MATERYAL
         $scope.BteKaplama.txt = TmpResult[0].KAPLAMA
         $scope.BteTas.txt = TmpResult[0].TAS
@@ -1240,7 +1221,4 @@ function StokTanitim($scope,srv,$rootScope,$filter)
         $scope.BteModel.txt =TmpResult[0].MODEL
         $scope.Barkod = TmpResult[0].BARKOD
     }
-  
 }
-
-
