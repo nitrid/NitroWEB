@@ -209,7 +209,7 @@ function MonoBarkodEtiketBasimi($scope, srv, $rootScope)
         {
             datasource:
             {
-                data: [{name: "Barkod Basimi Etiket - 1", special: $rootScope.GeneralParamList.BarkodBasimiEtiket}] 
+                data: [{name: "Barkod Basimi Etiket - 1", special: $rootScope.GeneralParamList.BarkodBasimiEtiket}]
             },
             key: "special",
             value: "name",

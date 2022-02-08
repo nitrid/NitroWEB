@@ -2230,6 +2230,11 @@ var Query =
         query : "SELECT CONVERT(VARCHAR,ISEMRI_BAS_TARIH,120) AS DATE FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_ISEMRI_LISTESI WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
         param : ["ISEMRI_KOD:string|50","ISEMRI_ISTASYON_KOD:string|25"]
     },
+    GetDuraklat : 
+    {
+        query : "SELECT SUM(SURE) AS SURE FROM GENDB_NITROWEB.dbo.TERP_NITROWEB_URETIM_GECIKME WHERE ISEMRI = @ISEMRI AND SAFHAID = @SAFHAID AND BASZAMAN <> '1900-01-01 00:00:00.000' GROUP BY SAFHAID,ISEMRI ",
+        param : ["ISEMRI:string|50","SAFHAID:string|25"]
+    },
     PdfInsert : 
     {
 
@@ -2367,18 +2372,20 @@ var Query =
                 ",[DURZAMAN]  " +
                 ",[BASZAMAN]  " +
                 ",[STOKKODU]  " +
-                ",[ACIKLAMA])  " +
-                " VALUES  " +
-                "(newid()         --     <GUID, uniqueidentifier,>  \n " +
-                ",@CUSER          --    <CUSER, nvarchar(50),>  \n " +
-                ",getdate()       --      <CDATE, datetime,>  \n " +
-                ",@ISEMRI         --     <ISEMRI, nvarchar(50),>  \n " +
-                ",@SAFHAID        --      <SAFHAID, nvarchar(50),>  \n " +
-                ",getdate()       --       <DURZAMAN, datetime,>  \n " +
-                ",getdate()       --       <BASZAMAN, datetime,>  \n " +
-                ",@STOKKODU       --       <STOKKODU, nvarchar(50),>  \n " +
-                ",@ACIKLAMA       --       <ACIKLAMA, nvarchar(50),>   \n " +
+                ",[ACIKLAMA]  " +
+                ",[SURE]  " +
+                " )VALUES  " +
+                "(newid()                            --<GUID, uniqueidentifier,>  \n " +
+                ",@CUSER                             --<CUSER, nvarchar(50),>  \n " +
+                ",GETDATE()                          --<CDATE, datetime,>  \n " +
+                ",@ISEMRI                            --<ISEMRI, nvarchar(50),>  \n " +
+                ",@SAFHAID                           --<SAFHAID, nvarchar(50),>  \n " +
+                ",GETDATE()                          --<DURZAMAN, datetime,>  \n " +
+                ",'1900-01-01 00:00:00.000'          --<BASZAMAN, datetime,>  \n " +
+                ",@STOKKODU                          --<STOKKODU, nvarchar(50),>  \n " +
+                ",@ACIKLAMA                          --<ACIKLAMA, nvarchar(50),>   \n " +
+                ",@SURE                              --<SURE, int,>   \n " +
                 " ) ",
-                param : ["CUSER:string|50","ISEMRI:string|50","SAFHAID:string|50","STOKKODU:string|50","ACIKLAMA:string|50"]
+        param : ["CUSER:string|50","ISEMRI:string|50","SAFHAID:string|50","STOKKODU:string|50","ACIKLAMA:string|50","SURE:int"]
     }
 };

@@ -1,0 +1,14 @@
+<div ng-controller="IstasyonDashboard" ng-init="Init()">
+    <div class="row">
+        <div class="col-3 mt-2" ng-repeat = "List in IstasyonList">
+          <div class="card-group mt-2">
+            <div class="card p-4 bg-secondary">
+              <h4 class="card-title text-center" style="color: white;">{{List.OPERASYON_ADI}}</h4>
+              <div class="card-body text-center">
+                <p class="card-text" style="color: white;"><h5 style="color: white;"> {{List.PLANLANAN_MIKTAR}} / {{List.TAMAMLANAN_MIKTAR}} </h5></p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

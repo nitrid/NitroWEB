@@ -234,5 +234,32 @@ angular.module("app",
             templateUrl : "view/gunok/UploadPage.html",
             controller:"UploadPage"
         }
+    ).
+    state
+    (
+        {
+            name: 'main.IstasyonDashboard',
+            url: '/IstasyonDashboard',
+            templateUrl : "view/gunok/IstasyonDashboard.html",
+            controller:"IstasyonDashboard"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.IsEmriIzleme',
+            url: '/IsEmriIzleme',
+            templateUrl : "view/gunok/IsEmriIzleme.html",
+            controller:"IsEmriIzleme"
+        }
+    ).
+    state
+    (
+        {
+            name: 'main.UretimDashboard',
+            url: '/UretimDashboard',
+            templateUrl : "view/gunok/UretimDashboard.html",
+            controller:"UretimDashboard"
+        }
     )
 });

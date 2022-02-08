@@ -65,7 +65,6 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
         return new Promise(async resolve => 
         {
             $scope.Data = await srv.Execute($scope.Firm,'GetKullanici',[pKullanici])
-            console.log($scope.Data)
             $rootScope.GeneralParamList = 
             {
                 // Kullanıcı
@@ -75,6 +74,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 Operator : srv.GetParamValue($scope.Data,"Operator"),
                 UretimTamamlama : srv.GetParamValue($scope.Data,"UretimTamamlama"),
                 UretimDashboard : srv.GetParamValue($scope.Data,"UretimDashboard"),
+                IstasyonDashboard : srv.GetParamValue($scope.Data,"IstasyonDashboard"),
+                IsEmriIzleme : srv.GetParamValue($scope.Data,"IsEmriIzleme"),
+                UploadPage : srv.GetParamValue($scope.Data,"UploadPage"),
                 // Menü Yönetim
                 KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
                 KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
@@ -88,6 +90,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 OperasyonSeri : srv.GetParamValue($scope.Data,"OperasyonSeri"),
                 UrunCikisSeri : srv.GetParamValue($scope.Data,"UrunCikisSeri"),
                 UrunGirisSeri : srv.GetParamValue($scope.Data,"UrunGirisSeri"),
+                BozukUrunDepo : srv.GetParamValue($scope.Data,"BozukUrunDepo"),
                 // Sistem
                 AcilisSayfasi : srv.GetParamValue($scope.Data,"AcilisSayfasi"),
                 Firma : srv.GetParamValue($scope.Data,"Firma"),
@@ -233,6 +236,23 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 $rootScope.GeneralParamList.Tasarim = pSelected
             }
         }
+        $scope.CmbBozukUrunDepo =
+        {
+            datasource : 
+            {
+                db: "MikroDB_V16_" + $scope.Firma,
+                query : "SELECT dep_no AS KODU,dep_adi AS ADI FROM DEPOLAR",
+            },
+            key : "KODU",
+            value : "ADI",
+            defaultVal : $rootScope.GeneralParamList.BozukUrunDepo,
+            selectionMode : "key",
+            return : $rootScope.GeneralParamList.BozukUrunDepo,
+            onSelected : function(pSelected)
+            {
+                $rootScope.GeneralParamList.BozukUrunDepo = pSelected
+            }
+        }
 
         $("#TbUserEdit").addClass('show active');
         $("#TbUserList").removeClass('show active');
@@ -265,6 +285,15 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             {
                 UretimDashboard : $rootScope.GeneralParamList.UretimDashboard
+            },
+            {
+                IstasyonDashboard : $rootScope.GeneralParamList.IstasyonDashboard
+            },
+            {
+                IsEmriIzleme : $rootScope.GeneralParamList.IsEmriIzleme
+            },
+            {
+                UploadPage : $rootScope.GeneralParamList.UploadPage
             },
             // Menü Yönetim
             {
@@ -300,6 +329,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             },
             {
                 UrunGirisSeri : $rootScope.GeneralParamList.UrunGirisSeri
+            },
+            {
+                BozukUrunDepo : $rootScope.GeneralParamList.BozukUrunDepo
             },
             // Sistem
             {
@@ -354,6 +386,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             ["Operator",$rootScope.GeneralParamList.Operator,1,"Operatör"],
             ["UretimTamamlama",$rootScope.GeneralParamList.UretimTamamlama,1,"Üretim Tamamlama"],
             ["UretimDashboard",$rootScope.GeneralParamList.UretimDashboard,1,"Uretim Dashboard"],
+            ["IstasyonDashboard",$rootScope.GeneralParamList.IstasyonDashboard,1,"Istasyon Dashboard"],
+            ["IsEmriIzleme",$rootScope.GeneralParamList.IsEmriIzleme,1,"İş Emri İzleme"],
+            ["UploadPage",$rootScope.GeneralParamList.UploadPage,1,"İş Emri İzleme"],
             // Menü Yönetim
             ["KullaniciAyarlari",$rootScope.GeneralParamList.KullaniciAyarlari,2,"Kullanici Ayarları"],
             ["KullaniciEkle",$rootScope.GeneralParamList.KullaniciEkle,2,"Kullanıcı Ekle"],
@@ -367,6 +402,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
             ["OperasyonSeri",$rootScope.GeneralParamList.OperasyonSeri,4,""],
             ["UrunCikisSeri",$rootScope.GeneralParamList.UrunCikisSeri,4,""],
             ["UrunGirisSeri",$rootScope.GeneralParamList.UrunGirisSeri,4,""],
+            ["BozukUrunDepo",$rootScope.GeneralParamList.BozukUrunDepo,4,""],
             // Sistem
             ["AcilisSayfasi",$rootScope.GeneralParamList.AcilisSayfasi,5,""],
             ["Firma",$rootScope.GeneralParamList.Firma,5,""],
@@ -448,6 +484,9 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 Operator : false,
                 UretimTamamlama : false,
                 UretimDashboard : false,
+                IstasyonDashboard : false,
+                IsEmriIzleme : false,
+                UploadPage : false,
                 // Menü Yönetim
                 KullaniciAyarlari : false,
                 KullaniciEkle : false,
@@ -461,6 +500,7 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 OperasyonSeri : "",
                 UrunCikisSeri : "",
                 UrunGirisSeri : "",
+                BozukUrunDepo : "",
                 // Sistem
                 AcilisSayfasi : "",
                 Firma : "",
@@ -554,6 +594,23 @@ function KullaniciAyarlari($scope, srv, $rootScope, $state)
                 onSelected : function(pSelected)
                 {
                     $rootScope.GeneralParamList.Tasarim = pSelected
+                }
+            }
+            $scope.CmbBozukUrunDepo =
+            {
+                datasource : 
+                {
+                    db: "MikroDB_V16_" + $scope.Firma,
+                    query : "SELECT dep_no AS KODU,dep_adi AS ADI FROM DEPOLAR",
+                },
+                key : "KODU",
+                value : "ADI",
+                defaultVal : $rootScope.GeneralParamList.BozukUrunDepo,
+                selectionMode : "key",
+                return : $rootScope.GeneralParamList.BozukUrunDepo,
+                onSelected : function(pSelected)
+                {
+                    $rootScope.GeneralParamList.BozukUrunDepo = pSelected;
                 }
             }
         }

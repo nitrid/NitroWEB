@@ -13,7 +13,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         $scope.EtkSeri = "";
         $scope.EtkSira = 1;
         $scope.MiktarGiris = 1;
-        $scope.DurdurmaAciklama = ""
+        $scope.DurdurmaAciklama = "";
         $scope.PDFDetay = "";
         
         $scope.DepoMiktarData = []
@@ -25,9 +25,9 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         $scope.Data.URP = [];
         $scope.Data.DATA = [];
 
-        $scope.SthGSira = await MaxSthSira($rootScope.GeneralParamList.UrunGirisSeri,12)
-        $scope.SthCSira = await MaxSthSira($rootScope.GeneralParamList.UrunCikisSeri,0)
-        $scope.OpSira = await MaxOpSira($rootScope.GeneralParamList.OperasyonSeri)
+        $scope.SthGSira = await MaxSthSira($rootScope.GeneralParamList.UrunGirisSeri,12);
+        $scope.SthCSira = await MaxSthSira($rootScope.GeneralParamList.UrunCikisSeri,0);
+        $scope.OpSira = await MaxOpSira($rootScope.GeneralParamList.OperasyonSeri);
 
         $scope.CmbIsMerkezleri =
         {
@@ -54,7 +54,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             {
                 db: "{M}." + $scope.Firma,
                 query : "select GckNdn_kod AS name,GckNdn_aciklama as special from URETIM_GECIKME_NEDENLERI " 
-                
             },
             key : "name",
             value : "special",
@@ -64,6 +63,22 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             onSelected : async function(pSelected)
             {
                 $scope.DurdurmaNedeni = pSelected
+            }
+        }
+        $scope.CmbBozukUrunCheck =
+        {
+            datasource:
+            {
+                data: [{CODE: "01", NAME: "ÜRETİM"},{CODE: "02", NAME: "HATALI ÜRÜN"}]
+            },
+            key : "CODE",
+            value : "NAME",
+            defaultVal : "01",
+            selectionMode : "key",
+            return : 1,
+            onSelected : async function(pSelected)
+            {
+                
             }
         }
 
@@ -219,8 +234,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                     dataField: "STOKADI",
                     caption: "Stok Adı",
                     alignment: "left"
-                },
-               
+                },        
                 {
                     width: 80,
                     dataField: "MALZEMETIPI",
@@ -303,7 +317,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             onSelectionChanged: async function (selectedItems) 
             {
                 $scope.SelectedRow = selectedItems.selectedRowsData;
-
                 $scope.PDFDetay = selectedItems.selectedRowsData[0].KODU.PDF
                 $scope.Data.UMP = await UretimMalzemePlanGetir(selectedItems.selectedRowsData[0].KODU);
                 $scope.Data.URP = await UretimRotaPlanGetir(selectedItems.selectedRowsData[0].KODU);
@@ -681,6 +694,12 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             let BasTarih = (await srv.Execute($scope.Firma,'GetIsEmriDate',[pDr.ISEMRI,pDr.OPERASYONKODU]))[0].DATE;
             let BitTarih = new Date();
             let TmpSure = (new Date(moment(BitTarih).format("YYYY-MM-DDTHH:mm:ss")) - new Date(moment(BasTarih).format("YYYY-MM-DDTHH:mm:ss"))) / 1000;
+            let DurSure = 0;
+            if(typeof (await srv.Execute($scope.Firma,'GetDuraklat',[pDr.ISEMRI,pDr.OPERASYONKODU]))[0] != "undefined")
+            {
+                DurSure = (await srv.Execute($scope.Firma,'GetDuraklat',[pDr.ISEMRI,pDr.OPERASYONKODU]))[0].SURE;
+            }
+            TmpSure = (TmpSure - DurSure);
 
             await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(BasTarih).format("DD.MM.YYYY HH:mm:ss"),moment(BitTarih).format("DD.MM.YYYY HH:mm:ss"),$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
             
@@ -814,6 +833,12 @@ function Operator($scope,srv,$rootScope,$filter,$window)
     }
     $scope.BtnDurdur = async function()
     {
+        if($scope.SelectedRow[0].ISEMRISTATUS == 3)
+        {
+            swal("Uyarı", "Lütfen iş emri üzerindeki duraklatma işlemini sonlandırın.",icon="warning");
+            return;
+        }
+        $scope.DurdurmaAciklama = "";
         $('#MdlDurdur').modal('show')
     }
     $scope.BtnEtiketYazdir = async function(pType,pUrunAdet)
@@ -863,10 +888,11 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 let TmpQuery = 
                 {
                     db: "GENDB_NITROWEB",
-                    query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '1' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD " +
-                    "update [dbo].[TERP_NITROWEB_URETIM_GECIKME] SET BASZAMAN = GETDATE() WHERE ISEMRI = @ISEMRI_KOD AND SAFHAID = @ISEMRI_ISTASYON_KOD ",
+                    query : "UPDATE TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '1' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD " +
+                            "UPDATE [dbo].[TERP_NITROWEB_URETIM_GECIKME] SET BASZAMAN = GETDATE(),SURE =  DATEDIFF(second,DURZAMAN, GETDATE()) " +
+                            "WHERE ISEMRI = @ISEMRI_KOD AND SAFHAID = @ISEMRI_ISTASYON_KOD AND BASZAMAN = '1900-01-01 00:00:00.000' ",
                     param : ['ISEMRI_KOD:string|50','ISEMRI_ISTASYON_KOD:string|50'],
-                    value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD,]
+                    value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD]
                 }
 
                 let TmpResult = await srv.Execute(TmpQuery)
@@ -906,39 +932,39 @@ function Operator($scope,srv,$rootScope,$filter,$window)
                 icon: "warning",
                 buttons: true,
                 dangerMode: false,
-              })
-              .then(async (willDelete) => 
-              {
-                if (willDelete) 
+            })
+            .then(async (willDelete) => 
+            {
+            if (willDelete) 
+            {
+                if($scope.SelectedRow[0].SAFHANO > 1)
                 {
-                    if($scope.SelectedRow[0].SAFHANO > 1)
+                    let rotacontrol = await RotaControl($scope.SelectedRow[0].KODU,$scope.SelectedRow[0].SAFHANO);
+    
+                    if(rotacontrol[0].TAMAMLANANMIKTAR == 0) //BİR ÖNCEKİ İSTASYONDAKİ MİKTAR KONTROLÜ
                     {
-                        let rotacontrol = await RotaControl($scope.SelectedRow[0].KODU,$scope.SelectedRow[0].SAFHANO);
-        
-                        if(rotacontrol[0].TAMAMLANANMIKTAR == 0) //BİR ÖNCEKİ İSTASYONDAKİ MİKTAR KONTROLÜ
-                        {
-                            swal("İşlem Başarısız!","Bir Önceki İstasyonda Tamamlanan Miktar 0'dan Büyük Olmalı." ,icon="error"); 
-                            return;
-                        }
+                        swal("İşlem Başarısız!","Bir Önceki İstasyonda Tamamlanan Miktar 0'dan Büyük Olmalı." ,icon="error"); 
+                        return;
                     }
+                }
 
-                    if($scope.SelectedRow[0].SAFHANO == 1)
-                    {
-                        await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]);
-                    }
-                    await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
-                    await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
-                  
-                    swal("Başarılı! İş Emri Başlatıldı.", 
-                  {
-                    icon: "success",
-                  });
-                }
-                else 
+                if($scope.SelectedRow[0].SAFHANO == 1)
                 {
-                  swal("Uyarı", "İşlem İptal Edildi.",icon="warning");
+                    await srv.Execute($scope.Firma,'IsEmriBaslat',[$scope.SelectedRow[0].GUID]);
                 }
-              });
+                await srv.Execute($scope.Firma,'UpdateIsEmriDate',[moment(new Date()).format("DD.MM.YYYY HH:mm:ss"),'24-02-1997 00:00:00.000',$scope.SelectedRow[0].GUID,$scope.SelectedRow[0].OPERASYONKODU]);
+                await GetPlanlananIsEmrileri($scope.CmbIsMerkezleri.return,"#FFFF00");
+                
+                swal("Başarılı! İş Emri Başlatıldı.", 
+                {
+                    icon: "success",
+                });
+            }
+            else 
+            {
+                swal("Uyarı", "İşlem İptal Edildi.",icon="warning");
+            }
+            });
         }
         else
         {
@@ -971,6 +997,22 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         if(pType == 0)
         {
             $scope.Data.DATA = [];
+            $scope.CmbBozukUrunCheck =
+            {
+                datasource:
+                {
+                    data: [{CODE: "01", NAME: "ÜRETİM"},{CODE: "02", NAME: "HATALI ÜRÜN"}]
+                },
+                key : "CODE",
+                value : "NAME",
+                defaultVal : "01",
+                selectionMode : "key",
+                return : 1,
+                onSelected : async function(pSelected)
+                {
+                    
+                }
+            }
             $('#MdlUrunGiris').modal('show');
         }
         else if(pType == 1)
@@ -1033,6 +1075,10 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             }
             for (let i = 0; i < TmpDrUret.length; i++)                                           
             {
+                if($scope.CmbBozukUrunCheck.return == "02")
+                {
+                    TmpDrUret[i].DEPO = $rootScope.GeneralParamList.BozukUrunDepo;
+                }
                 await InsertUrunGirisCikis(0,TmpDrUret[i],$rootScope.GeneralParamList.UrunGirisSeri,$scope.SthGSira);
                 await UpdateMalzemePlani(TmpDrUret[i].ISEMRI, TmpDrUret[i].KODU, TmpDrUret[i].MIKTAR, true);
             }
@@ -1072,12 +1118,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             swal("Uyarı", "Lütfen Satır Seçimi Yapınız.",icon="warning");
             return;
         }
-        if($scope.SelectedRow[0].ISEMRISTATUS == 0)
-        {
-            swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
-            return;
-        }
-        if($scope.SelectedRow[0].ISEMRISTATUS == 3)
+        if($scope.SelectedRow[0].ISEMRISTATUS == 0 || $scope.SelectedRow[0].ISEMRISTATUS == 3)
         {
             swal("Uyarı", "Lütfen Aktif İş Emri Seçiniz.",icon="warning");
             return;
@@ -1088,7 +1129,8 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             $scope.SelectedRow[0].KODU,
             $scope.SelectedRow[0].ISTASYONKOD,
             '',
-            $scope.DurdurmaAciklama
+            $scope.DurdurmaAciklama,
+            0
         ]
         let TmpResult = await srv.Execute($scope.Firma,'GecikmeInsert',TmpInsertData);
 
@@ -1097,7 +1139,7 @@ function Operator($scope,srv,$rootScope,$filter,$window)
             let TmpQuery = 
             {
                 db: "GENDB_NITROWEB",
-                query : "update TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '3' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
+                query : "UPDATE TERP_NITROWEB_ISEMRI_LISTESI SET ISEMRI_STATUS = '3' WHERE ISEMRI_KOD = @ISEMRI_KOD AND ISEMRI_ISTASYON_KOD = @ISEMRI_ISTASYON_KOD ",
                 param : ['ISEMRI_KOD:string|50','ISEMRI_ISTASYON_KOD:string|50'],
                 value : [$scope.SelectedRow[0].KODU,$scope.SelectedRow[0].ISTASYONKOD]
             }
@@ -1109,8 +1151,6 @@ function Operator($scope,srv,$rootScope,$filter,$window)
         {
             swal("Uyarı", "Durdurma Tablosuna Kayıt Atılamadı.",icon="warning");
         }
-
-        
     }
     $scope.PDFClick = function(pData)
     {

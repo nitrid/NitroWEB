@@ -130,6 +130,9 @@ function Main($scope,$state,srv,$rootScope)
                 Planlama : srv.GetParamValue($scope.Data,"Planlama"),
                 UretimTamamlama : srv.GetParamValue($scope.Data,"UretimTamamlama"),
                 UretimDashboard : srv.GetParamValue($scope.Data,"UretimDashboard"),
+                IstasyonDashboard : srv.GetParamValue($scope.Data,"IstasyonDashboard"),
+                IsEmriIzleme : srv.GetParamValue($scope.Data,"IsEmriIzleme"),
+                UploadPage : srv.GetParamValue($scope.Data,"UploadPage"),
                 // Menü Yönetim
                 KullaniciAyarlari : srv.GetParamValue($scope.Data,"KullaniciAyarlari"),
                 KullaniciEkle : srv.GetParamValue($scope.Data,"KullaniciEkle"),
@@ -143,6 +146,7 @@ function Main($scope,$state,srv,$rootScope)
                 OperasyonSeri : srv.GetParamValue($scope.Data,"OperasyonSeri"),
                 UrunCikisSeri : srv.GetParamValue($scope.Data,"UrunCikisSeri"),
                 UrunGirisSeri : srv.GetParamValue($scope.Data,"UrunGirisSeri"),
+                BozukUrunDepo : srv.GetParamValue($scope.Data,"BozukUrunDepo"),
                 // Sistem
                 AcilisSayfasi : srv.GetParamValue($scope.Data,"AcilisSayfasi"),
                 Firma : srv.GetParamValue($scope.Data,"Firma"),
