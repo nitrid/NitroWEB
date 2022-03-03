@@ -79,7 +79,8 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             onSelected : async function(pData)
             {
                 $scope.StokGetir(pData.KODU)
-                $scope.PreviewImage = 'https://altinayak.com.tr/upload/product/' + pData.KODU + "-1.jpg";
+                $scope.PreviewImage = 'http://picture.altinayak.com.tr:86/' + pData.KODU + "-1.jpg";
+                //https://altinayak.com.tr/upload/product/
             }
         }
         $scope.BteAnaGrup = 
@@ -870,6 +871,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             "sto_sezon_kodu AS RENK , " + 
             "sto_hammadde_kodu AS YIL , " +
             "(SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu = sto_sezon_kodu) AS RENKADI, " +
+            "(SELECT ktg_isim FROM STOK_KATEGORILERI WHERE sto_kategori_kodu = STOK_KATEGORILERI.ktg_kod) AS RENKADI_2, " +
             "sto_reyon_kodu as TOPUK, " +
             "(SELECT [msg_S_1080] FROM STOK_REYONLARI_CHOOSE_2 WHERE [msg_S_0020] = sto_reyon_kodu) AS TOPUK_ADI," +
             "sto_standartmaliyet AS MALIYET, " +
@@ -881,6 +883,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             "sto_kalkon_kodu AS KALITE , " +
             "(SELECT TOP 1 KKon_ismi FROM STOK_KALITE_KONTROL_TANIMLARI WHERE KKon_kod = sto_kalkon_kodu) AS KALITEADI, " +
             "sto_marka_kodu AS MATERYAL, " +
+            "'http://picture.altinayak.com.tr:86/'+sto_kod+'-1.jpg' AS RESIM, " +
             "(SELECT TOP 1 mrk_ismi FROM STOK_MARKALARI WHERE mrk_kod = sto_marka_kodu) AS MATERYALADI, " +
             "(SELECT TOP 1 bar_kodu from BARKOD_TANIMLARI WHERE bar_stokkodu=sto_kod and bar_birimpntr = 1) AS BARKOD " +
             "FROM STOKLAR WHERE sto_kod = @STOKKODU ",
@@ -888,6 +891,7 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
             value : [pKodu]
         }
         let TmpResult = await srv.Execute(TmpQuery)
+        console.log(TmpResult);
         if(TmpResult.length > 0)
         {
             $scope.BteMateryal.txt = TmpResult[0].MATERYAL;
@@ -954,7 +958,13 @@ function StokTanitimi($scope,srv,$rootScope,$filter)
         let TmpQuery = 
         {
             db: "{M}." + $scope.Firma,
-            query : "select sto_kalkon_kodu AS KALITE ,'https://altinayak.com.tr/upload/product/'+sto_kod+'-1.jpg' AS RESIM, (SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu =  sto_sezon_kodu) AS RENK,(SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu =  sto_sezon_kodu) AS RENK1,(SELECT mrk_ismi FROM STOK_MARKALARI WHERE mrk_kod=sto_marka_kodu) AS MATERYAL,(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod and bar_birimpntr = 1) AS BARKOD from STOKLAR WHERE sto_kod = @sto_kod " ,
+            query : "select sto_kalkon_kodu AS KALITE , " +
+                    "'http://picture.altinayak.com.tr:86/'+sto_kod+'-1.jpg' AS RESIM, " +
+                    "(SELECT TOP 1 ysn_ismi FROM STOK_YILSEZON_TANIMLARI WHERE ysn_kodu =  sto_sezon_kodu) AS RENK, " +
+                    "(SELECT ktg_isim FROM STOK_KATEGORILERI WHERE sto_kategori_kodu = STOK_KATEGORILERI.ktg_kod) AS RENK_2, " +
+                    "(SELECT mrk_ismi FROM STOK_MARKALARI WHERE mrk_kod=sto_marka_kodu) AS MATERYAL, " +
+                    "(SELECT TOP 1 bar_kodu FROM BARKOD_TANIMLARI WHERE bar_stokkodu = sto_kod and bar_birimpntr = 1) AS BARKOD " +
+                    " from STOKLAR WHERE sto_kod = @sto_kod " ,
             param : ['sto_kod'],
             type : ['string|25'],
             value : [$scope.BteStokKodu.txt]
