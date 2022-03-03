@@ -1,0 +1,45 @@
+<div ng-controller="MonoUretimDashboard" ng-init="Init()">
+  <div class="row mt-2 p-2 m-0">
+    <div class="card border-dark">
+        <div class="card-body text-dark py-2">
+            <div class="row py-1">
+              <nav class="nav nav-pills flex-column flex-sm-row">
+                <a class="flex-sm-fill text-md-center nav-link active fw-bold" id="AcikSip-tab" data-bs-toggle="pill" data-bs-target="#AcikSip" type="button" role="tab" aria-controls="AcikSip" aria-selected="true" href="#">Açık Siparişler</a>
+                <a class="flex-sm-fill text-md-center nav-link fw-bold" id="IsEmirleri-tab" data-bs-toggle="pill" data-bs-target="#IsEmirleri" type="button" role="tab" aria-controls="IsEmirleri" aria-selected="false" href="#">İş Emirleri Listesi</a>
+                <a class="flex-sm-fill text-md-center nav-link fw-bold" id="Planlanan-tab" data-bs-toggle="pill" data-bs-target="#Planlanan" type="button" role="tab" aria-controls="Planlanan" aria-selected="false" href="#">Planlananlar</a>
+                <a class="flex-sm-fill text-md-center nav-link fw-bold" id="Tamamlanan-tab" data-bs-toggle="pill" data-bs-target="#Tamamlanan" type="button" role="tab" aria-controls="Tamamlanan" aria-selected="false" href="#">Tamamlananlar</a>
+
+              </nav>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content p-0 mt-2" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="AcikSip" role="tabpanel" aria-labelledby="AcikSip-tab">
+        <div class="row d-flex justify-content-around mb-2">
+          <div class="col-4 d-grid"><button type="button" class="btn btn-warning fw-bold">PLANLA</button></div>
+          <div class="col-4 d-grid"><button type="button" class="btn btn-info fw-bold">İŞ SIRALAMASINA EKLE</button></div>
+        </div>
+        <div id="AcikSiparisler"></div>
+      </div>
+      <div class="tab-pane fade" id="IsEmirleri" role="tabpanel" aria-labelledby="IsEmirleri-tab">iş emirleri listesi</div>
+      <div class="tab-pane fade" id="Planlanan" role="tabpanel" aria-labelledby="Planlanan-tab">planlananlar</div>
+      <div class="tab-pane fade" id="Tamamlanan" role="tabpanel" aria-labelledby="Tamamlanan-tab">tamamlananlar</div>
+    </div>
+  </div>
+</div>
+<!-- İŞ EMRİ DETAY MODAL -->
+<div class="modal fade" id="MdlIsEmriDetay" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="Detay">İş Emri Detayı</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>

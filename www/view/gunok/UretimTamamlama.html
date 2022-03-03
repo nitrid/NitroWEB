@@ -1,0 +1,131 @@
+<div ng-controller="UretimTamamlama" ng-init="Init()">
+  <div class="row mt-2 p-2 m-0">
+    <div class="card border-dark">
+        <div class="card-body text-dark py-2">
+            <div class="row py-1">
+              <div class="col-3 d-grid"><button type="button" class="btn btn-warning fw-bold" ng-click = "BtnBaslat()">BAŞLAT</button></div>
+              <div class="col-3 d-grid"><button type="button" class="btn btn-success fw-bold" ng-click = "BtnUrunGiris(0)">ÜRÜN GİRİŞ</button></div>
+              <div class="col-3 d-grid"><button type="button" class="btn btn-danger fw-bold" ng-click = "BtnDurdur()">DURDUR</button></div>
+              <div class="col-3 d-grid"><button type="button" class="btn btn-primary fw-bold" ng-click = "BtnEtiketYazdir(0)">ETİKET YAZDIR</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content p-0 mt-2" id="pills-tabContent">
+      <div class="row d-flex justify-content-around mb-2">
+      </div>
+      <div id="TblPlanlananIsEmirleri"></div>
+      <div class="text-center">
+        <p class="text-muted font-15 font-family-secondary mb-0">
+          <span class="mx-2"><i class="fas fa-brush" style="color: #87bdd8;"></i> Planlanmış İş Emirleri</span>
+          <span class="mx-2"><i class="fas fa-brush" style="color: #FFFF00;"></i> Aktif İş Emirleri</span>
+          <span class="mx-2"><i class="fas fa-brush" style="color: #FF0000;"></i> Durdurulmuş İş Emirleri</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- ETİKET YAZDIR -->
+  <div class="modal fade" id="MdlEtiketYazdir" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title h4" id="Detay">Etiket Yazdırma</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Ürün Adet : </span>
+                <input type="number" min="1" ng-model = "UrunAdet" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Basım Miktar : </span>
+                <input type="number" min="1" ng-model = "BasimMiktar" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click = "BtnEtiketYazdir(1)">Etiket Yazdır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- DURDUR MODAL -->
+  <div class="modal fade" id="MdlDurdur" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title h4" id="Detay">Durdurma Nedeni</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+                <combobox option="CmbDurdurmaNedeni"></combobox>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-floating">
+                <textarea class="form-control"  ng-model="DurdurmaAciklama" style="height: 100px"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="GecikmeKaydet()" data-bs-dismiss="modal">Kaydet</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- DEPO MİKTAR MODAL -->
+    <div class="modal fade" id="MdlDepeMiktar" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="card border-dark">
+              <span class="fw-bold input-group-text">Depo Miktarları Eksik </span>
+          </div>
+          <div class="row">
+            <div id="TblDepoMiktar"></div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- ÜRÜN GİRİŞ MODAL -->
+  <div class="modal fade" id="MdlUrunGiris" tabindex="-1" aria-labelledby="Detay" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title h4" id="Detay">Ürün Miktar Girişi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group mb-3 input-group-lg">
+                <span class="fw-bold input-group-text">Miktar : </span>
+                <input type="number" min="1" ng-model = "MiktarGiris" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click = "BtnUrunGiris(1)">Onayla</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

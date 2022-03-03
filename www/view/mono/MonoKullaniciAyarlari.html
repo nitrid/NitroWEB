@@ -1,0 +1,500 @@
+<div ng-controller="MonoKullaniciAyarlari" ng-init="Init(0)">
+    <div class="tab-content">
+        <div id="TbUserList" class="tab-pane show active">
+            <div class="row pt-2">
+                <div class="d-flex justify-content-center">
+                    <div id="GrdList"></div>
+                </div>
+            </div>
+        </div>
+        <div id="TbUserEdit" class="tab-pane pt-2">
+            <div class="row">
+                <div class="col-md-4 d-grid">
+                    <button class="btn btn-success mb-2 text-white fw-bold" ng-click="BtnBackKullaniciList()">KULLANICI LİSTESİNE DÖN</button>
+                </div>
+                <div class="col-md-4 offset-4 d-grid">
+                    <button class="btn btn-success mb-2 text-white fw-bold" ng-click="BtnParamUpdate()">KAYDET</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Kullanıcı Bilgileri</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1">
+                                <div class="col-3 mt-2">
+                                    <p class="text-md-right my-0 py-1 fw-bolder" >Giriş:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <p class="text-md-right my-0 py-1" >{{Kullanici}}</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <p class="text-md-right my-0 py-1 fw-bolder" >Şifre:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.Password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Açılış Sayfası</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1">
+                                <div class="col-6 mt-2">
+                                    <p class="text-md-right my-0 py-1 fw-bolder" >Açılış Sayfası:</p>
+                                </div>
+                                <div class="col-6 mt-2">
+                                    <div class="form-group">
+                                        <combobox option="CmbAcilisSayfa" ng-model="GeneralParamList.AcilisSayfasi"></combobox>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Parametre Ayarları</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1 d-flex align-items-center">
+                                <div class="col-7">
+                                    <span class="text-md-right" >Barkod Etiket Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BarkodEtiketSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Basar Sayar Hasas Terazi IP:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BasarSayarHasasTeraziIP">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Basar Sayar Hasas Terazi PORT:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BasarSayarHasasTeraziPORT">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Basar Sayar Kantar IP:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BasarSayarKantarIP">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Basar Sayar Kantar PORT:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BasarSayarKantarPORT">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Basar Sayar Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BasarSayarSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Elektrik Üretim Etiket Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.ElektrikUretimEtiketSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Elektrik Üretim İş Emri Flag:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.ElektrikUretimIsEmriFlag">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Elektrik Üretim Operasyon Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.ElektrikUretimOperasyonSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Elektrik Üretim Ürün Çıkış Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.ElektrikUretimUrunCikisSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Elektrik Üretim Ürün Giriş Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.ElektrikUretimUrunGirisSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Fason Çıkış Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.FasonCikisSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Fason Depo:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.FasonDepo">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Fason Etiket Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.FasonEtiketSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Fason Giriş Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.FasonGirisSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Kasa Barkod Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.KasaBarkodSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Mamul Etiket Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.MamulEtiketSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Mamul Mal Kabul Depo:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.MamulMalKabulDepo">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Montaj Depo:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.MontajDepo">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Operasyon Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.OperasyonSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Ürün Çıkış Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.UrunCikisSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Ürün Giriş Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.UrunGirisSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Depo:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulDepo">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Etiket Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulEtiketSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Gram Kontrol:</span>
+                                </div>
+                                <div class="col-5 mb-1 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.YariMamulGramKontrol">
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Gram Yüzde:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulGramYuzde">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul İş Emri Flag:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulIsEmriFlag">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Manuel Giris:</span>
+                                </div>
+                                <div class="col-5 mb-1 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.YariMamulManuelGiris">
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Operasyon Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulOperasyonSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Ürün Giriş Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulUrunGirisSeri">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Ürün Çıkış Seri:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulUrunCikisSeri">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Ana Menü Ayarları</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1">
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Mamül Mal Kabul:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoMamulMalKabul">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Yarı Mamül Mal Kabul:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoYariMamulMalKabul">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Barkod Etiket Basımı:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoBarkodEtiketBasimi">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Basar Sayar Barkod Oluştur:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoBasarSayarBarkodOlustur">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Kasa Barkodu Oluştur:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoKasaBarkodOlustur">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Fason Giriş:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoFasonGiris">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Elektrik Montaj Üretim:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoElektrikMontajUretim">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Üretim Dashboard:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoUretimDashboard">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Yönetim Menü Ayarları</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1">
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Kullanıcı Ayarları:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoKullaniciAyarlari">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Rapor Menü Ayarları</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1">
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Depo Transfer Raporu:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoDepoTransferRaporu">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Depo Giriş Çıkış Raporu:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoStokDepoGirisCikisRaporu">
+                                    </div>
+                                </div>
+                                <div class="col-9 px-2">
+                                    <p class="text-md-right my-0 py-1" >Depo Stok Seviyeleri Raporu:</p>
+                                </div>
+                                <div class="col-3 mt-2">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.MonoStokSeviyeleriRaporu">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Sistem Parametreleri</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1 d-flex align-items-center">
+                                <div class="col-7">
+                                    <span class="text-md-right" >Firma:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.Firma">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Firma Liste:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.FirmaListe">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Kilo Başlangıç:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.KiloBaslangic">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Kilo Çarpan:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.KiloCarpan">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Kilo Flag:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.KiloFlag">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Kilo Uzunluk:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.KiloUzunluk">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Mikro Id:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.MikroId">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Plasiyer Kodu:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.PlasiyerKodu">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Satır Birleştir:</span>
+                                </div>
+                                <div class="col-5 mb-1 mt-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" ng-model="GeneralParamList.SatirBirlestir">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-dark mb-3">
+                        <div class="card-header bg-transparent border-dark py-1 fw-bolder">Etiket Special Ayarları</div>
+                        <div class="card-body text-dark py-2">
+                            <div class="row py-1 d-flex align-items-center">
+                                <div class="col-7">
+                                    <span class="text-md-right" >Yarı Mamul Mal Kabul Etiket:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.YariMamulMalKabulEtiket">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Elektrik Montaj Mal Kabul Etiket:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.ElektrikMontajMalKabulEtiket">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Barkod Basımı Etiket:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BarkodBasimiEtiket">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Mamul Mal Kabul Etiket:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.MamulMalKabulEtiket">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Fason Giriş Etiket:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.FasonGirisEtiket">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Basar Sayar Etiket:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.BasarSayarEtiket">
+                                </div>
+                                <div class="col-7">
+                                    <span class="text-md-right" >Kasa Etiket:</span>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <input class="form-control form-control-sm" type="text" ng-model="GeneralParamList.KasaEtiket">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid">
+                <button class="btn btn-success mb-5 text-white fw-bold" ng-click="BtnParamUpdate()">KAYDET</button>
+            </div>
+
+        </div>
+    </div>
+</div>

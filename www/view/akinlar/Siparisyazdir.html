@@ -1,0 +1,36 @@
+<div ng-controller="SiparisYazdir" ng-init="Init()"> 
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-6 p-2">
+            <div class="card p-3 p-2 m-2 border-dark mb-3 align-self-center"> 
+                <div class="row py-1 justify-content-center align-items-center">
+               <div class="col-2 px-6">
+                 <p class="text-md-right my-0 py-1 "> <dt>Seri-Sıra:</dt></p>
+               </div> 
+                <div class="col-3 px-6">
+                 <input class="form-control" ng-model="Seri" id="inputdefault" type="text"> 
+                </div>
+                   <div class="col-3 px-6">
+                    <input class="form-control" ng-model="Sira" id="inputdefault" type="number"> 
+                   </div>
+               </div>
+               <div class="row m-2 py-1d-flex align-items-center flex-column justify-content-center">
+                <div class="col-6 px-4">
+                  <button-edit id="2" class="form-control form-control-sm border-0" option="BteSiparis"></button-edit>
+              </div>
+              </div>
+             <div class="row m-2 py-1d-flex align-items-center flex-column justify-content-center">
+                <div class="col-6 px-6">
+                  <button type="button" ng-click="Init()" class="btn btn-primary btn-lg">Yeni</button>
+                  <button type="button" ng-click="BtnYazdir()" class="btn btn-primary btn-lg active">Yazdır</button>
+                </div>    
+              </div>
+         </div>
+       </div>
+        </div>        
+        <div class="col-sm-3"></div>
+     </div>
+
+   

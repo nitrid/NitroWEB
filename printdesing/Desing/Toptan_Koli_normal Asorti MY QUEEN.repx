@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="19.2.3.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" DataSourceSchema="[&#xD;&#xA;{&#xD;&#xA;    &quot;KALITE&quot;: &quot;756.000030&quot;,&#xD;&#xA;    &quot;RESIM&quot;: &quot;http://picture.altinayak.com.tr:86/756.000030.014.017-1.jpg&quot;,&#xD;&#xA;    &quot;RENK&quot;: &quot;GÜMÜŞ&quot;,&#xD;&#xA;    &quot;RENK_2&quot;: &quot;SILVER&quot;,&#xD;&#xA;    &quot;MATERYAL&quot;: &quot;AYNA&quot;,&#xD;&#xA;    &quot;BARKOD&quot;: &quot;2102021050502&quot;,&#xD;&#xA;    &quot;AYAKNO&quot;: &quot;37&quot;&#xD;&#xA;}&#xD;&#xA;]" ShowPreviewMarginLines="false" Landscape="true" Margins="0, 0, 0, 0" PaperKind="Custom" PageWidth="600" PageHeight="400" Version="19.2" ShowPrintStatusDialog="false" ShowPrintMarginsWarning="false" DataMember="DATA" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Bands>
+    <Item1 Ref="2" ControlType="TopMarginBand" Name="TopMargin" HeightF="0" />
+    <Item2 Ref="3" ControlType="DetailBand" Name="Detail" HeightF="398.083435">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRPictureBox" Name="pictureBox1" Sizing="StretchImage" SizeF="246.999908,230.10289" LocationFloat="334.627472, 10.0000067" Borders="All" BorderWidth="1">
+          <ExpressionBindings>
+            <Item1 Ref="5" EventName="BeforePrint" PropertyName="ImageUrl" Expression="[RESIM]" />
+          </ExpressionBindings>
+          <StylePriority Ref="6" UseBorders="false" UseBorderWidth="false" />
+        </Item1>
+        <Item2 Ref="7" ControlType="XRLabel" Name="label17" Multiline="true" Text="8" TextAlignment="MiddleCenter" SizeF="247,63" LocationFloat="334.62738, 253.4167" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="8" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="9" ControlType="XRLabel" Name="label16" Multiline="true" Text="1" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="271.627441, 316.416718" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="10" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="11" ControlType="XRLabel" Name="label15" Multiline="true" Text="2" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="208.627411, 316.416718" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="12" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item4>
+        <Item5 Ref="13" ControlType="XRLabel" Name="label14" Multiline="true" Text="2" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="146.000046, 316.416718" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="14" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item5>
+        <Item6 Ref="15" ControlType="XRLabel" Name="label13" Multiline="true" Text="2" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="83.0000153, 316.416718" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="16" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item6>
+        <Item7 Ref="17" ControlType="XRLabel" Name="label12" Multiline="true" Text="1" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="20.0000362, 316.416718" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="18" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item7>
+        <Item8 Ref="19" ControlType="XRLabel" Name="label11" Multiline="true" Text="TOTAL" TextAlignment="MiddleCenter" SizeF="247,63" LocationFloat="334.627441, 316.416718" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="Transparent" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="20" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item8>
+        <Item9 Ref="21" ControlType="XRLabel" Name="label10" Multiline="true" Text="40&#xD;&#xA;" TextAlignment="MiddleCenter" SizeF="63.62725,63" LocationFloat="271.0001, 253.4167" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="22" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item9>
+        <Item10 Ref="23" ControlType="XRLabel" Name="label9" Multiline="true" Text="39" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="208.000076, 253.4167" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="24" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item10>
+        <Item11 Ref="25" ControlType="XRLabel" Name="label8" Multiline="true" Text="37" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="82.00002, 253.416641" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="26" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item11>
+        <Item12 Ref="27" ControlType="XRLabel" Name="label6" Text="36" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="20.0000038, 253.416641" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="28" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item12>
+        <Item13 Ref="29" ControlType="XRLabel" Name="label1" Multiline="true" Text="38" TextAlignment="MiddleCenter" SizeF="63,63" LocationFloat="145.000015, 253.4167" Font="Tahoma, 20pt" ForeColor="255,12,12,12" BackColor="White" Padding="0,0,0,0,100" BorderColor="Black" Borders="All" BorderWidth="2" BorderDashStyle="Solid">
+          <StylePriority Ref="30" UseFont="false" UseForeColor="false" UseBackColor="false" UsePadding="false" UseBorderColor="false" UseBorders="false" UseBorderWidth="false" UseBorderDashStyle="false" UseTextAlignment="false" />
+        </Item13>
+        <Item14 Ref="31" ControlType="XRLabel" Name="label2" Text="label1" TextAlignment="TopLeft" WordWrap="false" SizeF="154,20" LocationFloat="173.999969, 220.10289" Font="Tahoma, 12pt, style=Bold" Padding="2,2,0,0,100" Borders="All" BorderWidth="2">
+          <ExpressionBindings>
+            <Item1 Ref="32" EventName="BeforePrint" PropertyName="Text" Expression="[RENK_2]" />
+          </ExpressionBindings>
+          <StylePriority Ref="33" UseFont="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item14>
+        <Item15 Ref="34" ControlType="XRLabel" Name="label4" Text="label4" TextAlignment="TopLeft" SizeF="154,20" LocationFloat="173.999969, 200.102875" Font="Tahoma, 12pt, style=Bold" Padding="2,2,0,0,100" Borders="All" BorderWidth="2">
+          <ExpressionBindings>
+            <Item1 Ref="35" EventName="BeforePrint" PropertyName="Text" Expression="[KALITE]" />
+          </ExpressionBindings>
+          <StylePriority Ref="36" UseFont="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item15>
+        <Item16 Ref="37" ControlType="XRLabel" Name="label5" Multiline="true" Text="ART :" TextAlignment="TopLeft" SizeF="154,20" LocationFloat="20.0000038, 200.102875" Font="Tahoma, 12pt, style=Bold" Padding="2,2,0,0,100" Borders="All" BorderWidth="2">
+          <StylePriority Ref="38" UseFont="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item16>
+        <Item17 Ref="39" ControlType="XRLabel" Name="label7" Multiline="true" Text="COLOR :" TextAlignment="TopLeft" SizeF="154,20" LocationFloat="19.9999962, 220.10289" Font="Tahoma, 12pt, style=Bold" Padding="2,2,0,0,100" Borders="All" BorderWidth="2">
+          <StylePriority Ref="40" UseFont="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item17>
+        <Item18 Ref="41" ControlType="XRLabel" Name="label3" Multiline="true" Text="MY QUEEN" TextAlignment="MiddleCenter" SizeF="305,173.958344" LocationFloat="20.0000038, 10.0000067" Font="Calibri Light, 40pt, style=Bold" Padding="0,0,0,0,100" Borders="All" BorderWidth="3">
+          <StylePriority Ref="42" UseFont="false" UsePadding="false" UseBorders="false" UseBorderWidth="false" UseTextAlignment="false" />
+        </Item18>
+      </Controls>
+    </Item2>
+    <Item3 Ref="43" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="0" />
+  </Bands>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v19.2" Ref="0" Content="~Xtra#NULL" Type="System.Data.DataTable" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

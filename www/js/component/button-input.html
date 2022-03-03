@@ -1,0 +1,23 @@
+
+<button type="button" class="btn btn-block btn-secondary" ng-click="$ctrl.Show()">{{$ctrl.option.title}}</button>
+<div class="modal fade" id="Mdl{{$ctrl.Id}}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{$ctrl.option.title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 px-2">
+              <input type="text" min="1" class="form-control form-control-sm" id="$ctrl.Model" ng-model="$ctrl.Model">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="$ctrl.Select()">Tamam</button>
+        <button type="button" class="btn btn-primary" ng-click="$ctrl.Cancel()">İptal</button>
+      </div>
+    </div>
+  </div>
+</div>

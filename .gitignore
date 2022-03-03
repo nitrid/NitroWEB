@@ -1,4 +1,6 @@
+log/
 node_modules/
 package-lock.json
 daemon/
 lic.json
+config.json
