@@ -1,0 +1,81 @@
+<div ng-controller="MonoKasaBarkodOlustur" ng-init="Init()">
+    <div class="row pt-3">
+        <div class="col-12">
+            <div class="card border-dark mb-3" style="height: 170px;">
+                <div class="card-header bg-transparent border-dark py-1">Kantar</div>
+                <div class="card-body text-dark">
+                    <div class="row justify-content-center">
+                        <div class="col-6 px-2">
+                            <p class="text-md-right my-0 py-1  text-align:center">Ağırlık :</p>
+                        </div>
+                        <div class="col-6 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblKantarKilo}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-6 offset-6 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "BtnKantarVerisiGetir()">Veriyi Getir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-12">
+            <div class="card border-dark mb-3 h-80">
+                <div class="card-header  bg-transparent border-dark py-1">Stok Seçimi</div>
+                <div class="card-body text-dark py-2">
+                    <div class="row pb-5">
+                        <div class="col-2 px-2">
+                            <p class="text-md-left my-0 py-1">Stok :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblBarkod}} - {{LblStokAdi}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-3 offset-9">
+                        <button-modal id="1" class="d-grid" option="BtnStokList" ></button-modal>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-12">
+            <div class="card border-dark mb-3 h-80">
+                <div class="card-header text-center bg-transparent border-dark py-1">Barkod Basımı</div>
+                <div class="card-body text-dark py-2">
+                    <div class="row py-1">
+                        <div class="col-2 px-2">
+                            <p class="text-md-left my-0 py-1">Etiket Tasarımı :</p>
+                        </div>
+                        <div class="col-4 px-2">
+                            <div class="form-group">
+                                <combobox option="CmbEtiketList"></combobox>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 px-2">
+                            <p class="text-md-left my-0 py-1">Basılacak Miktar :</p>
+                        </div>    
+                        <div class="col-4 px-2">
+                            <input type="number" min="1" class="form-control form-control-sm" ng-model = "TxtEtiketMiktar">
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-3 offset-6 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "Init()">Temizle</button>
+                    </div>
+                    <div class="col-3 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "BtnBarkodBas()">Barkod Bas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

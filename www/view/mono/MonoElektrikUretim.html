@@ -1,0 +1,148 @@
+<div ng-controller="MonoElektrikUretim" ng-init="Init()">
+    <div class="row mt-1">
+        <div class="col-6">
+            <div class="card border-dark mb-1 h-80">
+                <div class="card-header bg-transparent border-dark p-1">İş Emri</div>
+                <div class="card-body text-dark p-1 px-2">
+                    <div class="row">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0">İş Emri :</p>
+                        </div>
+                        <div class="col-8 ">
+                            <button-edit id="3" option="BteIsEmri"></button-edit>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0">Üretilecek Ürün :</p>
+                        </div>
+                        <div class="col-8 ">
+                            <p class="text-md-left my-0 ">{{LblUrun}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-dark mb-1 h-80">
+                <div class="card-header bg-transparent border-dark p-1">Barkod Basımı</div>
+                <div class="card-body text-dark p-1 px-2">
+                    <div class="row py-1">
+                        <div class="col-4">
+                            <p class="text-md-right my-0 py-0">Etiket Tasarımı :</p>
+                        </div>
+                        <div class="col-8">
+                            <combobox option="CmbEtiketTasarim"></combobox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-md-right my-0 py-2">Basım Adedi :</p>
+                        </div>
+                        <div class="col-4 pt-1">
+                            <input type="number" min="1" class="form-control form-control-sm h-10" type="text" ng-model = "TxtEtiketMiktar">
+                        </div>
+                        <div class="col-4 pt-1 d-grid">
+                            <button type="button" class="btn btn-success p-30" ng-click = "BtnEtiketBas()">Etiket Bas</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card border-dark mb-1 h-80">
+                <div class="card-header bg-transparent border-dark py-1">Barkod Giriş</div>
+                <div class="card-body text-dark p-1 px-2">
+                    <div class="row">
+                        <div class="col-5 px-2">
+                            <p class="text-md-right my-0 py-2">Barkod :</p>
+                        </div>
+                        <div class="col-7 pt-1">
+                            <input type="number" min="1" class="form-control-custom form-control-sm" type="text" id="TxtBarkodKontrol"  ng-keypress = "TxtBarkodKontrolEvent($event)"  ng-model = "TxtBarkodKontrol">
+                        </div>
+                    </div>
+                    <div class="row py-0 mt-1 mb-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Toplam Planlanan Miktar :</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-md-left my-0 py-1">{{ToplamPlanMiktar}}</p>
+                        </div>
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-warning" ng-click = "BtnIsEmriDetay()">İş Emri Detayları</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Toplam Eklenen Miktar :</p>
+                        </div>
+                        <div class="col-4 ">
+                            <p class="text-md-left my-0 py-1">{{ToplamBarkodKontrolMiktar}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Koli İçi Eklenen :</p>
+                        </div>
+                        <div class="col-4 ">
+                            <p class="text-md-left my-0 py-1">{{KutuKontrolMiktar}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row py-0 mt-3 mb-1">
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-success" ng-click = "BtnEkleVeYazdir()">Ekle B. Bas</button>
+                        </div>
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-warning" ng-click = "BtnSonKoKoli()">Son Koli</button>
+                        </div>
+                        <div class="col-4 d-grid">
+                            <button type="button" class="btn btn-info" ng-click = "SonEvrakGetir()">Son Evrakı Getir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row py-0 mb-1">
+
+        <div class="col-2">
+            <!-- <button type="button" class="btn btn-block btn-secondary btn-lg" ng-click = "BtnSatirSil()">Satır Sil</button> -->
+        </div>
+        <div class="col-2">
+        </div>
+        <div class="col-2">
+        </div>
+        <div class="col-2">
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div id="GrdList"></div>
+        </div>
+    </div>
+    <div class="row py-0 pt-2 pb-2 mb-4">
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-info" ng-click = "YeniEvrak()">Yeni</button>
+        </div>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-success" ng-click = "BtnKaydet()">Kaydet</button>
+        </div>
+        <div class="col-4 d-grid">
+            <button type="button" class="btn btn-info" ng-click = "BtnTekrarEtiketBas()">Seçili Barkodu Tekrar Bas</button>
+        </div>
+        <!-- <div class="col-4 d-grid">
+            <button type="button" class="btn btn-warning" ng-click = "IsemriKapat()">İş Emrini Kapat</button>
+        </div> -->
+    </div>
+</div>
+<div class="toast" role="alert" aria-live="polite" aria-atomic="true" data-bs-delay="2500" style="position: absolute; top: 0; right: 0; z-index: 9999;">
+    <div role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success">
+            <strong class="me-auto text-white">İşlem Başarılı!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body bg-light text-dark">
+            Etiket Yazdırma İşlemi Gerçekleştirildi.
+        </div>
+    </div>
+</div>

@@ -1,0 +1,201 @@
+<div ng-controller="MonoMalKabul" ng-init="Init()">
+    <div class="row pt-3">
+        <div class="col-4">
+            <div class="card border-dark mb-3" style="height: 170px;">
+                <div class="card-header bg-transparent border-dark py-1">Dara</div>
+                <div class="card-body text-dark py-2">
+                    <div class="row py-1">
+                        <div class="col-7 px-2">
+                            <p class="text-md-right my-0 py-1">Kasa Dara :</p>
+                        </div>
+                        <div class="col-5 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblKasaDara}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-6">
+                        <button-input id="1" class="d-grid" option="BtnKasaDaraAl"></button-input>
+                    </div>
+                    <div class="col-6">
+                        <button-input id="2" class="d-grid"option="BtnManuelKasaDaraAl"></button-input>
+                        <!-- <button type="button" class="btn btn-block btn-secondary" style="height: 2.5rem;" ng-click = "BtnKasaDaraAl()"><p style="font-size: 0.8rem; line-height: 0.8rem; margin-bottom: 0;">Kasa Darası Elle Giriş</p></button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card border-dark mb-3" style="height: 170px;">
+                <div class="card-header bg-transparent border-dark py-1">Referans</div>
+                <div class="card-body text-dark py-2">
+                    <div class="row py-1">
+                        <div class="col-6 px-2">
+                            <p class="text-md-right my-0 py-1">Ağırlık (Gram) :</p>
+                        </div>
+                        <div class="col-6 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblHassasGram}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 px-2">
+                            <p class="text-md-right my-0 py-1">Miktar :</p>
+                        </div>
+                        <div class="col-6 px-2">
+                            <input type="number" min="0" class="form-control form-control-sm" ng-model="TxtSpRefMiktar">
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-12 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click="BtnTartimOnayla()">Tartımı Onayla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card border-dark mb-3" style="height: 170px;">
+                <div class="card-header bg-transparent border-dark py-1">Kantar</div>
+                <div class="card-body text-dark py-2">
+                    <div class="row py-1">
+                        <div class="col-6 px-2">
+                            <p class="text-md-right my-0 py-1">Ağırlık :</p>
+                        </div>
+                        <div class="col-6 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblKantarKilo}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 px-2">
+                            <p class="text-md-right my-0 py-1">Miktar :</p>
+                        </div>
+                        <div class="col-6 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblKantarMiktar}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2 px-2">
+                    <div class="col-6 offset-6 d-grid">
+                        <button type="button" class="btn btn-secondary" ng-click = "BtnKantarVerisiGetir()">Veriyi Getir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col-6">
+            <div class="card border-dark mb-3" style="height: 240px;">
+                <div class="card-header bg-transparent border-dark py-1">Stok</div>
+                <div class="card-body text-dark py-2">
+                    <div class="row py-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Stok :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <button-edit id="3" option="BteIsEmri"></button-edit>
+                        </div>
+                    </div>
+                    <div class="row py-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Cari :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <button-edit id="4" option="BteFasoncu"></button-edit>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Ürün :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblStokAdi}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Depo :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <p class="text-md-left my-0 py-1">{{LblDepo}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Miktar :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <p class="text-md-left my-0 py-1">{{Miktar}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card border-dark mb-3" style="height: 240px;">
+                <div class="card-header bg-transparent border-dark py-1">Barkod Basım - Evrak Bilgi</div>
+                    <div class="card-body text-dark py-2">
+                    <div class="row py-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Tarih :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <input class="form-control form-control-sm" id = "Tarih" type="date">
+                        </div>
+                    </div>
+                    <div class="row py-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Evrak No :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <input type="text" class="form-control form-control-sm" ng-model = "TxtEvrakno">
+                        </div>
+                    </div>
+                    <div class="row py-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Etiket Tasarımı :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <combobox option="CmbEtiketTasarim"></combobox>
+                        </div>
+                    </div>
+                    <div class="row pt-1">
+                        <div class="col-4 px-2">
+                            <p class="text-md-right my-0 py-1">Basım Adet :</p>
+                        </div>    
+                        <div class="col-8 px-2">
+                            <input type="number" class="form-control form-control-sm" ng-model = "TxtBasimAdet">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row py-0">        
+       
+        <div class="col-2 d-grid" >
+            <button type="button" class="btn btn-secondary" ng-click="Ekle()">Ekle</button>
+        </div>
+        <div class="col-2 d-grid">
+            <button type="button" class="btn btn-secondary" ng-click="BtnSatirSil()">Satır Sil</button>
+        </div>
+        <div class="col-2" ng-show="ManuelGirisHide">
+            <button-input id="Ekle" class="d-grid" option="BtnEkle"></button-input>
+        </div>
+        <div class="col-2 offset-4 d-grid">
+            <button type="button" class="btn btn-secondary" ng-click="BtnBarkodBas()">Barkod Bas</button>
+        </div>
+      
+    </div>
+    <div class="row pt-2">
+        <div class="col-12">
+            <div id="GrdList"></div>
+        </div>
+    </div>
+    <div class="row pt-2 mb-5">
+        <div class="col-2 d-grid">
+            <button type="button" class="btn btn-secondary btn-lg" ng-click="YeniEvrak()">Yeni</button>
+        </div>
+        <div class="col-2 d-grid">
+            <button type="button" class="btn btn-secondary btn-lg" ng-click="BtnKaydet()">Kaydet</button>
+        </div>
+    </div>
+</div>

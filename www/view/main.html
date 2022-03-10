@@ -1,0 +1,37 @@
+<div ng-controller="Main" ng-init="Init()">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary ">
+       
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="main_nav">
+            <div class="d-flex justify-content-start">  
+                <ul class="navbar-nav" compile="Html.Menu"></ul> 
+                <ul class="navbar-nav" compile="Html.Yonetim"></ul>
+                <ul class="navbar-nav" compile="Html.Rapor"></ul>
+            </div>
+
+            <div class="ms-auto bd-highlight">
+                <a class="navbar-brand">{{PageName}}</a>
+            </div>
+            
+            <div class="ms-auto bd-highlight">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link yaziayari" ng-click="BtnExit()" href=""><i class="fa fa-sign-out" aria-hidden="true"></i> Çıkış </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <ui-view></ui-view>
+    </div>
+    <nav class="navbar fixed-bottom navbar-dark bg-dark footer ">
+        <div class="col-12">
+            <div class="d-flex justify-content-between">
+                <p class="text-light text-md-left my-0">{{Firm}} - {{User}}</p>
+                <p class="text-light text-md-right my-0">{{DateTime}}</p>
+            </div>
+        </div>
+    </nav>
+</div>

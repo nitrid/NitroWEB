@@ -1,0 +1,18 @@
+
+<button type="button" class="btn btn-secondary" ng-click="$ctrl.Show()" data-bs-toggle="modal" data-bs-target="#Mdl{{$ctrl.Id}}">{{$ctrl.option.title}}</button>
+<div class="modal fade" id="Mdl{{$ctrl.Id}}" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h4" id="exampleModalFullscreenLabel">{{$ctrl.option.title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="Grd{{$ctrl.Id}}"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click="$ctrl.Select()">Seç</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+------------------------------------------------------------------------------------------------------
+TypeError: Cannot read property '0' of undefined
+    at Immediate.<anonymous> (C:\Nitrogen\NitroWEB\sql\sqllib.js:114:48)
+    at processImmediate (internal/timers.js:464:21)
+TypeError: Cannot read property '0' of undefined
+    at Immediate.<anonymous> (C:\Nitrogen\NitroWEB\sql\sqllib.js:114:48)
+    at processImmediate (internal/timers.js:464:21)
+------------------------------------------------------------------------------------------------------
+TypeError: Cannot read property '0' of undefined
+    at Immediate.<anonymous> (C:\Nitrogen\NitroWEB\sql\sqllib.js:114:48)
+    at processImmediate (internal/timers.js:464:21)
+------------------------------------------------------------------------------------------------------
+TypeError: Cannot read property '0' of undefined
+    at Immediate.<anonymous> (C:\Nitrogen\NitroWEB\sql\sqllib.js:114:48)
+    at processImmediate (internal/timers.js:464:21)
+------------------------------------------------------------------------------------------------------
